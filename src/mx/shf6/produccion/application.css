@@ -1,0 +1,53 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/* CSS PARA PANTALLA BASE */
+.bodyPantallaBase {
+	-fx-background-color: transparent;
+}
+
+/* CSS PARA PANTALLA INICIO */
+.bodyPantallaInicio {
+	-fx-background-color: transparent;
+}
+
+/* CSS PARA PANTALLA SESION */
+.bodyPantallaSesion {
+	-fx-background-color: transparent;
+}
+
+.labelRobotoRegularDoce {
+	-fx-font-family: "Roboto Regular";
+	-fx-font-size: 12px;
+}
+
+.labelRobotoRegular {
+	-fx-font-family: "Roboto Regular";
+	-fx-font-size: 14px;
+}
+
+.labelRobotoMedium {
+	-fx-font-family: "Roboto Medium";
+	-fx-font-size: 18px;
+}
+
+.labelRobotoBlack {
+	-fx-font-family: "Roboto Black";
+	-fx-font-size: 18px;
+}
+
+.textFieldCredenciales {
+	-fx-background-color: #E6E6E6;
+	-fx-border-style: solid;
+	-fx-border-color: #D1D0D2;
+	-fx-border-width: 0px 0px 1px 0px;
+	-fx-border-radius: 0px 0px 0px 0px;
+	-fx-background-radius: 0px 0px 0px 0px;
+	-fx-font-family: "Roboto Regular";
+	-fx-font-size: 12px;
+}
+
+.labelIngresar {
+	-fx-font-family: "Roboto Black";
+	-fx-font-size: 14px;
+	-fx-text-fill: #272A7F;
+}
