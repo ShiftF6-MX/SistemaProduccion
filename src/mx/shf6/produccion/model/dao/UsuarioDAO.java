@@ -17,6 +17,12 @@ import java.sql.PreparedStatement;
 
 public class UsuarioDAO implements ObjectDAO {
 	
+	//CONSTANTES
+	public static final int NO_REGISTRADO = 0;
+	public static final int CONRASENA_INCORRECTA = 1;
+	public static final int USUARIO_BLOQUEADO = 2;
+	public static final int ACCESO_CORRECTO = 3;
+	
 	//METODO PARA HACER CREATE EN LA TABLA USUARIOS
 	@Override
 	public boolean crear(Connection connection, Object usuario){	
@@ -181,15 +187,15 @@ public class UsuarioDAO implements ObjectDAO {
 		if(usuario.getUsuario().equals(nombreUsuario)) {
 			if(usuario.getUsuario().equals(nombreUsuario) && usuario.getContrasena().equals(contrasena)){
 				if(usuario.getStatus().equals(0)) {
-					return 2;//USUARIO BLOQUEADO
+					return USUARIO_BLOQUEADO;//USUARIO BLOQUEADO
 				}else {
-					return 3;//ACCESO CORRECTO
+					return ACCESO_CORRECTO;//ACCESO CORRECTO
 				}				
 			}else {
-				return 1;//CONTRASENA INCORRECTA
+				return CONRASENA_INCORRECTA;//CONTRASENA INCORRECTA
 			}
 		}else {
-			return 0;//USUARIO NO REGISTRADO
+			return NO_REGISTRADO;//USUARIO NO REGISTRADO
 		}				
 	}//FIN METODO
 	
