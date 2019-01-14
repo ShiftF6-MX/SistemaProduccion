@@ -184,19 +184,22 @@ public class UsuarioDAO implements ObjectDAO {
 		Usuario usuario =new Usuario();
 		ArrayList <Object> resultadoUsuario = leer(connection, "usuario", nombreUsuario);
 		usuario = (Usuario) resultadoUsuario.get(0);
-		if(usuario.getUsuario().equals(nombreUsuario)) {
-			if(usuario.getUsuario().equals(nombreUsuario) && usuario.getContrasena().equals(contrasena)){
-				if(usuario.getStatus().equals(0)) {
-					return USUARIO_BLOQUEADO;//USUARIO BLOQUEADO
+		if (usuario != null) {
+			if(usuario.getUsuario().equals(nombreUsuario)) {
+				if(usuario.getUsuario().equals(nombreUsuario) && usuario.getContrasena().equals(contrasena)){
+					if(usuario.getStatus().equals(0)) {
+						return USUARIO_BLOQUEADO;//USUARIO BLOQUEADO
+					}else {
+						return ACCESO_CORRECTO;//ACCESO CORRECTO
+					}//FIN IF-ELSE			
 				}else {
-					return ACCESO_CORRECTO;//ACCESO CORRECTO
-				}				
-			}else {
-				return CONRASENA_INCORRECTA;//CONTRASENA INCORRECTA
-			}
+					return CONRASENA_INCORRECTA;//CONTRASENA INCORRECTA
+				}//FIN IF-ELSE
+			}//FIN IF
 		}else {
 			return NO_REGISTRADO;//USUARIO NO REGISTRADO
-		}				
+		}//FIN IF-ELSE			
+		return 0;
 	}//FIN METODO
 	
 	//METDODO PARA OBTENER EL ULTIMO SYSPK REGISTRADO EN LA TABAL USUARIOS
