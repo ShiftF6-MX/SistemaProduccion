@@ -182,9 +182,8 @@ public class UsuarioDAO implements ObjectDAO {
 	//METODO PARA VALIDAR SI UN USUARIO ESTA REGISTRADO Y/O BLOQUEDO Y SI HA ESCRITO CORRECTAMENTE SU CONTRASEÑA 
 	public int validarUsuario(Connection connection, String nombreUsuario, String contrasena) {
 		Usuario usuario =new Usuario();
-		ArrayList <Object> resultadoUsuario = leer(connection, "usuario", nombreUsuario);
-		usuario = (Usuario) resultadoUsuario.get(0);
-		if (usuario != null) {
+		ArrayList <Object> resultadoUsuario = leer(connection, "usuario", nombreUsuario);		
+		if ((usuario = (Usuario) resultadoUsuario.get(0)) != null) {
 			if(usuario.getUsuario().equals(nombreUsuario)) {
 				if(usuario.getUsuario().equals(nombreUsuario) && usuario.getContrasena().equals(contrasena)){
 					if(usuario.getStatus().equals(0)) {
