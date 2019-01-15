@@ -51,7 +51,8 @@ public class UsuarioDAO implements ObjectDAO {
 		String query = "";
 		ArrayList<Object> listaUsuario = new ArrayList<Object>();
 		if (campoBusqueda.isEmpty() && valorBusqueda.isEmpty()) {
-			query = "SELECT * FROM usuarios ORDER BY sysPK;";
+			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuario "
+					+ "FROM usuarios ORDER BY sysPK;";
 			try {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(query);
@@ -72,7 +73,8 @@ public class UsuarioDAO implements ObjectDAO {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH
 		} else if (campoBusqueda.isEmpty()) {
-			query= "SELECT * FROM usuarios WHERE usuario LIKE '%"+valorBusqueda+"%' OR correoElectronico LIKE '%"+valorBusqueda+"%'";
+			query= "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuario "
+					+ "FROM usuarios WHERE usuario LIKE '%" + valorBusqueda + "%' OR correoElectronico LIKE '%" + valorBusqueda + "%'";
 			try {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(query);
@@ -94,7 +96,8 @@ public class UsuarioDAO implements ObjectDAO {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH			
 		} else {
-			query = "SELECT * FROM usuarios WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
+			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuario "
+					+ "FROM usuarios WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1, valorBusqueda);
@@ -186,7 +189,7 @@ public class UsuarioDAO implements ObjectDAO {
 		if (resultadoUsuario.size() != 0) {
 			usuario = (Usuario) resultadoUsuario.get(0);
 			if(usuario.getUsuario().equals(nombreUsuario)) {
-				if(usuario.getUsuario().equals(nombreUsuario) && aes_decrypt(connection, usuario.getContrasena()).equals(contrasena)){
+				if(usuario.getContrasena().equals(contrasena)){
 					if(usuario.getStatus().equals(0)) {
 						return USUARIO_BLOQUEADO;//USUARIO BLOQUEADO
 					}else {
