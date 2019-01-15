@@ -186,7 +186,7 @@ public class UsuarioDAO implements ObjectDAO {
 		if (resultadoUsuario.size() != 0) {
 			usuario = (Usuario) resultadoUsuario.get(0);
 			if(usuario.getUsuario().equals(nombreUsuario)) {
-				if(usuario.getUsuario().equals(nombreUsuario) && usuario.getContrasena().equals(contrasena)){
+				if(usuario.getUsuario().equals(nombreUsuario) && aes_decrypt(connection, usuario.getContrasena()).equals(contrasena)){
 					if(usuario.getStatus().equals(0)) {
 						return USUARIO_BLOQUEADO;//USUARIO BLOQUEADO
 					}else {
@@ -221,7 +221,7 @@ public class UsuarioDAO implements ObjectDAO {
 	}//FIN METODO
 	
 	public String aes_encrypt(Connection connection, String palabra) {
-    	String query = "SELECT AES_ENCRYPT('"+palabra+"','ShiftF6')";
+    	String query = "SELECT AES_ENCRYPT('" + palabra + "','ShiftF6')";
     	String desencriptacion = "";
 		try {
 			Statement statement = connection.createStatement();
@@ -237,7 +237,7 @@ public class UsuarioDAO implements ObjectDAO {
     }//FIN METODO
 	
 	public String aes_decrypt(Connection connection, String palabra) {
-    	String query = "SELECT AES_DECRYPT('"+palabra+"','ShiftF6')";
+    	String query = "SELECT AES_DECRYPT('" + palabra + "','ShiftF6')";
     	String desencriptacion = "";
 		try {
 			Statement statement = connection.createStatement();
