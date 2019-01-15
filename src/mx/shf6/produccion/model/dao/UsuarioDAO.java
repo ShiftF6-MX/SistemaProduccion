@@ -183,7 +183,7 @@ public class UsuarioDAO implements ObjectDAO {
 	public int validarUsuario(Connection connection, String nombreUsuario, String contrasena) {
 		Usuario usuario =new Usuario();		
 		ArrayList <Object> resultadoUsuario = leer(connection, "usuario", nombreUsuario);
-		if (resultadoUsuario != null) {
+		if (resultadoUsuario.size() == 0) {
 			usuario = (Usuario) resultadoUsuario.get(0);
 			if(usuario.getUsuario().equals(nombreUsuario)) {
 				if(usuario.getUsuario().equals(nombreUsuario) && usuario.getContrasena().equals(contrasena)){
