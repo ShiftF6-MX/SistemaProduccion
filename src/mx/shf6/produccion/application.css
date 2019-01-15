@@ -51,3 +51,8 @@
 	-fx-font-size: 14px;
 	-fx-text-fill: #272A7F;
 }
+
+/* CSS PARA PANTALLA MENU */
+.bodyPantallaMenu {
+	-fx-background-color: #151940;
+}

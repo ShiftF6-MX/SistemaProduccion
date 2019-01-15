@@ -33,14 +33,14 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <TextField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="textFieldCredenciales" />
+            <TextField fx:id="campoTextoUsuario" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="textFieldCredenciales" />
             <Label styleClass="labelRobotoRegular" text="CONTRASEÑA">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <PasswordField maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="textFieldCredenciales" />
-            <Label styleClass="labelIngresar" text="INGRESAR">
+            <PasswordField fx:id="campoTextoContrasena" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="textFieldCredenciales" />
+            <Label onMouseClicked="#ingresarButtonHandler" styleClass="labelIngresar" text="INGRESAR">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
