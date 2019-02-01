@@ -65,10 +65,9 @@ public class ClienteDAO implements ObjectDAO{
 			}//FIN TRY/CATCH
 		}else {
 			if(campoBusqueda.isEmpty()) {
-				query="SELECT * FROM informacionvivienda "
-						+ "WHERE (numeroLote like '%"+valorBusqueda+"%' or numeroOficial like '%"+valorBusqueda+"%' "
-						+ "or manzana like '%"+valorBusqueda+"%' or calle like '%"+valorBusqueda+"%'"
-						+ "or fraccionamiento like '%"+valorBusqueda+"%') ORDER BY sysPK;";	
+				query="SELECT * FROM clientes "
+						+ "WHERE (nombre like '%" + valorBusqueda + "%' "
+						+ "OR registroContribuyente like '%" + valorBusqueda + "%') ORDER BY sysPK;";	
 				try {
 					Statement statement = connection.createStatement();
 					ResultSet resultSet = statement.executeQuery(query);
@@ -88,7 +87,7 @@ public class ClienteDAO implements ObjectDAO{
 					Notificacion.dialogoException(e);
 				}//FIN TRY/CATCH
 			}else {
-				query="SELECT * FROM informacionvivienda WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";	
+				query="SELECT * FROM clientes WHERE " + campoBusqueda + " = ? ORDER BY sysPK;";	
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
 					preparedStatement.setString(1, valorBusqueda);
