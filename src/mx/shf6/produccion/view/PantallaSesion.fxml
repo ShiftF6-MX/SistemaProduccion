@@ -24,17 +24,17 @@
       </ImageView>
       <VBox layoutX="29.0" layoutY="152.0" prefHeight="143.0" prefWidth="151.0" AnchorPane.leftAnchor="30.0">
          <children>
-            <Label styleClass="labelRobotoMedium" text="SISTEMA DE" />
-            <Label styleClass="labelRobotoBlack" text="PRODUCCIÓN" />
+            <Label styleClass="labelRobotoMedium18" text="SISTEMA DE" />
+            <Label styleClass="labelRobotoBlack18" text="PRODUCCIÓN" />
             <Line endX="35.0" startX="-100.0" stroke="#2d388c" />
             <Line endX="-61.70710754394531" layoutX="111.0" layoutY="65.0" startX="-100.0" stroke="#2d388c" />
-            <Label styleClass="labelRobotoRegular" text="USUARIO">
+            <Label styleClass="labelRobotoRegular14" text="USUARIO">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
             <TextField fx:id="campoTextoUsuario" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" styleClass="textFieldCredenciales" />
-            <Label styleClass="labelRobotoRegular" text="CONTRASEÑA">
+            <Label styleClass="labelRobotoRegular14" text="CONTRASEÑA">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
