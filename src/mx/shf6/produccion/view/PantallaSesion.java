@@ -62,6 +62,7 @@ public class PantallaSesion {
 		//this.mainApp.iniciarPantallaSistema();
 		if (this.autenticarUsuario()) {
 			this.mainApp.iniciarPantallaSistema();
+			this.mainApp.setSesionActiva(true);
 		}
 	}//FIN METODO
 	

@@ -15,22 +15,27 @@
 	-fx-background-color: transparent;
 }
 
-.labelRobotoRegularDoce {
+.labelRobotoRegular12 {
 	-fx-font-family: "Roboto Regular";
 	-fx-font-size: 12px;
 }
 
-.labelRobotoRegular {
+.labelRobotoRegular14 {
 	-fx-font-family: "Roboto Regular";
 	-fx-font-size: 14px;
 }
 
-.labelRobotoMedium {
+.labelRobotoMedium14 {
+	-fx-font-family: "Roboto Medium";
+	-fx-font-size: 14px;
+}
+
+.labelRobotoMedium18 {
 	-fx-font-family: "Roboto Medium";
 	-fx-font-size: 18px;
 }
 
-.labelRobotoBlack {
+.labelRobotoBlack18 {
 	-fx-font-family: "Roboto Black";
 	-fx-font-size: 18px;
 }
@@ -55,4 +60,14 @@
 /* CSS PARA PANTALLA MENU */
 .bodyPantallaMenu {
 	-fx-background-color: #151940;
+}
+
+/* CSS PARA PANTALLA ESPERA */
+.bodyPantallaEspera {
+	-fx-background-color: #F2F2F2;
+}
+
+/* CSS PARA PANTALLA CABECERA */
+.bodyPantallaCabecera {
+	-fx-background-color: #D1D0D2;
 }

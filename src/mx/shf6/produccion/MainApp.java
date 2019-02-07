@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaSesion;
 
@@ -28,6 +29,7 @@ public class MainApp extends Application {
 	private Connection conexion;
 	private ConnectionDB conexionBD;
 	private Usuario usuario;
+	private boolean sesionActiva;
 	
 	//PANTALLAS DEL SISTEMA
 	private Stage escenarioPrincipal;
@@ -35,6 +37,8 @@ public class MainApp extends Application {
 	private AnchorPane pantallaInicio;
 	private AnchorPane pantallaSesion;
 	private AnchorPane pantallaMenu;
+	private AnchorPane pantallaCabecera;
+	private AnchorPane pantallaEspera;
 	
 	//VARIABLES
 	private double xOffset = 0.0;
@@ -50,6 +54,7 @@ public class MainApp extends Application {
 		//INICIA CONCEXIÓN BASE DATOS
 		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		this.conexion = conexionBD.conectarMySQL();
+		this.sesionActiva = false;
 		
 		//INICIA EL ESCENARIO PRINCIPAL
 		this.escenarioPrincipal = primaryStage;
@@ -59,7 +64,7 @@ public class MainApp extends Application {
 		this.escenarioPrincipal.setAlwaysOnTop(true);
 		
 		//INICIA LA INTERFAZ DE USUARIO
-		//iniciarPantallaBase();
+		iniciarPantallaBase();
 		iniciarPantallaInicio();
 	}//FIN METODO
 	
@@ -68,7 +73,6 @@ public class MainApp extends Application {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaBase.fxml"));
 			this.pantallaBase = (BorderPane) fxmlLoader.load();
-			this.pantallaBase.setPrefSize(100, 100);
 			Scene escenaPrincipal = new Scene(this.pantallaBase);
 			escenaPrincipal.setFill(Color.TRANSPARENT);
 			this.escenarioPrincipal.setScene(escenaPrincipal);
@@ -79,15 +83,25 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	
-	public void iniciarPantallaInicio() {		
+	public void iniciarPantallaInicio() {
+		//MODIFICA ESCENARIO PRINCIPAL
+		this.escenarioPrincipal.setMaximized(false);
+		this.escenarioPrincipal.setResizable(false);
+		this.escenarioPrincipal.setAlwaysOnTop(true);
+		
+		//ESTABLECE TAMAÑO APLICACIÓN
+		//Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		//escenarioPrincipal.setX(primaryScreenBounds.getMinX());
+		//escenarioPrincipal.setY(primaryScreenBounds.getMinY());
+		escenarioPrincipal.setMaxWidth(100);
+		escenarioPrincipal.setMinWidth(100);
+		escenarioPrincipal.setMaxHeight(100);
+		escenarioPrincipal.setMinHeight(100);
+		
 		//MUESTRA PANTALLA EN ESQUINA SUPERIOR IZQUIERDA
-		iniciarPantallaBase();
 		Rectangle2D limitesPantalla = Screen.getPrimary().getVisualBounds();
 		this.escenarioPrincipal.setX(limitesPantalla.getWidth() - this.escenarioPrincipal.getWidth() - 25);
 		this.escenarioPrincipal.setY(25);
-		
-		//MODIFICA EL ESCENARIO PRINCIPAL
-		this.escenarioPrincipal.setAlwaysOnTop(true);
 		
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -111,7 +125,10 @@ public class MainApp extends Application {
 					escenarioPrincipal.setY(event.getScreenY() + yOffset);
 				}//FIN METODO
 			});//FIN MOUSEHANDLER
-			
+
+			this.pantallaBase.setCenter(null);
+			this.pantallaBase.setLeft(null);
+			this.pantallaBase.setTop(null);
 			this.pantallaBase.setCenter(this.pantallaInicio);
 			PantallaInicio pantallaInicio = fxmlLoader.getController();
 			pantallaInicio.setMainApp(this);
@@ -120,63 +137,118 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	public void iniciarPantallaSesion() {		
-		try {
-			//MODIFICA EL ESCENARIO PRINCIPAL
+	public void iniciarPantallaSesion() {
+		if (this.getSesionActiva()) {
+			this.iniciarPantallaSistema();
+		} else {
+			//MODIFICA ESCENARIO PRINCIPAL
 			this.escenarioPrincipal.setMaximized(false);
 			this.escenarioPrincipal.setResizable(false);
 			this.escenarioPrincipal.setAlwaysOnTop(false);
 			
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaSesion.fxml"));
-			this.pantallaSesion = (AnchorPane) fxmlLoader.load();
+			//ESTABLECE TAMAÑO APLICACIÓN
+			//Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+			//escenarioPrincipal.setX(primaryScreenBounds.getMinX());
+			//escenarioPrincipal.setY(primaryScreenBounds.getMinY());
+			escenarioPrincipal.setMaxWidth(333);
+			escenarioPrincipal.setMinWidth(333);
+			escenarioPrincipal.setMaxHeight(517);
+			escenarioPrincipal.setMinHeight(517);
 			
-			//SELECCIONAR PANTALLA PARA MOVER
-			this.pantallaSesion.setOnMousePressed(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					xOffset = escenarioPrincipal.getX() - event.getScreenX();
-					yOffset = escenarioPrincipal.getY() - event.getScreenY();
-				}//FIN METODO
-			});//FIN MOUSEHANDLER
-			
-			//MOVER VENTAN ARRASTRANDO
-			this.pantallaSesion.setOnMouseDragged(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					escenarioPrincipal.setX(event.getScreenX() + xOffset);
-					escenarioPrincipal.setY(event.getScreenY() + yOffset);
-				}//FIN METODO
-			});//FIN MOUSEHANDLER
-			
-			this.pantallaBase.setCenter(this.pantallaSesion);
-			PantallaSesion pantallaSesion = fxmlLoader.getController();
-			pantallaSesion.setMainApp(this);
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-		
-		//MUESTRA PANTALLA EN ESQUINA SUPERIOR IZQUIERDA
-		this.pantallaBase.setPrefSize(333, 517);
-		this.escenarioPrincipal.sizeToScene();
-		Rectangle2D limitesPantalla = Screen.getPrimary().getVisualBounds();
-		this.escenarioPrincipal.setX((limitesPantalla.getWidth() - this.escenarioPrincipal.getWidth()) / 2);
-		this.escenarioPrincipal.setY((limitesPantalla.getHeight() - this.escenarioPrincipal.getHeight()) /2);		
+			try {
+				FXMLLoader fxmlLoader = new FXMLLoader();
+				fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaSesion.fxml"));
+				this.pantallaSesion = (AnchorPane) fxmlLoader.load();
+				
+				//SELECCIONAR PANTALLA PARA MOVER
+				this.pantallaSesion.setOnMousePressed(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						xOffset = escenarioPrincipal.getX() - event.getScreenX();
+						yOffset = escenarioPrincipal.getY() - event.getScreenY();
+					}//FIN METODO
+				});//FIN MOUSEHANDLER
+				
+				//MOVER VENTAN ARRASTRANDO
+				this.pantallaSesion.setOnMouseDragged(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						escenarioPrincipal.setX(event.getScreenX() + xOffset);
+						escenarioPrincipal.setY(event.getScreenY() + yOffset);
+					}//FIN METODO
+				});//FIN MOUSEHANDLER
+				
+				this.pantallaBase.setCenter(null);
+				this.pantallaBase.setCenter(this.pantallaSesion);
+				PantallaSesion pantallaSesion = fxmlLoader.getController();
+				pantallaSesion.setMainApp(this);
+			} catch (IOException | IllegalStateException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY/CATCH
+							
+			//MUESTRA PANTALLA CENTRO
+			this.escenarioPrincipal.sizeToScene();
+			Rectangle2D limitesPantalla = Screen.getPrimary().getVisualBounds();
+			this.escenarioPrincipal.setX((limitesPantalla.getWidth() - this.escenarioPrincipal.getWidth()) / 2);
+			this.escenarioPrincipal.setY((limitesPantalla.getHeight() - this.escenarioPrincipal.getHeight()) /2);
+		}//FIN IF/ELSE
 	}//FIN METODO
 	
-	public void iniciarPantallaSistema() {
+	public void iniciarPantallaSistema() {			
+		this.iniciarPantallaEspera();
+		this.iniciarPantallaMenu();
+		this.iniciarPantallaCabecera();
+	}//FIN METODO
+	
+	public void iniciarPantallaEspera() {
+		this.pantallaBase.setCenter(null);
+		
 		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaEspera.fxml"));
+			this.pantallaEspera = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(null);
+			this.pantallaBase.setCenter(this.pantallaEspera);
+
 			//MODIFICA EL ESCENARIO PRINCIPAL
+			this.escenarioPrincipal.setResizable(true);
 			this.escenarioPrincipal.setMaximized(true);
-			this.escenarioPrincipal.setResizable(false);
 			this.escenarioPrincipal.setAlwaysOnTop(false);
 			
+			//ESTABLECE TAMAÑO APLICACIÓN
+			Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+			escenarioPrincipal.setX(primaryScreenBounds.getMinX());
+			escenarioPrincipal.setY(primaryScreenBounds.getMinY());
+			escenarioPrincipal.setMaxWidth(primaryScreenBounds.getWidth());
+			escenarioPrincipal.setMinWidth(primaryScreenBounds.getWidth());
+			escenarioPrincipal.setMaxHeight(primaryScreenBounds.getHeight());
+			escenarioPrincipal.setMinHeight(primaryScreenBounds.getHeight());
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH		
+	}//FIN METODO
+	
+	public void iniciarPantallaMenu() {
+		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaMenu.fxml"));
-			this.pantallaMenu = (AnchorPane) fxmlLoader.load();
-			
+			this.pantallaMenu = (AnchorPane) fxmlLoader.load();			
 			this.pantallaBase.setLeft(this.pantallaMenu);
-		} catch (IllegalStateException | IOException ex) {
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRy/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaCabecera() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaCabecera.fxml"));
+			this.pantallaCabecera = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setTop(this.pantallaCabecera);
+			
+			PantallaCabecera pantallaCabecera = fxmlLoader.getController();
+			pantallaCabecera.setMainApp(this);
+		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
@@ -203,6 +275,14 @@ public class MainApp extends Application {
 	
 	public Usuario getUsuario() {
 		return this.usuario;
+	}//FIN METODO
+	
+	public boolean getSesionActiva() {
+		return this.sesionActiva;
+	}//FIN METODO
+	
+	public void setSesionActiva(boolean sesionActiva) {
+		this.sesionActiva = sesionActiva;
 	}//FIN METODO
 	
 	public static void main(String[] args) {
