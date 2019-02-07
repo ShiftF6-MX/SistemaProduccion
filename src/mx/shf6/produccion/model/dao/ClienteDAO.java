@@ -18,17 +18,18 @@ public class ClienteDAO implements ObjectDAO{
 	@Override
 	public boolean crear(Connection connection, Object Cliente) {	
 		Cliente cliente = (Cliente)Cliente;
-		String query = "INSERT INTO clientes (nombre, tipo, registroContrubuyente, telefono, correo, rutaCarpeta, domicilioFk) "
-				+ "values ( ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO clientes (codigo, nombre, status, fechaRegistro, registroContrubuyente, telefono, correo, rutaCarpeta, domicilioFk) "
+				+ "values ( ?, ?, ?, CURDATE(), ?, ?, ?, ?, ?)";
 		try {	
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, cliente.getNombre());
-			preparedStatement.setInt(2, cliente.getTipo());
-			preparedStatement.setString(3, cliente.getRegistroContribuyente());
-			preparedStatement.setString(4, cliente.getTelefono());
-			preparedStatement.setString(5, cliente.getCorreo());
-			preparedStatement.setString(6, cliente.getRutaCarpeta());
-			preparedStatement.setInt(7, cliente.getDomicilioFk());
+			preparedStatement.setString(1, cliente.getCodigo());
+			preparedStatement.setString(2, cliente.getNombre());
+			preparedStatement.setInt(3, cliente.getStatus());
+			preparedStatement.setString(4, cliente.getRegistroContribuyente());
+			preparedStatement.setString(5, cliente.getTelefono());
+			preparedStatement.setString(6, cliente.getCorreo());
+			preparedStatement.setString(7, cliente.getRutaCarpeta());
+			preparedStatement.setInt(8, cliente.getDomicilioFk());
 			preparedStatement.execute();
 			return true;   
 		} catch (SQLException ex) {
@@ -51,13 +52,15 @@ public class ClienteDAO implements ObjectDAO{
 				while (resultSet.next()) {
 					cliente = new Cliente();			
 					cliente.setSysPk(resultSet.getInt(1));
-					cliente.setNombre(resultSet.getString(2));
-					cliente.setTipo(resultSet.getInt(3));
-					cliente.setRegistroContribuyente(resultSet.getString(4));
-					cliente.setTelefono(resultSet.getString(5));
-					cliente.setCorreo(resultSet.getString(6));
-					cliente.setRutaCarpeta(resultSet.getString(7));
-					cliente.setDomicilioFk(resultSet.getInt(8));
+					cliente.setCodigo(resultSet.getString(2));
+					cliente.setNombre(resultSet.getString(3));
+					cliente.setStatus(resultSet.getInt(4));
+					cliente.setFechaRegistro(resultSet.getDate(5));
+					cliente.setRegistroContribuyente(resultSet.getString(6));
+					cliente.setTelefono(resultSet.getString(7));
+					cliente.setCorreo(resultSet.getString(8));
+					cliente.setRutaCarpeta(resultSet.getString(9));
+					cliente.setDomicilioFk(resultSet.getInt(10));
 					listaCliente.add(cliente);
 				}//FIN WHILE
 			}catch (SQLException e) {
@@ -74,13 +77,15 @@ public class ClienteDAO implements ObjectDAO{
 					while (resultSet.next()) {
 						cliente = new Cliente();			
 						cliente.setSysPk(resultSet.getInt(1));
-						cliente.setNombre(resultSet.getString(2));
-						cliente.setTipo(resultSet.getInt(3));
-						cliente.setRegistroContribuyente(resultSet.getString(4));
-						cliente.setTelefono(resultSet.getString(5));
-						cliente.setCorreo(resultSet.getString(6));
-						cliente.setRutaCarpeta(resultSet.getString(7));
-						cliente.setDomicilioFk(resultSet.getInt(8));
+						cliente.setCodigo(resultSet.getString(2));
+						cliente.setNombre(resultSet.getString(3));
+						cliente.setStatus(resultSet.getInt(4));
+						cliente.setFechaRegistro(resultSet.getDate(5));
+						cliente.setRegistroContribuyente(resultSet.getString(6));
+						cliente.setTelefono(resultSet.getString(7));
+						cliente.setCorreo(resultSet.getString(8));
+						cliente.setRutaCarpeta(resultSet.getString(9));
+						cliente.setDomicilioFk(resultSet.getInt(10));
 						listaCliente.add(cliente);
 					}//FIN WHILE
 				}catch (SQLException e) {
@@ -95,13 +100,15 @@ public class ClienteDAO implements ObjectDAO{
 					while (resultSet.next()) {
 						cliente = new Cliente();			
 						cliente.setSysPk(resultSet.getInt(1));
-						cliente.setNombre(resultSet.getString(2));
-						cliente.setTipo(resultSet.getInt(3));
-						cliente.setRegistroContribuyente(resultSet.getString(4));
-						cliente.setTelefono(resultSet.getString(5));
-						cliente.setCorreo(resultSet.getString(6));
-						cliente.setRutaCarpeta(resultSet.getString(7));
-						cliente.setDomicilioFk(resultSet.getInt(8));
+						cliente.setCodigo(resultSet.getString(2));
+						cliente.setNombre(resultSet.getString(3));
+						cliente.setStatus(resultSet.getInt(4));
+						cliente.setFechaRegistro(resultSet.getDate(5));
+						cliente.setRegistroContribuyente(resultSet.getString(6));
+						cliente.setTelefono(resultSet.getString(7));
+						cliente.setCorreo(resultSet.getString(8));
+						cliente.setRutaCarpeta(resultSet.getString(9));
+						cliente.setDomicilioFk(resultSet.getInt(10));
 						listaCliente.add(cliente);
 					}//FIN WHILE
 				}catch (SQLException e) {
@@ -116,19 +123,20 @@ public class ClienteDAO implements ObjectDAO{
 	@Override
 	public boolean modificar(Connection connection, Object Cliente) {
 		String query = "UPDATE clientes "
-				+ "SET  nombre = ?, tipo = ?, registroContribuyente = ?, telefono = ?, correo = ?, rutaCarpeta = ?, domicilioFk = ? "
+				+ "SET  codigo = ?, nombre = ?, status = ?, registroContribuyente = ?, telefono = ?, correo = ?, rutaCarpeta = ?, domicilioFk = ? "
 				+ "WHERE sysPK = ?";
 		try {
 			Cliente cliente = (Cliente)Cliente;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, cliente.getNombre());
-			preparedStatement.setInt(2, cliente.getTipo());
-			preparedStatement.setString(3, cliente.getRegistroContribuyente());
-			preparedStatement.setString(4, cliente.getTelefono());
-			preparedStatement.setString(5, cliente.getCorreo());
-			preparedStatement.setString(6, cliente.getRutaCarpeta());
-			preparedStatement.setInt(7, cliente.getDomicilioFk());
-			preparedStatement.setInt(8, cliente.getSysPk());
+			preparedStatement.setString(1, cliente.getCodigo());
+			preparedStatement.setString(2, cliente.getNombre());
+			preparedStatement.setInt(3, cliente.getStatus());
+			preparedStatement.setString(4, cliente.getRegistroContribuyente());
+			preparedStatement.setString(5, cliente.getTelefono());
+			preparedStatement.setString(6, cliente.getCorreo());
+			preparedStatement.setString(7, cliente.getRutaCarpeta());
+			preparedStatement.setInt(8, cliente.getDomicilioFk());
+			preparedStatement.setInt(9, cliente.getSysPk());
 			preparedStatement.execute();
 			return true;
 		} catch (SQLException e) {

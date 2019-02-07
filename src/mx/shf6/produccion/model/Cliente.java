@@ -1,6 +1,7 @@
 package mx.shf6.produccion.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,8 +13,10 @@ public class Cliente {
 
 	//PROPIEDADES
 	public ObjectProperty<Integer> sysPk;
+	public StringProperty codigo;
 	public StringProperty nombre;
-	public ObjectProperty<Integer> tipo;
+	public ObjectProperty<Integer> status;
+	public ObjectProperty<Date> fechaRegistro;
 	public StringProperty registroContribuyente;
 	public StringProperty telefono;
 	public StringProperty correo;
@@ -26,13 +29,15 @@ public class Cliente {
 	
 	//CONSTRUCTOR VACIO
 	public Cliente () {
-		this(0,"",0,"","","","",0);
+		this(0,"","",0,null,"","","","",0);
 	}//FIN CONSTRUCTOR
 	
-	public Cliente (Integer sysPk, String nombre, int tipo, String registroContribuyente, String telefono, String correo, String rutaCarpeta, int domicilioFk) {
+	public Cliente (Integer sysPk, String codigo, String nombre, int status, Date fechaRegistro, String registroContribuyente, String telefono, String correo, String rutaCarpeta, int domicilioFk) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
+		this.codigo = new SimpleStringProperty(codigo);
 		this.nombre = new SimpleStringProperty(nombre);
-		this.tipo = new SimpleObjectProperty<Integer>(tipo);
+		this.status = new SimpleObjectProperty<Integer>(status);
+		this.fechaRegistro = new SimpleObjectProperty<Date>(fechaRegistro);
 		this.registroContribuyente = new SimpleStringProperty(registroContribuyente);
 		this.telefono = new SimpleStringProperty(telefono);
 		this.correo = new SimpleStringProperty(correo);
@@ -54,6 +59,20 @@ public class Cliente {
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	
+	//METODOS DE ACCESO A "CODIGO"
+	public void setCodigo(String codigo) {
+		this.codigo.set(codigo);
+	}//FIN METODO
+	
+	public String getCodigo() {
+		return this.codigo.get();
+	}//FIN METODO
+	
+	public StringProperty codigoProperty() {
+		return this.codigo;
+	}//FIN METODO
+	//FIN METODOS "CODIGO"
+	
 	//METODOS DE ACCESO A "NOMBRE"
 	public void setNombre(String nombre) {
 		this.nombre.set(nombre);
@@ -68,38 +87,55 @@ public class Cliente {
 	}//FIN METODO
 	//FIN METODOS "NOMBRE"
 	
-	//METODOS DE ACCESO A "TIPO"
-	public void setTipo(Integer tipo) {
-		this.tipo.set(tipo);
+	//METODOS DE ACCESO A "STATUS"
+	public void setStatus(Integer status) {
+		this.status.set(status);
 	}//FIN METODO
 	
-	public Integer getTipo() {
-		return this.tipo.get();
+	public Integer getStatus() {
+		return this.status.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> tipoProperty() {
-		return this.tipo;
-	}//FIN METODO
-	
-	public String getDescripciontTipo() {
-		switch (this.getTipo()) {
+	public String getDescripcionStatus() {
+		switch (this.getStatus()) {
 		case 0:
-			return "Fisica";
+			return "Bloqueado";
 		case 1:
-			return "Moral";
+			return "Activo";
+		case 2:
+			return "Baja";
 		}//FIN WTITCH
 		return "";
 	}//FIN METODO
 	
-	public void setNumeroTipo(String tipo) {
-		switch (tipo) {
-		case "Fisica":
-			this.setTipo(0);
-		case "Moral":
-			this.setTipo(1);
-		}//FIN SWTITCH
+	public void setNumeroStatus(String status) {
+		switch (status) {
+		case "Bloqueado":
+			this.setStatus(0);
+			break;
+		case "Activo":
+			this.setStatus(1);
+			break;
+		case "Baja":
+			this.setStatus(2);
+			break;
+		}//FIN WTITCH
 	}//FIN METODO
-	//FIN METODOS "TIPO"
+	//FIN METODOS "STATUS"
+	
+	//METODO DE ACCESO A "FECHA REGISTRO"
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro.set(fechaRegistro);
+	}//FIN METODO
+	
+	public Date getFechaRegistro() {
+		return this.fechaRegistro.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Date> fechaRegistroProperty(){
+		return this.fechaRegistro;
+	}//FIN METODO
+	//FIN METODOS "FECHA REGISTRO"
 	
 	//METODOS DE ACCESO A "REGISTRO CONTRIBUYENTE"
 	public void setRegistroContribuyente(String registroContribuyente) {
