@@ -27,7 +27,7 @@ public class UsuarioDAO implements ObjectDAO {
 	@Override
 	public boolean crear(Connection connection, Object usuario){	
 		Usuario claseUsuario = (Usuario) usuario;
-		String query=" INSERT INTO usuarios (usuario, contrasena, correoElectronico, fechaRegistro, status, grupoUsuario)"
+		String query=" INSERT INTO usuarios (usuario, contrasena, correoElectronico, fechaRegistro, status, grupoUsuarioFk)"
 		+ " values ( ?, aes_encrypt(?, 'ShiftF6'), ?, curdate(), ?, ?)";
 		try {
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
@@ -51,7 +51,7 @@ public class UsuarioDAO implements ObjectDAO {
 		String query = "";
 		ArrayList<Object> listaUsuario = new ArrayList<Object>();
 		if (campoBusqueda.isEmpty() && valorBusqueda.isEmpty()) {
-			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuario "
+			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuarioFk "
 					+ "FROM usuarios ORDER BY sysPK;";
 			try {
 				Statement statement = connection.createStatement();
@@ -73,7 +73,7 @@ public class UsuarioDAO implements ObjectDAO {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH
 		} else if (campoBusqueda.isEmpty()) {
-			query= "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuario "
+			query= "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuarioFk "
 					+ "FROM usuarios WHERE usuario LIKE '%" + valorBusqueda + "%' OR correoElectronico LIKE '%" + valorBusqueda + "%'";
 			try {
 				Statement statement = connection.createStatement();
@@ -96,7 +96,7 @@ public class UsuarioDAO implements ObjectDAO {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH			
 		} else {
-			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuario "
+			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuarioFk "
 					+ "FROM usuarios WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -129,11 +129,11 @@ public class UsuarioDAO implements ObjectDAO {
 		String query = "";
 		if (claseUsuario.getStatus().equals(Usuario.BAJA)) {
 			query = "UPDATE usuarios  "
-					+ "SET usuario = ?, contrasena = aes_encrypt(?, 'ShiftF6'), correoElectronico = ?, fechaBloqueo = CURDATE(), status = ?, grupoUsuario = ? "
+					+ "SET usuario = ?, contrasena = aes_encrypt(?, 'ShiftF6'), correoElectronico = ?, fechaBloqueo = CURDATE(), status = ?, grupoUsuarioFk = ? "
 					+ "WHERE sysPK = ?;";		
 		} else {
 			query="UPDATE usuarios  "
-					+ "SET usuario = ?, contrasena = aes_encrypt(?, 'ShiftF6'), correoElectronico = ?, fechaBloqueo = null, status = ?, grupoUsuario = ? "
+					+ "SET usuario = ?, contrasena = aes_encrypt(?, 'ShiftF6'), correoElectronico = ?, fechaBloqueo = null, status = ?, grupoUsuarioFk = ? "
 					+ "WHERE sysPK = ?;";		
 		}//FIN IF/ELSE
 		

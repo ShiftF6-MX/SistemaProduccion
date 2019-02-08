@@ -50,7 +50,7 @@ public class Cliente {
 	public void setSysPk(Integer sysPk) {
 		this.sysPk.set(sysPk);
 	}//FIN METODO
-		.
+		
 	public Integer getSysPk() {
 		return this.sysPk.get();
 	}//FIN METODO
