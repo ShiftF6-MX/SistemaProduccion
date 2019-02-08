@@ -13,6 +13,13 @@ import mx.shf6.produccion.utilities.Notificacion;
 
 
 public class ClienteDAO implements ObjectDAO{
+	
+	//CONSTANTES 
+	public static final String CAMPO_SYSPK = "sysPk";
+	public static final String CAMPO_NOMBRE = "nombre";
+	public static final String CAMPO_RFC = "registroContrubuyente";
+	public static final String CAMPO_CODIGO = "codigo";
+	
 
 	//METODO PARA HACER CREATE EN LA TABLA CLIENTE
 	@Override
@@ -69,7 +76,8 @@ public class ClienteDAO implements ObjectDAO{
 		}else {
 			if(campoBusqueda.isEmpty()) {
 				query="SELECT * FROM clientes "
-						+ "WHERE (nombre like '%" + valorBusqueda + "%' "
+						+ "WHERE (codigo like '%"+ valorBusqueda + "%' "
+						+ "OR nombre like '%" + valorBusqueda + "%' "
 						+ "OR registroContribuyente like '%" + valorBusqueda + "%') ORDER BY sysPK;";	
 				try {
 					Statement statement = connection.createStatement();

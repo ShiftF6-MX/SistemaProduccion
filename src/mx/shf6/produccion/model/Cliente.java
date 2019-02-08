@@ -23,9 +23,10 @@ public class Cliente {
 	public StringProperty rutaCarpeta;
 	public ObjectProperty<Integer> domicilioFk;
 	
-	//CONSTANTES
-	public static final int FISICA = 0;
-	public static final int MORAL = 1;
+	//CONSTANTES PARA "STATUS"
+	public static final int BLOQUEADO = 0;
+	public static final int ACTIVO = 1;
+	public static final int BAJA = 2;
 	
 	//CONSTRUCTOR VACIO
 	public Cliente () {
@@ -49,7 +50,7 @@ public class Cliente {
 	public void setSysPk(Integer sysPk) {
 		this.sysPk.set(sysPk);
 	}//FIN METODO
-		
+		.
 	public Integer getSysPk() {
 		return this.sysPk.get();
 	}//FIN METODO
