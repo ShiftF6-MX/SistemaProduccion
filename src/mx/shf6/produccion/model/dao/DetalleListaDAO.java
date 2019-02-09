@@ -25,7 +25,7 @@ public class DetalleListaDAO implements ObjectDAO{
 			preparedStatement.setString(3, detalleLista.getZona());
 			preparedStatement.setInt(4, detalleLista.getNivel());
 			preparedStatement.setInt(5, detalleLista.getListaMaterialesFk());
-			preparedStatement.setInt(6, detalleLista.getParteFk());
+			preparedStatement.setInt(6, detalleLista.getComponenteFk());
 			preparedStatement.execute();
 			return true;   
 		} catch (SQLException ex) {
@@ -52,7 +52,7 @@ public class DetalleListaDAO implements ObjectDAO{
 					detalleLista.setZona((resultSet.getString(4)));
 					detalleLista.setNivel(resultSet.getInt(5));
 					detalleLista.setListaMaterialesFk(resultSet.getInt(6));
-					detalleLista.setPartesFk(resultSet.getInt(7));
+					detalleLista.setComponenteFk(resultSet.getInt(7));
 					listaDetalleLista.add(detalleLista);
 				}//FIN WHILE
 			} catch (SQLException ex) {
@@ -72,7 +72,7 @@ public class DetalleListaDAO implements ObjectDAO{
 					detalleLista.setZona((resultSet.getString(4)));
 					detalleLista.setNivel(resultSet.getInt(5));
 					detalleLista.setListaMaterialesFk(resultSet.getInt(6));
-					detalleLista.setPartesFk(resultSet.getInt(7));
+					detalleLista.setComponenteFk(resultSet.getInt(7));
 					listaDetalleLista.add(detalleLista);
 				}//FIN WHILE
 			}catch (SQLException ex) {
@@ -96,7 +96,7 @@ public class DetalleListaDAO implements ObjectDAO{
 			preparedStatement.setString(3, detalleLista.getZona());
 			preparedStatement.setInt(4, detalleLista.getNivel());
 			preparedStatement.setInt(5, detalleLista.getListaMaterialesFk());
-			preparedStatement.setInt(6, detalleLista.getParteFk());
+			preparedStatement.setInt(6, detalleLista.getComponenteFk());
 			preparedStatement.setInt(7, detalleLista.getSysPk());
 			preparedStatement.execute();
 			return true;

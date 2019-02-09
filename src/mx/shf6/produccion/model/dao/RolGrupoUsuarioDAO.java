@@ -17,7 +17,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	@Override
 	public boolean crear(Connection connection, Object rolgrupousuario){
 		RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
-		String query=" INSERT INTO rolgruposusuario (grupoUsuario, rol) values ( ?, ?)";
+		String query=" INSERT INTO rolgruposusuario (grupoUsuarioFk, rolFk) values ( ?, ?)";
 		try {			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario(connection).getSysPk());
@@ -29,8 +29,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 			e.printStackTrace();
 			return false;
 		}		
-	}//FIN METODO
-	
+	}//FIN METODO	
 	
 	//METOSO PARA HCER SELECT EN LA TABLA ROLGRUPOSUSUARIO
 	@Override
@@ -55,7 +54,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 				e.printStackTrace();
 			}
 		}else {
-			query="SELECT * FROM rolgruposusuario WHERE "+campoBusqueda+" = ?  ORDER BY sysPK";
+			query="SELECT * FROM rolgruposusuario WHERE " + campoBusqueda + " = ?  ORDER BY sysPK";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1, valorBusqueda);
@@ -80,7 +79,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	//METODO PARA HACER UPDATE EN LA TABLA ROLGRUPOSUSUARIO
 	@Override
 	public boolean modificar(Connection connection, Object rolgrupousuario){
-		String query="UPDATE rolgruposusuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
+		String query="UPDATE rolgruposusuario SET grupoUsuarioFk = ?, rolFk = ? WHERE sysPK= ?;";
 		try {
 			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);			
@@ -112,6 +111,5 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 			e.printStackTrace();
 			return false;
 		}			
-	}//FIN METODO
-	
+	}//FIN METODO	
 }//FIN CLASE

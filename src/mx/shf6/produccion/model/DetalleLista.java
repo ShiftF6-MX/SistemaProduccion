@@ -6,8 +6,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.ListaMaterialesDAO;
-import mx.shf6.produccion.model.dao.ParteDAO;
 
 public class DetalleLista {
 	
@@ -18,7 +18,7 @@ public class DetalleLista {
 	public StringProperty zona;
 	public ObjectProperty<Integer> nivel;
 	public ObjectProperty<Integer> listaMaterialesFk;
-	public ObjectProperty<Integer> parteFk;
+	public ObjectProperty<Integer> componenteFk;
 	
 	//CONTRUCTOR SIN PARAMETROS
 	public DetalleLista() {
@@ -26,14 +26,14 @@ public class DetalleLista {
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleLista(int sysPk, String item, int cantidad, String zona, int nivel, int listaMaterialesFk, int parteFk) {
+	public DetalleLista(int sysPk, String item, int cantidad, String zona, int nivel, int listaMaterialesFk, int componenteFk) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
 		this.item = new SimpleStringProperty(item);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
 		this.zona = new SimpleStringProperty(zona);
 		this.nivel = new SimpleObjectProperty<Integer>(nivel);
 		this.listaMaterialesFk = new SimpleObjectProperty<Integer>(listaMaterialesFk);
-		this.parteFk = new SimpleObjectProperty<Integer>(parteFk);
+		this.componenteFk = new SimpleObjectProperty<Integer>(componenteFk);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -127,23 +127,22 @@ public class DetalleLista {
 	//FIN METODOS "LISTA MATERIALES"
 	
 	//METODOS PARA ACCESO A "PARTE"
-	public void setPartesFk(Integer parteFk) {
-		this.parteFk.set(parteFk);
+	public void setComponenteFk(Integer componenteFk) {
+		this.componenteFk.set(componenteFk);
 	}//FIN METODO
 		
-	public Integer getParteFk() {
-		return this.parteFk.get();
+	public Integer getComponenteFk() {
+		return this.componenteFk.get();
 	}//FIN METODO
 		
-	public ObjectProperty<Integer> parteFkProperty() {
-		return this.parteFk;
+	public ObjectProperty<Integer> componenteFkProperty() {
+		return this.componenteFk;
 	}//FIN METODO
 	
-	public Parte getParte(Connection connection) {
-		ParteDAO parteDAO = new ParteDAO();
-		Parte parte = (Parte) parteDAO.leer(connection, "SysPK", "" + this.getParteFk()).get(0);
+	public Componente getComponenete(Connection connection) {
+		ComponenteDAO componenteDAO = new ComponenteDAO();
+		Componente parte = (Componente) componenteDAO.leer(connection, "SysPK", "" + this.getComponenteFk()).get(0);
 		return parte;
 	}//FIN METODO
-	//FIN METODOS "PARTE"
-	
+	//FIN METODOS "PARTE"	
 }//FIN CLASE
