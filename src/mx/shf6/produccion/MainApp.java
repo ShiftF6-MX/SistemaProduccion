@@ -21,6 +21,7 @@ import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaInicio;
+import mx.shf6.produccion.view.PantallaMenu;
 import mx.shf6.produccion.view.PantallaSesion;
 
 public class MainApp extends Application {
@@ -39,6 +40,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaMenu;
 	private AnchorPane pantallaCabecera;
 	private AnchorPane pantallaEspera;
+	private AnchorPane pantallaClientes;
 	
 	//VARIABLES
 	private double xOffset = 0.0;
@@ -49,6 +51,7 @@ public class MainApp extends Application {
 		//INSTALACIÓN FUENTES
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Medium.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Regular.ttf").toExternalForm(), 10);
+		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Bold.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Black.ttf").toExternalForm(), 10);
 		
 		//INICIA CONCEXIÓN BASE DATOS
@@ -234,6 +237,9 @@ public class MainApp extends Application {
 			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaMenu.fxml"));
 			this.pantallaMenu = (AnchorPane) fxmlLoader.load();			
 			this.pantallaBase.setLeft(this.pantallaMenu);
+			
+			PantallaMenu pantallaMenu =fxmlLoader.getController();
+			pantallaMenu.setMainApp(this);
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRy/CATCH
@@ -248,6 +254,18 @@ public class MainApp extends Application {
 			
 			PantallaCabecera pantallaCabecera = fxmlLoader.getController();
 			pantallaCabecera.setMainApp(this);
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaClientes() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaClientes.fxml"));
+			this.pantallaClientes = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaClientes);
+			
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
