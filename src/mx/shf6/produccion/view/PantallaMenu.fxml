@@ -1,10 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="100.0" prefWidth="200.0" styleClass="bodyPantallaMenu" stylesheets="@../application.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
-	<!-- TODO Add Nodes -->
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="200.0" prefHeight="800.0" prefWidth="200.0" styleClass="bodyPantallaMenu" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaMenu">
+   <children>
+      <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="25.0" layoutY="25.0" styleClass="labelRobotoBold14" text="GESTIÓN" textFill="#d1d0d2" />
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/ComponentsIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Componentes" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/CustomerIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label onMouseClicked="#menuClientes" styleClass="labelRobotoBold14" text="Clientes" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="71.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/InvoicesIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Cotizaciones" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <Label styleClass="labelRobotoBold14" text="CATÁLOGOS" textFill="#d1d0d2">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="75.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/ProductsIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Tipo Productos" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="100.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/PrimaryIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Tipo Materia Prima" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="125.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/ScrewsIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Tipo Miscelaneo" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="50.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/MaterialsIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Materiales" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="150.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/AcabadosIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Acabados" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="175.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/TreatmentIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Tratamientos" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="15.0" top="15.0" />
+         </padding>
+      </VBox>
+   </children>
 </AnchorPane>
