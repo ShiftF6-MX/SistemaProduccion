@@ -56,7 +56,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <VBox AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="90.0">
+            <VBox AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
                   <TableView editable="true" layoutY="50.0" styleClass="tablaDatosGestor">
                      <columns>
@@ -72,7 +72,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Pagination maxPageIndicatorCount="3" pageCount="2" styleClass="paginacionTabla" VBox.vgrow="ALWAYS">
+                  <Pagination maxPageIndicatorCount="3" pageCount="2" styleClass="paginacionTabla">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
