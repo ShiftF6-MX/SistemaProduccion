@@ -12,7 +12,12 @@ import mx.shf6.produccion.utilities.Notificacion;
 
 public class ComponenteDAO implements ObjectDAO{
 
-	//METODO PARA HACER CREATE EN LA TABLA COMPONENTES
+	/**
+	 * METODO PARA HACER CREATE EN LA TABLA COMPONENTES
+	 *@param connection Recibe la conexion de la base de datos
+	 *@param Componente Recibe un objeto de tipo Componente
+	 *@return Verdadero si se pudo realizar el Insert Into en la base de datos, False si no se pudo realizar el Insert Into
+	 */
 	@Override
 	public boolean crear(Connection connection, Object Componente) {	
 		Componente componente = (Componente) Componente;

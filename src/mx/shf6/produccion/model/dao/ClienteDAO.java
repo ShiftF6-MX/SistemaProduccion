@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -189,5 +191,14 @@ public class ClienteDAO implements ObjectDAO{
 			Notificacion.dialogoException(e);
 		}//FIN TRY/CATCH
 		return ultimoSysPk;
+	}//FIN METODO
+	
+	//METODO PARA CONVERTIR UNA ARRAYLIST A OBSERVABLELIST
+	public ObservableList<Cliente> toObservableList(ArrayList<Object> arrayList) {
+		ObservableList<Cliente> clienteData = FXCollections.observableArrayList();         
+     	for(Object cliente : arrayList) {
+     		clienteData.add((Cliente) cliente);
+     	}//FIN FOR
+     	return clienteData;
 	}//FIN METODO
 }//FIN CLASE
