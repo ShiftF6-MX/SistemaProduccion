@@ -1,5 +1,6 @@
 package mx.shf6.produccion.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -30,15 +31,13 @@ public class PantallaClientes {
 
 	//PROPIEDADES
 	private MainApp mainApp;
-	//private Cliente cliente;
+	private Cliente cliente;
 	private ClienteDAO clienteDAO;
 	private int cantidadRenglonesTabla;
 	private int cantidadRegistrosTablaClientes;
 	private int cantidadPaginasTablaClientes;
-	//private int usuarioSistema;
 	private ArrayList<Object> listaClientes;
 	
-	/*
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TableView<Cliente> tablaCliente;
 	@FXML private TableColumn<Cliente, String> codigoColumna;
@@ -51,11 +50,9 @@ public class PantallaClientes {
 	@FXML private Pagination paginacionTablaClientes;
 	@FXML private TextField buscarCliente;	
 	@FXML private Pagination paginacionTablaSolicitudes;
-	*/
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		/*
 		this.cliente = new Cliente();
 		this.clienteDAO = new ClienteDAO();
 		this.buscarCliente.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -66,9 +63,8 @@ public class PantallaClientes {
     		}//FIN METODO
     	});//FIN SENTENCIA
 		this.inicializaTabla();
-		*/
 	}//FIN METODO
-	/*
+	
 	//ACTUALIZA LA TABLA DE ACUERDO AL CRITERIO DE BÚSQUEDA
 	@FXML private void buscarButtonHandler() {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
@@ -81,17 +77,15 @@ public class PantallaClientes {
     	}//FIN IF-ELSE
     	
     }//FIN METODO
-	*/
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		//listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", ""); 
-		//this.actualizarTabla();
-		//asignarVariables();
+		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", ""); 
+		this.actualizarTabla();
+		asignarVariables();
 	}//FIN METODO	
 	
-	/*
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE CLIENTES
 	private void inicializaTabla() {
     	codigoColumna.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
@@ -104,13 +98,47 @@ public class PantallaClientes {
         	
         	final TableCell<Cliente, String> cell = new TableCell<Cliente, String>() {  
         		final Button botonVer = new Button("V");
-        		final Button botonEditar = new Button("E");
         		final Button botonEliminar = new Button("B");
-        		final HBox acciones = new HBox(botonVer, botonEditar, botonEliminar);
+        		final Button botonEstadoCuenta = new Button("EC");
+        		final Button botonCarpeta = new Button("C");
+        		final Button botonArchivo = new Button("A");
+        		final HBox acciones = new HBox(botonVer, botonEliminar, botonEstadoCuenta, botonCarpeta, botonArchivo);
         		
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
 		        public void updateItem(String item, boolean empty) {
+		        	/*
+		        	botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("viewSmall.png"))));
+		        	botonVer.setPrefSize(16.0, 16.0);
+		        	botonVer.setPadding(Insets.EMPTY);
+		        	botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonVer.setStyle("-fx-background-color: transparent;");		        	
+		        	botonVer.setCursor(Cursor.HAND);
+		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("deleteSmall.png"))));
+		        	botonEliminar.setPrefSize(16.0, 16.0);
+		        	botonEliminar.setPadding(Insets.EMPTY);
+		        	botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonEliminar.setStyle("-fx-background-color: transparent;");
+		        	botonEliminar.setCursor(Cursor.HAND);
+		        	botonEstadoCuenta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("editSmall.png"))));
+		        	botonEstadoCuenta.setPrefSize(16.0, 16.0);
+		        	botonEstadoCuenta.setPadding(Insets.EMPTY);
+		        	botonEstadoCuenta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonEstadoCuenta.setStyle("-fx-background-color: transparent;");
+		        	botonEstadoCuenta.setCursor(Cursor.HAND);
+		        	botonCarpeta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("editSmall.png"))));
+		        	botonCarpeta.setPrefSize(16.0, 16.0);
+		        	botonCarpeta.setPadding(Insets.EMPTY);
+		        	botonCarpeta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonCarpeta.setStyle("-fx-background-color: transparent;");
+		        	botonCarpeta.setCursor(Cursor.HAND);
+		        	botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("editSmall.png"))));
+		        	botonArchivo.setPrefSize(16.0, 16.0);
+		        	botonArchivo.setPadding(Insets.EMPTY);
+		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonArchivo.setStyle("-fx-background-color: transparent;");
+		        	botonArchivo.setCursor(Cursor.HAND);
+		        	*/
 		        	acciones.setSpacing(5);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
@@ -120,6 +148,57 @@ public class PantallaClientes {
 		                setText(null);
 		            } else {
 		            	
+		            	//ABRE EL DIALOGO PARA VER LOS DATOS DEL CLIENTE
+		            	botonVer.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			cliente = getTableView().getItems().get(getIndex());
+			            		mainApp.iniciarDialogoClietes();
+		            		}else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
+		            	});//FIN LISTENER
+		            	
+		            	//ABRE EL DIALOGO PARA BORRAR EL CLIENTE
+		            	botonEliminar.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
+			        			cliente = getTableView().getItems().get(getIndex());
+			            		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
+			            			clienteDAO.eliminar(mainApp.getConnection(), cliente);
+			            			actualizarTabla();
+			            		}//FIN IF
+		            		} else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
+		                });//FIN LISTENER
+		            	
+		            	//ABRE EL DIALOGO PARA EDITAR LOS DATOS DEL CLIENTE
+		            	botonEstadoCuenta.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			actualizarTabla();
+			                } else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
+		            	});//FIN LISTENER
+		            	
+		            	botonCarpeta.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			String ruta ="\\\\192.168.0.216\\Ingeniería y Planeación";
+		            			try {
+		            				Runtime.getRuntime().exec("explorer.exe /select, " + ruta);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+			                } else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
+		            	});//FIN LISTENER
+		            	
+		            	botonArchivo.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			actualizarTabla();
+			                } else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
+		            	});//FIN LISTENER        	
+		            		
+		            	setGraphic(acciones);		                
+		                setText(null);
 		                
 		            }//FIN IF/ELSE
 		        }//FIN METODO
@@ -129,12 +208,10 @@ public class PantallaClientes {
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
-	*/
 	@FXML private void nuevoCliente() {
 		this.mainApp.iniciarDialogoClietes();
 	}//FIN METODO	
 
-	/*
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {
 		tablaCliente.setItems(null);
@@ -171,5 +248,4 @@ public class PantallaClientes {
 		tablaCliente.setItems(FXCollections.observableArrayList(lista.subList(indiceInicial, indiceFinal)));
 		return tablaCliente;
 	}//FIN METODO
-	*/
 }//FIN CLASE
