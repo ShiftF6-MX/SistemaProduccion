@@ -6,13 +6,21 @@ import java.sql.Connection;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -34,6 +42,7 @@ public class MainApp extends Application {
 	
 	//PANTALLAS DEL SISTEMA
 	private Stage escenarioPrincipal;
+	private Stage escenarioDialogos;
 	private BorderPane pantallaBase;
 	private AnchorPane pantallaInicio;
 	private AnchorPane pantallaSesion;
@@ -42,6 +51,9 @@ public class MainApp extends Application {
 	private AnchorPane pantallaEspera;
 	private AnchorPane pantallaClientes;
 	
+	//DIALOGOS DEL SISTEMA
+	private AnchorPane dialogoClientes;
+	
 	//VARIABLES
 	private double xOffset = 0.0;
 	private double yOffset = 0.0;
@@ -49,8 +61,9 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//INSTALACIÓN FUENTES
-		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Medium.ttf").toExternalForm(), 10);
+		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Light.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Regular.ttf").toExternalForm(), 10);
+		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Medium.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Bold.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Black.ttf").toExternalForm(), 10);
 		
@@ -59,12 +72,20 @@ public class MainApp extends Application {
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		
-		//INICIA EL ESCENARIO PRINCIPAL
+		//INICIA ESCENARIO PRINCIPAL
 		this.escenarioPrincipal = primaryStage;
 		this.escenarioPrincipal.setMaximized(false);
 		this.escenarioPrincipal.setResizable(false);
 		this.escenarioPrincipal.initStyle(StageStyle.TRANSPARENT);
 		this.escenarioPrincipal.setAlwaysOnTop(true);
+		
+		//INICIA ESCENARIO DIALOGOS
+		this.escenarioDialogos = new Stage();
+		this.escenarioDialogos.setResizable(false);
+		this.escenarioDialogos.setMaximized(false);
+		this.escenarioDialogos.initModality(Modality.WINDOW_MODAL);
+		this.escenarioDialogos.initStyle(StageStyle.TRANSPARENT);
+		this.escenarioDialogos.initOwner(this.escenarioPrincipal);
 		
 		//INICIA LA INTERFAZ DE USUARIO
 		iniciarPantallaBase();
@@ -269,6 +290,33 @@ public class MainApp extends Application {
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODOS DIALOGOS
+	public void iniciarDialogoClietes() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoCliente.fxml"));
+			this.dialogoClientes = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoClientes = this.getEscenaSecundaria(this.dialogoClientes);
+			this.escenarioDialogos.setScene(escenaDialogoClientes);
+			
+			this.escenarioDialogos.showAndWait();
+		} catch (IOException | IllegalStateException ex) {
+			
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	private Scene getEscenaSecundaria(Parent parent) {
+		VBox marcoVentana = new VBox();
+		marcoVentana.getChildren().add(parent);
+		marcoVentana.setPadding(new Insets(10.0d));
+		marcoVentana.setBackground(new Background(new BackgroundFill(Color.rgb(0,0,0,0), new CornerRadii(0), new Insets(0))));
+		parent.setEffect(new DropShadow());
+		((AnchorPane)parent).setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		Scene escena = new Scene(marcoVentana);
+		return escena;
 	}//FIN METODO
 
 	@Override
