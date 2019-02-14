@@ -13,7 +13,6 @@ public class PantallaSesion {
 
 	//PROPIEDADES
 	private MainApp mainApp;
-	private Usuario usuario;
 	private UsuarioDAO usuarioDAO;
 	
 	//COMPONENTES INTERZAS USUARIO
@@ -47,6 +46,7 @@ public class PantallaSesion {
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "Contraseña incorrecta", "Lo sentimos la contraseña con la que intentas ingresar no es la correcta, si la has olvidado, por favor ponte en contacto con el administrador del sistema.");
 				return false;
 			case UsuarioDAO.ACCESO_CORRECTO:
+				this.mainApp.setUsuario((Usuario) usuarioDAO.leer(this.mainApp.getConnection(), "Usuario", campoTextoUsuario.getText()).get(0));
 				return true;
 			default:
 				return false;
@@ -63,7 +63,7 @@ public class PantallaSesion {
 		if (this.autenticarUsuario()) {
 			this.mainApp.iniciarPantallaSistema();
 			this.mainApp.setSesionActiva(true);
-		}
+		}//FIN IF
 	}//FIN METODO
 	
 }//FIN CLASE
