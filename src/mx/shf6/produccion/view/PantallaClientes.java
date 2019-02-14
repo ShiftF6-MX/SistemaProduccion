@@ -38,6 +38,7 @@ public class PantallaClientes {
 	//private int usuarioSistema;
 	private ArrayList<Object> listaClientes;
 	
+	/*
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TableView<Cliente> tablaCliente;
 	@FXML private TableColumn<Cliente, String> codigoColumna;
@@ -50,11 +51,12 @@ public class PantallaClientes {
 	@FXML private Pagination paginacionTablaClientes;
 	@FXML private TextField buscarCliente;	
 	@FXML private Pagination paginacionTablaSolicitudes;
-	
+	*/
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		//this.cliente = new Cliente();
+		/*
+		this.cliente = new Cliente();
 		this.clienteDAO = new ClienteDAO();
 		this.buscarCliente.setOnKeyPressed(new EventHandler<KeyEvent>() {
     		@Override
@@ -64,8 +66,9 @@ public class PantallaClientes {
     		}//FIN METODO
     	});//FIN SENTENCIA
 		this.inicializaTabla();
+		*/
 	}//FIN METODO
-	
+	/*
 	//ACTUALIZA LA TABLA DE ACUERDO AL CRITERIO DE BÚSQUEDA
 	@FXML private void buscarButtonHandler() {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
@@ -78,15 +81,17 @@ public class PantallaClientes {
     	}//FIN IF-ELSE
     	
     }//FIN METODO
+	*/
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", ""); 
-		this.actualizarTabla();
-		asignarVariables();
+		//listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", ""); 
+		//this.actualizarTabla();
+		//asignarVariables();
 	}//FIN METODO	
 	
+	/*
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE CLIENTES
 	private void inicializaTabla() {
     	codigoColumna.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
@@ -124,11 +129,12 @@ public class PantallaClientes {
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
-	
+	*/
 	@FXML private void nuevoCliente() {
 		this.mainApp.iniciarDialogoClietes();
 	}//FIN METODO	
 
+	/*
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {
 		tablaCliente.setItems(null);
@@ -165,5 +171,5 @@ public class PantallaClientes {
 		tablaCliente.setItems(FXCollections.observableArrayList(lista.subList(indiceInicial, indiceFinal)));
 		return tablaCliente;
 	}//FIN METODO
-	
+	*/
 }//FIN CLASE
