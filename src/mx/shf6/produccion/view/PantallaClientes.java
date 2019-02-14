@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
@@ -97,7 +98,6 @@ public class PantallaClientes {
         Callback<TableColumn<Cliente, String>, TableCell<Cliente, String>> cellFactory =  param -> {
         	
         	final TableCell<Cliente, String> cell = new TableCell<Cliente, String>() {  
-        		final Button botonNuevo = new Button("N");
         		final Button botonVer = new Button("V");
         		final Button botonEditar = new Button("E");
         		final Button botonEliminar = new Button("B");
@@ -106,21 +106,15 @@ public class PantallaClientes {
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
 		        public void updateItem(String item, boolean empty) {
+		        	acciones.setSpacing(5);
+		        	acciones.setPrefWidth(80.0);
+		        	acciones.setAlignment(Pos.CENTER_LEFT);
 		        	super.updateItem(item, empty);
 		        	if (empty) {
 		        		setGraphic(null);
 		                setText(null);
 		            } else {
 		            	
-		            	//ABRE EL DIALOGO PARA VER LOS DATOS DE LA INSTITUCION
-		            	botonNuevo.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-			            		mainApp.iniciarDialogoClietes();
-		            		}else
-		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
-		            	});//FIN LISTENER
-		            	setGraphic(acciones);		                
-		                setText(null);
 		                
 		            }//FIN IF/ELSE
 		        }//FIN METODO
@@ -130,6 +124,10 @@ public class PantallaClientes {
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
+	
+	@FXML private void nuevoCliente() {
+		this.mainApp.iniciarDialogoClietes();
+	}//FIN METODO	
 
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {
