@@ -28,6 +28,7 @@ import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.PantallaCabecera;
+import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMenu;
 import mx.shf6.produccion.view.PantallaSesion;
@@ -287,16 +288,18 @@ public class MainApp extends Application {
 			this.pantallaClientes = (AnchorPane) fxmlLoader.load();
 			this.pantallaBase.setCenter(this.pantallaClientes);
 			
+			PantallaClientes pantallaClientes = fxmlLoader.getController();
+			pantallaClientes.setMainApp(this);
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
 	//METODOS DIALOGOS
-	public void iniciarDialogoClietes() {
+	public void iniciarDialogoClientes() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoCliente.fxml"));
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoClientes.fxml"));
 			this.dialogoClientes = (AnchorPane) fxmlLoader.load();
 			
 			Scene escenaDialogoClientes = this.getEscenaSecundaria(this.dialogoClientes);
@@ -304,7 +307,7 @@ public class MainApp extends Application {
 			
 			this.escenarioDialogos.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
-			
+			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	

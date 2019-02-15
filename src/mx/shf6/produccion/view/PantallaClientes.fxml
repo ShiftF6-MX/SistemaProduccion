@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaClientes">
    <children>
       <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -26,14 +26,14 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <TextField prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
+                  <TextField fx:id="buscarCliente" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
                      <font>
                         <Font name="Roboto" size="12.0" />
                      </font>
                   </TextField>
                   <HBox alignment="CENTER" fillHeight="false" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarButtonHandler" pickOnBounds="true" preserveRatio="true">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -46,7 +46,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </HBox>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#nuevoCliente" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/1x/AddIcon.png" />
                      </image>
@@ -58,21 +58,21 @@
             </HBox>
             <VBox AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
-                  <TableView editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaCliente" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Código" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Nombre" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="RFC" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Teléfono" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Email" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Saldo" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Acciones" />
+                        <TableColumn fx:id="codigoColumna" minWidth="-1.0" prefWidth="-1.0" text="Código" />
+                        <TableColumn fx:id="nombreColumna" minWidth="-1.0" prefWidth="-1.0" text="Nombre" />
+                        <TableColumn fx:id="registroContribuyentesColumna" minWidth="-1.0" prefWidth="-1.0" text="RFC" />
+                        <TableColumn fx:id="telefonoColumna" minWidth="-1.0" prefWidth="-1.0" text="Teléfono" />
+                        <TableColumn fx:id="correoColumna" minWidth="-1.0" prefWidth="-1.0" text="Email" />
+                        <TableColumn fx:id="saldoColumna" minWidth="-1.0" prefWidth="-1.0" text="Saldo" />
+                        <TableColumn fx:id="accionesColumn" minWidth="-1.0" prefWidth="-1.0" text="Acciones" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Pagination maxPageIndicatorCount="3" pageCount="2" styleClass="paginacionTabla">
+                  <Pagination fx:id="paginacionTablaClientes" maxPageIndicatorCount="3" pageCount="2" styleClass="paginacionTabla">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
