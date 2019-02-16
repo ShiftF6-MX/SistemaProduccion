@@ -7,9 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -17,6 +20,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -49,7 +54,6 @@ public class PantallaClientes {
 	@FXML private TableColumn<Cliente, String> accionesColumn;	
 	@FXML private Pagination paginacionTablaClientes;
 	@FXML private TextField buscarCliente;	
-	@FXML private Pagination paginacionTablaSolicitudes;
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -107,13 +111,13 @@ public class PantallaClientes {
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
 		        public void updateItem(String item, boolean empty) {
-		        	/*
-		        	botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("viewSmall.png"))));
+		        	botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("/images/icons/ViewIcon.png"))));
 		        	botonVer.setPrefSize(16.0, 16.0);
 		        	botonVer.setPadding(Insets.EMPTY);
 		        	botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonVer.setStyle("-fx-background-color: transparent;");		        	
 		        	botonVer.setCursor(Cursor.HAND);
+		        	/*
 		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("deleteSmall.png"))));
 		        	botonEliminar.setPrefSize(16.0, 16.0);
 		        	botonEliminar.setPadding(Insets.EMPTY);
@@ -152,7 +156,7 @@ public class PantallaClientes {
 		            	botonVer.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-			            		mainApp.iniciarDialogoClietes();
+			            		mainApp.iniciarDialogoClientes();
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
@@ -209,7 +213,7 @@ public class PantallaClientes {
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
 	@FXML private void nuevoCliente() {
-		this.mainApp.iniciarDialogoClietes();
+		this.mainApp.iniciarDialogoClientes();
 	}//FIN METODO	
 
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
@@ -221,9 +225,9 @@ public class PantallaClientes {
 			this.asignarVariables();
 			//tablaInformacionVivienda.setItems(informacionViviendaDAO.toObservableList(listaInformacionVivienda));
 	    	buscarCliente.setText("");	
-			this.paginacionTablaSolicitudes.setDisable(false);
+			this.paginacionTablaClientes.setDisable(false);
 		} else
-			this.paginacionTablaSolicitudes.setDisable(true);
+			this.paginacionTablaClientes.setDisable(true);
 	}//FIN METODO
 	 
 	private void asignarVariables() {
