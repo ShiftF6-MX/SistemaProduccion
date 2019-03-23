@@ -56,7 +56,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <VBox AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
+            <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
                   <TableView fx:id="tablaCliente" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
                      <columns>

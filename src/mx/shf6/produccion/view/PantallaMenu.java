@@ -13,13 +13,22 @@ public class PantallaMenu {
 	//VARIABLES
 	
 	//INICIALIZA COMPONENTES CONTROLA VISTAS
+	@FXML private void initialize() {
+		
+	}//FIN METODO
+	
+	//ACCESO A LA CLASE PRINICPAL
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}//FIN METODO
 	
 	//MANEJADORES COMPONENTES
-	@FXML private void menuClientes() {
+	@FXML private void manejadorMenuClientes() {
 		this.mainApp.iniciarPantallaClientes();
-	}//FIN CLASE
+	}//FIN METODO
+	
+	@FXML private void manejadorMenuTipoMateriaPrima() {
+		this.mainApp.iniciarPantallaTipoMateriaPrima();
+	}//FIN METODO
 	
 }//FIN CLASE

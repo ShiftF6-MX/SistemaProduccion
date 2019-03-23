@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoClientes">
    <children>
       <VBox prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -781,7 +781,7 @@
             </ImageView>
          </children>
       </HBox>
-      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#cerrarDialogoButtonHandler" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <image>
             <Image url="@images/1x/CloseButton.png" />
          </image>

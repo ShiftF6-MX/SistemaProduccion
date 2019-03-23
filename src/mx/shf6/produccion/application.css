@@ -88,7 +88,7 @@
 
 /* CSS PARA PANTALLA CABECERA */
 .bodyPantallaCabecera {
-	-fx-background-color: #D1D0D2;
+	-fx-background-color: #D2D1D2;
 }
 
 /* CSS PARA PANTALLA OVERVIEW */
@@ -134,10 +134,71 @@
 	-fx-text-fill:   black;
 	-fx-opacity: .87;
 }
-.tablaDatosGestor .table-row-cell:selected {
-	-fx-background-color: #F6B229;
+.tablaDatosGestor .table-row-cell:odd {
+	-fx-background-color: #FFFFFF;
 	-fx-background-insets: 0;
-}	
+}
+.tablaDatosGestor .table-row-cell:even {
+	-fx-background-color: #F2F2F2;
+	-fx-background-insets: 0;
+}
+.tablaDatosGestor .table-row-cell:selected {
+	-fx-background-color: #ABAAAB;
+	-fx-background-insets: 0;
+}
+.tablaDatosGestor .table-row-cell:selected .text {
+	-fx-fill: black;
+}
+
+.tablaDatosDetalle {
+	-fx-base: #FFFFFF;
+	-fx-control-inner-background: #FFFFFF;
+	-fx-background-color: #FFFFFF;
+	-fx-selection-bar: #FAA44A;
+}
+.tablaDatosDetalle .column-header-background {
+	-fx-background-color: transparent;
+}
+.tablaDatosDetalle .column-header, .tablaDatos .filler {
+	-fx-border-width: 2 0 0 0;
+	-fx-background-color: transparent;
+	-fx-border-color:
+		derive(#B3B3B3, 80%)
+		transparent
+		transparent
+		transparent;
+	-fx-border-insets: 0 0 0 0;
+}
+.tablaDatosDetalle .column-header .label {
+	-fx-alignment: center-left;
+	-fx-font-size: 11px;
+	-fx-font-family: "Roboto Medium";
+	-fx-text-fill:   black;
+	-fx-opacity: .87;
+}
+.tablaDatosDetalle .table-cell {
+	-fx-alignment: center-left;
+	-fx-font-size: 10px;
+	-fx-font-family: "Roboto";
+	-fx-text-fill:   black;
+	-fx-opacity: .87;
+}
+.tablaDatosDetalle .table-row-cell:odd {
+	-fx-background-color: #FFFFFF;
+	-fx-background-insets: 0;
+}
+.tablaDatosDetalle .table-row-cell:even {
+	-fx-background-color: #F2F2F2;
+	-fx-background-insets: 0;
+}
+.tablaDatosDetalle .table-row-cell:selected {
+	-fx-background-color: #D1D3D4;
+	-fx-background-insets: 0;
+}
+.tablaDatosDetalle .table-row-cell:selected .text {
+	-fx-fill: black;
+}
+
 .paginacionTabla {
 	-fx-page-information-visible: false;
 	-fx-tooltip-visible:false;
@@ -246,4 +307,33 @@
 	-fx-background-color: white;
 	-fx-border-width: 0px 0px 2px 0px;
 	-fx-border-color: lightgray;
+}
+
+
+.buttonGreen {
+	-fx-background-color: #7AC943;
+	-fx-border-width: 1px 1px 1px 1px;
+	-fx-border-radius: 3px;
+	-fx-background-radius: 3px;
+	
+	-fx-font-size: 12px;
+	-fx-font-family: "Roboto Medium";
+	-fx-text-fill: white;
+}
+.buttonGreen:hover {
+	-fx-background-color: #73B23F;
+}
+
+.buttonRed {
+	-fx-background-color: #FF1D25;
+	-fx-border-width: 1px 1px 1px 1px;
+	-fx-border-radius: 3px;
+	-fx-background-radius: 3px;
+	
+	-fx-font-size: 12px;
+	-fx-font-family: "Roboto Medium";
+	-fx-text-fill: white;
+}
+.buttonRed:hover {
+	-fx-background-color: #D8282A;
 }

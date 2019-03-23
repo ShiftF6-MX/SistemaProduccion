@@ -87,7 +87,7 @@ public class PantallaClientes {
 		this.mainApp = mainApp;
 		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", ""); 
 		this.actualizarTabla();
-		asignarVariables();
+		//asignarVariables();
 	}//FIN METODO	
 	
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE CLIENTES
@@ -111,38 +111,36 @@ public class PantallaClientes {
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
 		        public void updateItem(String item, boolean empty) {
-		        	botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("/images/icons/ViewIcon.png"))));
-		        	botonVer.setPrefSize(16.0, 16.0);
+		        	botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ViewIcon.png"))));
+		        	botonVer.setPrefSize(18.0, 18.0);
 		        	botonVer.setPadding(Insets.EMPTY);
 		        	botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonVer.setStyle("-fx-background-color: transparent;");		        	
 		        	botonVer.setCursor(Cursor.HAND);
-		        	/*
-		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("deleteSmall.png"))));
+		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
 		        	botonEliminar.setPrefSize(16.0, 16.0);
 		        	botonEliminar.setPadding(Insets.EMPTY);
 		        	botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonEliminar.setStyle("-fx-background-color: transparent;");
 		        	botonEliminar.setCursor(Cursor.HAND);
-		        	botonEstadoCuenta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("editSmall.png"))));
+		        	botonEstadoCuenta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AccountIcon.png"))));
 		        	botonEstadoCuenta.setPrefSize(16.0, 16.0);
 		        	botonEstadoCuenta.setPadding(Insets.EMPTY);
 		        	botonEstadoCuenta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonEstadoCuenta.setStyle("-fx-background-color: transparent;");
 		        	botonEstadoCuenta.setCursor(Cursor.HAND);
-		        	botonCarpeta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("editSmall.png"))));
+		        	botonCarpeta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/FolderIcon.png"))));
 		        	botonCarpeta.setPrefSize(16.0, 16.0);
 		        	botonCarpeta.setPadding(Insets.EMPTY);
 		        	botonCarpeta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonCarpeta.setStyle("-fx-background-color: transparent;");
 		        	botonCarpeta.setCursor(Cursor.HAND);
-		        	botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("editSmall.png"))));
+		        	botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
 		        	botonArchivo.setPrefSize(16.0, 16.0);
 		        	botonArchivo.setPadding(Insets.EMPTY);
 		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonArchivo.setStyle("-fx-background-color: transparent;");
 		        	botonArchivo.setCursor(Cursor.HAND);
-		        	*/
 		        	acciones.setSpacing(5);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
@@ -187,7 +185,7 @@ public class PantallaClientes {
 		            			try {
 		            				Runtime.getRuntime().exec("explorer.exe /select, " + ruta);
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
+									
 									e.printStackTrace();
 								}
 			                } else
@@ -212,6 +210,8 @@ public class PantallaClientes {
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
+	
+	
 	@FXML private void nuevoCliente() {
 		this.mainApp.iniciarDialogoClientes();
 	}//FIN METODO	
@@ -222,8 +222,8 @@ public class PantallaClientes {
 		listaClientes.clear();
 		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", "");
 		if (!listaClientes.isEmpty()) {
-			this.asignarVariables();
-			//tablaInformacionVivienda.setItems(informacionViviendaDAO.toObservableList(listaInformacionVivienda));
+			//this.asignarVariables();
+			tablaCliente.setItems(clienteDAO.toObservableList(listaClientes));
 	    	buscarCliente.setText("");	
 			this.paginacionTablaClientes.setDisable(false);
 		} else

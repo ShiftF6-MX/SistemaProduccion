@@ -24,14 +24,18 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.view.DialogoClientes;
+import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMenu;
 import mx.shf6.produccion.view.PantallaSesion;
+import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
 
 public class MainApp extends Application {
 	
@@ -51,9 +55,11 @@ public class MainApp extends Application {
 	private AnchorPane pantallaCabecera;
 	private AnchorPane pantallaEspera;
 	private AnchorPane pantallaClientes;
+	private AnchorPane pantallaTipoMateriaPrima;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
+	private AnchorPane dialogoTipoMateriaPrima;
 	
 	//VARIABLES
 	private double xOffset = 0.0;
@@ -62,35 +68,62 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		//INSTALACIÓN FUENTES
+		this.cargarFuentes();
+		//INICIA CONCEXIÓN BASE DATOS
+		this.configurarBaseDatos();
+		//INICIA ESCENARIO PRINCIPAL
+		this.configurarEscenarioPrincipal(primaryStage);
+		//INICIA ESCENARIO DIALOGOS
+		this.configurarEscenarioSecundario();
+		//INICIA LA INTERFAZ DE USUARIO
+		iniciarPantallaBase();
+		iniciarPantallaInicio();
+	}//FIN METODO
+	
+	private void cargarFuentes() {
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Light.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Regular.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Medium.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Bold.ttf").toExternalForm(), 10);
 		Font.loadFont(MainApp.class.getResource("utilities/fonts/Roboto-Black.ttf").toExternalForm(), 10);
-		
-		//INICIA CONCEXIÓN BASE DATOS
+	}//FIN METODO
+	
+	private void configurarBaseDatos() {
 		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
-		
-		//INICIA ESCENARIO PRINCIPAL
+	}//FIN METODO
+	
+	private void configurarEscenarioPrincipal(Stage primaryStage) {
 		this.escenarioPrincipal = primaryStage;
 		this.escenarioPrincipal.setMaximized(false);
 		this.escenarioPrincipal.setResizable(false);
 		this.escenarioPrincipal.initStyle(StageStyle.TRANSPARENT);
 		this.escenarioPrincipal.setAlwaysOnTop(true);
-		
-		//INICIA ESCENARIO DIALOGOS
+	}//FIN METODO
+	
+	private void configurarEscenarioSecundario() {
 		this.escenarioDialogos = new Stage();
 		this.escenarioDialogos.setResizable(false);
 		this.escenarioDialogos.setMaximized(false);
 		this.escenarioDialogos.initModality(Modality.WINDOW_MODAL);
 		this.escenarioDialogos.initStyle(StageStyle.TRANSPARENT);
 		this.escenarioDialogos.initOwner(this.escenarioPrincipal);
-		
-		//INICIA LA INTERFAZ DE USUARIO
-		iniciarPantallaBase();
-		iniciarPantallaInicio();
+	} //FIN METODO
+	
+	private Scene getEscenaSecundaria(Parent parent) {
+		VBox marcoVentana = new VBox();
+		marcoVentana.getChildren().add(parent);
+		marcoVentana.setPadding(new Insets(10.0d));
+		marcoVentana.setBackground(new Background(new BackgroundFill(Color.rgb(0,0,0,0), new CornerRadii(0), new Insets(0))));
+		parent.setEffect(new DropShadow());
+		((AnchorPane)parent).setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		Scene escena = new Scene(marcoVentana);
+		return escena;
+	}//FIN METODO
+	
+	public Stage getEscenarioDialogos() {
+		return this.escenarioDialogos;
 	}//FIN METODO
 	
 	public void iniciarPantallaBase() {
@@ -106,7 +139,6 @@ public class MainApp extends Application {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
 	
 	public void iniciarPantallaInicio() {
 		//MODIFICA ESCENARIO PRINCIPAL
@@ -295,6 +327,21 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	//INICIAR PANTALLA TIPO MATERIA PRIMA
+	public void iniciarPantallaTipoMateriaPrima() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaTipoMateriaPrima.fxml"));
+			this.pantallaTipoMateriaPrima = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaTipoMateriaPrima);
+			
+			PantallaTipoMateriaPrima pantallaTipoMateriaPrima = fxmlLoader.getController();
+			pantallaTipoMateriaPrima.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
 	//METODOS DIALOGOS
 	public void iniciarDialogoClientes() {
 		try {
@@ -305,21 +352,31 @@ public class MainApp extends Application {
 			Scene escenaDialogoClientes = this.getEscenaSecundaria(this.dialogoClientes);
 			this.escenarioDialogos.setScene(escenaDialogoClientes);
 			
+			DialogoClientes dialogoClientes = fxmlLoader.getController();
+			dialogoClientes.setMainApp(this, null, null);
+			
 			this.escenarioDialogos.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	private Scene getEscenaSecundaria(Parent parent) {
-		VBox marcoVentana = new VBox();
-		marcoVentana.getChildren().add(parent);
-		marcoVentana.setPadding(new Insets(10.0d));
-		marcoVentana.setBackground(new Background(new BackgroundFill(Color.rgb(0,0,0,0), new CornerRadii(0), new Insets(0))));
-		parent.setEffect(new DropShadow());
-		((AnchorPane)parent).setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-		Scene escena = new Scene(marcoVentana);
-		return escena;
+	public void iniciarDialogoTipoMateriaPrima(TipoMateriaPrima tipoMateriaPrima, int opcion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoMateriaPrima.fxml"));
+			this.dialogoTipoMateriaPrima = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoTipoMateriaPrima = this.getEscenaSecundaria(this.dialogoTipoMateriaPrima);
+			this.escenarioDialogos.setScene(escenaDialogoTipoMateriaPrima);
+			
+			DialogoTipoMateriaPrima dialogoTipoMateriaPrima = fxmlLoader.getController();
+			dialogoTipoMateriaPrima.setMainApp(this, tipoMateriaPrima, opcion);
+			
+			this.escenarioDialogos.showAndWait();
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN METODO
 	}//FIN METODO
 
 	@Override

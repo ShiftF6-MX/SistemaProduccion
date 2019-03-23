@@ -35,7 +35,7 @@ public class DialogoClientes {
 	public final static int MOSTRAR_INSTITUCION = 1;
 	public final static int CREAR_INSTITUCION = 2;
 	
-	//COMPONENTES INTERFAZ 
+	/*//COMPONENTES INTERFAZ 
 	@FXML private TextField nombreField;
 	@FXML private TextField codigoField;
 	@FXML private TextField saldoField;
@@ -54,11 +54,11 @@ public class DialogoClientes {
 	@FXML private ComboBox<String> statusCombo;
 	@FXML private ComboBox<String> municipioCombo;
 	@FXML private ComboBox<String> estadoCombo;
-	@FXML private TextField codigoPostalField;
+	@FXML private TextField codigoPostalField;*/
 	
 	//INICIALIZA LOS COMPOMENTES QUE SE CONTROLAN EN LA INTERFAZ DE USUARIO
 	@FXML private void initialize() {
-		listaStatus = FXCollections.observableArrayList();
+		/*listaStatus = FXCollections.observableArrayList();
 		listaStatus.add("Bloqueado");
     	listaStatus.add("Activo");
     	listaStatus.add("Baja");
@@ -79,12 +79,12 @@ public class DialogoClientes {
 		this.restriccionTextField.limitarNumeroCaracteres(this.coloniaField, 32);
 		this.restriccionTextField.limitarNumeroCaracteres(this.localidadField, 32);
 		this.restriccionTextField.limitarNumeroCaracteres(this.codigoPostalField, 5);
-		this.restriccionTextField.soloNumeros(this.codigoPostalField);
+		this.restriccionTextField.soloNumeros(this.codigoPostalField);*/
 	}//FIN METODO
 	
 	public void setMainApp(MainApp mainApp, Cliente cliente, Integer opcionInterfaz) {
 		this.mainApp = mainApp;
-		this.cliente = cliente;
+		/*this.cliente = cliente;
 		this.opcionInterfaz = opcionInterfaz;
 		this.listaEstados = sepomexDAO.leerEstados(this.mainApp.getConnection()); 
 		estadoCombo.setItems(listaEstados);
@@ -93,7 +93,7 @@ public class DialogoClientes {
 			listaMunicipios = this.sepomexDAO.leerMunicipios(this.mainApp.getConnection(), estadoCombo.getValue()); 
 			municipioCombo.setItems(listaMunicipios);
 		  });//FIN SENTENCIA
-    	this.mostrarDatosInterfaz();
+    	this.mostrarDatosInterfaz();*/
 	}//FIN METODO
 	
 	//MUESTRA LOS DATOS DE LA INSTITUCION
@@ -108,7 +108,7 @@ public class DialogoClientes {
 	}//FIN METODO
 	
 	private void activarEdicion(boolean opcion) {
-		nombreField.setEditable(opcion);
+		/*nombreField.setEditable(opcion);
 		registroContribuyenteField.setEditable(opcion);
 		telefonoField.setEditable(opcion);
 		correoField.setEditable(opcion);
@@ -121,11 +121,11 @@ public class DialogoClientes {
 		calleField.setEditable(opcion);
 		numeroExteriorField.setEditable(opcion);
 		numeroInteriorField.setEditable(opcion);
-		codigoPostalField.setEditable(opcion);
+		codigoPostalField.setEditable(opcion);*/
 	}//FIN METODO
 	
 	private void informacionControles(Cliente cliente) {
-		if (cliente != null) {
+		/*if (cliente != null) {
 			nombreField.setText(cliente.getNombre());
 			registroContribuyenteField.setText(cliente.getRegistroContribuyente());
 			telefonoField.setText(cliente.getTelefono());
@@ -154,12 +154,12 @@ public class DialogoClientes {
 			numeroExteriorField.setText("");
 			numeroInteriorField.setText("");
 			codigoPostalField.setText("");
-        }//FIN IF/ELSE
+        }//FIN IF/ELSE*/
 	}//FIN METODO
 	
 	//VALIDACION DE CAMPOS
 	public boolean validacion(){
-		String mensajeError = "";
+		/*String mensajeError = "";
 		
 		if (this.codigoPostalField.getText() == null || this.codigoPostalField.getText().length() == 0)
 			mensajeError = "Campo Codigo Postal vacío";
@@ -202,7 +202,11 @@ public class DialogoClientes {
 		}else {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "Mensaje CANADEVI", mensajeError);
 			mensajeError="";
-		}//FIN IF-ELSE
+		}//FIN IF-ELSE*/
 		return false;		
+	}//FIN METODO
+	
+	@FXML private void cerrarDialogoButtonHandler() {
+		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO
 }//FIN METODO
