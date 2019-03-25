@@ -35,7 +35,7 @@
                   </TextField>
                   <HBox alignment="CENTER" fillHeight="false" maxHeight="30.0" maxWidth="30.0" onMouseClicked="#buscarRegistroTabla" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" onKeyPressed="#buscarRegistroTabla" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarRegistroTabla" pickOnBounds="true" preserveRatio="true">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -71,7 +71,7 @@
             </HBox>
             <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
-                  <TableView fx:id="tablaTipoMateriaPrima" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaTipoMiscelaneo" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                      <columns>
                         <PTableColumn fx:id="columnaSysPK" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="ID" />
                         <PTableColumn fx:id="columnaCodigo" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Código" />
