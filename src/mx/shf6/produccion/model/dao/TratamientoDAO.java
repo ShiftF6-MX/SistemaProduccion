@@ -7,121 +7,126 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Tratamiento;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class TratamientoDAO implements ObjectDAO {
+public class TratamientoDAO {
 
-	//METODO PARA HACER CREATE EN LA TABLA TRATAMIENTO
-	@Override
-	public boolean crear(Connection connection, Object Tratamiento) {	
-		Tratamiento tratamiento = (Tratamiento) Tratamiento;
-		String query = "INSERT INTO tratamiento (codigo, descripcion) "
-				+ "values ( ?, ?)";
-		try {	
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, tratamiento.getCodigo());
-			preparedStatement.setString(2, tratamiento.getDescripcion());
-			preparedStatement.execute();
-			return true;   
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean createTratamiento(Connection connection,Tratamiento tratamiento ) {
+		String consulta = "INSERT INTO tratamiento (Codigo, Descripcion, Status)";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, tratamiento.getCodigo());
+			sentenciaPreparada.setString(2, tratamiento.getDescripcion());
+			sentenciaPreparada.setInt(3, tratamiento.getStatusFK());
+			sentenciaPreparada.execute();
+			return true;
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Tratamiento> readTratamiento(Connection connection) {
+		ArrayList<Tratamiento> arrayListTratamiento = new ArrayList<Tratamiento>();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM Tratamiento";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);  
+			while (resultados.next()) {
+				Tratamiento tratamiento = new Tratamiento();
+				tratamiento.setSysPk(resultados.getInt(1));
+				tratamiento.setCodigo(resultados.getString(2));
+				tratamiento.setDescripcion(resultados.getString(3));
+				arrayListTratamiento.add(tratamiento);
+			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
-			return false;			
 		}//FIN TRY/CATCH
+		return arrayListTratamiento;
 	}//FIN METODO	
 	
-	//METODO PARA HACER SELECT EN LA TABLA TRATAMIENTO
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query = "";
-		ArrayList<Object> listaTratamiento = new ArrayList<Object>();
-		if (campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query = "SELECT * FROM tratamiento ORDER BY sysPK;";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);  
-				Tratamiento tratamiento = null;
-				while (resultSet.next()) {
-					tratamiento = new Tratamiento();
-					tratamiento.setSysPk(resultSet.getInt(1));
-					tratamiento.setCodigo(resultSet.getString(2));
-					tratamiento.setDescripcion(resultSet.getString(3));
-					listaTratamiento.add(tratamiento);
-				}//FIN WHILE
-			} catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		} else {
-			query = "SELECT * FROM tratamiento WHERE " + campoBusqueda + " = ? ORDER BY sysPK;";
-			try {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				Tratamiento tratamiento = null;
-				while (resultSet.next()) {
-					tratamiento = new Tratamiento();
-					tratamiento.setSysPk(resultSet.getInt(1));
-					tratamiento.setCodigo(resultSet.getString(2));
-					tratamiento.setDescripcion(resultSet.getString(3));
-					listaTratamiento.add(tratamiento);
-				}//FIN WHILE
-			}catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		}//FIN IF/ELSE
-		return listaTratamiento;
-	}//FIN METODO	
-	
-	//METODO PARA HACER UPDATE EN LA TABLA TRATAMIENTO
-	@Override
-	public boolean modificar(Connection connection, Object Tratamiento) {
-		String query = "UPDATE tratamiento "
-				+ "SET  codigo = ?, descripcion = ? "
-				+ "WHERE sysPK = ?";
+	//METODO PARA OBTENER UN REGISTRO
+	public static Tratamiento readTratamiento(Connection connection, int sysPk) {
+		Tratamiento tratamiento = new Tratamiento();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tratamiento WHERE Sys_PK =" + sysPk;
 		try {
-			Tratamiento tratamiento = (Tratamiento)Tratamiento;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, tratamiento.getCodigo());
-			preparedStatement.setString(2, tratamiento.getDescripcion());
-			preparedStatement.setInt(3, tratamiento.getSysPk());
-			preparedStatement.execute();
-			return true;
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				tratamiento.setSysPk(resultados.getInt(1));
+				tratamiento.setCodigo(resultados.getString(2));
+				tratamiento.setDescripcion(resultados.getString(3));
+				tratamiento.setStatus(resultados.getInt(4));
+			}//FIN WHILE
 		} catch (SQLException e) {
 			Notificacion.dialogoException(e);
-			return false;
 		}//FIN TRY/CATCH
+		return tratamiento;
 	}//FIN METODO	
 	
-	//METODO PARA HACER DELETE EN LA TABLA TRATAMIENTO
-	@Override
-	public boolean eliminar(Connection connection, Object Tratamiento) {
-		String query = "DELETE FROM tratamiento WHERE sysPK = ?";
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Tratamiento> readTratamiento(Connection connection, String like) {
+		ArrayList<Tratamiento> arrayListTratamiento = new ArrayList<Tratamiento>();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tratamiento WHERE Codigo LIKE '%" + like + "%'OR Descripcion LIKE'%" + like + "%';";
 		try {	
-			Tratamiento tratamiento = (Tratamiento)Tratamiento;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, tratamiento.getSysPk());
-			preparedStatement.execute();
-			return true;
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while(resultados.next()) {
+				Tratamiento tratamiento = new Tratamiento();
+				tratamiento.setSysPk(resultados.getInt(1));
+				tratamiento.setCodigo(resultados.getString(2));
+				tratamiento.setDescripcion(resultados.getString(3));
+				tratamiento.setStatus(resultados.getInt(4));
+				arrayListTratamiento.add(tratamiento);
+			}//FIN WHILE
 		} catch (SQLException e) {
 			Notificacion.dialogoException(e);
-			return false;
-		}//FIN TRY/CATCH	
+		}//FIN TRY/CATCH
+		return arrayListTratamiento;
 	}//FIN METODO		
 	
-	//METODO PARA OBTENER EL ULTIMO SYSPK AGREGADO A LA TABLA 
-	public int ultimoSysPk(Connection connection) {
-		String query = "SELECT sysPK FROM tratamiento order by sysPK asc";
-		int ultimoSysPk = 0;
+	//METODO PARA MODIFICAR UN REGISTRO
+	public static boolean updateTratamiento(Connection connection, Tratamiento tratamiento) {
+		String consulta = "UPDATE tratamiento SET Codigo = ?, Descripcion = ?, Status = ? WHERE Sys_PK = ?";
 		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(query);
-			while (resultSet.next())
-				ultimoSysPk = resultSet.getInt(1);
-			return ultimoSysPk;
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1,  tratamiento.getCodigo());
+			sentenciaPreparada.setString(2,  tratamiento.getDescripcion());
+			sentenciaPreparada.setInt(3,  tratamiento.getStatusFK());
+			sentenciaPreparada.setInt(4,  tratamiento.getSysPk());
+			sentenciaPreparada.execute();
+			return true;
 		}catch (SQLException e) {
 			Notificacion.dialogoException(e);
+			return false;
 		}//FIN TRY/CATCH
-		return ultimoSysPk;
+	}//FIN METODO
+	
+	//METODO PARA ELIMINAR UN REGISTRO
+	public static boolean deleteTratamiento(Connection connection, Tratamiento tratamiento) {
+		String consulta = "DELETE FROM tratamiento where Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setInt(1, tratamiento.getSysPk());
+			sentenciaPreparada.execute();
+			return true;
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODO PARA CONVERTIR EL AGUA EN VINO
+	public static ObservableList<Tratamiento> toObservableList(ArrayList<Tratamiento> arrayList){
+		ObservableList<Tratamiento> listaObservableTratamiento = FXCollections.observableArrayList();
+		for	(Tratamiento venta : arrayList)
+			listaObservableTratamiento.add(venta);
+		return listaObservableTratamiento;
 	}//FIN METODO
 
 }//FIN CLASE
