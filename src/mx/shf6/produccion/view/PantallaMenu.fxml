@@ -105,7 +105,7 @@
                         <Image url="@images/1x/ScrewsIcon.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Tipo Miscelaneo" textFill="#d1d0d2" />
+                  <Label onMouseClicked="#manejadorTipoMiscelaneo" styleClass="labelRobotoBold14" text="Tipo Miscelaneo" textFill="#d1d0d2" />
                </children>
                <VBox.margin>
                   <Insets left="10.0" />

@@ -27,6 +27,7 @@ import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.TipoMateriaPrima;
+import mx.shf6.produccion.model.TipoMiscelaneo;
 import mx.shf6.produccion.model.TipoProducto;
 import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
@@ -35,6 +36,7 @@ import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoClientes;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
+import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTipoProducto;
 import mx.shf6.produccion.view.PantallaAcabado;
 import mx.shf6.produccion.view.PantallaCabecera;
@@ -45,6 +47,7 @@ import mx.shf6.produccion.view.PantallaMenu;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
 import mx.shf6.produccion.view.PantallaTipoProducto;
+import mx.shf6.produccion.view.PantallaTipoMiscelaneo;
 
 public class MainApp extends Application {
 	
@@ -68,6 +71,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaTipoProducto;
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaMaterial;
+	private AnchorPane pantallaTipoMiscelaneo;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -75,6 +79,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoTipoProducto;
 	private AnchorPane dialogoAcabado;
 	private AnchorPane dialogoMaterial;
+	private AnchorPane dialogoTipoMiscelaneo;
 	
 	//VARIABLES
 	private double xOffset = 0.0;
@@ -491,6 +496,39 @@ public class MainApp extends Application {
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN METODO
+	}//FIN METODO
+	
+	public void iniciarDialogoTipoMiscelaneo(TipoMiscelaneo tipoMiscelaneo, int opcion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoMiscelaneo.fxml"));
+			this.dialogoTipoMiscelaneo = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoTipoMiscelaneo = this.getEscenaSecundaria(this.dialogoTipoMiscelaneo);
+			this.escenarioDialogos.setScene(escenaDialogoTipoMiscelaneo);
+			
+			DialogoTipoMiscelaneo dialogoTipoMiscelaneo = fxmlLoader.getController();
+			dialogoTipoMiscelaneo.setMainApp(this, tipoMiscelaneo, opcion);
+			
+			this.escenarioDialogos.showAndWait();
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN METODO
+	}//FIN METODO
+	
+	//INICIAR PANTALLA TIPO MATERIA PRIMA
+	public void iniciarPantallaTipoMiscelaneo() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaTipoMiscelaneo.fxml"));
+			this.pantallaTipoMiscelaneo = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaTipoMiscelaneo);
+			
+			PantallaTipoMiscelaneo pantallaTipoMiscelaneo = fxmlLoader.getController();
+			pantallaTipoMiscelaneo.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
 	}//FIN METODO
 
 	@Override

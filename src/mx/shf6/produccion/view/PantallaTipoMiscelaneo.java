@@ -26,7 +26,7 @@ import mx.shf6.produccion.model.dao.TipoMiscelaneoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaTipoMiselaneo {
+public class PantallaTipoMiscelaneo {
 
 	//PROPIEDADES
 	private MainApp mainApp;

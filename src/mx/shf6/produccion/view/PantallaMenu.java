@@ -43,4 +43,8 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaMaterial();
 	}//FIN METODO
 	
+	@FXML private void manejadorTipoMiscelaneo() {
+		this.mainApp.iniciarPantallaTipoMiscelaneo();
+	}//FIN METODO
+	
 }//FIN CLASE
