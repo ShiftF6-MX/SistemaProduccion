@@ -73,7 +73,7 @@ public class TipoMateriaPrimaDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<TipoMateriaPrima> readTipoMateriaPrima(Connection connection, String like) {
 		ArrayList<TipoMateriaPrima> arrayListTipoMateriaPrima = new ArrayList<TipoMateriaPrima>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipomateriaprima WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%';";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipomateriaprima WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

@@ -7,120 +7,127 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.TipoProducto;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class TipoProductoDAO implements ObjectDAO{
+public class TipoProductoDAO {
 
-	//METODO PARA HACER CREATE EN LA TABLA TIPOPRODUCTO
-	@Override
-	public boolean crear(Connection connection, Object TipoProducto) {	
-		TipoProducto tipoProducto = (TipoProducto) TipoProducto;
-		String query = "INSERT INTO tipoproducto (codigo, descripcion) "
-				+ "values ( ?, ?)";
-		try {	
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, tipoProducto.getCodigo());
-			preparedStatement.setString(2, tipoProducto.getDescripcion());
-			preparedStatement.execute();
-			return true;   
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean createTipoProducto(Connection connection, TipoProducto tipoProducto) {
+		String consulta = "INSERT INTO tipoproducto (Codigo, Descripcion, Status) VALUES (?, ?, ?)";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, tipoProducto.getCodigo());
+			sentenciaPreparada.setString(2, tipoProducto.getDescripcion());
+			sentenciaPreparada.setInt(3,  tipoProducto.getStatusFK());
+			sentenciaPreparada.execute();
+			return true;
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
-			return false;			
-		}//FIN TRY/CATCH
-	}//FIN METODO	
-	
-	//METODO PARA HACER SELECT EN LA TABLA TIPOPRODUCTO
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query = "";
-		ArrayList<Object> listaTipoProducto = new ArrayList<Object>();
-		if (campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query = "SELECT * FROM tipoproducto ORDER BY sysPK;";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);  
-				TipoProducto tipoProducto = null;
-				while (resultSet.next()) {
-					tipoProducto = new TipoProducto();
-					tipoProducto.setSysPk(resultSet.getInt(1));
-					tipoProducto.setCodigo(resultSet.getString(2));
-					tipoProducto.setDescripcion(resultSet.getString(3));
-					listaTipoProducto.add(tipoProducto);
-				}//FIN WHILE
-			} catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		} else {
-			query = "SELECT * FROM tipoproducto WHERE " + campoBusqueda + " = ? ORDER BY sysPK;";
-			try {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				TipoProducto tipoProducto = null;
-				while (resultSet.next()) {
-					tipoProducto = new TipoProducto();
-					tipoProducto.setSysPk(resultSet.getInt(1));
-					tipoProducto.setCodigo(resultSet.getString(2));
-					tipoProducto.setDescripcion(resultSet.getString(3));
-					listaTipoProducto.add(tipoProducto);
-				}//FIN WHILE
-			}catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		}//FIN IF/ELSE
-		return listaTipoProducto;
-	}//FIN METODO	
-	
-	//METODO PARA HACER UPDATE EN LA TABLA TIPOPRODUCTO
-	@Override
-	public boolean modificar(Connection connection, Object TipoProducto) {
-		String query = "UPDATE tipoproducto "
-				+ "SET  codigo = ?, descripcion = ? "
-				+ "WHERE sysPK = ?";
-		try {
-			TipoProducto tipoProducto = (TipoProducto)TipoProducto;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, tipoProducto.getCodigo());
-			preparedStatement.setString(2, tipoProducto.getDescripcion());
-			preparedStatement.setInt(3, tipoProducto.getSysPk());
-			preparedStatement.execute();
-			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
 			return false;
 		}//FIN TRY/CATCH
-	}//FIN METODO	
-	
-	//METODO PARA HACER DELETE EN LA TABLA TIPOPRODUCTO
-	@Override
-	public boolean eliminar(Connection connection, Object TipoProducto) {
-		String query = "DELETE FROM tipoproducto WHERE sysPK = ?";
-		try {	
-			TipoProducto tipoProducto = (TipoProducto)TipoProducto;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, tipoProducto.getSysPk());
-			preparedStatement.execute();
-			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
-			return false;
-		}//FIN TRY/CATCH	
-	}//FIN METODO		
-	
-	//METODO PARA OBTENER EL ULTIMO SYSPK AGREGADO A LA TABLA 
-	public int ultimoSysPk(Connection connection) {
-		String query = "SELECT sysPK FROM tipoproducto order by sysPK asc";
-		int ultimoSysPk = 0;
-		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(query);
-			while (resultSet.next())
-				ultimoSysPk = resultSet.getInt(1);
-			return ultimoSysPk;
-		}catch (SQLException e) {
-			Notificacion.dialogoException(e);
-		}//FIN TRY/CATCH
-		return ultimoSysPk;
 	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<TipoProducto> readTipoProducto(Connection connection) {
+		ArrayList<TipoProducto> arrayListTipoProducto = new ArrayList<TipoProducto>();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipoproducto";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				TipoProducto tipoProducto = new TipoProducto();
+				tipoProducto.setSysPK(resultados.getInt(1));
+				tipoProducto.setCodigo(resultados.getString(2));
+				tipoProducto.setDescripcion(resultados.getString(3));
+				tipoProducto.setStatus(resultados.getInt(4));
+				arrayListTipoProducto.add(tipoProducto);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListTipoProducto;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static TipoProducto readTipoProducto(Connection connection, int sysPK) {
+		TipoProducto tipoProducto = new TipoProducto();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipoproducto WHERE Sys_PK = " + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				tipoProducto.setSysPK(resultados.getInt(1));
+				tipoProducto.setCodigo(resultados.getString(2));
+				tipoProducto.setDescripcion(resultados.getString(3));
+				tipoProducto.setStatus(resultados.getInt(4));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return tipoProducto;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<TipoProducto> readTipoProducto(Connection connection, String like) {
+		ArrayList<TipoProducto> arrayListTipoProducto = new ArrayList<TipoProducto>();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipoproducto WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '% " + like + " %'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				TipoProducto tipoProducto = new TipoProducto();
+				tipoProducto.setSysPK(resultados.getInt(1));
+				tipoProducto.setCodigo(resultados.getString(2));
+				tipoProducto.setDescripcion(resultados.getString(3));
+				tipoProducto.setStatus(resultados.getInt(4));
+				arrayListTipoProducto.add(tipoProducto);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListTipoProducto;
+	}//FIN METODO
+	
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean updateTipoProducto(Connection connection, TipoProducto tipoProducto) {
+		String consulta = "UPDATE tipoproducto SET Codigo = ?, Descripcion = ?, Status = ? WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, tipoProducto.getCodigo());
+			sentenciaPreparada.setString(2, tipoProducto.getDescripcion());
+			sentenciaPreparada.setInt(3,  tipoProducto.getStatusFK());
+			sentenciaPreparada.setInt(4, tipoProducto.getSysPK());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean deleteTipoProducto(Connection connection, TipoProducto tipoProducto) {
+		String consulta = "DELETE FROM tipoproducto WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setInt(1, tipoProducto.getSysPK());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
+	public static ObservableList<TipoProducto> toObservableList(ArrayList<TipoProducto> arrayList) {
+		ObservableList<TipoProducto> listaObservableTipoProducto = FXCollections.observableArrayList();
+		for (TipoProducto tipoProducto : arrayList) 
+			listaObservableTipoProducto.add(tipoProducto);
+		return listaObservableTipoProducto;
+	}//FIN METODO
+	
 }//FIN CLASE

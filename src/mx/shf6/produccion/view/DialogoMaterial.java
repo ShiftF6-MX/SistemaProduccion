@@ -8,15 +8,15 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Status;
-import mx.shf6.produccion.model.TipoMateriaPrima;
-import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
+import mx.shf6.produccion.model.Material;
+import mx.shf6.produccion.model.dao.MaterialDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class DialogoTipoMateriaPrima {
+public class DialogoMaterial {
 
 	//PROPIEDADES
 	private MainApp mainApp;
-	private TipoMateriaPrima tipoMateriaPrima;
+	private Material material;
 	
 	//VARIABLES
 	private int opcion;
@@ -33,15 +33,15 @@ public class DialogoTipoMateriaPrima {
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.tipoMateriaPrima = new TipoMateriaPrima();
+		this.material = new Material();
 		ObservableList<String> listaStatus = FXCollections.observableArrayList("No Visible", "Visible");
 		this.comboBoxStatus.setItems(listaStatus);
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
-	public void setMainApp(MainApp mainApp, TipoMateriaPrima tipoMateriaPrima, int opcion) {
+	public void setMainApp(MainApp mainApp, Material material, int opcion) {
 		this.mainApp = mainApp;
-		this.tipoMateriaPrima = tipoMateriaPrima;
+		this.material = material;
 		this.opcion = opcion;
 		this.inicializarComponentes();
 	}//FIN METODO
@@ -56,18 +56,18 @@ public class DialogoTipoMateriaPrima {
 			this.comboBoxStatus.getSelectionModel().select("");
 			this.comboBoxStatus.setDisable(false);
 		} else if (this.opcion == VER) {
-			this.campoTextoCodigo.setText(this.tipoMateriaPrima.getCodigo());
+			this.campoTextoCodigo.setText(this.material.getCodigo());
 			this.campoTextoCodigo.setDisable(true);
-			this.campoTextoDescripcion.setText(this.tipoMateriaPrima.getDescripcion());
+			this.campoTextoDescripcion.setText(this.material.getDescripcion());
 			this.campoTextoDescripcion.setDisable(true);
-			this.comboBoxStatus.getSelectionModel().select(this.tipoMateriaPrima.getStatus());
+			this.comboBoxStatus.getSelectionModel().select(this.material.getStatus());
 			this.comboBoxStatus.setDisable(true);
 		} else if (this.opcion == EDITAR) {
-			this.campoTextoCodigo.setText(this.tipoMateriaPrima.getCodigo());
+			this.campoTextoCodigo.setText(this.material.getCodigo());
 			this.campoTextoCodigo.setDisable(false);
-			this.campoTextoDescripcion.setText(this.tipoMateriaPrima.getDescripcion());
+			this.campoTextoDescripcion.setText(this.material.getDescripcion());
 			this.campoTextoDescripcion.setDisable(false);
-			this.comboBoxStatus.getSelectionModel().select(this.tipoMateriaPrima.getStatus());
+			this.comboBoxStatus.getSelectionModel().select(this.material.getStatus());
 			this.comboBoxStatus.setDisable(false);
 		}//FIN METODO
 	}//FIN METODO
@@ -90,19 +90,19 @@ public class DialogoTipoMateriaPrima {
 	//MANEJADORES COMPONENTES	
 	@FXML private void vmanejadorBotonAceptar() {
 		if (this.validarDatos() && this.opcion == CREAR) {
-			this.tipoMateriaPrima.setCodigo(this.campoTextoCodigo.getText());
-			this.tipoMateriaPrima.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tipoMateriaPrima.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TipoMateriaPrimaDAO.createTipoMateriaPrima(this.mainApp.getConnection(), this.tipoMateriaPrima)) {
+			this.material.setCodigo(this.campoTextoCodigo.getText());
+			this.material.setDescripcion(this.campoTextoDescripcion.getText());
+			this.material.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+			if (MaterialDAO.createMaterial(this.mainApp.getConnection(), this.material)) {
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
 				this.mainApp.getEscenarioDialogos().close();
 			} else
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
 		} else if (this.validarDatos() && this.opcion == EDITAR) {
-			this.tipoMateriaPrima.setCodigo(this.campoTextoCodigo.getText());
-			this.tipoMateriaPrima.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tipoMateriaPrima.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TipoMateriaPrimaDAO.updateTipoMateriaPrima(this.mainApp.getConnection(), this.tipoMateriaPrima)) {
+			this.material.setCodigo(this.campoTextoCodigo.getText());
+			this.material.setDescripcion(this.campoTextoDescripcion.getText());
+			this.material.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+			if (MaterialDAO.updateMaterial(this.mainApp.getConnection(), this.material)) {
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
 				this.mainApp.getEscenarioDialogos().close();
 			} else

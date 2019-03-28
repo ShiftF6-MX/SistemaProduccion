@@ -8,33 +8,35 @@ import javafx.beans.property.StringProperty;
 public class TipoProducto {
 	
 	// PROPIEDADES
-	public ObjectProperty<Integer> sysPk;
-	public StringProperty codigo;
-	public StringProperty descripcion;
+	private ObjectProperty<Integer> sysPK;
+	private StringProperty codigo;
+	private StringProperty descripcion;
+	private StringProperty status;
 	
 	//CONSTRUCTOR VACIO
 	public TipoProducto() {
-		this(0,"","");
+		this(0, "", "", "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public TipoProducto(Integer sysPk, String codigo, String descripcion) {
-		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
+	public TipoProducto(Integer sysPK, String codigo, String descripcion, String status) {
+		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
+		this.status = new SimpleStringProperty(status);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
-	public void setSysPk(Integer sysPk) {
-		this.sysPk.set(sysPk);
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
 	}//FIN METODO
 		
-	public Integer getSysPk() {
-		return this.sysPk.get();
+	public Integer getSysPK() {
+		return this.sysPK.get();
 	}//FIN METODO
 		
-	public ObjectProperty<Integer> sysPkProperty() {
-		return this.sysPk;
+	public ObjectProperty<Integer> sysPKProperty() {
+		return this.sysPK;
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	
@@ -65,4 +67,20 @@ public class TipoProducto {
 		return this.descripcion;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A "DESCRIPCION"	
+	
+	public void setStatus(int status) {
+		this.status.set(Status.toString(status));
+	}//FIN METODO
+	
+	public String getStatus() {
+		return this.status.get();
+	}//FIN METODO
+	
+	public StringProperty statusProperty() {
+		return this.status;
+	}//FIN METODO
+	
+	public int getStatusFK() {
+		return Status.toInt(this.getStatus());
+	}//FIN METODO
 }//FIN CLASE

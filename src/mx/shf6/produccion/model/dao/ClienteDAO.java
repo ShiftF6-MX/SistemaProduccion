@@ -12,193 +12,149 @@ import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.utilities.Notificacion;
 
+public class ClienteDAO{
 
-
-public class ClienteDAO implements ObjectDAO{
-	
-	//CONSTANTES 
-	public static final String CAMPO_SYSPK = "sysPk";
-	public static final String CAMPO_NOMBRE = "nombre";
-	public static final String CAMPO_RFC = "registroContrubuyente";
-	public static final String CAMPO_CODIGO = "codigo";
-	
-
-	//METODO PARA HACER CREATE EN LA TABLA CLIENTE
-	@Override
-	public boolean crear(Connection connection, Object Cliente) {	
-		Cliente cliente = (Cliente)Cliente;
-		String query = "INSERT INTO clientes (codigo, nombre, status, fechaRegistro, registroContrubuyente, telefono, correo, rutaCarpeta, domicilioFk) "
-				+ "values ( ?, ?, ?, CURDATE(), ?, ?, ?, ?, ?)";
-		try {	
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, cliente.getCodigo());
-			preparedStatement.setString(2, cliente.getNombre());
-			preparedStatement.setInt(3, cliente.getStatus());
-			preparedStatement.setString(4, cliente.getRegistroContribuyente());
-			preparedStatement.setString(5, cliente.getTelefono());
-			preparedStatement.setString(6, cliente.getCorreo());
-			preparedStatement.setString(7, cliente.getRutaCarpeta());
-			preparedStatement.setInt(8, cliente.getDomicilioFk());
-			preparedStatement.execute();
-			return true;   
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean createCliente(Connection connection, Cliente cliente) {
+		String consulta = "INSERT INTO clientes (Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, cliente.getCodigo());
+			sentenciaPreparada.setString(2, cliente.getNombre());
+			sentenciaPreparada.setInt(3, cliente.getStatus());
+			sentenciaPreparada.setDate(4, cliente.getFechaRegistro());
+			sentenciaPreparada.setString(5, cliente.getRegistroContribuyente());
+			sentenciaPreparada.setString(6, cliente.getTelefono());
+			sentenciaPreparada.setString(7, cliente.getCorreo());
+			sentenciaPreparada.setString(8, cliente.getRutaCarpeta());
+			sentenciaPreparada.setInt(9, cliente.getDomicilioFk());
+			sentenciaPreparada.execute();
+			return true;
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
-			return false;			
+			return false;
 		}//FIN TRY/CATCH
-	}//FIN METODO	
+	}//FIN METODO
 	
-	//METODO PARA HACER SELECT EN LA TABLA CLIENTES
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query ="";
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Cliente> readCliente(Connection connection) {
+		ArrayList<Cliente> arrayListCliente = new ArrayList<Cliente>();
+		String consulta = "SELECT Sys_PK, Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK FROM clientes";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setSysPk(resultados.getInt(1));
+				cliente.setCodigo(resultados.getString(2));
+				cliente.setNombre(resultados.getString(3));
+				cliente.setStatus(resultados.getInt(4));
+				cliente.setFechaRegistro(resultados.getDate(5));
+				cliente.setRegistroContribuyente(resultados.getString(6));
+				cliente.setTelefono(resultados.getString(7));
+				cliente.setCorreo(resultados.getString(8));
+				cliente.setDomicilioFk(resultados.getInt(9));
+				arrayListCliente.add(cliente);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListCliente;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static Cliente readCliente(Connection connection, int sysPK) {
 		Cliente cliente = new Cliente();
-		ArrayList<Object> listaCliente = new ArrayList<Object>();
-		if(campoBusqueda.isEmpty() && valorBusqueda.isEmpty()) {
-			query="SELECT * FROM clientes ORDER BY sysPK;";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);
-				while (resultSet.next()) {
-					cliente = new Cliente();			
-					cliente.setSysPk(resultSet.getInt(1));
-					cliente.setCodigo(resultSet.getString(2));
-					cliente.setNombre(resultSet.getString(3));
-					cliente.setStatus(resultSet.getInt(4));
-					cliente.setFechaRegistro(resultSet.getDate(5));
-					cliente.setRegistroContribuyente(resultSet.getString(6));
-					cliente.setTelefono(resultSet.getString(7));
-					cliente.setCorreo(resultSet.getString(8));
-					cliente.setRutaCarpeta(resultSet.getString(9));
-					cliente.setDomicilioFk(resultSet.getInt(10));
-					listaCliente.add(cliente);
-				}//FIN WHILE
-			}catch (SQLException e) {
-				Notificacion.dialogoException(e);
-			}//FIN TRY/CATCH
-		}else {
-			if(campoBusqueda.isEmpty()) {
-				query="SELECT * FROM clientes "
-						+ "WHERE (codigo like '%"+ valorBusqueda + "%' "
-						+ "OR nombre like '%" + valorBusqueda + "%' "
-						+ "OR registroContribuyente like '%" + valorBusqueda + "%') ORDER BY sysPK;";	
-				try {
-					Statement statement = connection.createStatement();
-					ResultSet resultSet = statement.executeQuery(query);
-					while (resultSet.next()) {
-						cliente = new Cliente();			
-						cliente.setSysPk(resultSet.getInt(1));
-						cliente.setCodigo(resultSet.getString(2));
-						cliente.setNombre(resultSet.getString(3));
-						cliente.setStatus(resultSet.getInt(4));
-						cliente.setFechaRegistro(resultSet.getDate(5));
-						cliente.setRegistroContribuyente(resultSet.getString(6));
-						cliente.setTelefono(resultSet.getString(7));
-						cliente.setCorreo(resultSet.getString(8));
-						cliente.setRutaCarpeta(resultSet.getString(9));
-						cliente.setDomicilioFk(resultSet.getInt(10));
-						listaCliente.add(cliente);
-					}//FIN WHILE
-				}catch (SQLException e) {
-					Notificacion.dialogoException(e);
-				}//FIN TRY/CATCH
-			}else {
-				query="SELECT * FROM clientes WHERE " + campoBusqueda + " = ? ORDER BY sysPK;";	
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement(query);
-					preparedStatement.setString(1, valorBusqueda);
-					ResultSet resultSet = preparedStatement.executeQuery();
-					while (resultSet.next()) {
-						cliente = new Cliente();			
-						cliente.setSysPk(resultSet.getInt(1));
-						cliente.setCodigo(resultSet.getString(2));
-						cliente.setNombre(resultSet.getString(3));
-						cliente.setStatus(resultSet.getInt(4));
-						cliente.setFechaRegistro(resultSet.getDate(5));
-						cliente.setRegistroContribuyente(resultSet.getString(6));
-						cliente.setTelefono(resultSet.getString(7));
-						cliente.setCorreo(resultSet.getString(8));
-						cliente.setRutaCarpeta(resultSet.getString(9));
-						cliente.setDomicilioFk(resultSet.getInt(10));
-						listaCliente.add(cliente);
-					}//FIN WHILE
-				}catch (SQLException e) {
-					Notificacion.dialogoException(e);
-				}//FIN TRY-CATCH
-			}//FIN IF-ELSE		
-		}//FIN IF-ELSE
-		return listaCliente;
-	}//FIN METODO	
-	
-	//METODO PARA HACER UPDATE EN LA TABLA CLIENTES
-	@Override
-	public boolean modificar(Connection connection, Object Cliente) {
-		String query = "UPDATE clientes "
-				+ "SET  codigo = ?, nombre = ?, status = ?, registroContribuyente = ?, telefono = ?, correo = ?, rutaCarpeta = ?, domicilioFk = ? "
-				+ "WHERE sysPK = ?";
+		String consulta = "SELECT Sys_PK, Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK FROM clientes WHERE Sys_PK = " + sysPK;
 		try {
-			Cliente cliente = (Cliente)Cliente;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, cliente.getCodigo());
-			preparedStatement.setString(2, cliente.getNombre());
-			preparedStatement.setInt(3, cliente.getStatus());
-			preparedStatement.setString(4, cliente.getRegistroContribuyente());
-			preparedStatement.setString(5, cliente.getTelefono());
-			preparedStatement.setString(6, cliente.getCorreo());
-			preparedStatement.setString(7, cliente.getRutaCarpeta());
-			preparedStatement.setInt(8, cliente.getDomicilioFk());
-			preparedStatement.setInt(9, cliente.getSysPk());
-			preparedStatement.execute();
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				cliente.setSysPk(resultados.getInt(1));
+				cliente.setCodigo(resultados.getString(2));
+				cliente.setNombre(resultados.getString(3));
+				cliente.setStatus(resultados.getInt(4));
+				cliente.setFechaRegistro(resultados.getDate(5));
+				cliente.setRegistroContribuyente(resultados.getString(6));
+				cliente.setTelefono(resultados.getString(7));
+				cliente.setCorreo(resultados.getString(8));
+				cliente.setDomicilioFk(resultados.getInt(9));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return cliente;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Cliente> readCliente(Connection connection, String like) {
+		ArrayList<Cliente> arrayListCliente = new ArrayList<Cliente>();
+		String consulta = "SELECT Sys_Pk, Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK FROM clientes WHERE Nombre LIKE '%" + like + "%'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Cliente cliente = new Cliente();
+				cliente.setSysPk(resultados.getInt(1));
+				cliente.setCodigo(resultados.getString(2));
+				cliente.setNombre(resultados.getString(3));
+				cliente.setStatus(resultados.getInt(4));
+				cliente.setFechaRegistro(resultados.getDate(5));
+				cliente.setRegistroContribuyente(resultados.getString(6));
+				cliente.setTelefono(resultados.getString(7));
+				cliente.setCorreo(resultados.getString(8));
+				cliente.setDomicilioFk(resultados.getInt(9));
+				arrayListCliente.add(cliente);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListCliente;
+	}//FIN METODO
+	
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean updateCliente(Connection connection, Cliente cliente) {
+		String consulta = "UPDATE clientes SET Codigo = ?, Nombre = ?, Status = ?, FechaRegistro = ?, RegistroContribuyente = ?, Telefono = ?, Correo = ?, RutaCarpeta = ?, DomicilioFK = ? WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, cliente.getCodigo());
+			sentenciaPreparada.setString(2, cliente.getNombre());
+			sentenciaPreparada.setInt(3, cliente.getStatus());
+			sentenciaPreparada.setDate(4, cliente.getFechaRegistro());
+			sentenciaPreparada.setString(5, cliente.getRegistroContribuyente());
+			sentenciaPreparada.setString(6, cliente.getTelefono());
+			sentenciaPreparada.setString(7, cliente.getCorreo());
+			sentenciaPreparada.setString(8, cliente.getRutaCarpeta());
+			sentenciaPreparada.setInt(9, cliente.getDomicilioFk());
+			sentenciaPreparada.setInt(10, cliente.getSysPk());
+			sentenciaPreparada.execute();
 			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
 		}//FIN TRY/CATCH
-	}//FIN METODO	
+	}//FIN METODO
 	
-	//METODO PARA HACER DELETE EN LA TABLA CLIENTES
-	@Override
-	public boolean eliminar(Connection connection, Object Cliente) {
-		String query = "DELETE FROM clientes WHERE sysPK = ?";
-		try {	
-			Cliente cliente = (Cliente)Cliente;
-			DomicilioDAO domicilioDAO = new DomicilioDAO();
-			if (domicilioDAO.eliminar(connection, cliente.getDomicilio(connection))){
-				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-				preparedStatement.setInt(1, cliente.getSysPk());
-				preparedStatement.execute();
-				return true;
-			}
-			else
-				return false;
-			
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
-			return false;
-		}//FIN TRY/CATCH	
-	}//FIN METODO		
-	
-	//METODO PARA OBTENER EL ULTIMO SYSPK AGREGADO A LA TABLA 
-	public int ultimoSysPk(Connection connection) {
-		String query = "SELECT sysPK FROM clientes order by sysPK asc";
-		int ultimoSysPk = 0;
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean deleteCliente(Connection connection, Cliente cliente) {
+		String consulta = "DELETE FROM clientes WHERE Sys_PK = ?";
 		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(query);
-			while (resultSet.next())
-				ultimoSysPk = resultSet.getInt(1);
-			return ultimoSysPk;
-		}catch (SQLException e) {
-			Notificacion.dialogoException(e);
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setInt(1, cliente.getSysPk());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
 		}//FIN TRY/CATCH
-		return ultimoSysPk;
 	}//FIN METODO
 	
-	//METODO PARA CONVERTIR UNA ARRAYLIST A OBSERVABLELIST
-	public ObservableList<Cliente> toObservableList(ArrayList<Object> arrayList) {
-		ObservableList<Cliente> clienteData = FXCollections.observableArrayList();         
-     	for(Object cliente : arrayList) {
-     		clienteData.add((Cliente) cliente);
-     	}//FIN FOR
-     	return clienteData;
+	//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
+	public static ObservableList<Cliente> toObservableList(ArrayList<Cliente> arrayList) {
+		ObservableList<Cliente> listaObservableCliente = FXCollections.observableArrayList();
+		for (Cliente cliente : arrayList) 
+			listaObservableCliente.add(cliente);
+		return listaObservableCliente;
 	}//FIN METODO
+	
 }//FIN CLASE
