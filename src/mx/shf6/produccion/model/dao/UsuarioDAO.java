@@ -27,7 +27,7 @@ public class UsuarioDAO implements ObjectDAO {
 	@Override
 	public boolean crear(Connection connection, Object usuario){	
 		Usuario claseUsuario = (Usuario) usuario;
-		String query=" INSERT INTO usuarios (usuario, contrasena, correoElectronico, fechaRegistro, status, grupoUsuarioFk)"
+		String query=" INSERT INTO usuarios (Usuario, Contrasena, CorreoElectronico, FechaRegistro, Status, GrupoUsuarioFK)"
 		+ " values ( ?, aes_encrypt(?, 'ShiftF6'), ?, curdate(), ?, ?)";
 		try {
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
@@ -51,8 +51,8 @@ public class UsuarioDAO implements ObjectDAO {
 		String query = "";
 		ArrayList<Object> listaUsuario = new ArrayList<Object>();
 		if (campoBusqueda.isEmpty() && valorBusqueda.isEmpty()) {
-			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuarioFk "
-					+ "FROM usuarios ORDER BY sysPK;";
+			query = "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK "
+					+ "FROM usuarios ORDER BY Sys_PK;";
 			try {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(query);
@@ -73,8 +73,8 @@ public class UsuarioDAO implements ObjectDAO {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH
 		} else if (campoBusqueda.isEmpty()) {
-			query= "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuarioFk "
-					+ "FROM usuarios WHERE usuario LIKE '%" + valorBusqueda + "%' OR correoElectronico LIKE '%" + valorBusqueda + "%'";
+			query= "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK "
+					+ "FROM Usuarios WHERE usuario LIKE '%" + valorBusqueda + "%' OR CorreoElectronico LIKE '%" + valorBusqueda + "%'";
 			try {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(query);
@@ -96,8 +96,8 @@ public class UsuarioDAO implements ObjectDAO {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH			
 		} else {
-			query = "SELECT sysPK, usuario, aes_decrypt(contrasena, 'ShiftF6'), correoElectronico, fechaRegistro, fechaBloqueo, status, grupoUsuarioFk "
-					+ "FROM usuarios WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
+			query = "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK "
+					+ "FROM usuarios WHERE "+campoBusqueda+" = ? ORDER BY Sys_PK;";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1, valorBusqueda);
@@ -129,12 +129,12 @@ public class UsuarioDAO implements ObjectDAO {
 		String query = "";
 		if (claseUsuario.getStatus().equals(Usuario.BAJA)) {
 			query = "UPDATE usuarios  "
-					+ "SET usuario = ?, contrasena = aes_encrypt(?, 'ShiftF6'), correoElectronico = ?, fechaBloqueo = CURDATE(), status = ?, grupoUsuarioFk = ? "
-					+ "WHERE sysPK = ?;";		
+					+ "SET Usuario = ?, Contrasena = aes_encrypt(?, 'ShiftF6'), CorreoElectronico = ?, FechaBloqueo = CURDATE(), Status = ?, GrupoUsuarioFK = ? "
+					+ "WHERE Sys_PK = ?;";		
 		} else {
 			query="UPDATE usuarios  "
-					+ "SET usuario = ?, contrasena = aes_encrypt(?, 'ShiftF6'), correoElectronico = ?, fechaBloqueo = null, status = ?, grupoUsuarioFk = ? "
-					+ "WHERE sysPK = ?;";		
+					+ "SET Usuario = ?, Contrasena = aes_encrypt(?, 'ShiftF6'), CorreoElectronico = ?, FechaBloqueo = null, status = ?, GrupoUsuarioFK = ? "
+					+ "WHERE Sys_PK = ?;";		
 		}//FIN IF/ELSE
 		
 		try {					
@@ -157,7 +157,7 @@ public class UsuarioDAO implements ObjectDAO {
 	//METODO PARA HACER DELETE EN LA TABLA USUARIOS
 	@Override
 	public boolean eliminar(Connection connection, Object usuario) {
-		String query = "DELETE FROM usuarios WHERE sysPK= ?";
+		String query = "DELETE FROM usuarios WHERE Sys_PK= ?";
 		try {	
 			Usuario claseUsuario=(Usuario)usuario;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
@@ -207,7 +207,7 @@ public class UsuarioDAO implements ObjectDAO {
 	
 	//METDODO PARA OBTENER EL ULTIMO SYSPK REGISTRADO EN LA TABAL USUARIOS
 	public int ultimoSysPk(Connection connection) {
-		String query="SELECT sysPK FROM usuarios order by sysPK asc";
+		String query="SELECT Sys_PK FROM usuarios order by Sys_PK asc";
 		int ultimoSysPk=0;
 		try {
 			Statement statement = connection.createStatement();
