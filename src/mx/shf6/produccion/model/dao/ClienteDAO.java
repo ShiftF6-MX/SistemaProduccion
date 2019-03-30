@@ -45,7 +45,7 @@ public class ClienteDAO{
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				Cliente cliente = new Cliente();
-				cliente.setSysPk(resultados.getInt(1));
+				cliente.setSysPK(resultados.getInt(1));
 				cliente.setCodigo(resultados.getString(2));
 				cliente.setNombre(resultados.getString(3));
 				cliente.setStatus(resultados.getInt(4));
@@ -53,7 +53,8 @@ public class ClienteDAO{
 				cliente.setRegistroContribuyente(resultados.getString(6));
 				cliente.setTelefono(resultados.getString(7));
 				cliente.setCorreo(resultados.getString(8));
-				cliente.setDomicilioFk(resultados.getInt(9));
+				cliente.setRutaCarpeta(resultados.getString(9));
+				cliente.setDomicilioFk(resultados.getInt(10));
 				arrayListCliente.add(cliente);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -70,7 +71,7 @@ public class ClienteDAO{
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
-				cliente.setSysPk(resultados.getInt(1));
+				cliente.setSysPK(resultados.getInt(1));
 				cliente.setCodigo(resultados.getString(2));
 				cliente.setNombre(resultados.getString(3));
 				cliente.setStatus(resultados.getInt(4));
@@ -78,7 +79,8 @@ public class ClienteDAO{
 				cliente.setRegistroContribuyente(resultados.getString(6));
 				cliente.setTelefono(resultados.getString(7));
 				cliente.setCorreo(resultados.getString(8));
-				cliente.setDomicilioFk(resultados.getInt(9));
+				cliente.setRutaCarpeta(resultados.getString(9));
+				cliente.setDomicilioFk(resultados.getInt(10));
 			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
@@ -95,7 +97,7 @@ public class ClienteDAO{
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				Cliente cliente = new Cliente();
-				cliente.setSysPk(resultados.getInt(1));
+				cliente.setSysPK(resultados.getInt(1));
 				cliente.setCodigo(resultados.getString(2));
 				cliente.setNombre(resultados.getString(3));
 				cliente.setStatus(resultados.getInt(4));
@@ -103,7 +105,8 @@ public class ClienteDAO{
 				cliente.setRegistroContribuyente(resultados.getString(6));
 				cliente.setTelefono(resultados.getString(7));
 				cliente.setCorreo(resultados.getString(8));
-				cliente.setDomicilioFk(resultados.getInt(9));
+				cliente.setRutaCarpeta(resultados.getString(9));
+				cliente.setDomicilioFk(resultados.getInt(10));
 				arrayListCliente.add(cliente);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -126,7 +129,7 @@ public class ClienteDAO{
 			sentenciaPreparada.setString(7, cliente.getCorreo());
 			sentenciaPreparada.setString(8, cliente.getRutaCarpeta());
 			sentenciaPreparada.setInt(9, cliente.getDomicilioFk());
-			sentenciaPreparada.setInt(10, cliente.getSysPk());
+			sentenciaPreparada.setInt(10, cliente.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -140,7 +143,7 @@ public class ClienteDAO{
 		String consulta = "DELETE FROM clientes WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
-			sentenciaPreparada.setInt(1, cliente.getSysPk());
+			sentenciaPreparada.setInt(1, cliente.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
