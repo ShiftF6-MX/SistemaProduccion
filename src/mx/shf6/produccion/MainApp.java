@@ -25,6 +25,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
+import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.TipoMiscelaneo;
@@ -408,7 +409,7 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	//METODOS DIALOGOS
-	public void iniciarDialogoClientes() {
+	public void iniciarDialogoClientes(Cliente cliente , int opcion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoClientes.fxml"));
@@ -418,7 +419,7 @@ public class MainApp extends Application {
 			this.escenarioDialogos.setScene(escenaDialogoClientes);
 			
 			DialogoClientes dialogoClientes = fxmlLoader.getController();
-			dialogoClientes.setMainApp(this, null, null);
+			dialogoClientes.setMainApp(this, cliente, opcion);
 			
 			this.escenarioDialogos.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
