@@ -42,6 +42,7 @@ import mx.shf6.produccion.view.DialogoTipoProducto;
 import mx.shf6.produccion.view.PantallaAcabado;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaClientes;
+import mx.shf6.produccion.view.PantallaCotizaciones;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
@@ -68,6 +69,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaCabecera;
 	private AnchorPane pantallaEspera;
 	private AnchorPane pantallaClientes;
+	private AnchorPane pantallaCotizaciones;
 	private AnchorPane pantallaTipoMateriaPrima;
 	private AnchorPane pantallaTipoProducto;
 	private AnchorPane pantallaAcabado;
@@ -343,6 +345,20 @@ public class MainApp extends Application {
 			
 			PantallaClientes pantallaClientes = fxmlLoader.getController();
 			pantallaClientes.setMainApp(this);
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//INICIAR PANTALLA COTIZACIONES
+	public void iniciarPantallaCotizaciones() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaCotizaciones.fxml"));
+			this.pantallaCotizaciones = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaCotizaciones);
+			PantallaCotizaciones pantallaCotizaciones = fxmlLoader.getController();
+			pantallaCotizaciones.setMainApp(this);
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
