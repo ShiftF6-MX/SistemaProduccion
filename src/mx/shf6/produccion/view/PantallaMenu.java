@@ -27,6 +27,10 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaClientes();
 	}//FIN METODO
 	
+	@FXML private void manejadorMenuCotizaciones() {
+		this.mainApp.iniciarPantallaCotizaciones(); 
+	}//FIN METODO
+	
 	@FXML private void manejadorMenuTipoMateriaPrima() {
 		this.mainApp.iniciarPantallaTipoMateriaPrima();
 	}//FIN METODO
