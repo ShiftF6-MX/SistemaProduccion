@@ -12,7 +12,7 @@ import mx.shf6.produccion.model.dao.DomicilioDAO;
 public class Cliente {
 
 	//PROPIEDADES
-	public ObjectProperty<Integer> sysPk;
+	public ObjectProperty<Integer> sysPK;
 	public StringProperty codigo;
 	public StringProperty nombre;
 	public ObjectProperty<Integer> status;
@@ -33,8 +33,8 @@ public class Cliente {
 		this(0,"","",0,null,"","","","",0);
 	}//FIN CONSTRUCTOR
 	
-	public Cliente (Integer sysPk, String codigo, String nombre, int status, Date fechaRegistro, String registroContribuyente, String telefono, String correo, String rutaCarpeta, int domicilioFk) {
-		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
+	public Cliente (Integer sysPK, String codigo, String nombre, int status, Date fechaRegistro, String registroContribuyente, String telefono, String correo, String rutaCarpeta, int domicilioFk) {
+		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.nombre = new SimpleStringProperty(nombre);
 		this.status = new SimpleObjectProperty<Integer>(status);
@@ -47,16 +47,16 @@ public class Cliente {
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
-	public void setSysPk(Integer sysPk) {
-		this.sysPk.set(sysPk);
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
 	}//FIN METODO
 		
-	public Integer getSysPk() {
-		return this.sysPk.get();
+	public Integer getSysPK() {
+		return this.sysPK.get();
 	}//FIN METODO
 		
-	public ObjectProperty<Integer> sysPkProperty() {
-		return this.sysPk;
+	public ObjectProperty<Integer> sysPKProperty() {
+		return this.sysPK;
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	
@@ -205,7 +205,7 @@ public class Cliente {
 	
 	public Domicilio getDomicilio(Connection connection) {
 		DomicilioDAO domicilioDAO = new DomicilioDAO();
-		Domicilio domicilio = (Domicilio) domicilioDAO.leer(connection, "SysPK", "" + this.getDomicilioFk()).get(0);
+		Domicilio domicilio = (Domicilio) domicilioDAO.leer(connection, "Sys_PK", "" + this.getDomicilioFk()).get(0);
 		return domicilio;
 	}//FIN METODO
 	//FIN METODOS "DOMICILIO"
