@@ -20,8 +20,8 @@
                <children>
                   <VBox alignment="CENTER_LEFT">
                      <children>
-                        <Label styleClass="labelRobotoMedium16" text="Tipos Materia Prima" />
-                        <Label styleClass="labelRobotoMedium14" text="Gestión de los tipos de materia prima" />
+                        <Label styleClass="labelRobotoMedium16" text="Miscelaneos" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestión de los tipos miscelaneo utilizados en el catálogo de componentes" />
                      </children>
                   </VBox>
                </children>
