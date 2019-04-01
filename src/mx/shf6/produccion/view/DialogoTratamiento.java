@@ -1,7 +1,5 @@
 package mx.shf6.produccion.view;
 
-import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -90,7 +88,7 @@ public class DialogoTratamiento {
 	}//FIN METODO
 	
 	//MANEJADORES COMPONENTES	
-	@FXML private void vmanejadorBotonAceptar() {
+	@FXML private void manejadorBotonAceptar() {
 		if (this.validarDatos() && this.opcion == CREAR) {
 			this.tratamiento.setCodigo(this.campoTextoCodigo.getText());
 			this.tratamiento.setDescripcion(this.campoTextoDescripcion.getText());
