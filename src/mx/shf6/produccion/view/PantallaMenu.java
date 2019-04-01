@@ -35,6 +35,10 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaTipoMateriaPrima();
 	}//FIN METODO
 	
+	@FXML private void manejadorTipoMiscelaneo() {
+		this.mainApp.iniciarPantallaTipoMiscelaneo();
+	}//FIN METODO
+	
 	@FXML private void manejadorMenuTipoProducto() {
 		this.mainApp.iniciarPantallaTipoProducto();
 	}//FIN METODO
@@ -45,10 +49,6 @@ public class PantallaMenu {
 	
 	@FXML private void manejadorMenuMaterial() {
 		this.mainApp.iniciarPantallaMaterial();
-	}//FIN METODO
-	
-	@FXML private void manejadorTipoMiscelaneo() {
-		this.mainApp.iniciarPantallaTipoMiscelaneo();
 	}//FIN METODO
 	
 }//FIN CLASE
