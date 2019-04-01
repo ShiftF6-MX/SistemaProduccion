@@ -449,7 +449,7 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	//METODOS DIALOGOS
-	public void iniciarDialogoClientes(Cliente cliente , int opcion, Domicilio domicilio) {
+	public void iniciarDialogoClientes(Cliente cliente , int opcion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoClientes.fxml"));
@@ -459,7 +459,7 @@ public class MainApp extends Application {
 			this.escenarioDialogos.setScene(escenaDialogoClientes);
 			
 			DialogoClientes dialogoClientes = fxmlLoader.getController();
-			dialogoClientes.setMainApp(this, cliente, opcion, domicilio);
+			dialogoClientes.setMainApp(this, cliente, opcion);
 			
 			this.escenarioDialogos.showAndWait();
 		} catch (IOException | IllegalStateException ex) {

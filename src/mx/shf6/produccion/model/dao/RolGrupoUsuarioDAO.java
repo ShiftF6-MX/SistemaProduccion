@@ -17,7 +17,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	@Override
 	public boolean crear(Connection connection, Object rolgrupousuario){
 		RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
-		String query=" INSERT INTO rolgruposusuario (grupoUsuarioFk, rolFk) values ( ?, ?)";
+		String query=" INSERT INTO rolgruposusuario (GrupoUsuarioFK, RolFK) values ( ?, ?)";
 		try {			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario(connection).getSysPk());
@@ -37,7 +37,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 		String query ="";
 		ArrayList<Object> listaRolGrupoUsuario = new ArrayList<Object>();
 		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query="SELECT * FROM rolgruposusuario ORDER BY sysPK";
+			query="SELECT * FROM rolgruposusuario ORDER BY Sys_PK";
 			try {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(query);
@@ -54,7 +54,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 				e.printStackTrace();
 			}
 		}else {
-			query="SELECT * FROM rolgruposusuario WHERE " + campoBusqueda + " = ?  ORDER BY sysPK";
+			query="SELECT * FROM rolgruposusuario WHERE " + campoBusqueda + " = ?  ORDER BY Sys_PK";
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1, valorBusqueda);
@@ -79,7 +79,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	//METODO PARA HACER UPDATE EN LA TABLA ROLGRUPOSUSUARIO
 	@Override
 	public boolean modificar(Connection connection, Object rolgrupousuario){
-		String query="UPDATE rolgruposusuario SET grupoUsuarioFk = ?, rolFk = ? WHERE sysPK= ?;";
+		String query="UPDATE rolgruposusuario SET GrupoUsuarioFK = ?, RolFK = ? WHERE Sys_PK= ?;";
 		try {
 			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);			
@@ -99,7 +99,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	//METODO PARA HACER DELETE EN LA TABLA ROLGRUPOSUSUARIO
 	@Override
 	public boolean eliminar(Connection connection, Object rolgrupousuario) {
-		String query=" DELETE FROM rolgruposusuario WHERE sysPK= ?";
+		String query=" DELETE FROM rolgruposusuario WHERE Sys_PK= ?";
 		try {		
 			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
 			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);

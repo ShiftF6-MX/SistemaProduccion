@@ -16,18 +16,17 @@ public class ClienteDAO{
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createCliente(Connection connection, Cliente cliente) {
-		String consulta = "INSERT INTO clientes (Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String consulta = "INSERT INTO clientes (Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK) VALUES (?, ?, ?, CURDATE(), ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, cliente.getCodigo());
 			sentenciaPreparada.setString(2, cliente.getNombre());
 			sentenciaPreparada.setInt(3, cliente.getStatus());
-			sentenciaPreparada.setDate(4, cliente.getFechaRegistro());
-			sentenciaPreparada.setString(5, cliente.getRegistroContribuyente());
-			sentenciaPreparada.setString(6, cliente.getTelefono());
-			sentenciaPreparada.setString(7, cliente.getCorreo());
-			sentenciaPreparada.setString(8, cliente.getRutaCarpeta());
-			sentenciaPreparada.setInt(9, cliente.getDomicilioFk());
+			sentenciaPreparada.setString(4, cliente.getRegistroContribuyente());
+			sentenciaPreparada.setString(5, cliente.getTelefono());
+			sentenciaPreparada.setString(6, cliente.getCorreo());
+			sentenciaPreparada.setString(7, cliente.getRutaCarpeta());
+			sentenciaPreparada.setInt(8, cliente.getDomicilioFK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -54,7 +53,7 @@ public class ClienteDAO{
 				cliente.setTelefono(resultados.getString(7));
 				cliente.setCorreo(resultados.getString(8));
 				cliente.setRutaCarpeta(resultados.getString(9));
-				cliente.setDomicilioFk(resultados.getInt(10));
+				cliente.setDomicilioFK(resultados.getInt(10));
 				arrayListCliente.add(cliente);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -80,7 +79,7 @@ public class ClienteDAO{
 				cliente.setTelefono(resultados.getString(7));
 				cliente.setCorreo(resultados.getString(8));
 				cliente.setRutaCarpeta(resultados.getString(9));
-				cliente.setDomicilioFk(resultados.getInt(10));
+				cliente.setDomicilioFK(resultados.getInt(10));
 			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
@@ -106,7 +105,7 @@ public class ClienteDAO{
 				cliente.setTelefono(resultados.getString(7));
 				cliente.setCorreo(resultados.getString(8));
 				cliente.setRutaCarpeta(resultados.getString(9));
-				cliente.setDomicilioFk(resultados.getInt(10));
+				cliente.setDomicilioFK(resultados.getInt(10));
 				arrayListCliente.add(cliente);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -117,19 +116,18 @@ public class ClienteDAO{
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateCliente(Connection connection, Cliente cliente) {
-		String consulta = "UPDATE clientes SET Codigo = ?, Nombre = ?, Status = ?, FechaRegistro = ?, RegistroContribuyente = ?, Telefono = ?, Correo = ?, RutaCarpeta = ?, DomicilioFK = ? WHERE Sys_PK = ?";
+		String consulta = "UPDATE clientes SET Codigo = ?, Nombre = ?, Status = ?, RegistroContribuyente = ?, Telefono = ?, Correo = ?, RutaCarpeta = ?, DomicilioFK = ? WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, cliente.getCodigo());
 			sentenciaPreparada.setString(2, cliente.getNombre());
 			sentenciaPreparada.setInt(3, cliente.getStatus());
-			sentenciaPreparada.setDate(4, cliente.getFechaRegistro());
-			sentenciaPreparada.setString(5, cliente.getRegistroContribuyente());
-			sentenciaPreparada.setString(6, cliente.getTelefono());
-			sentenciaPreparada.setString(7, cliente.getCorreo());
-			sentenciaPreparada.setString(8, cliente.getRutaCarpeta());
-			sentenciaPreparada.setInt(9, cliente.getDomicilioFk());
-			sentenciaPreparada.setInt(10, cliente.getSysPK());
+			sentenciaPreparada.setString(4, cliente.getRegistroContribuyente());
+			sentenciaPreparada.setString(5, cliente.getTelefono());
+			sentenciaPreparada.setString(6, cliente.getCorreo());
+			sentenciaPreparada.setString(7, cliente.getRutaCarpeta());
+			sentenciaPreparada.setInt(8, cliente.getDomicilioFK());
+			sentenciaPreparada.setInt(9, cliente.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {

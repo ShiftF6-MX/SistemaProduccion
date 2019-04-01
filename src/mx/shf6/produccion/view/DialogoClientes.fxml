@@ -26,7 +26,7 @@
                         <Insets />
                      </HBox.margin>
                      <children>
-                        <TextField promptText="Nombre" styleClass="textFieldTitulos" text="José Israel Salazar Varela">
+                        <TextField fx:id="nombreField" promptText="Nombre" styleClass="textFieldTitulos" text="José Israel Salazar Varela">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -34,7 +34,7 @@
                               <Insets left="1.0" />
                            </padding>
                         </TextField>
-                        <TextField layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="CL0001">
+                        <TextField fx:id="codigoField" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="CL0001">
                            <padding>
                               <Insets left="1.0" />
                            </padding>
@@ -53,7 +53,7 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="3.0">
                            <children>
-                              <Label styleClass="labelRobotoMedium12" text="\$ 0.00" textFill="#ffffffd9">
+                              <Label fx:id="saldoField" styleClass="labelRobotoMedium12" text="\$ 0.00" textFill="#ffffffd9">
                                  <font>
                                     <Font name="Roboto Medium" size="13.0" />
                                  </font>
@@ -82,7 +82,7 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="3.0">
                            <children>
-                              <Label styleClass="labelRobotoMedium12" text="# 0" textFill="#ffffffd9">
+                              <Label fx:id="numeroProyectosField" styleClass="labelRobotoMedium12" text="# 0" textFill="#ffffffd9">
                                  <font>
                                     <Font name="Roboto Medium" size="13.0" />
                                  </font>
@@ -135,7 +135,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="SHI1311144S9">
+                                                <TextField fx:id="registroContribuyenteField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="SHI1311144S9">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -177,7 +177,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="/Proyectos/Clientes/CL0001/">
+                                                <TextField fx:id="rutaField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="/Proyectos/Clientes/CL0001/">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -223,7 +223,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="(791) 913 - 1508">
+                                                <TextField fx:id="telefonoField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="(791) 913 - 1508">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -265,15 +265,8 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" promptText="|" styleClass="textFieldTitulosDosBlack" text="Cliente Activo">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
-                                                <Label text="Ruta Carpeta" textFill="#000000de">
+                                                <ComboBox fx:id="statusCombo" prefHeight="25.0" prefWidth="230.0" />
+                                                <Label text="Estado Cliente" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
                                                    </font>
@@ -311,7 +304,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="contacto@gruposhift-f6.com.mx">
+                                                <TextField fx:id="correoField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="contacto@gruposhift-f6.com.mx">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -357,7 +350,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="10 de Septiembre del 2018">
+                                                <TextField fx:id="fechaRegistroField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="10 de Septiembre del 2018">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -415,7 +408,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Avenida Carlos Lazo">
+                                                <TextField fx:id="calleField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Avenida Carlos Lazo">
                                                    <VBox.margin>
                                                       <Insets />
                                                    </VBox.margin>
@@ -457,7 +450,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Ciudad Sahagún">
+                                                <TextField fx:id="localidadField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Ciudad Sahagún">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -503,7 +496,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="51-A">
+                                                <TextField fx:id="numeroExteriorField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="51-A">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -545,14 +538,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Tepeapulco">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
+                                                <ComboBox fx:id="municipioCombo" prefHeight="25.0" prefWidth="233.0" />
                                                 <Label text="Municipio" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -591,7 +577,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Sin Número">
+                                                <TextField fx:id="numeroInteriorField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Sin Número">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -633,14 +619,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Hidalgo">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
+                                                <ComboBox fx:id="estadoCombo" prefHeight="25.0" prefWidth="232.0" />
                                                 <Label text="Estado" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -679,7 +658,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Hidalgo">
+                                                <TextField fx:id="coloniaField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Hidalgo">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -721,7 +700,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="43998">
+                                                <TextField fx:id="codigoPostalField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="43998">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -755,7 +734,7 @@
       </TabPane>
       <HBox alignment="TOP_RIGHT" layoutX="560.0" layoutY="114.0" spacing="3.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="76.0">
          <children>
-            <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="114.0">
+            <ImageView fx:id="guardar" fitHeight="28.0" fitWidth="28.0" onMouseClicked="#btnGuardar" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="114.0">
                <image>
                   <Image url="@images/1x/SaveIcon.png" />
                </image>
@@ -763,7 +742,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="editar" fitHeight="28.0" fitWidth="28.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#btnEditar" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -771,7 +750,7 @@
                   <Image url="@images/1x/UpdateIcon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="34.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="eliminar" fitHeight="28.0" fitWidth="28.0" layoutX="34.0" layoutY="10.0" onMouseClicked="#btnEliminar" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

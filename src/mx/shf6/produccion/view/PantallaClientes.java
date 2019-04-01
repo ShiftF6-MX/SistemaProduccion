@@ -28,7 +28,9 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.DomicilioDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -37,11 +39,12 @@ public class PantallaClientes {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Cliente cliente;
+	private Domicilio domicilio;
 	private ClienteDAO clienteDAO;
 	private int cantidadRenglonesTabla;
 	private int cantidadRegistrosTablaClientes;
 	private int cantidadPaginasTablaClientes;
-	private ArrayList<Object> listaClientes;
+	private ArrayList<Cliente> listaClientes;
 	
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TableView<Cliente> tablaCliente;
@@ -59,6 +62,7 @@ public class PantallaClientes {
 	@FXML private void initialize() {
 		this.cliente = new Cliente();
 		this.clienteDAO = new ClienteDAO();
+		this.domicilio  = new Domicilio();
 		this.buscarCliente.setOnKeyPressed(new EventHandler<KeyEvent>() {
     		@Override
     		public void handle(KeyEvent event) {
@@ -74,8 +78,8 @@ public class PantallaClientes {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
     		tablaCliente.setItems(null);
     		listaClientes.clear();
-    		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", buscarCliente.getText());
-    		tablaCliente.setItems(clienteDAO.toObservableList(listaClientes));
+    		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection(), this.buscarCliente.getText());
+    		tablaCliente.setItems(ClienteDAO.toObservableList(listaClientes));
     	} else {
     		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
     	}//FIN IF-ELSE
@@ -85,7 +89,7 @@ public class PantallaClientes {
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", ""); 
+		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection()); 
 		this.actualizarTabla();
 		//asignarVariables();
 	}//FIN METODO	
@@ -95,6 +99,7 @@ public class PantallaClientes {
     	codigoColumna.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
         nombreColumna.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
         registroContribuyentesColumna.setCellValueFactory(cellData -> cellData.getValue().registroContribuyenteProperty());
+        telefonoColumna.setCellValueFactory(cellData -> cellData.getValue().telefonoProperty());
         correoColumna.setCellValueFactory(cellData -> cellData.getValue().correoProperty());
         
         accionesColumn.setCellValueFactory(new PropertyValueFactory<>("DUM"));
@@ -154,7 +159,7 @@ public class PantallaClientes {
 		            	botonVer.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-			            		mainApp.iniciarDialogoClientes();
+		            			verCliente(cliente, domicilio);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
@@ -164,7 +169,8 @@ public class PantallaClientes {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
 			        			cliente = getTableView().getItems().get(getIndex());
 			            		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
-			            			clienteDAO.eliminar(mainApp.getConnection(), cliente);
+			            			ClienteDAO.deleteCliente(mainApp.getConnection(), cliente);
+			            			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
 			            			actualizarTabla();
 			            		}//FIN IF
 		            		} else
@@ -213,21 +219,30 @@ public class PantallaClientes {
 	
 	
 	@FXML private void nuevoCliente() {
-		this.mainApp.iniciarDialogoClientes();
+		Cliente cliente = new Cliente(); 
+		
+		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.CREAR);
+		this.actualizarTabla();
 	}//FIN METODO	
-
+	
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
-	private void actualizarTabla() {
+	@FXML private void actualizarTabla() {
 		tablaCliente.setItems(null);
 		listaClientes.clear();
-		listaClientes = clienteDAO.leer(this.mainApp.getConnection(), "", "");
+		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection());
 		if (!listaClientes.isEmpty()) {
 			//this.asignarVariables();
-			tablaCliente.setItems(clienteDAO.toObservableList(listaClientes));
+			tablaCliente.setItems(ClienteDAO.toObservableList(listaClientes));
 	    	buscarCliente.setText("");	
 			this.paginacionTablaClientes.setDisable(false);
 		} else
 			this.paginacionTablaClientes.setDisable(true);
+	}//FIN METODO
+	
+	private void verCliente(Cliente cliente, Domicilio domicilio) {
+		
+		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.MOSTRAR);
+		this.actualizarTabla();
 	}//FIN METODO
 	 
 	private void asignarVariables() {

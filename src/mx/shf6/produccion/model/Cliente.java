@@ -21,7 +21,7 @@ public class Cliente {
 	public StringProperty telefono;
 	public StringProperty correo;
 	public StringProperty rutaCarpeta;
-	public ObjectProperty<Integer> domicilioFk;
+	public ObjectProperty<Integer> domicilioFK;
 	
 	//CONSTANTES PARA "STATUS"
 	public static final int BLOQUEADO = 0;
@@ -33,7 +33,7 @@ public class Cliente {
 		this(0,"","",0,null,"","","","",0);
 	}//FIN CONSTRUCTOR
 	
-	public Cliente (Integer sysPK, String codigo, String nombre, int status, Date fechaRegistro, String registroContribuyente, String telefono, String correo, String rutaCarpeta, int domicilioFk) {
+	public Cliente (Integer sysPK, String codigo, String nombre, int status, Date fechaRegistro, String registroContribuyente, String telefono, String correo, String rutaCarpeta, int domicilioFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.nombre = new SimpleStringProperty(nombre);
@@ -43,7 +43,7 @@ public class Cliente {
 		this.telefono = new SimpleStringProperty(telefono);
 		this.correo = new SimpleStringProperty(correo);
 		this.rutaCarpeta = new SimpleStringProperty(rutaCarpeta);
-		this.domicilioFk = new SimpleObjectProperty<Integer>(domicilioFk);
+		this.domicilioFK = new SimpleObjectProperty<Integer>(domicilioFK);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -195,18 +195,16 @@ public class Cliente {
 	//FIN METODOS "RUTA CARPETA"
 	
 	//METODOS PARA ACCESO A "DOMICILIO"
-	public void setDomicilioFk(Integer domicilioFk) {
-		this.domicilioFk.set(domicilioFk);
+	public void setDomicilioFK(Integer domicilioFk) {
+		this.domicilioFK.set(domicilioFk);
 	}//FIN METODO
 	
-	public Integer getDomicilioFk() {
-		return this.domicilioFk.get();
+	public Integer getDomicilioFK() {
+		return this.domicilioFK.get();
 	}//FIN METODO
 	
 	public Domicilio getDomicilio(Connection connection) {
-		DomicilioDAO domicilioDAO = new DomicilioDAO();
-		Domicilio domicilio = (Domicilio) domicilioDAO.leer(connection, "Sys_PK", "" + this.getDomicilioFk()).get(0);
-		return domicilio;
+		return DomicilioDAO.readDomicilio(connection, this.getDomicilioFK());
 	}//FIN METODO
 	//FIN METODOS "DOMICILIO"
 	

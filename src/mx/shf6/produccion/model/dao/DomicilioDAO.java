@@ -7,28 +7,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.utilities.Notificacion;
 
 
-public class DomicilioDAO implements ObjectDAO {
+public class DomicilioDAO {
 	
 	//METODO PARA HACER CREATE EN LA TABLA DOMICILIOS
-	@Override
-	public boolean crear(Connection connection, Object domicilio) {	
-		Domicilio claseDomicilio=(Domicilio)domicilio;
+	public static boolean createDomicilio(Connection connection, Domicilio domicilio) {	
 		String query = "INSERT INTO domicilios (calle, numeroInterior, numeroExterior, colonia, localidad, municipio, estado, codigoPostal) "
 				+ "values ( ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {	
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, claseDomicilio.getCalle());
-			preparedStatement.setString(2, claseDomicilio.getNumeroInterior());
-			preparedStatement.setString(3, claseDomicilio.getNumeroExterior());
-			preparedStatement.setString(4, claseDomicilio.getColonia());
-			preparedStatement.setString(5, claseDomicilio.getLocalidad());
-			preparedStatement.setString(6, claseDomicilio.getMunicipio());
-			preparedStatement.setString(7, claseDomicilio.getEstado());
-			preparedStatement.setString(8, claseDomicilio.getCodigoPostal());
+			preparedStatement.setString(1, domicilio.getCalle());
+			preparedStatement.setString(2, domicilio.getNumeroInterior());
+			preparedStatement.setString(3, domicilio.getNumeroExterior());
+			preparedStatement.setString(4, domicilio.getColonia());
+			preparedStatement.setString(5, domicilio.getLocalidad());
+			preparedStatement.setString(6, domicilio.getMunicipio());
+			preparedStatement.setString(7, domicilio.getEstado());
+			preparedStatement.setString(8, domicilio.getCodigoPostal());
 			preparedStatement.execute();
 			return true;   
 		} catch (SQLException ex) {
@@ -38,93 +37,86 @@ public class DomicilioDAO implements ObjectDAO {
 	}//FIN METODO	
 	
 	//METODO PARA HACER SELECT EN LA TABLA DOMICILIOS
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query = "";
-		ArrayList<Object> listaDomicilio = new ArrayList<Object>();
-		if (campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query = "SELECT * FROM domicilios ORDER BY sysPK;";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);  
-				Domicilio domicilio = null;
-				while (resultSet.next()) {
-					domicilio=new Domicilio();
-					domicilio.setSysPk(Integer.parseInt(resultSet.getString(1)));
-					domicilio.setCalle(resultSet.getString(2));
-					domicilio.setNumeroInterior(resultSet.getString(3));
-					domicilio.setNumeroExterior(resultSet.getString(4));
-					domicilio.setColonia(resultSet.getString(5));
-					domicilio.setLocalidad(resultSet.getString(6));
-					domicilio.setMunicipio(resultSet.getString(7));
-					domicilio.setEstado(resultSet.getString(8));
-					domicilio.setCodigoPostal(resultSet.getString(9));
-					listaDomicilio.add(domicilio);
-				}//FIN WHILE
-			} catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		} else {
-			query = "SELECT * FROM domicilios WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
-			try {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				Domicilio domicilio = null;
-				while (resultSet.next()) {
-					domicilio=new Domicilio();
-					domicilio.setSysPk(Integer.parseInt(resultSet.getString(1)));
-					domicilio.setCalle(resultSet.getString(2));
-					domicilio.setNumeroInterior(resultSet.getString(3));
-					domicilio.setNumeroExterior(resultSet.getString(4));
-					domicilio.setColonia(resultSet.getString(5));
-					domicilio.setLocalidad(resultSet.getString(6));
-					domicilio.setMunicipio(resultSet.getString(7));
-					domicilio.setEstado(resultSet.getString(8));
-					domicilio.setCodigoPostal(resultSet.getString(9));
-					listaDomicilio.add(domicilio);
-				}//FIN WHILE
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}//FIN TRY/CATCH
-		}//FIN IF/ELSE
-		return listaDomicilio;
-	}//FIN METODO	
 	
-	//METODO PARA HACER UPDATE EN LA TABLA DOMICILIOS
-	@Override
-	public boolean modificar(Connection connection, Object domicilio) {
-		String query = "UPDATE domicilios "
-				+ "SET  calle = ?, numeroInterior = ?, numeroExterior = ?, colonia = ?, localidad = ?, municipio = ?, estado = ?, codigoPostal = ? "
-				+ "WHERE sysPK = ?";
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Domicilio> readDomicilio(Connection connection) {
+		ArrayList<Domicilio> arrayListDomicilio = new ArrayList<Domicilio>();
+		String consulta = "SELECT Sys_PK, Calle, NumeroExterior, NumeroInterior, Colonia, Localidad, Municipio, Estado, CodigoPostal FROM domicilios";
 		try {
-			Domicilio claseDomicilio=(Domicilio)domicilio;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, claseDomicilio.getCalle());
-			preparedStatement.setString(2, claseDomicilio.getNumeroInterior());
-			preparedStatement.setString(3, claseDomicilio.getNumeroExterior());
-			preparedStatement.setString(4, claseDomicilio.getColonia());
-			preparedStatement.setString(5, claseDomicilio.getLocalidad());
-			preparedStatement.setString(6, claseDomicilio.getMunicipio());
-			preparedStatement.setString(7, claseDomicilio.getEstado());
-			preparedStatement.setString(8, claseDomicilio.getCodigoPostal());
-			preparedStatement.setInt(9, claseDomicilio.getSysPk());
-			preparedStatement.execute();
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Domicilio domicilio = new Domicilio();
+				domicilio.setSysPK(resultados.getInt(1));
+				domicilio.setCalle(resultados.getString(2));
+				domicilio.setNumeroExterior(resultados.getString(3));
+				domicilio.setNumeroInterior(resultados.getString(4));
+				domicilio.setColonia(resultados.getString(5));
+				domicilio.setLocalidad(resultados.getString(6));
+				domicilio.setMunicipio(resultados.getString(7));
+				domicilio.setEstado(resultados.getString(8));
+				domicilio.setCodigoPostal(resultados.getString(9));
+				arrayListDomicilio.add(domicilio);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListDomicilio;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static Domicilio readDomicilio(Connection connection, int sysPK) {
+		Domicilio domicilio = new Domicilio();
+		String consulta = "SELECT Sys_PK, Calle, NumeroExterior, NumeroInterior, Colonia, Localidad, Municipio, Estado, CodigoPostal FROM domicilios WHERE Sys_PK=" + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				domicilio.setSysPK(resultados.getInt(1));
+				domicilio.setCalle(resultados.getString(2));
+				domicilio.setNumeroExterior(resultados.getString(3));
+				domicilio.setNumeroInterior(resultados.getString(4));
+				domicilio.setColonia(resultados.getString(5));
+				domicilio.setLocalidad(resultados.getString(6));
+				domicilio.setMunicipio(resultados.getString(7));
+				domicilio.setEstado(resultados.getString(8));
+				domicilio.setCodigoPostal(resultados.getString(9));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return domicilio;
+	}//FIN METODO
+	
+	public static boolean updateDomicilio(Connection connection, Domicilio domicilio) {
+		String consulta = "UPDATE domicilios SET Calle = ?, NumeroExterior = ?, NumeroInterior = ?, Colonia = ?, Localidad = ?, Municipio = ?, Estado = ?, CodigoPostal = ? WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, domicilio.getCalle());
+			sentenciaPreparada.setString(2, domicilio.getNumeroExterior());
+			sentenciaPreparada.setString(3, domicilio.getNumeroInterior());
+			sentenciaPreparada.setString(4,  domicilio.getColonia());
+			sentenciaPreparada.setString(5, domicilio.getLocalidad());
+			sentenciaPreparada.setString(6, domicilio.getMunicipio());
+			sentenciaPreparada.setString(7, domicilio.getEstado());
+			sentenciaPreparada.setString(8, domicilio.getCodigoPostal());
+			sentenciaPreparada.setInt(9, domicilio.getSysPK());
+			sentenciaPreparada.execute();
 			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO	
 	
+	
 	//METODO PARA HACER DELETE EN LA TABLA DOMICILIOS
-	@Override
-	public boolean eliminar(Connection connection, Object domicilio) {
-		String query = "DELETE FROM domicilios WHERE sysPK = ?";
+	public static boolean deleteDomicilio(Connection connection, Object domicilio) {
+		String query = "DELETE FROM domicilios WHERE Sys_PK = ?";
 		try {	
 			Domicilio claseDomicilio=(Domicilio)domicilio;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, claseDomicilio.getSysPk());
+			preparedStatement.setInt(1, claseDomicilio.getSysPK());
 			preparedStatement.execute();
 			return true;
 		} catch (SQLException e) {
@@ -134,8 +126,8 @@ public class DomicilioDAO implements ObjectDAO {
 	}//FIN METODO		
 	
 	//METODO PARA OBTENER EL ULTIMO SYSPK AGREGADO A LA TABLA 
-	public int ultimoSysPk(Connection connection) {
-		String query = "SELECT sysPK FROM domicilios order by sysPK asc";
+	public static int ultimoSysPk(Connection connection) {
+		String query = "SELECT Sys_PK FROM domicilios order by Sys_PK asc";
 		int ultimoSysPk = 0;
 		try {
 			Statement statement = connection.createStatement();
@@ -149,5 +141,7 @@ public class DomicilioDAO implements ObjectDAO {
 		}//FIN TRY/CATCH
 		return ultimoSysPk;
 	}//FIN METODO
+
+	
 
 }//FIN CLASE

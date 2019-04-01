@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class Domicilio {
 
 	//PROPIEDADES
-	private ObjectProperty<Integer> sysPk;
+	private ObjectProperty<Integer> sysPK;
 	private StringProperty calle;
 	private StringProperty numeroInterior;
 	private StringProperty numeroExterior;
@@ -24,9 +24,9 @@ public class Domicilio {
 	}//FIN CONSTRUCTO
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public Domicilio(Integer sysPk, String calle, String numeroInterior, String numeroExterior, String colonia, String localidad,
+	public Domicilio(Integer sys_PK, String calle, String numeroInterior, String numeroExterior, String colonia, String localidad,
 			String municipio, String estado, String codigoPostal) {
-		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
+		this.sysPK = new SimpleObjectProperty<Integer>(sys_PK);
 		this.calle = new SimpleStringProperty(calle);
 		this.numeroInterior = new SimpleStringProperty(numeroInterior);
 		this.numeroExterior = new SimpleStringProperty(numeroExterior);
@@ -38,16 +38,16 @@ public class Domicilio {
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
-	public void setSysPk(Integer sysPk) {
-		this.sysPk.set(sysPk);
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
 	}//FIN METODO
 	
-	public Integer getSysPk() {
-		return this.sysPk.get();
+	public Integer getSysPK() {
+		return this.sysPK.get();
 	}//FIN METODO
 	
 	public ObjectProperty<Integer> sysPkProperty() {
-		return this.sysPk;
+		return this.sysPK;
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	
@@ -164,7 +164,7 @@ public class Domicilio {
 	//FIN METODOS "CODIGO POSTAL"
 	
 	public String showInformacion() {
-		String informacionDomicilio ="INFORMACION DE DOMICILIO\nSysPk: " + this.getSysPk() + "\n"
+		String informacionDomicilio ="INFORMACION DE DOMICILIO\nSysPK: " + this.getSysPK() + "\n"
 				+ "Calle: " + this.getCalle() + " #Interior: " + this.getNumeroInterior() + " #Exterior: " + this.getNumeroExterior() + "\n"
 						+ "Colonia: " + this.getColonia() + " Localidad: " + this.getLocalidad() + " Municipio: " + this.getMunicipio() + "\n"
 								+ "Estado: " + this.getEstado() + " CodigoPostal: " + this.getCodigoPostal();

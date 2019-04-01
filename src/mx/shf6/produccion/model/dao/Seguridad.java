@@ -14,9 +14,9 @@ public class Seguridad {
 		//METODO PARA VERIFICAR EL ACCESO A LOS COMPONENTES SEGUN EL USUARIO
 		String query="SELECT * "
 				+ "FROM rolgruposusuario "
-				+ "INNER JOIN roles ON rolgruposusuario.rol = roles.sysPK "
-				+ "WHERE rolgruposusuario.grupoUsuario = "+grupoUsuario+" "
-				+ "AND roles.codigoItem = '"+codigoItem+"';";			
+				+ "INNER JOIN roles ON rolgruposusuario.RolFK = roles.Sys_PK "
+				+ "WHERE rolgruposusuario.GrupoUsuarioFK = "+grupoUsuario+" "
+				+ "AND roles.CodigoItem = '"+codigoItem+"';";			
 		try {	
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
