@@ -43,12 +43,16 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaTipoProducto();
 	}//FIN METODO
 	
+	@FXML private void manejadorMenuMaterial() {
+		this.mainApp.iniciarPantallaMaterial();
+	}//FIN METODO
+	
 	@FXML private void manejadorMenuAcabado() {
 		this.mainApp.iniciarPantallaAcabado();
 	}//FIN METODO
 	
-	@FXML private void manejadorMenuMaterial() {
-		this.mainApp.iniciarPantallaMaterial();
+	@FXML private void manejadorMenuTratamiento() {
+		this.mainApp.iniciarPantallaTratamiento();
 	}//FIN METODO
 	
 }//FIN CLASE
