@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.TipoMateriaPrima;
@@ -47,6 +48,7 @@ import mx.shf6.produccion.view.PantallaCotizaciones;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
+import mx.shf6.produccion.view.PantallaSecundariaCotizaciones;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
 import mx.shf6.produccion.view.PantallaTipoProducto;
@@ -71,6 +73,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaEspera;
 	private AnchorPane pantallaClientes;
 	private AnchorPane pantallaCotizaciones;
+	private AnchorPane pantallaSecundariaCotizaciones;
 	private AnchorPane pantallaTipoMateriaPrima;
 	private AnchorPane pantallaTipoMiscelaneo;
 	private AnchorPane pantallaTipoProducto;
@@ -350,6 +353,20 @@ public class MainApp extends Application {
 			this.pantallaBase.setCenter(this.pantallaCotizaciones);
 			PantallaCotizaciones pantallaCotizaciones = fxmlLoader.getController();
 			pantallaCotizaciones.setMainApp(this);
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//INICIAR PANTALLA SECUNDARIA COTIZACIONES
+	public void iniciarPantallaSecundariaCotizaciones(Cotizacion cotizacion, int opcion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaSecundariaCotizaciones.fxml"));
+			this.pantallaSecundariaCotizaciones = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaSecundariaCotizaciones);
+			PantallaSecundariaCotizaciones pantallaSecundariaCotizaciones = fxmlLoader.getController();
+			pantallaSecundariaCotizaciones.setMainApp(this);
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
