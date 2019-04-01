@@ -46,13 +46,13 @@ import mx.shf6.produccion.view.DialogoTratamiento;
 import mx.shf6.produccion.view.PantallaAcabado;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaClientes;
+import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
 import mx.shf6.produccion.view.PantallaSecundariaCotizaciones;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
-import mx.shf6.produccion.view.PantallaTipoProducto;
 import mx.shf6.produccion.view.PantallaTratamiento;
 import mx.shf6.produccion.view.PantallaTipoMiscelaneo;
 
@@ -79,7 +79,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaTipoMateriaPrima;
 	private AnchorPane pantallaTipoMiscelaneo;
 	private AnchorPane pantallaMaterial;
-	private AnchorPane pantallaTipoProducto;
+	private AnchorPane pantallaComponente;
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaTratamiento;
 	
@@ -344,6 +344,21 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	//INICIAR PANTALLA TIPO PRODUCTO
+	public void iniciarPantallaComponente() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaComponente.fxml"));
+			this.pantallaComponente = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaComponente);
+			
+			PantallaComponente pantallaComponente = fxmlLoader.getController();
+			pantallaComponente.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
 	//INICIAR PANTALLA SECUNDARIA COTIZACIONES
 	public void iniciarPantallaSecundariaCotizaciones(Cotizacion cotizacion, int opcion) {
 		try {
@@ -383,21 +398,6 @@ public class MainApp extends Application {
 			
 			PantallaTipoMiscelaneo pantallaTipoMiscelaneo = fxmlLoader.getController();
 			pantallaTipoMiscelaneo.setMainApp(this);
-		} catch(IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-	}//FIN METODO
-	
-	//INICIAR PANTALLA TIPO PRODUCTO
-	public void iniciarPantallaTipoProducto() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaTipoProducto.fxml"));
-			this.pantallaTipoProducto = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaTipoProducto);
-			
-			PantallaTipoProducto pantallaTipoProducto = fxmlLoader.getController();
-			pantallaTipoProducto.setMainApp(this);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
