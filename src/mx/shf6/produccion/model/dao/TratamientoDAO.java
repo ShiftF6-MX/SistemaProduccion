@@ -16,7 +16,7 @@ public class TratamientoDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createTratamiento(Connection connection,Tratamiento tratamiento ) {
-		String consulta = "INSERT INTO tratamiento (Codigo, Descripcion, Status)";
+		String consulta = "INSERT INTO tratamiento (Codigo, Descripcion, Status) VALUES (?, ?, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, tratamiento.getCodigo());
@@ -33,7 +33,7 @@ public class TratamientoDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Tratamiento> readTratamiento(Connection connection) {
 		ArrayList<Tratamiento> arrayListTratamiento = new ArrayList<Tratamiento>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM Tratamiento";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tratamiento";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);  
@@ -42,6 +42,7 @@ public class TratamientoDAO {
 				tratamiento.setSysPk(resultados.getInt(1));
 				tratamiento.setCodigo(resultados.getString(2));
 				tratamiento.setDescripcion(resultados.getString(3));
+				tratamiento.setStatus(resultados.getInt(4));
 				arrayListTratamiento.add(tratamiento);
 			}//FIN WHILE
 		} catch (SQLException ex) {

@@ -11,22 +11,23 @@ public class Material {
 	private ObjectProperty<Integer> sysPK;
 	private StringProperty codigo;
 	private StringProperty descripcion;
+	private StringProperty gradoMaterial;
 	private StringProperty status;
 	
 	//CONSTRUCTOR VACIO
 	public Material() {
-		this(0, "", "", "");
+		this(0, "", "", "", "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public Material(Integer sysPK, String codigo, String descripcion, String status) {
+	public Material(Integer sysPK, String codigo, String descripcion, String gradoMaterial, String status) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
+		this.gradoMaterial = new SimpleStringProperty(gradoMaterial);
 		this.status = new SimpleStringProperty(status);
 	}//FIN CONSTRUCTOR
 	
-	//METODOS PARA ACCESO A "SYSPK"
 	public void setSysPK(Integer sysPK) {
 		this.sysPK.set(sysPK);
 	}//FIN METODO
@@ -38,9 +39,7 @@ public class Material {
 	public ObjectProperty<Integer> sysPKProperty() {
 		return this.sysPK;
 	}//FIN METODO
-	//FIN METODOS "SYSPK"
 	
-	//METODOS DE ACCESO A "CODIGO"
 	public void setCodigo(String codigo) {
 		this.codigo.set(codigo);
 	}//FIN METODO
@@ -52,9 +51,7 @@ public class Material {
 	public StringProperty codigoProperty(){
 		return this.codigo;
 	}//FIN METODO
-	//FIN METODOS "CODIGO"
 	
-	//METODOS DE ACCESO A "DESCRIPCION"
 	public void setDescripcion (String descripcion) {
 		this.descripcion.set(descripcion);
 	}//FIN METODO
@@ -66,7 +63,18 @@ public class Material {
 	public StringProperty descripcionProperty() {
 		return this.descripcion;
 	}//FIN METODO
-	//FIN METODOS DE ACCESO A "DESCRIPCION"	
+	
+	public void setGradoMaterial (String gradoMaterial) {
+		this.gradoMaterial.set(gradoMaterial);
+	}//FIN METODO
+	
+	public String getGradoMaterial() {
+		return this.gradoMaterial.get();
+	}//FIN METODO
+	
+	public StringProperty gradoMaterialProperty() {
+		return this.gradoMaterial;
+	}//FIN METODO
 	
 	public void setStatus(int status) {
 		this.status.set(Status.toString(status));

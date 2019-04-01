@@ -16,12 +16,13 @@ public class MaterialDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 		public static boolean createMaterial(Connection connection, Material material) {
-			String consulta = "INSERT INTO materiales (Codigo, Descripcion, Status) VALUES (?, ?, ?)";
+			String consulta = "INSERT INTO materiales (Codigo, Descripcion, GradoMaterial, Status) VALUES (?, ?, ?, ?)";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setString(1, material.getCodigo());
 				sentenciaPreparada.setString(2, material.getDescripcion());
-				sentenciaPreparada.setInt(3,  material.getStatusFK());
+				sentenciaPreparada.setString(3, material.getGradoMaterial());
+				sentenciaPreparada.setInt(4,  material.getStatusFK());
 				sentenciaPreparada.execute();
 				return true;
 			} catch (SQLException ex) {
@@ -33,7 +34,7 @@ public class MaterialDAO {
 		//METODO PARA OBTENER UN REGISTRO
 		public static ArrayList<Material> readMaterial(Connection connection) {
 			ArrayList<Material> arrayListMaterial = new ArrayList<Material>();
-			String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM materiales";
+			String consulta = "SELECT Sys_PK, Codigo, Descripcion, GradoMaterial, Status FROM materiales";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -42,7 +43,8 @@ public class MaterialDAO {
 					material.setSysPK(resultados.getInt(1));
 					material.setCodigo(resultados.getString(2));
 					material.setDescripcion(resultados.getString(3));
-					material.setStatus(resultados.getInt(4));
+					material.setGradoMaterial(resultados.getString(4));
+					material.setStatus(resultados.getInt(5));
 					arrayListMaterial.add(material);
 				}//FIN WHILE
 			} catch (SQLException ex) {
@@ -54,7 +56,7 @@ public class MaterialDAO {
 		//METODO PARA OBTENER UN REGISTRO
 		public static Material readMaterial(Connection connection, int sysPK) {
 			Material material = new Material();
-			String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM materiales WHERE Sys_PK = " + sysPK;
+			String consulta = "SELECT Sys_PK, Codigo, Descripcion, GradoMaterial, Status FROM materiales WHERE Sys_PK = " + sysPK;
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -62,7 +64,8 @@ public class MaterialDAO {
 					material.setSysPK(resultados.getInt(1));
 					material.setCodigo(resultados.getString(2));
 					material.setDescripcion(resultados.getString(3));
-					material.setStatus(resultados.getInt(4));
+					material.setGradoMaterial(resultados.getString(4));
+					material.setStatus(resultados.getInt(5));
 				}//FIN WHILE
 			} catch (SQLException ex) {
 				Notificacion.dialogoException(ex);
@@ -73,7 +76,7 @@ public class MaterialDAO {
 		//METODO PARA OBTENER UN REGISTRO
 		public static ArrayList<Material> readMaterial(Connection connection, String like) {
 			ArrayList<Material> arrayListMaterial = new ArrayList<Material>();
-			String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM materiales WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
+			String consulta = "SELECT Sys_PK, Codigo, Descripcion, GradoMaterial, Status FROM materiales WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -82,7 +85,8 @@ public class MaterialDAO {
 					material.setSysPK(resultados.getInt(1));
 					material.setCodigo(resultados.getString(2));
 					material.setDescripcion(resultados.getString(3));
-					material.setStatus(resultados.getInt(4));
+					material.setGradoMaterial(resultados.getString(4));
+					material.setStatus(resultados.getInt(5));
 					arrayListMaterial.add(material);
 				}//FIN WHILE
 			} catch (SQLException ex) {
@@ -93,13 +97,14 @@ public class MaterialDAO {
 		
 		//METODO PARA CREAR UN REGISTRO
 		public static boolean updateMaterial(Connection connection, Material material) {
-			String consulta = "UPDATE tipoproducto SET Codigo = ?, Descripcion = ?, Status = ? WHERE Sys_PK = ?";
+			String consulta = "UPDATE materiales SET Codigo = ?, Descripcion = ?, GradoMaterial = ?, Status = ? WHERE Sys_PK = ?";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setString(1, material.getCodigo());
 				sentenciaPreparada.setString(2, material.getDescripcion());
-				sentenciaPreparada.setInt(3,  material.getStatusFK());
-				sentenciaPreparada.setInt(4, material.getSysPK());
+				sentenciaPreparada.setString(3, material.getGradoMaterial());
+				sentenciaPreparada.setInt(4, material.getStatusFK());
+				sentenciaPreparada.setInt(5, material.getSysPK());
 				sentenciaPreparada.execute();
 				return true;
 			} catch (SQLException ex) {
@@ -110,7 +115,7 @@ public class MaterialDAO {
 		
 		//METODO PARA CREAR UN REGISTRO
 		public static boolean deleteMaterial(Connection connection, Material material) {
-			String consulta = "DELETE FROM tipoproducto WHERE Sys_PK = ?";
+			String consulta = "DELETE FROM materiales WHERE Sys_PK = ?";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setInt(1, material.getSysPK());

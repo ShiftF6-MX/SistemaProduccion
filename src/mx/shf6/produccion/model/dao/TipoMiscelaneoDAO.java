@@ -16,7 +16,7 @@ public class TipoMiscelaneoDAO {
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createTipoMiscelaneo(Connection connection, TipoMiscelaneo tipoMiscelaneo) {
-		String consulta = "INSERT INTO tipoMiscelaneo (Codigo, Descripcion, Status) VALUES (?, ?, ?)";
+		String consulta = "INSERT INTO tipomiscelaneos (Codigo, Descripcion, Status) VALUES (?, ?, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, tipoMiscelaneo.getCodigo());
@@ -33,7 +33,7 @@ public class TipoMiscelaneoDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<TipoMiscelaneo> readTipoMiscelaneo(Connection connection) {
 		ArrayList<TipoMiscelaneo> arrayListTipoMiscelaneo = new ArrayList<TipoMiscelaneo>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipoMiscelaneo";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipomiscelaneos";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -54,7 +54,7 @@ public class TipoMiscelaneoDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static TipoMiscelaneo readTipoMiscelaneo(Connection connection, int sysPK) {
 		TipoMiscelaneo tipoMiscelaneo = new TipoMiscelaneo();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status from tipoMiscelaneo WHERE Sys_PK = " + sysPK;
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status from tipomiscelaneos WHERE Sys_PK = " + sysPK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -73,7 +73,7 @@ public class TipoMiscelaneoDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<TipoMiscelaneo> readTipoMiscelaneo(Connection connection, String like) {
 		ArrayList<TipoMiscelaneo> arrayListTipoMiscelaneo = new ArrayList<TipoMiscelaneo>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipoMiscelaneo WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%';";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Status FROM tipomiscelaneos WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%';";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -93,7 +93,7 @@ public class TipoMiscelaneoDAO {
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateTipoMiscelaneo(Connection connection, TipoMiscelaneo tipoMiscelaneo) {
-		String consulta = "UPDATE tipoMiscelaneo SET Codigo = ?, Descripcion = ?, Status = ? WHERE Sys_PK = ?";
+		String consulta = "UPDATE tipomiscelaneos SET Codigo = ?, Descripcion = ?, Status = ? WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, tipoMiscelaneo.getCodigo());
@@ -110,7 +110,7 @@ public class TipoMiscelaneoDAO {
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean deleteTipoMiscelaneo(Connection connection, TipoMiscelaneo tipoMiscelaneo) {
-		String consulta = "DELETE FROM tipoMiscelaneo WHERE Sys_PK = ?";
+		String consulta = "DELETE FROM tipomiscelaneos WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, tipoMiscelaneo.getSysPK());
