@@ -5,58 +5,94 @@ import java.sql.Date;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import mx.shf6.produccion.model.dao.DisenoDAO;
-import mx.shf6.produccion.model.dao.SolicitudDAO;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import mx.shf6.produccion.model.dao.CotizacionDAO;
 
-public class DetalleSolicitud {
+public class DetalleCotizacion {
 
 	//PROPIEDADES
-	public ObjectProperty<Integer> sysPk;
-	public ObjectProperty<Integer> cantidad;
-	public ObjectProperty<Date> fechaEntrega;
-	public ObjectProperty<Integer> disenoFk;
-	public ObjectProperty<Integer> solicitudFk;
+	private ObjectProperty<Integer> sysPK;
+	private ObjectProperty<Double> cantidad;
+	private ObjectProperty<Double> precio;
+	private ObjectProperty<Double> costo;
+	private ObjectProperty<Date> fechaEntrega;
+	private StringProperty observaciones;
+	private ObjectProperty<Integer> proyectoFK;
+	private ObjectProperty<Integer> cotizacionFK;
 	
 	//CONSTRUCTOR VACIO
-	public DetalleSolicitud() {
-		this(0,0,null,0);
+	public DetalleCotizacion() {
+		this(-1, 0.0, 0.0, 0.0, null, "", -1, -1);
 	}//FIN CONTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleSolicitud(Integer sysPk, int cantidad, Date fechaEntrega, int solicitudFk) {
-		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
-		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
+	public DetalleCotizacion(int sysPK, double cantidad, double precio, double costo, Date fechaEntrega, String observaciones, int proyectoFK, int cotizacionFK) {
+		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
+		this.cantidad = new SimpleObjectProperty<Double>(cantidad);
+		this.precio = new SimpleObjectProperty<Double>(precio);
+		this.costo = new SimpleObjectProperty<Double>(costo);
 		this.fechaEntrega = new SimpleObjectProperty<Date>(fechaEntrega);
-		this.solicitudFk = new SimpleObjectProperty<Integer>(solicitudFk);
+		this.observaciones = new SimpleStringProperty(observaciones);
+		this.proyectoFK = new SimpleObjectProperty<Integer>(proyectoFK);
+		this.cotizacionFK = new SimpleObjectProperty<Integer>(cotizacionFK);
 	}//FIN CONSTRUCTOR
-	
+
 	//METODOS DE ACCESO A "SYSPK"
-	public void setSysPk(Integer sysPk) {
-		this.sysPk.set(sysPk);
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
 	}//FIN METODO
 	
-	public Integer getSysPk() {
-		return this.sysPk.get();
+	public Integer getSysPK() {
+		return this.sysPK.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> sysPkProperty() {
-		return this.sysPk;
+	public ObjectProperty<Integer> sysPKProperty() {
+		return this.sysPK;
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	
 	//METODOS DE ACCESO A "CANTIDAD"
-	public void setCantidad(Integer cantidad) {
+	public void setCantidad(Double cantidad) {
 		this.cantidad.set(cantidad);
 	}//FIN METODO
 	
-	public Integer getCantidad() {
+	public Double getCantidad() {
 		return this.cantidad.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> cantidadProperty() {
+	public ObjectProperty<Double> cantidadProperty() {
 		return this.cantidad;
 	}//FIN METODO
 	//FIN METODOS "CANTIDAD"
+	
+	//METODOS DE ACCESO A "PRECIO"
+	public void setPrecio(Double precio) {
+		this.precio.set(precio);
+	}//FIN METODO
+	
+	public Double getPrecio() {
+		return this.precio.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Double> precioProperty() {
+		return this.precio;
+	}//FIN METODO
+	//FIN METODOS "PRECIO"
+	
+	//METODOS DE ACCESO A "COSTO"
+	public void setCosto(Double costo) {
+		this.costo.set(costo);
+	}//FIN METODO
+	
+	public Double getCosto() {
+		return this.costo.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Double> costoProperty() {
+		return this.costo;
+	}//FIN METODO
+	//FIN METODOS "COSTO"
 	
 	//METODOS DE ACCESO A "FECHA ENTREGA"
 	public void setFechaEntrega(Date fechaEntrega) {
@@ -72,35 +108,45 @@ public class DetalleSolicitud {
 	}//FIN METODO
 	//FIN METODOS "FECHA ENTREGA"
 	
-	//METODOS DE ACCESO A "DISEÑO"
-	public void setDisenoFk(Integer disenoFk) {
-		this.disenoFk.set(disenoFk);
+	//METODOS DE ACCESO A "OBSERVACIONES"
+	public void setObservaciones(String observaciones) {
+		this.observaciones.set(observaciones);
 	}//FIN METODO
 	
-	public Integer getDisenoFk() {
-		return this.disenoFk.get();
+	public String getObservaciones() {
+		return this.observaciones.get();
 	}//FIN METODO
 	
-	public Diseno getDiseno(Connection connection) {
-		DisenoDAO clienteDAO = new DisenoDAO();
-		Diseno diseno = (Diseno) clienteDAO.leer(connection, "SysPK", "" + this.getDisenoFk()).get(0);
-		return diseno;
+	public StringProperty observacionesProperty() {
+		return this.observaciones;
 	}//FIN METODO
-	//FIN METODOS "DISEÑO"
+	//FIN METODOS "OBSERVACIONES"
 	
-	//METODOS DE ACCESO A "SOLICITUD"
-	public void setSolicitudFk(Integer solicitudFk) {
-		this.solicitudFk.set(solicitudFk);
+	//METODOS DE ACCESO A "PROYECTO"
+	public void setProyectoFK(Integer proyectoFK) {
+		this.proyectoFK.set(proyectoFK);
 	}//FIN METODO
 	
-	public Integer getSolicitudFk() {
-		return this.solicitudFk.get();
+	public Integer getProyectoFK() {
+		return this.proyectoFK.get();
 	}//FIN METODO
 	
-	public Solicitud getSolicitud(Connection connection) {
-		SolicitudDAO solicitudDAO = new SolicitudDAO();
-		Solicitud solicitud = (Solicitud) solicitudDAO.leer(connection, "SysPK", "" + this.getSolicitudFk()).get(0);
-		return solicitud;
+	//public Proyecto getProyecto(Connection connection) {
+	//	return ProyectoDAO.readProyecto(connection, this.getProyectoFK());
+	//}//FIN METODO
+	//FIN METODOS "PROYECTO"
+	
+	//METODOS DE ACCESO A "COTIZACION"
+	public void setCotizacionFK(Integer cotizacionFK) {
+		this.cotizacionFK.set(cotizacionFK);
 	}//FIN METODO
-	//FIN METODOS "SOLICITUD"
+	
+	public Integer getCotizacionFK() {
+		return this.cotizacionFK.get();
+	}//FIN METODO
+	
+	public Cotizacion getCotizacion(Connection connection) {
+		return CotizacionDAO.readCotizacion(connection, this.getCotizacionFK());
+	}//FIN METODO
+	//FIN METODOS "COTIZACION"
 }//FIN CLASE

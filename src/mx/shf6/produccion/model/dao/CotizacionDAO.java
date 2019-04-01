@@ -7,128 +7,210 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import mx.shf6.produccion.model.Solicitud;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class SolicitudDAO implements ObjectDAO{
+public class CotizacionDAO{
 
-	//METODO PARA HACER CREATE EN LA TABLA SOLICITUDES
-	@Override
-	public boolean crear(Connection connection, Object Solicitud) {	
-		Solicitud solicitud = (Solicitud)Solicitud;
-		String query = "INSERT INTO solicitudes (fecha, status, notasGenerales, clienteFk) "
-				+ "values ( CURDATE(), ?, ?, ?)";
-		try {	
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, solicitud.getStatus());
-			preparedStatement.setString(2, solicitud.getNotasGenerales());
-			preparedStatement.setInt(3, solicitud.getClienteFk());
-			preparedStatement.execute();
-			return true;   
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean createCotizacion(Connection connection, Cotizacion cotizacion) {
+		String consulta = "INSERT INTO cotizaciones "
+				+ "(Referencia, Fecha, Status, Solicitante, AreaDepartamento, TelefonoFax, "
+				+ "Email, TipoServicio, CondicionEmbarque, CondicionPago, Moneda, Tipo Cambio, "
+				+ "Observaciones, Vigencia, FolioFK, ClienteFK) "
+				+ "VALUES (?, CURDATE(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, cotizacion.getReferencia());
+			sentenciaPreparada.setInt(2, cotizacion.getStatus());
+			sentenciaPreparada.setString(3, cotizacion.getSolicitante());
+			sentenciaPreparada.setString(4, cotizacion.getAreaDepartamento());
+			sentenciaPreparada.setString(5, cotizacion.getTelefonoFax());
+			sentenciaPreparada.setString(6, cotizacion.getEmail());
+			sentenciaPreparada.setString(7, cotizacion.getTipoServicio());
+			sentenciaPreparada.setString(8, cotizacion.getCondicionEmbarque());
+			sentenciaPreparada.setString(9, cotizacion.getCondicionPago());
+			sentenciaPreparada.setInt(10, cotizacion.getMoneda());
+			sentenciaPreparada.setDouble(11, cotizacion.getTipoCambio());
+			sentenciaPreparada.setString(12, cotizacion.getObservaciones());
+			sentenciaPreparada.setString(13, cotizacion.getVigencia());
+			sentenciaPreparada.setInt(14, cotizacion.getFolioFK());
+			sentenciaPreparada.setInt(15, cotizacion.getClienteFK());
+			sentenciaPreparada.execute();
+			return true;
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
-			return false;			
-		}//FIN TRY/CATCH
-	}//FIN METODO	
-	
-	//METODO PARA HACER SELECT EN LA TABLA SOLICITUDES
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query = "";
-		Solicitud solicitud = null;
-		ArrayList<Object> listaSolicitud = new ArrayList<Object>();
-		if (campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query = "SELECT * FROM solicitudes ORDER BY sysPK;";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);  
-				
-				while (resultSet.next()) {
-					solicitud = new Solicitud();
-					solicitud.setSysPk(resultSet.getInt(1));
-					solicitud.setFecha(resultSet.getDate(2));
-					solicitud.setStatus(resultSet.getInt(3));;
-					solicitud.setNotasGenerales(resultSet.getString(4));
-					solicitud.setClienteFk(resultSet.getInt(5));
-					listaSolicitud.add(solicitud);
-				}//FIN WHILE
-			} catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		} else {
-			query = "SELECT * FROM solicitudes WHERE " + campoBusqueda  +" = ? ORDER BY sysPK;";
-			try {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				while (resultSet.next()) {
-					solicitud = new Solicitud();
-					solicitud.setSysPk(resultSet.getInt(1));
-					solicitud.setFecha(resultSet.getDate(2));
-					solicitud.setStatus(resultSet.getInt(3));;
-					solicitud.setNotasGenerales(resultSet.getString(4));
-					solicitud.setClienteFk(resultSet.getInt(5));
-					listaSolicitud.add(solicitud);
-				}//FIN WHILE
-			}catch (SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-		}//FIN IF/ELSE
-		return listaSolicitud;
-	}//FIN METODO	
-	
-	//METODO PARA HACER UPDATE EN LA TABLA SOLICITUDES
-	@Override
-	public boolean modificar(Connection connection, Object Solicitud) {
-		String query = "UPDATE solicitudes "
-				+ "SET  fecha = ?, status = ?, notasGenerales = ?, clienteFk = ? "
-				+ "WHERE sysPK = ?";
-		try {
-			Solicitud solicitud = (Solicitud)Solicitud;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setDate(1, solicitud.getFecha());
-			preparedStatement.setInt(2, solicitud.getStatus());
-			preparedStatement.setString(3, solicitud.getNotasGenerales());
-			preparedStatement.setInt(4, solicitud.getClienteFk());
-			preparedStatement.setInt(5, solicitud.getSysPk());
-			preparedStatement.execute();
-			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
 			return false;
 		}//FIN TRY/CATCH
-	}//FIN METODO	
+	}//FIN METODO
 	
-	//METODO PARA HACER DELETE EN LA TABLA SOLICITUDES
-	@Override
-	public boolean eliminar(Connection connection, Object Solicitud) {
-		String query = "DELETE FROM solicitudes WHERE sysPK = ?";
-		try {	
-			Solicitud solicitud = (Solicitud)Solicitud;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, solicitud.getSysPk());
-			preparedStatement.execute();
-			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
-			return false;
-		}//FIN TRY/CATCH	
-	}//FIN METODO		
-	
-	//METODO PARA OBTENER EL ULTIMO SYSPK AGREGADO A LA TABLA 
-	public int ultimoSysPk(Connection connection) {
-		String query = "SELECT sysPK FROM solicitudes order by sysPK asc";
-		int ultimoSysPk = 0;
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Cotizacion> readCotizacion(Connection connection) {
+		ArrayList<Cotizacion> arrayListCotizacion = new ArrayList<Cotizacion>();
+		String consulta = "SELECT Sys_PK, Referencia, Fecha, Status, Solicitante, AreaDepartamento, TelefonoFax, "
+				+ "Email, TipoServicio, CondicionEmbarque, CondicionPago, Moneda, TipoCambio, Observaciones, "
+				+ "Vigencia, FolioFK, ClienteFK "
+				+ "FROM cotizaciones";
 		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(query);
-			while (resultSet.next())
-				ultimoSysPk = resultSet.getInt(1);
-			return ultimoSysPk;
-		}catch (SQLException e) {
-			Notificacion.dialogoException(e);
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Cotizacion cotizacion = new Cotizacion();
+				cotizacion.setSysPK(resultados.getInt(1));
+				cotizacion.setReferencia(resultados.getString(2));
+				cotizacion.setFecha(resultados.getDate(3));
+				cotizacion.setStatus(resultados.getInt(4));
+				cotizacion.setSolicitante(resultados.getString(5));
+				cotizacion.setAreaDepartamento(resultados.getString(6));
+				cotizacion.setTelefonoFax(resultados.getString(7));
+				cotizacion.setEmail(resultados.getString(8));
+				cotizacion.setTipoServicio(resultados.getString(9));
+				cotizacion.setCondicionEmbarque(resultados.getString(10));
+				cotizacion.setCondicionPago(resultados.getString(11));
+				cotizacion.setMoneda(resultados.getInt(12));
+				cotizacion.setTipoCambio(resultados.getDouble(13));
+				cotizacion.setObservaciones(resultados.getString(14));
+				cotizacion.setVigencia(resultados.getString(15));
+				cotizacion.setFolioFK(resultados.getInt(16));
+				cotizacion.setClienteFK(resultados.getInt(17));
+				arrayListCotizacion.add(cotizacion);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-		return ultimoSysPk;
+		return arrayListCotizacion;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static Cotizacion readCotizacion(Connection connection, int sysPK) {
+		Cotizacion cotizacion = new Cotizacion();
+		String consulta = "SELECT Sys_PK, Referencia, Fecha, Status, Solicitante, AreaDepartamento, TelefonoFax, "
+				+ "Email, TipoServicio, CondicionEmbarque, CondicionPago, Moneda, TipoCambio, Observaciones, "
+				+ "Vigencia, FolioFK, ClienteFK "
+				+ "FROM cotizaciones "
+				+ "WHERE Sys_PK = " + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				cotizacion.setSysPK(resultados.getInt(1));
+				cotizacion.setReferencia(resultados.getString(2));
+				cotizacion.setFecha(resultados.getDate(3));
+				cotizacion.setStatus(resultados.getInt(4));
+				cotizacion.setSolicitante(resultados.getString(5));
+				cotizacion.setAreaDepartamento(resultados.getString(6));
+				cotizacion.setTelefonoFax(resultados.getString(7));
+				cotizacion.setEmail(resultados.getString(8));
+				cotizacion.setTipoServicio(resultados.getString(9));
+				cotizacion.setCondicionEmbarque(resultados.getString(10));
+				cotizacion.setCondicionPago(resultados.getString(11));
+				cotizacion.setMoneda(resultados.getInt(12));
+				cotizacion.setTipoCambio(resultados.getDouble(13));
+				cotizacion.setObservaciones(resultados.getString(14));
+				cotizacion.setVigencia(resultados.getString(15));
+				cotizacion.setFolioFK(resultados.getInt(16));
+				cotizacion.setClienteFK(resultados.getInt(17));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return cotizacion;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Cotizacion> readCotizacion(Connection connection, String like) {
+		ArrayList<Cotizacion> arrayListCotizacion = new ArrayList<Cotizacion>();
+		String consulta = "SELECT Sys_PK, Referencia, Fecha, Status, Solicitante, AreaDepartamento, TelefonoFax, "
+				+ "Email, TipoServicio, CondicionEmbarque, CondicionPago, Moneda, TipoCambio, Observaciones, "
+				+ "Vigencia, FolioFK, ClienteFK "
+				+ "FROM cotizaciones "
+				+ "WHERE Referencia LIKE '%" + like + "%'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Cotizacion cotizacion = new Cotizacion();
+				cotizacion.setSysPK(resultados.getInt(1));
+				cotizacion.setReferencia(resultados.getString(2));
+				cotizacion.setFecha(resultados.getDate(3));
+				cotizacion.setStatus(resultados.getInt(4));
+				cotizacion.setSolicitante(resultados.getString(5));
+				cotizacion.setAreaDepartamento(resultados.getString(6));
+				cotizacion.setTelefonoFax(resultados.getString(7));
+				cotizacion.setEmail(resultados.getString(8));
+				cotizacion.setTipoServicio(resultados.getString(9));
+				cotizacion.setCondicionEmbarque(resultados.getString(10));
+				cotizacion.setCondicionPago(resultados.getString(11));
+				cotizacion.setMoneda(resultados.getInt(12));
+				cotizacion.setTipoCambio(resultados.getDouble(13));
+				cotizacion.setObservaciones(resultados.getString(14));
+				cotizacion.setVigencia(resultados.getString(15));
+				cotizacion.setFolioFK(resultados.getInt(16));
+				cotizacion.setClienteFK(resultados.getInt(17));
+				arrayListCotizacion.add(cotizacion);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListCotizacion;
+	}//FIN METODO
+	
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean updateCotizacion(Connection connection, Cotizacion cotizacion) {
+		String consulta = "UPDATE clientes SET Referencia = ? Status = ?, Solicitante = ?, "
+				+ "AreaDepartamento = ?, TelefonoFax = ?, Email = ?, TipoServicio = ?, "
+				+ "CondicionEmbarque = ?, CondicionPago = ?, Moneda = ?, TipoCambio = ?, "
+				+ "Observaciones = ?, Vigencia = ?, FolioFK = ?, ClienteFK = ? "
+				+ "WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setString(1, cotizacion.getReferencia());
+			sentenciaPreparada.setInt(2, cotizacion.getStatus());
+			sentenciaPreparada.setString(3, cotizacion.getSolicitante());
+			sentenciaPreparada.setString(4, cotizacion.getAreaDepartamento());
+			sentenciaPreparada.setString(5, cotizacion.getTelefonoFax());
+			sentenciaPreparada.setString(6, cotizacion.getEmail());
+			sentenciaPreparada.setString(7, cotizacion.getTipoServicio());
+			sentenciaPreparada.setString(8, cotizacion.getCondicionEmbarque());
+			sentenciaPreparada.setString(9, cotizacion.getCondicionPago());
+			sentenciaPreparada.setInt(10, cotizacion.getMoneda());
+			sentenciaPreparada.setDouble(11, cotizacion.getTipoCambio());
+			sentenciaPreparada.setString(12, cotizacion.getObservaciones());
+			sentenciaPreparada.setString(13, cotizacion.getVigencia());
+			sentenciaPreparada.setInt(14, cotizacion.getFolioFK());
+			sentenciaPreparada.setInt(15, cotizacion.getClienteFK());
+			sentenciaPreparada.setInt(16, cotizacion.getSysPK());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean deleteCotizacion(Connection connection, Cotizacion cotizacion) {
+		String consulta = "DELETE FROM clientes WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setInt(1, cotizacion.getSysPK());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
+	public static ObservableList<Cotizacion> toObservableList(ArrayList<Cotizacion> arrayList) {
+		ObservableList<Cotizacion> listaObservableCotizacion = FXCollections.observableArrayList();
+		for (Cotizacion cotizacion : arrayList) 
+			listaObservableCotizacion.add(cotizacion);
+		return listaObservableCotizacion;
 	}//FIN METODO
 
 }//FIN CLASE

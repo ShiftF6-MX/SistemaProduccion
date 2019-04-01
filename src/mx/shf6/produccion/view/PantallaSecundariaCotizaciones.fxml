@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaCotizaciones">
+   <children>
+      <TabPane prefHeight="595.0" prefWidth="469.0" styleClass="panelPestana" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Información Cliente">
+               <content>
+                  <AnchorPane styleClass="bodyPantallaOverview">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" layoutX="23.0" layoutY="20.0" prefHeight="50.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label styleClass="labelRobotoMedium16" text="Cotizaciones">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label styleClass="labelRobotoMedium14" text="Informacion Cliente" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="25.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox layoutX="23.0" layoutY="70.0" prefHeight="200.0" prefWidth="300.0" AnchorPane.topAnchor="75.0">
+                           <children>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente" />
+                                    <ComboBox prefWidth="197.0" styleClass="tablaDatosDetalle" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Solicito" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Area/Departamento" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Telefono/Fax" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Email" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+          <Tab text="Detalle Cotización">
+               <content>
+                  <AnchorPane styleClass="bodyPantallaOverview">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label styleClass="labelRobotoMedium16" text="Cotizaciones" />
+                                    <Label styleClass="labelRobotoMedium14" text="Gestion de cotizaciones" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <TextField fx:id="buscarCotizacion" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
+                                 <font>
+                                    <Font name="Roboto" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <HBox alignment="CENTER" fillHeight="false" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
+                                 <children>
+                                    <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarButtonHandler" pickOnBounds="true" preserveRatio="true">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <image>
+                                          <Image url="@images/1x/MagnifierIcon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#nuevaCotizacion" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/1x/AddIcon.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                        <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
+                           <children>
+                              <TableView fx:id="tablaCotizacion" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="clienteColumna" minWidth="-1.0" prefWidth="-1.0" text="Cliente" />
+                                    <TableColumn fx:id="referenciaColumna" minWidth="-1.0" prefWidth="-1.0" text="Referencia" />
+                                    <TableColumn fx:id="fechaColumna" minWidth="-1.0" prefWidth="-1.0" text="Fecha" />
+                                    <TableColumn fx:id="statusColumna" minWidth="-1.0" prefWidth="-1.0" text="Status" />
+                                    <TableColumn fx:id="observacionesColumna" minWidth="-1.0" prefWidth="-1.0" text="Observaciones" />
+                                    <TableColumn fx:id="accionesColumn" minWidth="-1.0" prefWidth="-1.0" text="Acciones" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <Pagination fx:id="paginacionTablaCotizaciones" maxPageIndicatorCount="3" pageCount="2" styleClass="paginacionTabla">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Pagination>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Notas Importantes">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="bodyPantallaOverview">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="50.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label styleClass="labelRobotoMedium16" text="Cotizaciones">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label styleClass="labelRobotoMedium14" text="Notas Importantes" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="25.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <VBox layoutX="14.0" layoutY="70.0" prefHeight="200.0" prefWidth="300.0">
+                           <children>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Fecha entrega" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Condiciones de Embarque" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Condiciones de Pago" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="65.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Moneda" />
+                                    <ComboBox prefHeight="25.0" prefWidth="120.0" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Tipo Cambio" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Observaciones" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="60.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Vigencia de Cotización" />
+                                    <TextField />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
