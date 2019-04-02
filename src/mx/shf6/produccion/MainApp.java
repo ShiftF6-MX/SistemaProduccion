@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proyecto;
@@ -38,6 +39,7 @@ import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoClientes;
+import mx.shf6.produccion.view.DialogoComponente;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoProyecto;
 import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
@@ -78,17 +80,18 @@ public class MainApp extends Application {
 	private AnchorPane pantallaEspera;
 	private AnchorPane pantallaClientes;
 	private AnchorPane pantallaCotizaciones;
+	private AnchorPane pantallaComponente;
 	private AnchorPane pantallaSecundariaCotizaciones;
 	private AnchorPane pantallaTipoMateriaPrima;
 	private AnchorPane pantallaTipoMiscelaneo;
 	private AnchorPane pantallaMaterial;
-	private AnchorPane pantallaComponente;
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaTratamiento;
 	private AnchorPane pantallaProyectos;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
+	private AnchorPane dialogoComponente;
 	private AnchorPane dialogoTipoMateriaPrima;
 	private AnchorPane dialogoTipoMiscelaneo;
 	private AnchorPane dialogoMaterial;
@@ -490,6 +493,24 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	public void iniciarDialogoComponente(Componente componente, int opcion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoComponente.fxml"));
+			this.dialogoComponente = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoComponente = this.iniciarEscenarioSecundario(this.dialogoComponente);
+			this.escenarioDialogos.setScene(escenaDialogoComponente);
+			
+			DialogoComponente dialogoComponente = fxmlLoader.getController();
+			dialogoComponente.setMainApp(this, componente, opcion);
+			
+			this.escenarioDialogos.showAndWait();
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN METODO
+	}//FIN METODO
+	
 	public void iniciarDialogoTipoMateriaPrima(TipoMateriaPrima tipoMateriaPrima, int opcion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -573,24 +594,6 @@ public class MainApp extends Application {
 			
 			DialogoTratamiento dialogoTratamiento = fxmlLoader.getController();
 			dialogoTratamiento.setMainApp(this, tratamiento, opcion);
-			
-			this.escenarioDialogos.showAndWait();
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN METODO
-	}//FIN METODO
-	
-	public void iniciarDialogoTipoProducto(TipoProducto tipoProducto, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoProducto.fxml"));
-			this.dialogoTipoProducto = (AnchorPane) fxmlLoader.load();
-			
-			Scene escenaDialogoTipoProducto = this.iniciarEscenarioSecundario(this.dialogoTipoProducto);
-			this.escenarioDialogos.setScene(escenaDialogoTipoProducto);
-			
-			DialogoTipoProducto dialogoTipoProducto = fxmlLoader.getController();
-			dialogoTipoProducto.setMainApp(this, tipoProducto, opcion);
 			
 			this.escenarioDialogos.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
