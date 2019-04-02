@@ -1,105 +1,100 @@
 package mx.shf6.produccion.model;
 
-import java.sql.Connection;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import mx.shf6.produccion.model.dao.ClienteDAO;
 
-public class Diseno {
+public class Proyecto {
 	
 	//PROPIEDADES
-	public ObjectProperty<Integer> sysPk;
-	public StringProperty archivoDiseno;
-	public StringProperty numeroParte;
-	public StringProperty archivoEspecificacionT; //Archivo de Especificacion Tecnica
-	public ObjectProperty<Integer> clienteFk;
+	private ObjectProperty<Integer> sysPK;
+	private StringProperty codigo;
+	private StringProperty descripcion;
+	private StringProperty carpeta;
+	private StringProperty especificacionTecnica;
 	
 	//CONTRUCTOR SIN PARAMETROS
-	public Diseno() {
-		this(0,"","","",0);
+	public Proyecto() {
+		this(-1,"","","","");
 	}//FIN CONSTUCTOR
 	
 	//CONTRUCTOR CON PARAMETROS
-	public Diseno(Integer sysPk, String archivoDiseno, String numeroParte, String archivoEspecificacionT, int clienteFk) {
-		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
-		this.archivoDiseno = new SimpleStringProperty(archivoDiseno);
-		this.numeroParte = new SimpleStringProperty(numeroParte);
-		this.archivoEspecificacionT = new SimpleStringProperty(archivoEspecificacionT);
-		this.clienteFk = new SimpleObjectProperty<Integer>(clienteFk);
+	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica) {
+		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
+		this.codigo = new SimpleStringProperty(codigo);
+		this.descripcion = new SimpleStringProperty(descripcion);
+		this.carpeta = new SimpleStringProperty(carpeta);
+		this.especificacionTecnica = new SimpleStringProperty(especificacionTecnica);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A "SYSPK"
-	public void setSysPk(Integer sysPk) {
-		this.sysPk.set(sysPk);
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
 	}//FIN METODO
 		
-	public Integer getSysPk() {
-		return this.sysPk.get();
+	public Integer getSysPK() {
+		return this.sysPK.get();
 	}//FIN METODO
 		
-	public ObjectProperty<Integer> sysPkProperty() {
-		return this.sysPk;
+	public ObjectProperty<Integer> sysPKProperty() {
+		return this.sysPK;
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	
-	//METODOS DE ACCESO A "ARCHIVO DISEÑO"
-	public void setArchivoDiseno(String archivoDiseno) {
-		this.archivoDiseno.set(archivoDiseno);
+	//METODOS DE ACCESO A "CODIGO"
+	public void setCodigo(String codigo) {
+		this.codigo.set(codigo);
 	}//FIN METODO
 	
-	public String getArchivoDiseno() {
-		return this.archivoDiseno.get();
+	public String getCodigo() {
+		return this.codigo.get();
 	}//FIN METODO
 	
-	public StringProperty archivoDisenoProperty() {
-		return this.archivoDiseno;
+	public StringProperty codigoProperty() {
+		return this.codigo;
 	}//FIN METODO
-	//FIN METODOS "ARCHIVO DISEÑO"
+	//FIN METODOS "CODIGO"
 	
-	//METODOS DE ACCESO A "NUMERO PARTE"
-	public void setNumeroParte(String numeroParte) {
-		this.numeroParte.set(numeroParte);
-	}//FIN METODO
-	
-	public String getNumeroParte() {
-		return this.numeroParte.get();
+	//METODOS DE ACCESO A "DESCRIPCION"
+	public void setDescripcion(String descripcion) {
+		this.descripcion.set(descripcion);
 	}//FIN METODO
 	
-	public StringProperty numeroParteProperty() {
-		return this.numeroParte;
-	}//FIN METODO
-	//FIN METODOS "NUMERO PARTE"
-	
-	//METODOS DE ACCESO A "ARCHIVO ESPECIFICACION TECNICA"
-	public void setArchivoEspecificacionT(String archivoEspecificacionT) {
-		this.archivoEspecificacionT.set(archivoEspecificacionT);
+	public String getDescripcion() {
+		return this.descripcion.get();
 	}//FIN METODO
 	
-	public String getArchivoEspecificacionT() {
-		return this.archivoEspecificacionT.get();
+	public StringProperty descripcionProperty() {
+		return this.descripcion;
+	}//FIN METODO
+	//FIN METODOS "DESCRIPCION"
+	
+	//METODOS DE ACCESO A "CARPETA"
+	public void setCarpeta(String carpeta) {
+		this.carpeta.set(carpeta);
 	}//FIN METODO
 	
-	public StringProperty archivoEspecificacionTProperty() {
-		return this.archivoEspecificacionT;
-	}//FIN METODO
-	//FIN METODOS "ARCHIVO ESPECIFICACION TECNICA"
-	
-	//METODO DE ACCESO A "CLIENTE"
-	public void setClienteFk(Integer clienteFk) {
-		this.clienteFk.set(clienteFk);
+	public String getCarpeta() {
+		return this.carpeta.get();
 	}//FIN METODO
 	
-	public Integer getClienteFk() {
-		return this.clienteFk.get();
+	public StringProperty carpetaProperty() {
+		return this.carpeta;
+	}//FIN METODO
+	//FIN METODOS "CARPETA"
+	
+	//METODO DE ACCESO A "ESPECIFICACION TECNICA"
+	public void setEspecificacionTenica(String especificacionTecnica) {
+		this.especificacionTecnica.set(especificacionTecnica);
 	}//FIN METODO
 	
-	public Cliente getCliente(Connection connection) {
-		ClienteDAO clienteDAO = new ClienteDAO();
-		Cliente cliente = (Cliente) clienteDAO.leer(connection, "SysPK", "" + this.getClienteFk()).get(0);
-		return cliente;
+	public String getEspecificacionTecnica() {
+		return this.especificacionTecnica.get();
 	}//FIN METODO
-	//FIN METODOS "CLIENTE"
+	
+	public StringProperty especificacionTecnicaProperty() {
+		return this.especificacionTecnica;
+	}//FIN METODO
+	//FIN METODOS "ESPECIFICACION TECNICA"
 }//FIN METODO
