@@ -350,7 +350,7 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="fechaRegistroField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="10 de Septiembre del 2018">
+                                                <TextField fx:id="fechaRegistroField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack">
                                                    <padding>
                                                       <Insets left="1.0" />
                                                    </padding>
@@ -525,7 +525,7 @@
                                              <children>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@images/1x/MunicipalIcon.png" />
+                                                      <Image url="@images/1x/CountryIcon.png" />
                                                    </image>
                                                    <HBox.margin>
                                                       <Insets />
@@ -538,8 +538,8 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="municipioCombo" prefHeight="25.0" prefWidth="233.0" />
-                                                <Label text="Municipio" textFill="#000000de">
+                                                <ComboBox fx:id="estadoCombo" prefHeight="25.0" prefWidth="232.0" />
+                                                <Label text="Estado" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
                                                    </font>
@@ -603,24 +603,24 @@
                                     <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="284.0">
                                        <children>
                                           <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="18.0">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
                                              <children>
                                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
-                                                      <Image url="@images/1x/CountryIcon.png" />
+                                                      <Image url="@images/1x/MunicipalIcon.png" />
                                                    </image>
                                                    <HBox.margin>
                                                       <Insets />
                                                    </HBox.margin>
                                                 </ImageView>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="estadoCombo" prefHeight="25.0" prefWidth="232.0" />
-                                                <Label text="Estado" textFill="#000000de">
+                                                <ComboBox fx:id="municipioCombo" prefHeight="25.0" prefWidth="233.0" />
+                                                <Label text="Municipio" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
                                                    </font>

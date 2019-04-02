@@ -1,7 +1,7 @@
 package mx.shf6.produccion.view;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.io.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,6 +46,7 @@ public class PantallaClientes {
 	private int cantidadPaginasTablaClientes;
 	private ArrayList<Cliente> listaClientes;
 	
+		
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TableView<Cliente> tablaCliente;
 	@FXML private TableColumn<Cliente, String> codigoColumna;
@@ -168,9 +169,11 @@ public class PantallaClientes {
 		            	botonEliminar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
 			        			cliente = getTableView().getItems().get(getIndex());
-			            		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
+			        			if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
 			            			ClienteDAO.deleteCliente(mainApp.getConnection(), cliente);
 			            			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
+			            			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+			            			ruta.delete();
 			            			actualizarTabla();
 			            		}//FIN IF
 		            		} else
@@ -187,9 +190,9 @@ public class PantallaClientes {
 		            	
 		            	botonCarpeta.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-		            			String ruta ="\\\\192.168.0.216\\Ingeniería y Planeación";
+		            			cliente = getTableView().getItems().get(getIndex());
 		            			try {
-		            				Runtime.getRuntime().exec("explorer.exe /select, " + ruta);
+		            				Runtime.getRuntime().exec("explorer.exe /n, " + MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre()+ "\\");
 								} catch (IOException e) {
 									
 									e.printStackTrace();
@@ -245,7 +248,7 @@ public class PantallaClientes {
 		this.actualizarTabla();
 	}//FIN METODO
 	 
-	private void asignarVariables() {
+	/*private void asignarVariables() {
 		this.cantidadRenglonesTabla = 4;
 		this.cantidadRegistrosTablaClientes = this.listaClientes.size();
 		if ((this.cantidadRegistrosTablaClientes % this.cantidadRenglonesTabla) == 0)
@@ -257,7 +260,7 @@ public class PantallaClientes {
 			this.paginacionTablaClientes.setPageFactory(this::createPaginaTablaClientes);
 			this.paginacionTablaClientes.setMaxPageIndicatorCount(3);
 			this.paginacionTablaClientes.setPageCount(cantidadPaginasTablaClientes);
-    }//FIN METODO
+    }//FIN METODO*/
 	
 	//PAGINACION DE LA TABLA CLIENTES
 	private Node createPaginaTablaClientes(int indicePagina) {

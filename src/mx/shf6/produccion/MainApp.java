@@ -92,6 +92,9 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAcabado;
 	private AnchorPane dialogoTratamiento;
 	
+	//CONSTANTES
+	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
+	
 	//VARIABLES
 	private double xOffset = 0.0;
 	private double yOffset = 0.0;

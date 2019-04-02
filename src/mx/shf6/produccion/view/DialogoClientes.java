@@ -1,6 +1,7 @@
 package mx.shf6.produccion.view;
 
 
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.text.IconView;
@@ -48,6 +49,7 @@ public class DialogoClientes  {
 	public final static int CREAR = 2;
 	public final static int EDITAR = 3;
 	
+	
 	//COMPONENTES INTERFAZ 
 	@FXML private TextField nombreField;
 	@FXML private TextField codigoField;
@@ -93,8 +95,6 @@ public class DialogoClientes  {
 		this.opcion = opcion;
 		this.domicilio = cliente.getDomicilio(this.mainApp.getConnection());
 		
-		System.out.print("Sys_PK " + this.domicilio.getSysPK());
-		
 		this.listaEstados = sepomexDAO.leerEstados(mainApp.getConnection()); 
 		estadoCombo.setItems(listaEstados);
 		estadoCombo.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
@@ -107,6 +107,7 @@ public class DialogoClientes  {
 	
 	//MUESTRA LOS DATOS DEl CLIENTE
 	private void mostrarDatosInterfaz() {
+		
 		if (this.opcion == MOSTRAR) {
 				
 			this.codigoField.setText(this.cliente.getCodigo());
@@ -127,7 +128,7 @@ public class DialogoClientes  {
 			this.fechaRegistroField.setText(this.cliente.getFechaRegistro().toString());
 			this.fechaRegistroField.setDisable(true);
 			
-			this.rutaField.setText(this.cliente.getRutaCarpeta());
+			this.rutaField.setText(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.cliente.getNombre());
 			this.rutaField.setDisable(true);
 			
 			this.statusCombo.setValue(this.cliente.getDescripcionStatus());
@@ -180,8 +181,8 @@ public class DialogoClientes  {
 			
 			this.fechaRegistroField.setDisable(true);
 			
-			this.rutaField.setText("");
-			this.rutaField.setDisable(false);
+			this.rutaField.setText(MainApp.RAIZ_SERVIDOR +"Clientes\\");
+			this.rutaField.setDisable(true);
 			
 			this.statusCombo.setValue("");
 			this.statusCombo.setDisable(false);
@@ -230,8 +231,8 @@ public class DialogoClientes  {
 			this.fechaRegistroField.setText(this.cliente.getFechaRegistro().toString());
 			this.fechaRegistroField.setDisable(true);
 			
-			this.rutaField.setText(this.cliente.getRutaCarpeta());
-			this.rutaField.setDisable(false);
+			this.rutaField.setText(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.cliente.getNombre());
+			this.rutaField.setDisable(true);
 			
 			this.statusCombo.setValue(this.cliente.getDescripcionStatus());
 			this.statusCombo.setDisable(false);
@@ -324,6 +325,8 @@ public class DialogoClientes  {
 		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
 			ClienteDAO.deleteCliente(mainApp.getConnection(), cliente);
 			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
+			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+			ruta.delete();
 			cerrarDialogoButtonHandler();			
 		}//FIN IF
 	}//FIN METODO
@@ -335,8 +338,9 @@ public class DialogoClientes  {
 		this.cliente.setRegistroContribuyente(this.registroContribuyenteField.getText());
 		this.cliente.setTelefono(this.telefonoField.getText());
 		this.cliente.setCorreo(this.correoField.getText());
-		this.cliente.setRutaCarpeta(this.rutaField.getText());
+		this.cliente.setRutaCarpeta(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
 		this.cliente.setNumeroStatus(this.statusCombo.getValue());
+		
 		
 		if(this.validacion() && this.opcion == CREAR) {
 				
@@ -348,6 +352,7 @@ public class DialogoClientes  {
 			this.domicilio.setMunicipio(this.municipioCombo.getValue());
 			this.domicilio.setEstado(this.estadoCombo.getValue());
 			this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
+						
 			try {
 				this.mainApp.getConnection().setAutoCommit(false);
 				if(DomicilioDAO.createDomicilio(this.mainApp.getConnection(), this.domicilio)) {
@@ -356,8 +361,11 @@ public class DialogoClientes  {
 					if (ClienteDAO.createCliente(this.mainApp.getConnection(), this.cliente)) {
 						this.mainApp.getConnection().commit();
 						this.mainApp.getConnection().setAutoCommit(true);
-							
+						
+						File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
+						ruta.mkdirs();
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+						
 						this.mainApp.getEscenarioDialogos().close();
 					} else {
 						this.mainApp.getConnection().rollback();
@@ -383,6 +391,8 @@ public class DialogoClientes  {
 			this.domicilio.setMunicipio(this.municipioCombo.getValue());
 			this.domicilio.setEstado(this.estadoCombo.getValue());
 			this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
+			
+			
 			try {
 				this.mainApp.getConnection().setAutoCommit(false);
 				if(DomicilioDAO.updateDomicilio(this.mainApp.getConnection(), this.domicilio)) {
@@ -414,7 +424,6 @@ public class DialogoClientes  {
 	@FXML private void btnEditar() {
 		this.opcion = EDITAR;
 		this.mostrarDatosInterfaz();
-		//this.domicilio.setSysPK(this.cliente.getDomicilioFK());
 		
 	}//FIN METODO
 	@FXML private void cerrarDialogoButtonHandler() {
