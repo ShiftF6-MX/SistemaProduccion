@@ -11,7 +11,6 @@ import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.MaterialDAO;
 import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
 import mx.shf6.produccion.model.dao.TipoMiscelaneoDAO;
-import mx.shf6.produccion.model.dao.TipoProductoDAO;
 import mx.shf6.produccion.model.dao.TratamientoDAO;
 import mx.shf6.produccion.utilities.Dimensiones;
 
@@ -19,47 +18,45 @@ public class Componente {
 	
 	//PROPIEDADES
 	private ObjectProperty<Integer> sysPK;
-	private ObjectProperty<Integer> consecutivo;
+	private StringProperty numeroParte;
 	private StringProperty descripcion;
-	private ObjectProperty<Dimensiones> dimensiones;
+	private ObjectProperty<Dimensiones> dimensiones;			
+	private StringProperty tipoComponente;
 	private ObjectProperty<Double> costo;
 	private StringProperty unidad;
-	private ObjectProperty<Integer> clienteFK;					
-	private ObjectProperty<Integer> tipoProductoFK;				
+	private ObjectProperty<Integer> materialFK;
+	private ObjectProperty<Integer> tipoMiscelaneoFK;
+	private ObjectProperty<Integer> tipoMateriaPrimaFK;				
 	private ObjectProperty<Integer> acabadoFK;
 	private ObjectProperty<Integer> tratamientoFK;
-	private ObjectProperty<Integer> materialFK;
-	private StringProperty gradoMaterial;
-	private ObjectProperty<Integer> tipoMiscelaneoFK;
-	private ObjectProperty<Integer> tipoMateriaPrimaFK;
 	private StringProperty notas;
-	private StringProperty status;
+	private StringProperty status;	
+	private ObjectProperty<Integer> consecutivo;
+	private ObjectProperty<Integer> clienteFK;
 		
 	//CONSTRUCTOR VACIO
 	public Componente() {
-		this(0, 0, "", new Dimensiones(), 0.0, "", 0, 0, 0, 0, 0, "", 0, 0, "", "");
+		this(0, "", "", new Dimensiones(), "", 0.0, "", 0, 0, 0, 0, 0, "", "", 0, 0);
 	}//FIN CONSTRUCTOR
 
-
-	public Componente(int sysPK, int consecutivo, String descripcion, Dimensiones dimensiones, Double costo, String unidad, int clienteFK, 
-			int tipoProductoFK, int acabadoFK, int tratamientoFK, int materialFK, String gradoMaterial, int tipoMiscelaneoFK, int tipoMateriaPrimaFK, 
-			String notas, String status) {
+	public Componente(int sysPK, String numeroParte, String descripcion, Dimensiones dimensiones, String tipoComponente, Double costo, String unidad, int materialFK, int tipoMiscelaneoFK,
+			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
-		this.consecutivo = new SimpleObjectProperty<Integer>(consecutivo);
+		this.numeroParte = new SimpleStringProperty(numeroParte);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.dimensiones = new SimpleObjectProperty<Dimensiones>(dimensiones);
+		this.tipoComponente = new SimpleStringProperty(tipoComponente);
 		this.costo = new SimpleObjectProperty<Double>(costo);
 		this.unidad = new SimpleStringProperty(unidad);
-		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
-		this.tipoProductoFK = new SimpleObjectProperty<Integer>(tipoProductoFK);
-		this.acabadoFK = new SimpleObjectProperty<Integer>(acabadoFK);
-		this.tratamientoFK = new SimpleObjectProperty<Integer>(tratamientoFK);
 		this.materialFK = new SimpleObjectProperty<Integer>(materialFK);
-		this.gradoMaterial = new SimpleStringProperty(gradoMaterial);
 		this.tipoMiscelaneoFK = new SimpleObjectProperty<Integer>(tipoMiscelaneoFK);
 		this.tipoMateriaPrimaFK = new SimpleObjectProperty<Integer>(tipoMateriaPrimaFK);
+		this.acabadoFK = new SimpleObjectProperty<Integer>(acabadoFK);
+		this.tratamientoFK = new SimpleObjectProperty<Integer>(tratamientoFK);
 		this.notas = new SimpleStringProperty(notas);
 		this.status = new SimpleStringProperty(status);		
+		this.consecutivo = new SimpleObjectProperty<Integer>(consecutivo);
+		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 	}//FIN CONSTRUCTOR
 
 	public void setSysPK(int sysPK) {
@@ -74,16 +71,24 @@ public class Componente {
 		return this.sysPK;
 	}//FIN METODO
 	
-	public void setConsecutivo(int consecutivo) {
-		this.consecutivo.set(consecutivo);
+	public void setNumeroParte(String numeroParte) {
+		this.numeroParte.set(numeroParte);
 	}//FIN METODO
 	
-	public int getConsecutivo() {
-		return this.consecutivo.get();
+	public String getNumeroParte(Connection connection) {
+		if(this.numeroParte.get().isEmpty()) {
+			if (this.getTipoComponenteChar() == "E" || this.getTipoComponenteChar() == "P")
+				 this.numeroParte.set(this.getCliente(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getConsecutivo() + this.getTipoComponenteChar());
+			else if (this.getTipoComponenteChar() == "M")
+				this.numeroParte.set(this.getTipoMateriaPrima(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getAcabado(connection).getCodigo() + this.getConsecutivo() +  this.getTipoComponenteChar());
+			else if (this.getTipoComponenteChar() == "C")
+				this.numeroParte.set(this.getTipoMiscelaneo(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getTratamiento(connection).getCodigo() + this.getConsecutivo() +  this.getTipoComponenteChar());
+		}//FIN IF
+		return this.numeroParte.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> consecutivoProperty() {
-		return this.consecutivo;
+	public StringProperty numeroParteProperty(Connection connection) {
+		return new SimpleStringProperty(this.getNumeroParte(connection));
 	}//FIN METODO
 	
 	public void setDescripcion(String descripcion) {
@@ -110,6 +115,22 @@ public class Componente {
 		return this.dimensiones;
 	}//FIN METODO
 	
+	public void setTipoComponente(String charComponente) {
+		this.tipoComponente.set(TipoComponente.toString(charComponente));
+	}//FIN METODO
+	
+	public String getTipoComponente() {
+		return this.tipoComponente.get();
+	}//FIN METODO
+	
+	public StringProperty tipoComponenteProperty() {
+		return this.tipoComponente;
+	}//FIN METODO
+	
+	public String getTipoComponenteChar() {
+		return TipoComponente.toCharacter(this.getTipoComponente());
+	}//FIN METODO
+	
 	public void setCosto(Double costo) {
 		this.costo.set(costo);
 	}//FIN METODO
@@ -134,70 +155,6 @@ public class Componente {
 		return this.unidad;
 	}//FIN METODO
 	
-	public void setClienteFK(int clienteFK) {
-		this.clienteFK.set(clienteFK);
-	}//FIN METODO
-	
-	public int getclienteFK() {
-		return this.clienteFK.get();
-	}//FIN METODO
-	
-	public ObjectProperty<Integer> clienteFKProperty() {
-		return this.clienteFK;
-	}//FIN METODO
-	
-	public Cliente getCliente(Connection connection) {
-		return ClienteDAO.readCliente(connection, this.getSysPK());
-	}//FIN METODO
-	
-	public void setTipoProductoFK(int tipoProductoFK) {
-		this.tipoProductoFK.set(tipoProductoFK);
-	}//FIN METODO
-	
-	public int getTipoProductoFK() {
-		return this.tipoProductoFK.get();
-	}//FIN METODO
-	
-	public ObjectProperty<Integer> tipoProductoFKProperty() {
-		return this.tipoProductoFK;
-	}//FIN METODO
-	
-	public TipoProducto getTipoProducto(Connection connection) {
-		return TipoProductoDAO.readTipoProducto(connection, this.getTipoProductoFK());
-	}//FIN METODO
-	
-	public void setAcabadoFK(int acabadoFK) {
-		this.acabadoFK.set(acabadoFK);
-	}//FIN METODO
-	
-	public int getAcabadoFK() {
-		return this.acabadoFK.get();
-	}//FIN METODO
-	
-	public ObjectProperty<Integer> acabadoFKProperty() {
-		return this.acabadoFK;
-	}//FIN METODO
-	
-	public Acabado getAcabado(Connection connection) {
-		return AcabadoDAO.readAcabado(connection, this.getAcabadoFK());
-	}//FIN METODO
-	
-	public void setTratamientoFK(int tratamientoFK) {
-		this.tratamientoFK.set(tratamientoFK);
-	}//FIN METODO
-	
-	public int getTratamientoFK() {
-		return this.tratamientoFK.get();
-	}//FIN METODO
-	
-	public ObjectProperty<Integer> tratamientoFKProperty() {
-		return this.tratamientoFK;
-	}//FIN METODO
-	
-	public Tratamiento getTratamiento(Connection connection) {
-		return TratamientoDAO.readTratamiento(connection, this.getTratamientoFK());
-	}//FIN METODO
-	
 	public void setMaterialFK(int materialFK) {
 		this.materialFK.set(materialFK);
 	}//FIN METODO
@@ -212,18 +169,6 @@ public class Componente {
 	
 	public Material getMaterial(Connection connection) {
 		return MaterialDAO.readMaterial(connection, this.getMaterialFK());
-	}//FIN METODO
-	
-	public void setGradoMaterial(String gradoMaterial) {
-		this.gradoMaterial.set(gradoMaterial);
-	}//FIN METODO
-	
-	public String getGradoMaterial() {
-		return this.gradoMaterial.get();
-	}//FIN METODO
-	
-	public StringProperty gradoMaterialProperty() {
-		return this.gradoMaterial;
 	}//FIN METODO
 	
 	public void setTipoMiscelaneoFK(int tipoMiscelaneoFK) {
@@ -258,6 +203,38 @@ public class Componente {
 		return TipoMateriaPrimaDAO.readTipoMateriaPrima(connection, getTipoMateriaPrimaFK());
 	}//FIN METODO
 	
+	public void setAcabadoFK(int acabadoFK) {
+		this.acabadoFK.set(acabadoFK);
+	}//FIN METODO
+	
+	public int getAcabadoFK() {
+		return this.acabadoFK.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> acabadoFKProperty() {
+		return this.acabadoFK;
+	}//FIN METODO
+	
+	public Acabado getAcabado(Connection connection) {
+		return AcabadoDAO.readAcabado(connection, this.getAcabadoFK());
+	}//FIN METODO
+	
+	public void setTratamientoFK(int tratamientoFK) {
+		this.tratamientoFK.set(tratamientoFK);
+	}//FIN METODO
+	
+	public int getTratamientoFK() {
+		return this.tratamientoFK.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> tratamientoFKProperty() {
+		return this.tratamientoFK;
+	}//FIN METODO
+	
+	public Tratamiento getTratamiento(Connection connection) {
+		return TratamientoDAO.readTratamiento(connection, this.getTratamientoFK());
+	}//FIN METODO
+	
 	public void setNotas(String notas) {
 		this.notas.set(notas);
 	}//FIN METODO
@@ -286,15 +263,32 @@ public class Componente {
 		return Status.toInt(this.getStatus()); 
 	}//FIN METODO
 	
-	public String getNumeroParte(Connection connection) {
-		String numeroParte = "";
-		if (this.getTipoProducto(connection).getCodigo() == "E" || this.getTipoProducto(connection).getCodigo() == "P")
-			 numeroParte = this.getCliente(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getConsecutivo() + this.getTipoProducto(connection).getCodigo();
-		else if (this.getTipoProducto(connection).getCodigo() == "M")
-			numeroParte = this.getTipoMateriaPrima(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getAcabado(connection).getCodigo() + this.getConsecutivo() +  this.getTipoProducto(connection).getCodigo();
-		else if (this.getTipoProducto(connection).getCodigo() == "C")
-			numeroParte = this.getTipoMiscelaneo(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getTratamiento(connection).getCodigo() + this.getConsecutivo() +  this.getTipoProducto(connection).getCodigo();
-		return numeroParte;
+	public void setConsecutivo(int consecutivo) {
+		this.consecutivo.set(consecutivo);
+	}//FIN METODO
+	
+	public int getConsecutivo() {
+		return this.consecutivo.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> consecutivoProperty() {
+		return this.consecutivo;
+	}//FIN METODO
+	
+	public void setClienteFK(int clienteFK) {
+		this.clienteFK.set(clienteFK);
+	}//FIN METODO
+	
+	public int getclienteFK() {
+		return this.clienteFK.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> clienteFKProperty() {
+		return this.clienteFK;
+	}//FIN METODO
+	
+	public Cliente getCliente(Connection connection) {
+		return ClienteDAO.readCliente(connection, this.getSysPK());
 	}//FIN METODO
 	
 }//FIN CLASE

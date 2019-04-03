@@ -7,163 +7,204 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Componente;
+import mx.shf6.produccion.utilities.Dimensiones;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class ComponenteDAO implements ObjectDAO{
+public class ComponenteDAO {
 
-	/**
-	 * METODO PARA HACER CREATE EN LA TABLA COMPONENTES
-	 *@param connection Recibe la conexion de la base de datos
-	 *@param Componente Recibe un objeto de tipo Componente
-	 *@return Verdadero si se pudo realizar el Insert Into en la base de datos, False si no se pudo realizar el Insert Into
-	 */
-	@Override
-	public boolean crear(Connection connection, Object Componente) {	
-		Componente componente = (Componente) Componente;
-		String query = "INSERT INTO componentes (acabadoFk, clienteFk, materialFk, tipoMiscelaneoFk, tipoMateriaPrimaFk, "
-				+ "tipoProducto, tratamientoFk, costo, unidad, dimension, descripcion) "
-				+ "values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		try {	
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, componente.getAcabadoFk());
-			preparedStatement.setInt(2, componente.getClienteFk());
-			preparedStatement.setInt(3, componente.getMaterialFk());
-			preparedStatement.setInt(4, componente.getTipoMiscelaneoFk());
-			preparedStatement.setInt(5, componente.getTipoMateriaPrimaFk());
-			preparedStatement.setInt(6, componente.getTipoProductoFk());
-			preparedStatement.setInt(7, componente.getTratamientoFk());
-			preparedStatement.setDouble(8, componente.getCosto());
-			preparedStatement.setString(9, componente.getUnidad());
-			preparedStatement.setString(10, componente.getDimension());
-			preparedStatement.setString(11, componente.getDescripcion());			
-			preparedStatement.execute();
-			return true;   
-		} catch (SQLException ex) {
-			Notificacion.dialogoException(ex);
-			return false;			
-		}//FIN TRY/CATCH
-	}//FIN METODO	
-	
-	//METODO PARA HACER SELECT EN LA TABLA COMPONENTES
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query = "";
-		ArrayList<Object> listaPartes = new ArrayList<Object>();
-		if (campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query = "SELECT * FROM componentes ORDER BY sysPK;";
+	//METODO PARA CREAR UN REGISTRO
+		public static boolean createComponente(Connection connection, Componente componente) {
+			String consulta = "INSERT INTO componentes (NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);  
-				Componente componente = null;
-				while (resultSet.next()) {
-					componente = new Componente();
-					componente.setSysPk(resultSet.getInt(1));
-					componente.setAcabadoFk(resultSet.getInt(2));
-					componente.setClienteFk(resultSet.getInt(3));
-					componente.setMaterialFk(resultSet.getInt(4));
-					componente.setTipoMiscelaneoFk(resultSet.getInt(5));
-					componente.setTipoMateriaPrimaFk(resultSet.getInt(6));
-					componente.setTipoProductoFk(resultSet.getInt(7));
-					componente.setTratamientoFk(resultSet.getInt(8));
-					componente.setCosto(resultSet.getDouble(9));
-					componente.setUnidad(resultSet.getString(10));
-					componente.setDimension(resultSet.getString(11));
-					componente.setDescripcion(resultSet.getString(12));					
-					listaPartes.add(componente);
+				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+				sentenciaPreparada.setString(1, componente.getNumeroParte(connection));
+				sentenciaPreparada.setString(2, componente.getDescripcion());
+				sentenciaPreparada.setDouble(3, componente.getDimensiones().getLargo());
+				sentenciaPreparada.setDouble(4, componente.getDimensiones().getAncho());
+				sentenciaPreparada.setDouble(5, componente.getDimensiones().getAltoEspesor());
+				sentenciaPreparada.setString(6, componente.getTipoComponenteChar());
+				sentenciaPreparada.setDouble(7, componente.getCosto());
+				sentenciaPreparada.setString(8, componente.getUnidad());
+				sentenciaPreparada.setInt(9, componente.getMaterialFK());
+				sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
+				sentenciaPreparada.setInt(11, componente.getTipoMateriaPrimaFK());
+				sentenciaPreparada.setInt(12, componente.getAcabadoFK());
+				sentenciaPreparada.setInt(13, componente.getTratamientoFK());
+				sentenciaPreparada.setString(14, componente.getNotas());
+				sentenciaPreparada.setInt(15, componente.getStatusFK());
+				sentenciaPreparada.setInt(16, componente.getConsecutivo());
+				sentenciaPreparada.setInt(17, componente.getclienteFK());
+				sentenciaPreparada.execute();
+				return true;
+			} catch (SQLException ex) {
+				Notificacion.dialogoException(ex);
+				return false;
+			}//FIN TRY/CATCH
+		}//FIN METODO
+		
+		//METODO PARA OBTENER UN REGISTRO
+		public static ArrayList<Componente> readComponente(Connection connection) {
+			ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
+			String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes";
+			try {
+				Statement sentencia = connection.createStatement();
+				ResultSet resultados = sentencia.executeQuery(consulta);
+				while (resultados.next()) {
+					Componente componente = new Componente();
+					componente.setSysPK(resultados.getInt(1));
+					componente.setNumeroParte(resultados.getString(2));
+					componente.setDescripcion(resultados.getString(3));
+					Dimensiones dimensiones = new Dimensiones();
+					dimensiones.setLargo(resultados.getDouble(4));
+					dimensiones.setAncho(resultados.getDouble(5));
+					dimensiones.setAltoEspesor(resultados.getDouble(6));
+					componente.setDimensiones(dimensiones);
+					componente.setTipoComponente(resultados.getString(7));
+					componente.setCosto(resultados.getDouble(8));
+					componente.setUnidad(resultados.getString(9));
+					componente.setMaterialFK(resultados.getInt(10));;
+					componente.setTipoMiscelaneoFK(resultados.getInt(11));
+					componente.setTipoMateriaPrimaFK(resultados.getInt(12));
+					componente.setAcabadoFK(resultados.getInt(13));
+					componente.setTratamientoFK(resultados.getInt(14));
+					componente.setNotas(resultados.getString(15));
+					componente.setStatus(resultados.getInt(16));
+					componente.setConsecutivo(resultados.getInt(17));
+					componente.setClienteFK(resultados.getInt(18));
+					arrayListComponente.add(componente);
 				}//FIN WHILE
 			} catch (SQLException ex) {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH
-		} else {
-			query = "SELECT * FROM componentes WHERE " + campoBusqueda + " = ? ORDER BY sysPK;";
+			return arrayListComponente;
+		}//FIN METODO
+		
+		//METODO PARA OBTENER UN REGISTRO
+		public static Componente readComponente(Connection connection, int sysPK) {
+			Componente componente = new Componente();
+			String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes WHERE Sys_PK = " + sysPK;
 			try {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				Componente componente = null;
-				while (resultSet.next()) {
-					componente = new Componente();
-					componente.setSysPk(resultSet.getInt(1));
-					componente.setAcabadoFk(resultSet.getInt(2));
-					componente.setClienteFk(resultSet.getInt(3));
-					componente.setMaterialFk(resultSet.getInt(4));
-					componente.setTipoMiscelaneoFk(resultSet.getInt(5));
-					componente.setTipoMateriaPrimaFk(resultSet.getInt(6));
-					componente.setTipoProductoFk(resultSet.getInt(7));
-					componente.setTratamientoFk(resultSet.getInt(8));
-					componente.setCosto(resultSet.getDouble(9));
-					componente.setUnidad(resultSet.getString(10));
-					componente.setDimension(resultSet.getString(11));
-					componente.setDescripcion(resultSet.getString(12));					
-					listaPartes.add(componente);
+				Statement sentencia = connection.createStatement();
+				ResultSet resultados = sentencia.executeQuery(consulta);
+				while (resultados.next()) {
+					componente.setSysPK(resultados.getInt(1));
+					componente.setNumeroParte(resultados.getString(2));
+					componente.setDescripcion(resultados.getString(3));
+					Dimensiones dimensiones = new Dimensiones();
+					dimensiones.setLargo(resultados.getDouble(4));
+					dimensiones.setAncho(resultados.getDouble(5));
+					dimensiones.setAltoEspesor(resultados.getDouble(6));
+					componente.setDimensiones(dimensiones);
+					componente.setTipoComponente(resultados.getString(7));
+					componente.setCosto(resultados.getDouble(8));
+					componente.setUnidad(resultados.getString(9));
+					componente.setMaterialFK(resultados.getInt(10));;
+					componente.setTipoMiscelaneoFK(resultados.getInt(11));
+					componente.setTipoMateriaPrimaFK(resultados.getInt(12));
+					componente.setAcabadoFK(resultados.getInt(13));
+					componente.setTratamientoFK(resultados.getInt(14));
+					componente.setNotas(resultados.getString(15));
+					componente.setStatus(resultados.getInt(16));
+					componente.setConsecutivo(resultados.getInt(17));
+					componente.setClienteFK(resultados.getInt(18));
 				}//FIN WHILE
-			}catch (SQLException ex) {
+			} catch (SQLException ex) {
 				Notificacion.dialogoException(ex);
 			}//FIN TRY/CATCH
-		}//FIN IF/ELSE
-		return listaPartes;
-	}//FIN METODO	
-	
-	//METODO PARA HACER UPDATE EN LA TABLA COMPONENTES
-	@Override
-	public boolean modificar(Connection connection, Object Componente) {
-		String query = "UPDATE componentes "
-				+ "SET  acabadoFk = ?, clienteFk = ?, materialFk = ?, tipoMiscelaneoFk = ?, tipoMateriaPrimaFk = ?, "
-				+ "tipoProductoFk = ?, tratamientoFk = ?, costo = ?, unidad = ?, dimension = ?, descripcion = ? "
-				+ "WHERE sysPK = ?";
-		try {
-			Componente componente = (Componente)Componente;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, componente.getAcabadoFk());
-			preparedStatement.setInt(2, componente.getClienteFk());
-			preparedStatement.setInt(3, componente.getMaterialFk());
-			preparedStatement.setInt(4, componente.getTipoMiscelaneoFk());
-			preparedStatement.setInt(5, componente.getTipoMateriaPrimaFk());
-			preparedStatement.setInt(6, componente.getTipoProductoFk());
-			preparedStatement.setInt(7, componente.getTratamientoFk());
-			preparedStatement.setDouble(8, componente.getCosto());
-			preparedStatement.setString(9, componente.getUnidad());
-			preparedStatement.setString(10, componente.getDimension());
-			preparedStatement.setString(11, componente.getDescripcion());			
-			preparedStatement.setInt(12, componente.getSysPk());
-			preparedStatement.execute();
-			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
-			return false;
-		}//FIN TRY/CATCH
-	}//FIN METODO	
-	
-	//METODO PARA HACER DELETE EN LA TABLA COMPONENTES
-	@Override
-	public boolean eliminar(Connection connection, Object Componente) {
-		String query = "DELETE FROM componentes WHERE sysPK = ?";
-		try {	
-			Componente componente = (Componente)Componente;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, componente.getSysPk());
-			preparedStatement.execute();
-			return true;
-		} catch (SQLException e) {
-			Notificacion.dialogoException(e);
-			return false;
-		}//FIN TRY/CATCH	
-	}//FIN METODO		
-	
-	//METODO PARA OBTENER EL ULTIMO SYSPK AGREGADO A LA TABLA 
-	public int ultimoSysPk(Connection connection) {
-		String query = "SELECT sysPK FROM componentes order by sysPK asc";
-		int ultimoSysPk = 0;
-		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(query);
-			while (resultSet.next())
-				ultimoSysPk = resultSet.getInt(1);
-			return ultimoSysPk;
-		}catch (SQLException e) {
-			Notificacion.dialogoException(e);
-		}//FIN TRY/CATCH
-		return ultimoSysPk;
-	}//FIN METODO
+			return componente;
+		}//FIN METODO
+		
+		//METODO PARA OBTENER UN REGISTRO
+		public static ArrayList<Componente> readComponente(Connection connection, String like) {
+			ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
+			String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes WHERE Descripcion LIKE '%" + like + "%' OR NumeroParte LIKE '%" + like + "%'";
+			try {
+				Statement sentencia = connection.createStatement();
+				ResultSet resultados = sentencia.executeQuery(consulta);
+				while (resultados.next()) {
+					Componente componente = new Componente();
+					componente.setSysPK(resultados.getInt(1));
+					componente.setNumeroParte(resultados.getString(2));
+					componente.setDescripcion(resultados.getString(3));
+					Dimensiones dimensiones = new Dimensiones();
+					dimensiones.setLargo(resultados.getDouble(4));
+					dimensiones.setAncho(resultados.getDouble(5));
+					dimensiones.setAltoEspesor(resultados.getDouble(6));
+					componente.setDimensiones(dimensiones);
+					componente.setTipoComponente(resultados.getString(7));
+					componente.setCosto(resultados.getDouble(8));
+					componente.setUnidad(resultados.getString(9));
+					componente.setMaterialFK(resultados.getInt(10));;
+					componente.setTipoMiscelaneoFK(resultados.getInt(11));
+					componente.setTipoMateriaPrimaFK(resultados.getInt(12));
+					componente.setAcabadoFK(resultados.getInt(13));
+					componente.setTratamientoFK(resultados.getInt(14));
+					componente.setNotas(resultados.getString(15));
+					componente.setStatus(resultados.getInt(16));
+					componente.setConsecutivo(resultados.getInt(17));
+					componente.setClienteFK(resultados.getInt(18));
+					arrayListComponente.add(componente);
+				}//FIN WHILE
+			} catch (SQLException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY/CATCH
+			return arrayListComponente;
+		}//FIN METODO
+		
+		//METODO PARA CREAR UN REGISTRO
+		public static boolean updateComponente(Connection connection, Componente componente) {
+			String consulta = "UPDATE componentes SET NumeroParte = ?, Descripcion = ?, Largo = ?, Ancho = ?, AltoEspesor = ?, TipoComponente = ?, Costo = ?, Unidad = ?, MaterialFK = ?, TipoMiscelaneoFK = ?, TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ? WHERE Sys_PK = ?";
+			try {
+				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+				sentenciaPreparada.setString(1, componente.getNumeroParte(connection));
+				sentenciaPreparada.setString(2, componente.getDescripcion());
+				sentenciaPreparada.setDouble(3, componente.getDimensiones().getLargo());
+				sentenciaPreparada.setDouble(4, componente.getDimensiones().getAncho());
+				sentenciaPreparada.setDouble(5, componente.getDimensiones().getAltoEspesor());
+				sentenciaPreparada.setString(6, componente.getTipoComponenteChar());
+				sentenciaPreparada.setDouble(7, componente.getCosto());
+				sentenciaPreparada.setString(8, componente.getUnidad());
+				sentenciaPreparada.setInt(9, componente.getMaterialFK());
+				sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
+				sentenciaPreparada.setInt(11, componente.getTipoMateriaPrimaFK());
+				sentenciaPreparada.setInt(12, componente.getAcabadoFK());
+				sentenciaPreparada.setInt(13, componente.getTratamientoFK());
+				sentenciaPreparada.setString(14, componente.getNotas());
+				sentenciaPreparada.setString(15, componente.getStatus());
+				sentenciaPreparada.setInt(16, componente.getConsecutivo());
+				sentenciaPreparada.setInt(17, componente.getclienteFK());
+				sentenciaPreparada.setInt(18, componente.getSysPK());
+				sentenciaPreparada.execute();
+				return true;
+			} catch (SQLException ex) {
+				Notificacion.dialogoException(ex);
+				return false;
+			}//FIN TRY/CATCH
+		}//FIN METODO
+		
+		//METODO PARA CREAR UN REGISTRO
+		public static boolean deleteComponente(Connection connection, Componente componente) {
+			String consulta = "DELETE FROM componentes WHERE Sys_PK = ?";
+			try {
+				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+				sentenciaPreparada.setInt(1, componente.getSysPK());
+				sentenciaPreparada.execute();
+				return true;
+			} catch (SQLException ex) {
+				Notificacion.dialogoException(ex);
+				return false;
+			}//FIN TRY/CATCH
+		}//FIN METODO
+		
+		//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
+		public static ObservableList<Componente> toObservableList(ArrayList<Componente> arrayList) {
+			ObservableList<Componente> listaObservableComponente = FXCollections.observableArrayList();
+			for (Componente componente : arrayList) 
+				listaObservableComponente.add(componente);
+			return listaObservableComponente;
+		}//FIN METODO
+		
 }//FIN CLASE
