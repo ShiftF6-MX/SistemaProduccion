@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class Tratamiento {
 
 	//PROPIEDADES
-	private ObjectProperty<Integer> sysPk;
+	private ObjectProperty<Integer> sysPK;
 	private StringProperty codigo;
 	private StringProperty descripcion;
 	private StringProperty status;
@@ -20,24 +20,24 @@ public class Tratamiento {
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public Tratamiento(Integer sysPk, String codigo, String descripcion, String status) {
-		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
+	public Tratamiento(Integer sysPK, String codigo, String descripcion, String status) {
+		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.status = new SimpleStringProperty(status);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
-	public void setSysPk(Integer sysPk) {
-		this.sysPk.set(sysPk);
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
 	}//FIN METODO
 		
-	public Integer getSysPk() {
-		return this.sysPk.get();
+	public Integer getSysPK() {
+		return this.sysPK.get();
 	}//FIN METODO
 		
-	public ObjectProperty<Integer> sysPkProperty() {
-		return this.sysPk;
+	public ObjectProperty<Integer> sysPKProperty() {
+		return this.sysPK;
 	}//FIN METODO
 	//FIN METODOS "SYSPK"
 	

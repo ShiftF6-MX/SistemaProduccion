@@ -39,7 +39,7 @@ public class TratamientoDAO {
 			ResultSet resultados = sentencia.executeQuery(consulta);  
 			while (resultados.next()) {
 				Tratamiento tratamiento = new Tratamiento();
-				tratamiento.setSysPk(resultados.getInt(1));
+				tratamiento.setSysPK(resultados.getInt(1));
 				tratamiento.setCodigo(resultados.getString(2));
 				tratamiento.setDescripcion(resultados.getString(3));
 				tratamiento.setStatus(resultados.getInt(4));
@@ -59,7 +59,7 @@ public class TratamientoDAO {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
-				tratamiento.setSysPk(resultados.getInt(1));
+				tratamiento.setSysPK(resultados.getInt(1));
 				tratamiento.setCodigo(resultados.getString(2));
 				tratamiento.setDescripcion(resultados.getString(3));
 				tratamiento.setStatus(resultados.getInt(4));
@@ -79,7 +79,7 @@ public class TratamientoDAO {
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while(resultados.next()) {
 				Tratamiento tratamiento = new Tratamiento();
-				tratamiento.setSysPk(resultados.getInt(1));
+				tratamiento.setSysPK(resultados.getInt(1));
 				tratamiento.setCodigo(resultados.getString(2));
 				tratamiento.setDescripcion(resultados.getString(3));
 				tratamiento.setStatus(resultados.getInt(4));
@@ -99,7 +99,7 @@ public class TratamientoDAO {
 			sentenciaPreparada.setString(1,  tratamiento.getCodigo());
 			sentenciaPreparada.setString(2,  tratamiento.getDescripcion());
 			sentenciaPreparada.setInt(3,  tratamiento.getStatusFK());
-			sentenciaPreparada.setInt(4,  tratamiento.getSysPk());
+			sentenciaPreparada.setInt(4,  tratamiento.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		}catch (SQLException e) {
@@ -113,7 +113,7 @@ public class TratamientoDAO {
 		String consulta = "DELETE FROM tratamiento where Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
-			sentenciaPreparada.setInt(1, tratamiento.getSysPk());
+			sentenciaPreparada.setInt(1, tratamiento.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		}catch(SQLException ex) {
@@ -128,6 +128,21 @@ public class TratamientoDAO {
 		for	(Tratamiento venta : arrayList)
 			listaObservableTratamiento.add(venta);
 		return listaObservableTratamiento;
+	}//FIN METODO
+	
+	public static ObservableList<String> listaTiposTratamiento(Connection connection) {
+		ObservableList<String> listaTiposTratamiento = FXCollections.observableArrayList();
+		String consulta = "SELECT Descripcion FROM tratamiento ORDER BY Descripcion ASC";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				listaTiposTratamiento.add(resultados.getString(1));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return listaTiposTratamiento;
 	}//FIN METODO
 
 }//FIN CLASE

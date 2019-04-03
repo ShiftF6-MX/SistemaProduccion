@@ -134,5 +134,20 @@ public class MaterialDAO {
 				listaObservableMaterial.add(venta);
 			return listaObservableMaterial;
 		}//FIN METODO
+		
+		public static ObservableList<String> listaTiposMaterial(Connection connection) {
+			ObservableList<String> listaTiposMaterial = FXCollections.observableArrayList();
+			String consulta = "SELECT Descripcion FROM materiales ORDER BY Descripcion ASC";
+			try {
+				Statement sentencia = connection.createStatement();
+				ResultSet resultados = sentencia.executeQuery(consulta);
+				while (resultados.next()) {
+					listaTiposMaterial.add(resultados.getString(1));
+				}//FIN WHILE
+			} catch (SQLException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY/CATCH
+			return listaTiposMaterial;
+		}//FIN METODO
 
 }//FIN CLASE

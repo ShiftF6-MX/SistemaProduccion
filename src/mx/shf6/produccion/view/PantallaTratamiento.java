@@ -71,7 +71,7 @@ public class PantallaTratamiento {
 	}//FIN METODO
 	
 	private void inicializaTabla() {
-		this.columnaSysPK.setCellValueFactory(cellData -> cellData.getValue().sysPkProperty());
+		this.columnaSysPK.setCellValueFactory(cellData -> cellData.getValue().sysPKProperty());
 		this.columnaCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
 		this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());

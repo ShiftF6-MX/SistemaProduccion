@@ -130,4 +130,19 @@ public class TipoMateriaPrimaDAO {
 		return listaObservableTipoMateriaPrima;
 	}//FIN METODO
 	
+	public static ObservableList<String> listaTiposMateriaPrima(Connection connection) {
+		ObservableList<String> listaTiposMateriaPrima = FXCollections.observableArrayList();
+		String consulta = "SELECT Descripcion FROM tipomateriaprima ORDER BY Descripcion ASC";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				listaTiposMateriaPrima.add(resultados.getString(1));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return listaTiposMateriaPrima;
+	}//FIN METODO
+	
 }//FIN METODO

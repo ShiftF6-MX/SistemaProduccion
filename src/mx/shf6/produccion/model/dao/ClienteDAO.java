@@ -158,4 +158,19 @@ public class ClienteDAO{
 		return listaObservableCliente;
 	}//FIN METODO
 	
+	public static ObservableList<String> listaNombresClientes(Connection connection) {
+		ObservableList<String> listaNombresClientes = FXCollections.observableArrayList();
+		String consulta = "SELECT Nombre FROM clientes ORDER BY Nombre ASC";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				listaNombresClientes.add(resultados.getString(1));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return listaNombresClientes;
+	}//FIN METODO
+	
 }//FIN CLASE

@@ -129,5 +129,20 @@ public class AcabadoDAO{
 			listaObservableAcabado.add(venta);
 		return listaObservableAcabado;
 	}//FIN METODO
+	
+	public static ObservableList<String> listaTiposAcabado(Connection connection) {
+		ObservableList<String> listaTiposAcabado = FXCollections.observableArrayList();
+		String consulta = "SELECT Descripcion FROM acabado ORDER BY Descripcion ASC";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				listaTiposAcabado.add(resultados.getString(1));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return listaTiposAcabado;
+	}//FIN METODO
 
 }//FIN CLASE

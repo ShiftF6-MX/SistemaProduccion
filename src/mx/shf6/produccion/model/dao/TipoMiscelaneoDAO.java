@@ -130,4 +130,19 @@ public class TipoMiscelaneoDAO {
 		return listaObservableTipoMiscelaneo;
 	}//FIN METODO
 
+	public static ObservableList<String> listaTiposMiscelaneo(Connection connection) {
+		ObservableList<String> listaTiposMiscelaneo = FXCollections.observableArrayList();
+		String consulta = "SELECT Descripcion FROM tipomiscelaneos ORDER BY Descripcion ASC";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				listaTiposMiscelaneo.add(resultados.getString(1));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return listaTiposMiscelaneo;
+	}//FIN METODO
+	
 }//FIN CLASE
