@@ -4,6 +4,7 @@ package mx.shf6.produccion.utilities;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.concurrent.Executors;
 
 public class ConnectionDB {
     
@@ -25,6 +26,7 @@ public class ConnectionDB {
         try{
             Class.forName("java.sql.Driver");
             conexion = DriverManager.getConnection("jdbc:mysql://" + hostBD + "/" + nombreBD + "?useSSL=true", usuarioBD, contrasenaBD);
+            this.conexion.setNetworkTimeout(Executors.newSingleThreadExecutor(), 30000);
             //System.out.println("Conexion exitosa");
             return conexion;
         }catch(ClassNotFoundException | SQLException e){

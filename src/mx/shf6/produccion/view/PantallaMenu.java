@@ -31,16 +31,16 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaCotizaciones(); 
 	}//FIN METODO
 	
+	@FXML private void manejadorMenuComponente() {
+		this.mainApp.iniciarPantallaComponente();
+	}//FIN METODO
+	
 	@FXML private void manejadorMenuTipoMateriaPrima() {
 		this.mainApp.iniciarPantallaTipoMateriaPrima();
 	}//FIN METODO
 	
 	@FXML private void manejadorTipoMiscelaneo() {
 		this.mainApp.iniciarPantallaTipoMiscelaneo();
-	}//FIN METODO
-	
-	@FXML private void manejadorMenuTipoProducto() {
-		this.mainApp.iniciarPantallaTipoProducto();
 	}//FIN METODO
 	
 	@FXML private void manejadorMenuMaterial() {

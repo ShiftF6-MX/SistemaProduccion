@@ -2,6 +2,7 @@ package mx.shf6.produccion;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -10,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -629,6 +631,14 @@ public class MainApp extends Application {
 	
 	//METODOS DE ACCESO CONEXION
 	public Connection getConnection() {
+		try {
+			if (this.conexion.isClosed()) {
+				this.configurarBaseDatos();
+				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "La conexión a la basa de datos se a perdido");
+			}
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}
 		return this.conexion;
 	}//FIN METODO
 	
