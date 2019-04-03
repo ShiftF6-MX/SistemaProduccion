@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ public class ComponenteDAO {
 			String consulta = "INSERT INTO componentes (NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
-				sentenciaPreparada.setString(1, componente.getNumeroParte(connection));
+				sentenciaPreparada.setString(1, componente.getNumeroParte());
 				sentenciaPreparada.setString(2, componente.getDescripcion());
 				sentenciaPreparada.setDouble(3, componente.getDimensiones().getLargo());
 				sentenciaPreparada.setDouble(4, componente.getDimensiones().getAncho());
@@ -29,14 +30,29 @@ public class ComponenteDAO {
 				sentenciaPreparada.setDouble(7, componente.getCosto());
 				sentenciaPreparada.setString(8, componente.getUnidad());
 				sentenciaPreparada.setInt(9, componente.getMaterialFK());
-				sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
-				sentenciaPreparada.setInt(11, componente.getTipoMateriaPrimaFK());
-				sentenciaPreparada.setInt(12, componente.getAcabadoFK());
-				sentenciaPreparada.setInt(13, componente.getTratamientoFK());
+				if (componente.getTipoMiscelaneoFK() > 0)
+					sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
+				else
+					sentenciaPreparada.setNull(10, Types.INTEGER);
+				if (componente.getTipoMateriaPrimaFK() > 0)
+					sentenciaPreparada.setInt(11, componente.getTipoMateriaPrimaFK());
+				else
+					sentenciaPreparada.setNull(11, Types.INTEGER);
+				if (componente.getAcabadoFK() > 0)
+					sentenciaPreparada.setInt(12, componente.getAcabadoFK());
+				else
+					sentenciaPreparada.setNull(12, Types.INTEGER);
+				if (componente.getTratamientoFK() > 0)
+					sentenciaPreparada.setInt(13, componente.getTratamientoFK());
+				else
+					sentenciaPreparada.setNull(13, Types.INTEGER);
 				sentenciaPreparada.setString(14, componente.getNotas());
 				sentenciaPreparada.setInt(15, componente.getStatusFK());
 				sentenciaPreparada.setInt(16, componente.getConsecutivo());
-				sentenciaPreparada.setInt(17, componente.getclienteFK());
+				if (componente.getclienteFK() > 0) 
+					sentenciaPreparada.setInt(17, componente.getclienteFK());
+				else
+					sentenciaPreparada.setNull(17, Types.INTEGER);
 				sentenciaPreparada.execute();
 				return true;
 			} catch (SQLException ex) {
@@ -159,7 +175,7 @@ public class ComponenteDAO {
 			String consulta = "UPDATE componentes SET NumeroParte = ?, Descripcion = ?, Largo = ?, Ancho = ?, AltoEspesor = ?, TipoComponente = ?, Costo = ?, Unidad = ?, MaterialFK = ?, TipoMiscelaneoFK = ?, TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ? WHERE Sys_PK = ?";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
-				sentenciaPreparada.setString(1, componente.getNumeroParte(connection));
+				sentenciaPreparada.setString(1, componente.getNumeroParte());
 				sentenciaPreparada.setString(2, componente.getDescripcion());
 				sentenciaPreparada.setDouble(3, componente.getDimensiones().getLargo());
 				sentenciaPreparada.setDouble(4, componente.getDimensiones().getAncho());
@@ -168,14 +184,29 @@ public class ComponenteDAO {
 				sentenciaPreparada.setDouble(7, componente.getCosto());
 				sentenciaPreparada.setString(8, componente.getUnidad());
 				sentenciaPreparada.setInt(9, componente.getMaterialFK());
-				sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
-				sentenciaPreparada.setInt(11, componente.getTipoMateriaPrimaFK());
-				sentenciaPreparada.setInt(12, componente.getAcabadoFK());
-				sentenciaPreparada.setInt(13, componente.getTratamientoFK());
+				if (componente.getTipoMiscelaneoFK() > 0)
+					sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
+				else
+					sentenciaPreparada.setNull(10, Types.INTEGER);
+				if (componente.getTipoMateriaPrimaFK() > 0)
+					sentenciaPreparada.setInt(11, componente.getTipoMateriaPrimaFK());
+				else
+					sentenciaPreparada.setNull(11, Types.INTEGER);
+				if (componente.getAcabadoFK() > 0)
+					sentenciaPreparada.setInt(12, componente.getAcabadoFK());
+				else
+					sentenciaPreparada.setNull(12, Types.INTEGER);
+				if (componente.getTratamientoFK() > 0)
+					sentenciaPreparada.setInt(13, componente.getTratamientoFK());
+				else
+					sentenciaPreparada.setNull(13, Types.INTEGER);
 				sentenciaPreparada.setString(14, componente.getNotas());
-				sentenciaPreparada.setString(15, componente.getStatus());
+				sentenciaPreparada.setInt(15, componente.getStatusFK());
 				sentenciaPreparada.setInt(16, componente.getConsecutivo());
-				sentenciaPreparada.setInt(17, componente.getclienteFK());
+				if (componente.getclienteFK() > 0) 
+					sentenciaPreparada.setInt(17, componente.getclienteFK());
+				else
+					sentenciaPreparada.setNull(17, Types.INTEGER);
 				sentenciaPreparada.setInt(18, componente.getSysPK());
 				sentenciaPreparada.execute();
 				return true;

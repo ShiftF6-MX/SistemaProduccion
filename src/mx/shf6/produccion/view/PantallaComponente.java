@@ -38,9 +38,12 @@ public class PantallaComponente {
 	//COMPONENTES INTERFAZ
 	@FXML private TextField campoTextoBusqueda;
 	@FXML private TableView<Componente> tablaComponente;
-	@FXML private PTableColumn<Componente, Integer> columnaSysPK;
-	@FXML private PTableColumn<Componente, String> columnaCodigo;
+	@FXML private PTableColumn<Componente, String> columnaNumeroParte;
 	@FXML private PTableColumn<Componente, String> columnaDescripcion;
+	@FXML private PTableColumn<Componente, String> columnaTipoComponente;
+	@FXML private PTableColumn<Componente, String> columnaTipoMaterial;
+	@FXML private PTableColumn<Componente, Double> columnaCosto;
+	@FXML private PTableColumn<Componente, String> columnaNotas;
 	@FXML private PTableColumn<Componente, String> columnaStatus;
 	@FXML private PTableColumn<Componente, String> columnaAcciones;
 	
@@ -48,13 +51,13 @@ public class PantallaComponente {
 	@FXML private void initialize() {
 		this.componente = new Componente();
 		this.inicializaComponentes();
-		this.inicializaTabla();
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
+		this.inicializaTabla();
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -71,9 +74,12 @@ public class PantallaComponente {
 	}//FIN METODO
 	
 	private void inicializaTabla() {
-		this.columnaSysPK.setCellValueFactory(cellData -> cellData.getValue().sysPKProperty());
-		this.columnaCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
+		this.columnaNumeroParte.setCellValueFactory(cellData -> cellData.getValue().numeroParteProperty(this.mainApp.getConnection()));
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
+		this.columnaTipoComponente.setCellValueFactory(cellData -> cellData.getValue().tipoComponenteProperty());
+		this.columnaTipoMaterial.setCellValueFactory(cellData -> cellData.getValue().getMaterial(this.mainApp.getConnection()).descripcionProperty());
+		this.columnaCosto.setCellValueFactory(cellData -> cellData.getValue().costoProperty());
+		this.columnaNotas.setCellValueFactory(cellData -> cellData.getValue().notasProperty());
 		this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 		this.inicializarColumnaAcciones();
 	}//FIN METODO.

@@ -1,6 +1,7 @@
 package mx.shf6.produccion.model;
 
 import java.sql.Connection;
+import java.text.DecimalFormat;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -75,20 +76,23 @@ public class Componente {
 		this.numeroParte.set(numeroParte);
 	}//FIN METODO
 	
-	public String getNumeroParte(Connection connection) {
-		if(this.numeroParte.get().isEmpty()) {
-			if (this.getTipoComponenteChar() == "E" || this.getTipoComponenteChar() == "P")
-				 this.numeroParte.set(this.getCliente(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getConsecutivo() + this.getTipoComponenteChar());
-			else if (this.getTipoComponenteChar() == "M")
-				this.numeroParte.set(this.getTipoMateriaPrima(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getAcabado(connection).getCodigo() + this.getConsecutivo() +  this.getTipoComponenteChar());
-			else if (this.getTipoComponenteChar() == "C")
-				this.numeroParte.set(this.getTipoMiscelaneo(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getTratamiento(connection).getCodigo() + this.getConsecutivo() +  this.getTipoComponenteChar());
-		}//FIN IF
+	public String getNumeroParte() {
+		return this.numeroParte.get();
+	}//FIN METODO
+	
+	public String doNumeroParte(Connection connection) {
+		DecimalFormat decimalFormat = new DecimalFormat("000");
+		if (this.getTipoComponente() == TipoComponente.ENSAMBLE || this.getTipoComponente() == TipoComponente.PARTE_PRIMARIA)
+			 this.numeroParte.set(this.getCliente(connection).getCodigo() + this.getMaterial(connection).getCodigo() + decimalFormat.format(this.getConsecutivo()) + this.getTipoComponenteChar());
+		else if (this.getTipoComponente() == TipoComponente.MATERIA_PRIMA)
+			this.numeroParte.set(this.getTipoMateriaPrima(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getAcabado(connection).getCodigo() + decimalFormat.format(this.getConsecutivo()) +  this.getTipoComponenteChar());
+		else if (this.getTipoComponente() == TipoComponente.COMPRADO)
+			this.numeroParte.set(this.getTipoMiscelaneo(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getTratamiento(connection).getCodigo() + decimalFormat.format(this.getConsecutivo()) +  this.getTipoComponenteChar());
 		return this.numeroParte.get();
 	}//FIN METODO
 	
 	public StringProperty numeroParteProperty(Connection connection) {
-		return new SimpleStringProperty(this.getNumeroParte(connection));
+		return this.numeroParte;
 	}//FIN METODO
 	
 	public void setDescripcion(String descripcion) {
@@ -288,7 +292,7 @@ public class Componente {
 	}//FIN METODO
 	
 	public Cliente getCliente(Connection connection) {
-		return ClienteDAO.readCliente(connection, this.getSysPK());
+		return ClienteDAO.readCliente(connection, this.getclienteFK());
 	}//FIN METODO
 	
 }//FIN CLASE
