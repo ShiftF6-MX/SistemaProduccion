@@ -17,7 +17,7 @@ public class ProyectoDAO{
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createProyecto(Connection connection, Proyecto proyecto) {
 		String consulta = "INSERT INTO proyectos (Codigo, Descripcion, Carpeta, EspecificacionTecnica,CostoDirecto, CostoIndirecto, Precio, ClienteFK) "
-				+ "VALUES (?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?,?,?,?,?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, proyecto.getCodigo());
@@ -121,8 +121,8 @@ public class ProyectoDAO{
 	public static ArrayList<Proyecto> readProyectoCliente(Connection connection, int clienteFK){
 		ArrayList<Proyecto> arrayListProyectoCliente = new ArrayList<Proyecto>();
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK "
-				+ "FROM proyectos"
-				+"WHERE ClienteFK= " + clienteFK;
+				+ " FROM proyectos"
+				+" WHERE ClienteFK= " + clienteFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -147,7 +147,7 @@ public class ProyectoDAO{
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateProyecto(Connection connection, Proyecto proyecto) {
-		String consulta = "UPDATE proyectos SET Codigo = ?, Descripcion = ?, Carpeta = ?, EspecificacionTecnica = ? "
+		String consulta = "UPDATE proyectos SET Codigo = ?, Descripcion = ?, Carpeta = ?, EspecificacionTecnica = ?, CostoDirecto = ?, CostoIndirecto = ?, Precio= ?, ClienteFK=? "
 				+ "WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
