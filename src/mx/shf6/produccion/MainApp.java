@@ -41,6 +41,8 @@ import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoClientes;
 import mx.shf6.produccion.view.DialogoComponente;
+import mx.shf6.produccion.view.DialogoCotizacion;
+import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoProyecto;
 import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
@@ -54,7 +56,6 @@ import mx.shf6.produccion.view.PantallaCotizaciones;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
-import mx.shf6.produccion.view.PantallaSecundariaCotizaciones;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
 import mx.shf6.produccion.view.PantallaTratamiento;
@@ -72,6 +73,7 @@ public class MainApp extends Application {
 	//PANTALLAS DEL SISTEMA
 	private Stage escenarioPrincipal;
 	private Stage escenarioDialogos;
+	private Stage escenarioDialogosSecundarios;
 	private BorderPane pantallaBase;
 	private AnchorPane pantallaInicio;
 	private AnchorPane pantallaSesion;
@@ -81,7 +83,6 @@ public class MainApp extends Application {
 	private AnchorPane pantallaClientes;
 	private AnchorPane pantallaCotizaciones;
 	private AnchorPane pantallaComponente;
-	private AnchorPane pantallaSecundariaCotizaciones;
 	private AnchorPane pantallaTipoMateriaPrima;
 	private AnchorPane pantallaTipoMiscelaneo;
 	private AnchorPane pantallaMaterial;
@@ -91,6 +92,8 @@ public class MainApp extends Application {
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
+	private AnchorPane dialogoCotizacion;
+	private AnchorPane dialogoDetalleCotizacion;
 	private AnchorPane dialogoComponente;
 	private AnchorPane dialogoTipoMateriaPrima;
 	private AnchorPane dialogoTipoMiscelaneo;
@@ -117,6 +120,8 @@ public class MainApp extends Application {
 		this.configurarEscenarioPrincipal(primaryStage);
 		//INICIA ESCENARIO DIALOGOS
 		this.configurarEscenarioSecundario();
+		//INICIAR ESCENARIO DIALOGOS SECUNDARIOS
+		this.configurarEscenarioTerciario();
 		//INICIA LA INTERFAZ DE USUARIO
 		iniciarEscenarioPrincipal();
 		iniciarPantallaInicio();
@@ -148,6 +153,10 @@ public class MainApp extends Application {
 		return this.escenarioPrincipal;
 	}//FIN METODO
 	
+	public Stage getEscenarioDialogosSecundarios() {
+		return this.escenarioDialogosSecundarios;
+	}
+	
 	private void configurarEscenarioSecundario() {
 		this.escenarioDialogos = new Stage();
 		this.escenarioDialogos.setResizable(false);
@@ -155,6 +164,15 @@ public class MainApp extends Application {
 		this.escenarioDialogos.initModality(Modality.WINDOW_MODAL);
 		this.escenarioDialogos.initStyle(StageStyle.TRANSPARENT);
 		this.escenarioDialogos.initOwner(this.escenarioPrincipal);
+	} //FIN METODO
+	
+	private void configurarEscenarioTerciario() {
+		this.escenarioDialogosSecundarios = new Stage();
+		this.escenarioDialogosSecundarios.setResizable(false);
+		this.escenarioDialogosSecundarios.setMaximized(false);
+		this.escenarioDialogosSecundarios.initModality(Modality.WINDOW_MODAL);
+		this.escenarioDialogosSecundarios.initStyle(StageStyle.TRANSPARENT);
+		this.escenarioDialogosSecundarios.initOwner(this.escenarioPrincipal);
 	} //FIN METODO
 		
 	public Stage getEscenarioDialogos() {
@@ -176,6 +194,18 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	private Scene iniciarEscenarioSecundario(Parent parent) {
+		VBox marcoVentana = new VBox();
+		marcoVentana.getChildren().add(parent);
+		marcoVentana.setPadding(new Insets(10.0d));
+		marcoVentana.setBackground(new Background(new BackgroundFill(Color.rgb(0,0,0,0), new CornerRadii(0), new Insets(0))));
+		parent.setEffect(new DropShadow());
+		((AnchorPane)parent).setBackground(new Background(new BackgroundFill(Color.rgb(0,0,0,0), new CornerRadii(0), new Insets(0))));
+		Scene escena = new Scene(marcoVentana);
+		escena.setFill(Color.TRANSPARENT);
+		return escena;
+	}//FIN METODO
+	
+	private Scene iniciarEscenarioTerceario(Parent parent) {
 		VBox marcoVentana = new VBox();
 		marcoVentana.getChildren().add(parent);
 		marcoVentana.setPadding(new Insets(10.0d));
@@ -374,20 +404,7 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	//INICIAR PANTALLA SECUNDARIA COTIZACIONES
-	public void iniciarPantallaSecundariaCotizaciones(Cotizacion cotizacion, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaSecundariaCotizaciones.fxml"));
-			this.pantallaSecundariaCotizaciones = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaSecundariaCotizaciones);
-			PantallaSecundariaCotizaciones pantallaSecundariaCotizaciones = fxmlLoader.getController();
-			pantallaSecundariaCotizaciones.setMainApp(this);
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-	}//FIN METODO
-	
+		
 	//INICIAR PANTALLA TIPO MATERIA PRIMA
 	public void iniciarPantallaTipoMateriaPrima() {
 		try {
@@ -497,6 +514,22 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	//INICIAR PANTALLA DIALOGO COTIZACIONES
+	public void iniciarDialogoCotizacion(Cotizacion cotizacion, int opcion) {
+ 		try {
+ 			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoCotizacion.fxml"));
+			this.dialogoCotizacion = (AnchorPane) fxmlLoader.load();
+			Scene PantallaSecundariaCotizaciones = this.iniciarEscenarioSecundario(this.dialogoCotizacion);
+			this.escenarioDialogos.setScene(PantallaSecundariaCotizaciones);
+			DialogoCotizacion dialogoCotizacion = fxmlLoader.getController();
+			dialogoCotizacion.setMainApp(this, cotizacion, opcion);
+			this.escenarioDialogos.showAndWait();;
+ 		} catch (IOException | IllegalStateException ex) {
+ 			Notificacion.dialogoException(ex);
+ 		}//FIN TRY/CATCH
+ 	}//FIN METODO
+	
 	public void iniciarDialogoComponente(Componente componente, int opcion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -510,6 +543,21 @@ public class MainApp extends Application {
 			dialogoComponente.setMainApp(this, componente, opcion);
 			
 			this.escenarioDialogos.showAndWait();
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN METODO
+	}//FIN METODO
+	
+	public void iniciarDialogoDetalleCotizacion(Cotizacion cotizacion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleCotizacion.fxml"));
+			this.dialogoDetalleCotizacion = (AnchorPane) fxmlLoader.load();
+			Scene escenaDialogoDetalleCotizacion = this.iniciarEscenarioTerceario(this.dialogoDetalleCotizacion);
+			this.escenarioDialogosSecundarios.setScene(escenaDialogoDetalleCotizacion);
+			DialogoDetalleCotizacion dialogoTipoProducto = fxmlLoader.getController();
+			dialogoTipoProducto.setMainApp(this, cotizacion);
+			this.escenarioDialogosSecundarios.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN METODO
@@ -611,7 +659,7 @@ public class MainApp extends Application {
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoProyecto.fxml"));
 			this.dialogoProyecto = (AnchorPane) fxmlLoader.load();
 			
-			Scene escenaDialogoProyecto = this.iniciarEscenarioSecundario(this.dialogoTipoProducto);
+			Scene escenaDialogoProyecto = this.iniciarEscenarioSecundario(this.dialogoProyecto);
 			this.escenarioDialogos.setScene(escenaDialogoProyecto);
 			
 			DialogoProyecto dialogoProyecto = fxmlLoader.getController();

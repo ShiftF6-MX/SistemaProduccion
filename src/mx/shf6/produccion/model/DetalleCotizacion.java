@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.CotizacionDAO;
+import mx.shf6.produccion.model.dao.ProyectoDAO;
 
 public class DetalleCotizacion {
 
@@ -131,9 +132,9 @@ public class DetalleCotizacion {
 		return this.proyectoFK.get();
 	}//FIN METODO
 	
-	//public Proyecto getProyecto(Connection connection) {
-	//	return ProyectoDAO.readProyecto(connection, this.getProyectoFK());
-	//}//FIN METODO
+	public Proyecto getProyecto(Connection connection) {
+		return ProyectoDAO.readProyecto(connection, this.getProyectoFK());
+	}//FIN METODO
 	//FIN METODOS "PROYECTO"
 	
 	//METODOS DE ACCESO A "COTIZACION"

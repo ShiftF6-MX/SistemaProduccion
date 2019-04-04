@@ -212,7 +212,7 @@ public class PantallaCotizaciones {
 	
 	
 	@FXML private void nuevaCotizacion() {
-		this.mainApp.iniciarPantallaSecundariaCotizaciones(this.cotizacion, PantallaSecundariaCotizaciones.CREAR);
+		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR);
 	}//FIN METODO	
 
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS

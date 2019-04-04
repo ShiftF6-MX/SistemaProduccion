@@ -1,18 +1,18 @@
 package mx.shf6.produccion.view;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
@@ -23,17 +23,18 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
+import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Cotizacion;
-import mx.shf6.produccion.model.dao.CotizacionDAO;
+import mx.shf6.produccion.model.DetalleCotizacion;
+import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class PantallaSecundariaCotizaciones {
+public class DialogoCotizacion {
 	
 	//CONSTANTES
 	public final static int CREAR = 0;
@@ -44,41 +45,60 @@ public class PantallaSecundariaCotizaciones {
 	private Cotizacion cotizacion;
 	private DetalleCotizacion detalleCotizacion;
 	private int cantidadRenglonesTabla;
-	private int cantidadRegistrosTablaCotizaciones;
-	private int cantidadPaginasTablaCotizaciones;
-	private ArrayList<Cotizacion> listaCotizaciones;
+	private int cantidadRegistrosTablaDetalleCotizaciones;
+	private int cantidadPaginasTablaDetalleCotizaciones;
+	private ArrayList<Cliente> listaClientes;
+	private ObservableList<String> listaNombreClientes;
+	private ObservableList<String> listaMonedas;
+	private ArrayList<DetalleCotizacion> listaDetalleCotizaciones;
 	
 	//COMPONENTES INTERZAS USUARIO
-	@FXML private TableView<Cotizacion> tablaCotizacion;
-	@FXML private TableColumn<Cotizacion, String> clienteColumna;
-	@FXML private TableColumn<Cotizacion, String> referenciaColumna;
-	@FXML private TableColumn<Cotizacion, Date> fechaColumna;
-	@FXML private TableColumn<Cotizacion, String> statusColumna;
-	@FXML private TableColumn<Cotizacion, String> observacionesColumna;
-	@FXML private TableColumn<Cotizacion, String> accionesColumn;	
-	@FXML private Pagination paginacionTablaCotizaciones;
-	@FXML private TextField buscarCotizacion;	
+	@FXML private ComboBox<String> clentesCombo;
+	@FXML private TextField solicitoText;
+	@FXML private TextField areaDepartamentoText;
+	@FXML private TextField telefonoFaxText;
+	@FXML private TextField emailText;
+	@FXML private TableView<DetalleCotizacion> tablaDetalleCotizacion;
+	@FXML private TableColumn<DetalleCotizacion, String> codigoColumna;
+	@FXML private TableColumn<DetalleCotizacion, String> descripcionColumna;
+	@FXML private TableColumn<DetalleCotizacion, Double> cantidadColumna;
+	@FXML private TableColumn<DetalleCotizacion, String> observacionesColumna;
+	@FXML private TableColumn<DetalleCotizacion, String> accionesColumn;
+	@FXML private TextField fechaEntregaText;
+	@FXML private TextField condicionEmbaruqueText;
+	@FXML private TextField condicionPagoText;
+	@FXML private ComboBox<String> monedasCombo;
+	@FXML private TextField tipoCambioText;
+	@FXML private TextField observacionesText;
+	@FXML private TextField vigenciaText;
+	@FXML private Pagination paginacionTablaDetalleCotizaciones;
+	@FXML private TextField buscarProyecto;	
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.cotizacion = new Cotizacion();
-		this.buscarCotizacion.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		this.detalleCotizacion = new DetalleCotizacion();
+		listaMonedas = FXCollections.observableArrayList();
+		listaMonedas.add("MXN");
+		listaMonedas.add("USD");
+		listaMonedas.add("EUR");
+		monedasCombo.setItems(listaMonedas);
+		/*this.buscarProyecto.setOnKeyPressed(new EventHandler<KeyEvent>() {
     		@Override
     		public void handle(KeyEvent event) {
     			if (event.getCode().equals(KeyCode.ENTER))
     				buscarButtonHandler();
     		}//FIN METODO
     	});//FIN SENTENCIA
-		this.inicializaTabla();
+		this.inicializaTabla();*/
 	}//FIN METODO
 	
 	//ACTUALIZA LA TABLA DE ACUERDO AL CRITERIO DE BÚSQUEDA
 	@FXML private void buscarButtonHandler() {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
-    		tablaCotizacion.setItems(null);
-    		listaCotizaciones.clear();
-    		listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection(), buscarCotizacion.getText());
-    		tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
+    		tablaDetalleCotizacion.setItems(null);
+    		listaDetalleCotizaciones.clear();
+    		listaDetalleCotizaciones = DetalleCotizacionDAO.readCotizacionDetalle(this.mainApp.getConnection(), this.detalleCotizacion.getCotizacionFK());
+    		tablaDetalleCotizacion.setItems(DetalleCotizacionDAO.toObservableList(listaDetalleCotizaciones));
     	} else {
     		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
     	}//FIN IF-ELSE
@@ -86,25 +106,32 @@ public class PantallaSecundariaCotizaciones {
     }//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp, Cotizacion cotizacion, int opcion) {
+		this.cotizacion = cotizacion;
 		this.mainApp = mainApp;
-		listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
+		listaClientes = new ArrayList<Cliente>();
+		listaNombreClientes = FXCollections.observableArrayList();
+		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection());
+		for (Cliente cliente : listaClientes) {
+			this.listaNombreClientes.add(cliente.getNombre());
+		}
+		this.clentesCombo.setItems(listaNombreClientes);
+		listaDetalleCotizaciones = DetalleCotizacionDAO.readCotizacionDetalle(this.mainApp.getConnection(), this.cotizacion.getSysPK());
 		this.actualizarTabla();
 		//asignarVariables();
 	}//FIN METODO	
 	
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE COTIZACIONES
 	private void inicializaTabla() {
-    	clienteColumna.setCellValueFactory(cellData -> cellData.getValue().getCliente(this.mainApp.getConnection()).nombreProperty());
-        referenciaColumna.setCellValueFactory(cellData -> cellData.getValue().referenciaProperty());
-        fechaColumna.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
-        statusColumna.setCellValueFactory(cellData -> cellData.getValue().descripcionStatusProperty());
+		codigoColumna.setCellValueFactory(cellData -> cellData.getValue().getProyecto(this.mainApp.getConnection()).codigoProperty());
+		descripcionColumna.setCellValueFactory(cellData -> cellData.getValue().getProyecto(this.mainApp.getConnection()).descripcionProperty());
+		cantidadColumna.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
         observacionesColumna.setCellValueFactory(cellData -> cellData.getValue().observacionesProperty());
         
         accionesColumn.setCellValueFactory(new PropertyValueFactory<>("DUM"));
-        Callback<TableColumn<Cotizacion, String>, TableCell<Cotizacion, String>> cellFactory =  param -> {
+        Callback<TableColumn<DetalleCotizacion, String>, TableCell<DetalleCotizacion, String>> cellFactory =  param -> {
         	
-        	final TableCell<Cotizacion, String> cell = new TableCell<Cotizacion, String>() {  
+        	final TableCell<DetalleCotizacion, String> cell = new TableCell<DetalleCotizacion, String>() {  
         		final Button botonVer = new Button("V");
         		final Button botonEliminar = new Button("B");
         		final Button botonEstadoCuenta = new Button("EC");
@@ -156,19 +183,19 @@ public class PantallaSecundariaCotizaciones {
 		            	
 		            	//ABRE EL DIALOGO PARA VER LOS DATOS DE LA COTIZACION
 		            	botonVer.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-		            			cotizacion = getTableView().getItems().get(getIndex());
-			            		mainApp.iniciarDialogoClientes();
-		            		}else
-		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
+		            		//if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            		//	cotizacion = getTableView().getItems().get(getIndex());
+			            	//	mainApp.iniciarDialogoClientes();
+		            		//}else
+		            		//	Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
 		            	
 		            	//ABRE EL DIALOGO PARA BORRAR LA COTIZACION
 		            	botonEliminar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
-		            			cotizacion = getTableView().getItems().get(getIndex());
-			            		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar la cotizacion " + cotizacion.getReferencia() + "?")){
-			            			CotizacionDAO.deleteCotizacion(mainApp.getConnection(), cotizacion);
+		            			detalleCotizacion = getTableView().getItems().get(getIndex());
+			            		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar " + detalleCotizacion.getProyecto(mainApp.getConnection()).getCodigo() + "?")){
+			            			DetalleCotizacionDAO.deleteDetalleCotizacion(mainApp.getConnection(), detalleCotizacion);
 			            			actualizarTabla();
 			            		}//FIN IF
 		            		} else
@@ -217,43 +244,50 @@ public class PantallaSecundariaCotizaciones {
 	
 	
 	@FXML private void nuevaCotizacion() {
-		this.mainApp.iniciarDialogoClientes();
+		//this.mainApp.iniciarDialogoClientes();
 	}//FIN METODO	
 
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {
-		tablaCotizacion.setItems(null);
-		listaCotizaciones.clear();
-		listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
-		if (!listaCotizaciones.isEmpty()) {
+		tablaDetalleCotizacion.setItems(null);
+		listaDetalleCotizaciones.clear();
+		listaDetalleCotizaciones = DetalleCotizacionDAO.readDetalleCotizacion(this.mainApp.getConnection());
+		if (!listaDetalleCotizaciones.isEmpty()) {
 			//this.asignarVariables();
-			tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
-	    	buscarCotizacion.setText("");	
-			this.paginacionTablaCotizaciones.setDisable(false);
+			tablaDetalleCotizacion.setItems(DetalleCotizacionDAO.toObservableList(listaDetalleCotizaciones));
+	    	buscarProyecto.setText("");	
+			this.paginacionTablaDetalleCotizaciones.setDisable(false);
 		} else
-			this.paginacionTablaCotizaciones.setDisable(true);
+			this.paginacionTablaDetalleCotizaciones.setDisable(true);
 	}//FIN METODO
 	 
 	private void asignarVariables() {
 		this.cantidadRenglonesTabla = 4;
-		this.cantidadRegistrosTablaCotizaciones = this.listaCotizaciones.size();
-		if ((this.cantidadRegistrosTablaCotizaciones % this.cantidadRenglonesTabla) == 0)
-			this.cantidadPaginasTablaCotizaciones = this.cantidadRegistrosTablaCotizaciones / this.cantidadRenglonesTabla;
+		this.cantidadRegistrosTablaDetalleCotizaciones = this.listaDetalleCotizaciones.size();
+		if ((this.cantidadRegistrosTablaDetalleCotizaciones % this.cantidadRenglonesTabla) == 0)
+			this.cantidadPaginasTablaDetalleCotizaciones = this.cantidadRegistrosTablaDetalleCotizaciones / this.cantidadRenglonesTabla;
 		else
-			this.cantidadPaginasTablaCotizaciones = (this.cantidadRegistrosTablaCotizaciones / this.cantidadRenglonesTabla) + 1;
+			this.cantidadPaginasTablaDetalleCotizaciones = (this.cantidadRegistrosTablaDetalleCotizaciones / this.cantidadRenglonesTabla) + 1;
 		
 		//INICIALIZA PAGINACION
-			this.paginacionTablaCotizaciones.setPageFactory(this::createPaginaTablaCotizaciones);
-			this.paginacionTablaCotizaciones.setMaxPageIndicatorCount(3);
-			this.paginacionTablaCotizaciones.setPageCount(cantidadPaginasTablaCotizaciones);
+			this.paginacionTablaDetalleCotizaciones.setPageFactory(this::createPaginaTablaCotizaciones);
+			this.paginacionTablaDetalleCotizaciones.setMaxPageIndicatorCount(3);
+			this.paginacionTablaDetalleCotizaciones.setPageCount(cantidadPaginasTablaDetalleCotizaciones);
     }//FIN METODO
 	
 	//PAGINACION DE LA TABLA COTIZACION
 	private Node createPaginaTablaCotizaciones(int indicePagina) {
 		int indiceInicial = indicePagina * this.cantidadRenglonesTabla;
-		int indiceFinal = Math.min(indiceInicial + this.cantidadRenglonesTabla, this.cantidadRegistrosTablaCotizaciones);
-		ObservableList<Cotizacion> lista = CotizacionDAO.toObservableList(listaCotizaciones);
-		tablaCotizacion.setItems(FXCollections.observableArrayList(lista.subList(indiceInicial, indiceFinal)));
-		return tablaCotizacion;
+		int indiceFinal = Math.min(indiceInicial + this.cantidadRenglonesTabla, this.cantidadRegistrosTablaDetalleCotizaciones);
+		ObservableList<DetalleCotizacion> lista = DetalleCotizacionDAO.toObservableList(listaDetalleCotizaciones);
+		tablaDetalleCotizacion.setItems(FXCollections.observableArrayList(lista.subList(indiceInicial, indiceFinal)));
+		return tablaDetalleCotizacion;
+	}//FIN METODO
+	@FXML private void agregarProyecto() {
+		this.mainApp.iniciarDialogoDetalleCotizacion(this.cotizacion);
+	}//FIN METODO	
+
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO
 }//FIN CLASE
