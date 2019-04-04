@@ -37,10 +37,10 @@ public class PantallaProyectos {
 	//COMPONENTES INTERFAZ
 	@FXML private TextField campoTextoBusqueda;
 	@FXML private TableView<Proyecto> tablaProyecto;
-	@FXML private PTableColumn<Proyecto, Integer> columnaSysPK;
 	@FXML private PTableColumn<Proyecto, String> columnaCodigo;
 	@FXML private PTableColumn<Proyecto, String> columnaDescripcion;
-	//@FXML private PTableColumn<Proyecto, String> columnaStatus;
+	@FXML private PTableColumn<Proyecto, String> columnaCarpeta;
+	@FXML private PTableColumn<Proyecto, String> columnaEspecificacionTecnica;
 	@FXML private PTableColumn<Proyecto, String> columnaAcciones;
 		
 	//INICIA COMPONENTES INTERFAZ USUARIO
@@ -70,10 +70,10 @@ public class PantallaProyectos {
 	}//FIN METODO
 	
 	private void inicializaTabla() {
-		this.columnaSysPK.setCellValueFactory(cellData -> cellData.getValue().sysPKProperty());
 		this.columnaCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
-		//this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+		this.columnaCarpeta.setCellValueFactory(cellData -> cellData.getValue().carpetaProperty());
+		this.columnaEspecificacionTecnica.setCellValueFactory(cellData -> cellData.getValue().especificacionTecnicaProperty());
 		this.inicializarColumnaAcciones();
 	}//FIN METODO.
 	
@@ -164,6 +164,7 @@ public class PantallaProyectos {
 		
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
+		
 		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoTipoMateriaPrima.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO

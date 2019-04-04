@@ -1,9 +1,14 @@
 package mx.shf6.produccion.model;
 
+import java.sql.Connection;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.ComponenteDAO;
+
 
 public class Proyecto {
 	
@@ -13,6 +18,8 @@ public class Proyecto {
 	private StringProperty descripcion;
 	private StringProperty carpeta;
 	private StringProperty especificacionTecnica;
+	public ObjectProperty<Integer> componenteFK;
+	public ObjectProperty<Integer> clienteFK;
 	
 	//CONTRUCTOR SIN PARAMETROS
 	public Proyecto() {
@@ -97,4 +104,33 @@ public class Proyecto {
 		return this.especificacionTecnica;
 	}//FIN METODO
 	//FIN METODOS "ESPECIFICACION TECNICA"
+	
+	//METODOS PARA ACCESO A "COMPONENTEFK"
+	public void setComponenteFK(Integer componenteFK) {
+		this.componenteFK.set(componenteFK);
+	}//FIN METODO
+	
+	public Integer getComponenteFK() {
+		return this.componenteFK.get();
+	}//FIN METODO
+	
+	public Componente getComponente(Connection connection) {
+		return ComponenteDAO.readComponente(connection, this.getComponenteFK());
+	}//FIN METODO
+	//FIN METODOS "COMPONENTE"
+	
+	//METODOS PARA ACCESO A "CLIENTEFK"
+	public void setClienteFK(Integer clienteFK) {
+		this.clienteFK.set(clienteFK);
+	}//FIN METODO
+	
+	public Integer getClienteFK() {
+		return this.clienteFK.get();
+	}//FIN METODO
+		
+	public Cliente getCliente(Connection connection) {
+		return ClienteDAO.readCliente(connection, this.getClienteFK());
+	}//FIN METODO
+	//FIN METODOS "CLIENTE"
+		
 }//FIN METODO

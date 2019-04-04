@@ -160,7 +160,7 @@ public class PantallaClientes {
 		            	botonVer.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-		            			verCliente(cliente, domicilio);
+		            			verCliente(cliente);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
@@ -191,6 +191,8 @@ public class PantallaClientes {
 		            	botonCarpeta.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
+		            			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+								ruta.mkdirs();
 		            			try {
 		            				Runtime.getRuntime().exec("explorer.exe /n, " + MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre()+ "\\");
 								} catch (IOException e) {
@@ -203,6 +205,8 @@ public class PantallaClientes {
 		            	
 		            	botonArchivo.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			cliente = getTableView().getItems().get(getIndex());
+		            			mainApp.iniciarPantallaProyecto();
 		            			actualizarTabla();
 			                } else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
@@ -242,7 +246,7 @@ public class PantallaClientes {
 			this.paginacionTablaClientes.setDisable(true);
 	}//FIN METODO
 	
-	private void verCliente(Cliente cliente, Domicilio domicilio) {
+	private void verCliente(Cliente cliente) {
 		
 		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.MOSTRAR);
 		this.actualizarTabla();

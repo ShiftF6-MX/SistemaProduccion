@@ -274,46 +274,40 @@ public class DialogoClientes  {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Código\" no puede estar vacio");
 			return false;
 		} else if (this.nombreField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Nombre\" no puede estar vacio");
 			return false;
 		}else if (this.registroContribuyenteField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Registro Contribuyente\" no puede estar vacio");
 			return false;
 		}else if (this.telefonoField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Telefono\" no puede estar vacio");
 			return false;
 		}else if (this.correoField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
-			return false;
-		}else if (this.rutaField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Correo\" no puede estar vacio");
 			return false;
 		} else if (this.statusCombo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Status\" no puede estar vacio");
 			return false;
 		}else if (this.calleField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Calle\" no puede estar vacio");
 			return false;
 		}else if (this.numeroExteriorField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
-			return false;
-		}else if (this.numeroInteriorField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Numero Exterior\" no puede estar vacio");
 			return false;
 		}else if (this.coloniaField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Colonia\" no puede estar vacio");
 			return false;
 		}else if (this.localidadField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Localidad\" no puede estar vacio");
 			return false;
 		}else if (this.estadoCombo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Estado\" no puede estar vacio");
 			return false;
 		}else if (this.municipioCombo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Municipio\" no puede estar vacio");
 			return false;
 		}else if (this.codigoPostalField.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Codigo Postal\" no puede estar vacio");
 			return false;
 		}//FIN IF/ESLE
 		return true;		
@@ -341,83 +335,85 @@ public class DialogoClientes  {
 		this.cliente.setRutaCarpeta(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
 		this.cliente.setNumeroStatus(this.statusCombo.getValue());
 		
-		
-		if(this.validacion() && this.opcion == CREAR) {
+		if(this.validacion()) {
+			if(this.opcion == CREAR) {
 				
-			this.domicilio.setCalle(this.calleField.getText());
-			this.domicilio.setNumeroExterior(this.numeroExteriorField.getText());
-			this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
-			this.domicilio.setColonia(this.coloniaField.getText());
-			this.domicilio.setLocalidad(this.localidadField.getText());
-			this.domicilio.setMunicipio(this.municipioCombo.getValue());
-			this.domicilio.setEstado(this.estadoCombo.getValue());
-			this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
+				this.domicilio.setCalle(this.calleField.getText());
+				this.domicilio.setNumeroExterior(this.numeroExteriorField.getText());
+				this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
+				this.domicilio.setColonia(this.coloniaField.getText());
+				this.domicilio.setLocalidad(this.localidadField.getText());
+				this.domicilio.setMunicipio(this.municipioCombo.getValue());
+				this.domicilio.setEstado(this.estadoCombo.getValue());
+				this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
+							
+				try {
+					this.mainApp.getConnection().setAutoCommit(false);
+					if(DomicilioDAO.createDomicilio(this.mainApp.getConnection(), this.domicilio)) {
+						this.cliente.setDomicilioFK(DomicilioDAO.ultimoSysPk(this.mainApp.getConnection()));
 						
-			try {
-				this.mainApp.getConnection().setAutoCommit(false);
-				if(DomicilioDAO.createDomicilio(this.mainApp.getConnection(), this.domicilio)) {
-					this.cliente.setDomicilioFK(DomicilioDAO.ultimoSysPk(this.mainApp.getConnection()));
-					
-					if (ClienteDAO.createCliente(this.mainApp.getConnection(), this.cliente)) {
-						this.mainApp.getConnection().commit();
-						this.mainApp.getConnection().setAutoCommit(true);
-						
-						File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
-						ruta.mkdirs();
-						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-						
-						this.mainApp.getEscenarioDialogos().close();
-					} else {
+						if (ClienteDAO.createCliente(this.mainApp.getConnection(), this.cliente)) {
+							this.mainApp.getConnection().commit();
+							this.mainApp.getConnection().setAutoCommit(true);
+							
+							File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
+							ruta.mkdirs();
+							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+							
+							this.mainApp.getEscenarioDialogos().close();
+						} else {
+							this.mainApp.getConnection().rollback();
+							this.mainApp.getConnection().setAutoCommit(true);
+							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
+						}
+					}else {
 						this.mainApp.getConnection().rollback();
 						this.mainApp.getConnection().setAutoCommit(true);
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-					}
-				}else {
-					this.mainApp.getConnection().rollback();
-					this.mainApp.getConnection().setAutoCommit(true);
-					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-				}	//FIN IF
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}//FIN TRY/CATCH
-			
-		}else if(this.validacion() && this.opcion == EDITAR) {
-			this.domicilio.setCalle(this.calleField.getText());
-			this.domicilio.setNumeroExterior(this.numeroExteriorField.getText());
-			this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
-			this.domicilio.setColonia(this.coloniaField.getText());
-			this.domicilio.setLocalidad(this.localidadField.getText());
-			this.domicilio.setMunicipio(this.municipioCombo.getValue());
-			this.domicilio.setEstado(this.estadoCombo.getValue());
-			this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
-			
-			
-			try {
-				this.mainApp.getConnection().setAutoCommit(false);
-				if(DomicilioDAO.updateDomicilio(this.mainApp.getConnection(), this.domicilio)) {
-					if (ClienteDAO.updateCliente(this.mainApp.getConnection(), this.cliente)) {
-						this.mainApp.getConnection().commit();
-						this.mainApp.getConnection().setAutoCommit(true);
-						
-						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro actualizado. ");
-						this.mainApp.getEscenarioDialogos().close();
-					} else {
+					}	//FIN IF
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}//FIN TRY/CATCH
+				
+			}else if(this.opcion == EDITAR) {
+				this.domicilio.setCalle(this.calleField.getText());
+				this.domicilio.setNumeroExterior(this.numeroExteriorField.getText());
+				this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
+				this.domicilio.setColonia(this.coloniaField.getText());
+				this.domicilio.setLocalidad(this.localidadField.getText());
+				this.domicilio.setMunicipio(this.municipioCombo.getValue());
+				this.domicilio.setEstado(this.estadoCombo.getValue());
+				this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
+				
+				
+				try {
+					this.mainApp.getConnection().setAutoCommit(false);
+					if(DomicilioDAO.updateDomicilio(this.mainApp.getConnection(), this.domicilio)) {
+						if (ClienteDAO.updateCliente(this.mainApp.getConnection(), this.cliente)) {
+							this.mainApp.getConnection().commit();
+							this.mainApp.getConnection().setAutoCommit(true);
+							
+							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro actualizado. ");
+							this.mainApp.getEscenarioDialogos().close();
+						} else {
+							this.mainApp.getConnection().rollback();
+							this.mainApp.getConnection().setAutoCommit(true);
+							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
+						}
+					}else {
 						this.mainApp.getConnection().rollback();
 						this.mainApp.getConnection().setAutoCommit(true);
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-					}
-				}else {
-					this.mainApp.getConnection().rollback();
-					this.mainApp.getConnection().setAutoCommit(true);
-					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-				}	//FIN IF
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}//FIN TRY/CATCH	
-			
-		}//FIN ELSE IF
+					}	//FIN IF
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}//FIN TRY/CATCH	
+				
+			}//FIN ELSE IF
+		}//FIN IF
+		
 		
 	}//FIN METODO
 	
