@@ -25,16 +25,21 @@ public class Proyecto {
 	
 	//CONTRUCTOR SIN PARAMETROS
 	public Proyecto() {
-		this(-1,"","","","");
+		this(-1,"","","","",0.0,0.0,0.0,0);
 	}//FIN CONSTUCTOR
 	
 	//CONTRUCTOR CON PARAMETROS
-	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica) {
+	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica, Double costoDirecto, Double costoIndirecto, Double precio,  int clienteFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.carpeta = new SimpleStringProperty(carpeta);
 		this.especificacionTecnica = new SimpleStringProperty(especificacionTecnica);
+		this.costoDirecto = new SimpleObjectProperty<Double>(costoDirecto);
+		this.costoIndirecto = new SimpleObjectProperty<Double>(costoIndirecto);
+		this.precio = new SimpleObjectProperty<Double>(precio);
+		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
+		
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A "SYSPK"
