@@ -1,11 +1,12 @@
 package mx.shf6.produccion.utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class LeerArchivo {
+public class GestorArchivos {
     
     //VARIABLES
     private static List<String> content;
@@ -18,11 +19,11 @@ public class LeerArchivo {
     public static void leerArchivo(){
         try {
         	//PUT CONNECTIONDATA FILE ON C:\MaxicomercioTools\ PATH
-            LeerArchivo.content = Files.readAllLines(Paths.get("C:\\MaxicomercioTools\\ConnectionData.dat"));
-            LeerArchivo.nameDB = content.get(2);
-            LeerArchivo.hostDB = content.get(4);
-            LeerArchivo.userDB = content.get(6);
-            LeerArchivo.passwordDB = content.get(8);
+            GestorArchivos.content = Files.readAllLines(Paths.get("C:\\MaxicomercioTools\\ConnectionData.dat"));
+            GestorArchivos.nameDB = content.get(2);
+            GestorArchivos.hostDB = content.get(4);
+            GestorArchivos.userDB = content.get(6);
+            GestorArchivos.passwordDB = content.get(8);
         } catch (IOException | IndexOutOfBoundsException ioe) {
             Notificacion.dialogoException(ioe);
         }//END TRY/CATCH
@@ -38,6 +39,13 @@ public class LeerArchivo {
                 + "Usuario: " + userDB + "\n"
                 + "Contraseña: " + passwordDB;
         return datos;
-    }//END METHOD    
+    }//END METHOD  
+    
+    public static boolean cargarArchivo(File archivo, String destino) {
+    	if (archivo.renameTo(new File(destino)))
+    		return true;
+    	else
+    		return false;
+    }//FIN METODO
     
 }//END CLASS

@@ -22,7 +22,7 @@ public class Notificacion {
         Alert alert = new Alert(AlertType.ERROR);
         alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("Alerta del Sistema");
-        alert.setHeaderText("CANADEVI Hidalgo | Error en el sistema");
+        alert.setHeaderText("Manufacturas G | Error en el sistema");
         alert.setContentText("Ocurrio un error inesperado durante la ejecución del sistema: \n" + ex.getMessage());
 
         // Create expandable Exception.

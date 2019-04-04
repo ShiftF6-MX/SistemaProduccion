@@ -112,7 +112,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox prefHeight="51.0">
                                  <children>
@@ -135,14 +135,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="registroContribuyenteField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="SHI1311144S9">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Registro Contribuyente" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -151,6 +143,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="registroContribuyenteField" styleClass="textFieldTitulosDosBlack" text="SHI1311144S9">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -177,14 +177,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="rutaField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="/Proyectos/Clientes/CL0001/">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Ruta Carpeta" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -193,6 +185,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="rutaField" styleClass="textFieldTitulosDosBlack" text="/Proyectos/Clientes/CL0001/">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -223,14 +223,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="telefonoField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="(791) 913 - 1508">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Teléfono" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -239,6 +231,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="telefonoField" styleClass="textFieldTitulosDosBlack" text="(791) 913 - 1508">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -265,7 +265,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="statusCombo" prefHeight="25.0" prefWidth="230.0" />
                                                 <Label text="Estado Cliente" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -274,6 +273,7 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <ComboBox fx:id="statusCombo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -304,14 +304,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="correoField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="contacto@gruposhift-f6.com.mx">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Correo Electrónico" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -320,6 +312,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="correoField" styleClass="textFieldTitulosDosBlack" text="contacto@gruposhift-f6.com.mx">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -348,16 +348,8 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </HBox>
-                                          <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
+                                          <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="fechaRegistroField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Fecha Registro" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -366,6 +358,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="fechaRegistroField" styleClass="textFieldTitulosDosBlack">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -376,6 +376,9 @@
                                  </children>
                               </HBox>
                            </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
                         </VBox>
                      </children>
                   </AnchorPane>
@@ -385,7 +388,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <HBox prefHeight="51.0">
                                  <children>
@@ -408,14 +411,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="calleField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Avenida Carlos Lazo">
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                </TextField>
                                                 <Label text="Calle" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -424,6 +419,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="calleField" styleClass="textFieldTitulosDosBlack" text="Avenida Carlos Lazo">
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -450,14 +453,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="localidadField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Ciudad Sahagún">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Localidad" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -466,6 +461,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="localidadField" styleClass="textFieldTitulosDosBlack" text="Ciudad Sahagún">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -496,14 +499,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="numeroExteriorField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="51-A">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Número Exterior" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -512,6 +507,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="numeroExteriorField" styleClass="textFieldTitulosDosBlack" text="51-A">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -538,7 +541,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="estadoCombo" prefHeight="25.0" prefWidth="232.0" />
                                                 <Label text="Estado" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -547,6 +549,7 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <ComboBox fx:id="estadoCombo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -577,14 +580,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="numeroInteriorField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Sin Número">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Número Interior" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -593,6 +588,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="numeroInteriorField" styleClass="textFieldTitulosDosBlack" text="Sin Número">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -619,7 +622,6 @@
                                           </HBox>
                                           <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <ComboBox fx:id="municipioCombo" prefHeight="25.0" prefWidth="233.0" />
                                                 <Label text="Municipio" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -628,6 +630,7 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <ComboBox fx:id="municipioCombo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -656,16 +659,8 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </HBox>
-                                          <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
+                                          <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="coloniaField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="Hidalgo">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Colonia" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -674,6 +669,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="coloniaField" styleClass="textFieldTitulosDosBlack" text="Hidalgo">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -698,16 +701,8 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </HBox>
-                                          <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
+                                          <VBox alignment="CENTER_LEFT" spacing="3.0" styleClass="etiquetaDatosPerfil" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <TextField fx:id="codigoPostalField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="43998">
-                                                   <padding>
-                                                      <Insets left="1.0" />
-                                                   </padding>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                </TextField>
                                                 <Label text="Código Postal" textFill="#000000de">
                                                    <font>
                                                       <Font name="Roboto Light" size="11.0" />
@@ -716,6 +711,14 @@
                                                       <Insets left="2.0" />
                                                    </padding>
                                                 </Label>
+                                                <TextField fx:id="codigoPostalField" prefWidth="150.0" styleClass="textFieldTitulosDosBlack" text="43998">
+                                                   <padding>
+                                                      <Insets left="1.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </TextField>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
@@ -726,6 +729,9 @@
                                  </children>
                               </HBox>
                            </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
                         </VBox>
                      </children></AnchorPane>
                </content>

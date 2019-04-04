@@ -13,22 +13,6 @@
       <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label layoutX="25.0" layoutY="25.0" styleClass="labelRobotoBold14" text="GESTIÓN" textFill="#d1d0d2" />
-            <HBox alignment="CENTER_LEFT" spacing="5.0">
-               <children>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/1x/ComponentsIcon.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Componentes" textFill="#d1d0d2" />
-               </children>
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
             <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuClientes" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -53,6 +37,22 @@
                      </image>
                   </ImageView>
                   <Label onMouseClicked="#manejadorMenuCotizaciones" styleClass="labelRobotoBold14" text="Cotizaciones" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuComponente" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/ComponentsIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Componentes" textFill="#d1d0d2" />
                </children>
                <VBox.margin>
                   <Insets left="10.0" />

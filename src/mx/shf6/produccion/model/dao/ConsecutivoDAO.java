@@ -6,15 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.utilities.Notificacion;
 
 public class ConsecutivoDAO {
 
 	//METODO PARA OBTENER UN REGISTRO
-	public static int readConsecutivoTipoMateriaPrima(Connection connection, int tipoMateriaPrimaFK, String folio) {
+	public static int readConsecutivoTipoMateriaPrima(Connection connection, int tipoMateriaPrimaFK) {
 		int consecutivo = 0;
-		String consulta = "SELECT consecutivo FROM consecutivos WHERE TipoMateriaPrimaFK = " + tipoMateriaPrimaFK + " AND Folio = '" + folio + "'";
+		String consulta = "SELECT consecutivo FROM consecutivos WHERE TipoMateriaPrimaFK = " + tipoMateriaPrimaFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -24,13 +23,13 @@ public class ConsecutivoDAO {
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-		return consecutivo;
+		return consecutivo + 1;
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO
-	public static int readConsecutivoTipoMiscelaneo(Connection connection, int tipoMiscelaneoFK, String folio) {
+	public static int readConsecutivoTipoMiscelaneo(Connection connection, int tipoMiscelaneoFK) {
 		int consecutivo = 0;
-		String consulta = "SELECT consecutivo FROM consecutivos WHERE TipoMiscelaneoFK = " + tipoMiscelaneoFK + " AND Folio = '" + folio + "'";
+		String consulta = "SELECT consecutivo FROM consecutivos WHERE TipoMiscelaneoFK = " + tipoMiscelaneoFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -40,7 +39,7 @@ public class ConsecutivoDAO {
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-		return consecutivo;
+		return consecutivo + 1;
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO
@@ -56,16 +55,15 @@ public class ConsecutivoDAO {
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-		return consecutivo;
+		return consecutivo + 1;
 	}//FIN METODO
 	
 	//METODO PARA CREAR UN REGISTRO
-	public static boolean updateConsecutivoTipoMateriaPrima(Connection connection, int tipoMateriaPrimaFK, String folio) {
-		String consulta = "UPDATE consecutivos SET Consecutivo = Consecutivo + 1 WHERE TipoMateriaPrimaFK = ? AND Folio = ?;";
+	public static boolean updateConsecutivoTipoMateriaPrima(Connection connection, int tipoMateriaPrimaFK) {
+		String consulta = "UPDATE consecutivos SET Consecutivo = Consecutivo + 1 WHERE TipoMateriaPrimaFK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, tipoMateriaPrimaFK);
-			sentenciaPreparada.setString(2, folio);
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -75,12 +73,11 @@ public class ConsecutivoDAO {
 	}//FIN METODO
 	
 	//METODO PARA CREAR UN REGISTRO
-	public static boolean updateConsecutivoTipoMiscelaneo(Connection connection, int tipoMiscelaneoFK, String folio) {
-		String consulta = "UPDATE consecutivos SET Consecutivo = Consecutivo + 1 WHERE TipoMateriaPrimaFK = ? AND Folio = ?;";
+	public static boolean updateConsecutivoTipoMiscelaneo(Connection connection, int tipoMiscelaneoFK) {
+		String consulta = "UPDATE consecutivos SET Consecutivo = Consecutivo + 1 WHERE TipoMiscelaneoFK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, tipoMiscelaneoFK);
-			sentenciaPreparada.setString(2, folio);
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {

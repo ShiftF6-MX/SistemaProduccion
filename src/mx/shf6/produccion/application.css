@@ -230,7 +230,7 @@
 	-fx-border-radius: 30px;
 }
 .textFieldTitulos {
-	-fx-background-color: transparent;
+	-fx-background-color: rgb(255,255,255,0.025);
 	-fx-border-style: none ;
 	-fx-border-radius: 0px 0px 0px 0px;
 	-fx-background-radius: 0px 0px 0px 0px;
@@ -239,7 +239,7 @@
 	-fx-text-fill: rgb(255,255,255,0.85);
 }
 .textFieldSubTitulos {
-	-fx-background-color: transparent;
+	-fx-background-color: rgb(255,255,255,0.025);
 	-fx-border-style: none ;
 	-fx-border-radius: 0px 0px 0px 0px;
 	-fx-background-radius: 0px 0px 0px 0px;
@@ -257,7 +257,7 @@
 	-fx-text-fill: rgb(255,255,255,0.85);
 }
 .textFieldTitulosDosBlack {
-	-fx-background-color: transparent;
+	-fx-background-color: rgb(0,0,0,0.025);
 	-fx-border-style: none ;
 	-fx-border-radius: 0px 0px 0px 0px;
 	-fx-background-radius: 0px 0px 0px 0px;
