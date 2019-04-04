@@ -1,6 +1,10 @@
 package mx.shf6.produccion.view;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,16 +17,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
+import mx.shf6.produccion.utilities.GestorArchivos;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -41,7 +49,7 @@ public class PantallaComponente {
 	@FXML private PTableColumn<Componente, String> columnaNumeroParte;
 	@FXML private PTableColumn<Componente, String> columnaDescripcion;
 	@FXML private PTableColumn<Componente, String> columnaTipoComponente;
-	@FXML private PTableColumn<Componente, String> columnaTipoMaterial;
+	//@FXML private PTableColumn<Componente, String> columnaTipoMaterial;
 	@FXML private PTableColumn<Componente, Double> columnaCosto;
 	@FXML private PTableColumn<Componente, String> columnaNotas;
 	@FXML private PTableColumn<Componente, String> columnaStatus;
@@ -74,10 +82,10 @@ public class PantallaComponente {
 	}//FIN METODO
 	
 	private void inicializaTabla() {
-		this.columnaNumeroParte.setCellValueFactory(cellData -> cellData.getValue().numeroParteProperty(this.mainApp.getConnection()));
+		this.columnaNumeroParte.setCellValueFactory(cellData -> cellData.getValue().numeroParteProperty());
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
 		this.columnaTipoComponente.setCellValueFactory(cellData -> cellData.getValue().tipoComponenteProperty());
-		this.columnaTipoMaterial.setCellValueFactory(cellData -> cellData.getValue().getMaterial(this.mainApp.getConnection()).descripcionProperty());
+		//this.columnaTipoMaterial.setCellValueFactory(cellData -> cellData.getValue().getMaterial(this.mainApp.getConnection()).descripcionProperty());
 		this.columnaCosto.setCellValueFactory(cellData -> cellData.getValue().costoProperty());
 		this.columnaNotas.setCellValueFactory(cellData -> cellData.getValue().notasProperty());
 		this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
@@ -105,7 +113,8 @@ public class PantallaComponente {
 				final Button botonVer = new Button("Ver");
 				final Button botonEditar = new Button("Editar");
 				final Button botonEliminar = new Button("Eliminar");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar);
+				final Button botonDibujo = new Button("Dibujo");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonDibujo);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -134,6 +143,14 @@ public class PantallaComponente {
 					botonEliminar.setCursor(Cursor.HAND);
 					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
 					
+					botonDibujo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
+					botonDibujo.setPrefSize(16.0, 16.0);
+					botonDibujo.setPadding(Insets.EMPTY);
+					botonDibujo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonDibujo.setStyle("-fx-background-color: transparent");
+					botonDibujo.setCursor(Cursor.HAND);
+					botonDibujo.setTooltip(new Tooltip("Ver dibujo"));
+					
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
@@ -154,6 +171,11 @@ public class PantallaComponente {
 						botonEliminar.setOnAction(event -> {
 							componente = getTableView().getItems().get(getIndex());
 							manejadorBotonEliminar(componente);
+						});//FIN MANEJADDOR
+						
+						botonDibujo.setOnAction(event -> {
+							componente = getTableView().getItems().get(getIndex());
+							manejadorBotonDibujo(componente);
 						});//FIN MANEJADDOR
 						
 						cajaBotones.setSpacing(2);
@@ -193,6 +215,37 @@ public class PantallaComponente {
 		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
 			ComponenteDAO.deleteComponente(this.mainApp.getConnection(), componente);
 		this.actualizarTabla();
+	}//FIN METODO
+	
+	private void manejadorBotonDibujo(Componente componente) {
+		String rutaArchivoDibujo = MainApp.RAIZ_SERVIDOR + "Dibujos\\" +  this.componente.getCliente(this.mainApp.getConnection()).getNombre() + "\\" + this.componente.getNumeroParte() + ".pdf";
+		File archivoDibujo = new File(rutaArchivoDibujo);
+		if (archivoDibujo.exists()) {
+			//Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "El archivo se va abrir...");
+			try {
+				Desktop.getDesktop().open(archivoDibujo);
+			} catch (IOException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY/CATCH
+		} else {
+			FileChooser escogerArchivo = new FileChooser();
+			List<String> listaExtensiones = new ArrayList<String>();
+			listaExtensiones.add("*.PDF");
+			ExtensionFilter filtroExtensiones = new ExtensionFilter("Archivos de dibujo y diseño (*.pdf)", listaExtensiones);
+			escogerArchivo.getExtensionFilters().add(filtroExtensiones);
+			File archivoCliente = escogerArchivo.showOpenDialog(this.mainApp.getEscenarioPrincipal());
+			if (archivoCliente == null)
+				//Notificacion.dialogoAlerta(AlertType.ERROR, "", "Aun no has seleccionado un archivo");
+				System.out.println("");
+			else {
+				File rutaCarpetaDibujo = new File(MainApp.RAIZ_SERVIDOR + "Dibujos\\" +  this.componente.getCliente(this.mainApp.getConnection()).getNombre());
+				rutaCarpetaDibujo.mkdirs();
+				if (GestorArchivos.cargarArchivo(archivoCliente, rutaArchivoDibujo))
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El archivo se ha guardado de forma correcta");
+				else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El archivo no se pudo cargar al sistema");
+			}//FIN IF ELSE
+		}//FIN IF/ELSE
 	}//FIN METODO
 		
 }//FIN CLASE

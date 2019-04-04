@@ -3,17 +3,13 @@ package mx.shf6.produccion.view;
 import java.util.ArrayList;
 import java.io.*;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,10 +36,6 @@ public class PantallaClientes {
 	private MainApp mainApp;
 	private Cliente cliente;
 	private Domicilio domicilio;
-	private ClienteDAO clienteDAO;
-	private int cantidadRenglonesTabla;
-	private int cantidadRegistrosTablaClientes;
-	private int cantidadPaginasTablaClientes;
 	private ArrayList<Cliente> listaClientes;
 	
 		
@@ -55,14 +47,12 @@ public class PantallaClientes {
 	@FXML private TableColumn<Cliente, String> telefonoColumna;
 	@FXML private TableColumn<Cliente, String> correoColumna;
 	@FXML private TableColumn<Cliente, Double> saldoColumna;
-	@FXML private TableColumn<Cliente, String> accionesColumn;	
-	@FXML private Pagination paginacionTablaClientes;
+	@FXML private TableColumn<Cliente, String> accionesColumn;
 	@FXML private TextField buscarCliente;	
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
 		this.cliente = new Cliente();
-		this.clienteDAO = new ClienteDAO();
 		this.domicilio  = new Domicilio();
 		this.buscarCliente.setOnKeyPressed(new EventHandler<KeyEvent>() {
     		@Override
@@ -147,7 +137,7 @@ public class PantallaClientes {
 		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonArchivo.setStyle("-fx-background-color: transparent;");
 		        	botonArchivo.setCursor(Cursor.HAND);
-		        	acciones.setSpacing(5);
+		        	acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
 		        	super.updateItem(item, empty);
@@ -233,13 +223,8 @@ public class PantallaClientes {
 		tablaCliente.setItems(null);
 		listaClientes.clear();
 		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection());
-		if (!listaClientes.isEmpty()) {
-			//this.asignarVariables();
-			tablaCliente.setItems(ClienteDAO.toObservableList(listaClientes));
-	    	buscarCliente.setText("");	
-			this.paginacionTablaClientes.setDisable(false);
-		} else
-			this.paginacionTablaClientes.setDisable(true);
+		tablaCliente.setItems(ClienteDAO.toObservableList(listaClientes));
+	    buscarCliente.setText("");	
 	}//FIN METODO
 	
 	private void verCliente(Cliente cliente, Domicilio domicilio) {
@@ -247,27 +232,5 @@ public class PantallaClientes {
 		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.MOSTRAR);
 		this.actualizarTabla();
 	}//FIN METODO
-	 
-	/*private void asignarVariables() {
-		this.cantidadRenglonesTabla = 4;
-		this.cantidadRegistrosTablaClientes = this.listaClientes.size();
-		if ((this.cantidadRegistrosTablaClientes % this.cantidadRenglonesTabla) == 0)
-			this.cantidadPaginasTablaClientes = this.cantidadRegistrosTablaClientes / this.cantidadRenglonesTabla;
-		else
-			this.cantidadPaginasTablaClientes = (this.cantidadRegistrosTablaClientes / this.cantidadRenglonesTabla) + 1;
-		
-		//INICIALIZA PAGINACION
-			this.paginacionTablaClientes.setPageFactory(this::createPaginaTablaClientes);
-			this.paginacionTablaClientes.setMaxPageIndicatorCount(3);
-			this.paginacionTablaClientes.setPageCount(cantidadPaginasTablaClientes);
-    }//FIN METODO*/
-	
-	//PAGINACION DE LA TABLA CLIENTES
-	private Node createPaginaTablaClientes(int indicePagina) {
-		int indiceInicial = indicePagina * this.cantidadRenglonesTabla;
-		int indiceFinal = Math.min(indiceInicial + this.cantidadRenglonesTabla, this.cantidadRegistrosTablaClientes);
-		ObservableList<Cliente> lista = this.clienteDAO.toObservableList(listaClientes);
-		tablaCliente.setItems(FXCollections.observableArrayList(lista.subList(indiceInicial, indiceFinal)));
-		return tablaCliente;
-	}//FIN METODO
+	 	
 }//FIN CLASE

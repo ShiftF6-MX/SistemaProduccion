@@ -91,7 +91,7 @@ public class Componente {
 		return this.numeroParte.get();
 	}//FIN METODO
 	
-	public StringProperty numeroParteProperty(Connection connection) {
+	public StringProperty numeroParteProperty() {
 		return this.numeroParte;
 	}//FIN METODO
 	

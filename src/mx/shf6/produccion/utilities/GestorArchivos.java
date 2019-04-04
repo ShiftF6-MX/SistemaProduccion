@@ -41,8 +41,8 @@ public class GestorArchivos {
         return datos;
     }//END METHOD  
     
-    public boolean cargarArchivo(File archivo, File destino) {
-    	if (archivo.renameTo(destino))
+    public static boolean cargarArchivo(File archivo, String destino) {
+    	if (archivo.renameTo(new File(destino)))
     		return true;
     	else
     		return false;

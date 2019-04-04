@@ -144,6 +144,10 @@ public class MainApp extends Application {
 		this.escenarioPrincipal.setAlwaysOnTop(true);
 	}//FIN METODO
 	
+	public Stage getEscenarioPrincipal() {
+		return this.escenarioPrincipal;
+	}//FIN METODO
+	
 	private void configurarEscenarioSecundario() {
 		this.escenarioDialogos = new Stage();
 		this.escenarioDialogos.setResizable(false);
