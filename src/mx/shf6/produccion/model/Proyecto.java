@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.ClienteDAO;
-import mx.shf6.produccion.model.dao.ComponenteDAO;
+
 
 
 public class Proyecto {
@@ -18,21 +18,28 @@ public class Proyecto {
 	private StringProperty descripcion;
 	private StringProperty carpeta;
 	private StringProperty especificacionTecnica;
-	public ObjectProperty<Integer> componenteFK;
+	private ObjectProperty<Double> costoIndirecto;
+	private ObjectProperty<Double> precio;
+	private ObjectProperty<Double> costoDirecto;
 	public ObjectProperty<Integer> clienteFK;
 	
 	//CONTRUCTOR SIN PARAMETROS
 	public Proyecto() {
-		this(-1,"","","","");
+		this(-1,"","","","",0.0,0.0,0.0,0);
 	}//FIN CONSTUCTOR
 	
 	//CONTRUCTOR CON PARAMETROS
-	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica) {
+	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica, Double costoDirecto, Double costoIndirecto, Double precio,  int clienteFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.carpeta = new SimpleStringProperty(carpeta);
 		this.especificacionTecnica = new SimpleStringProperty(especificacionTecnica);
+		this.costoDirecto = new SimpleObjectProperty<Double>(costoDirecto);
+		this.costoIndirecto = new SimpleObjectProperty<Double>(costoIndirecto);
+		this.precio = new SimpleObjectProperty<Double>(precio);
+		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
+		
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A "SYSPK"
@@ -105,20 +112,48 @@ public class Proyecto {
 	}//FIN METODO
 	//FIN METODOS "ESPECIFICACION TECNICA"
 	
-	//METODOS PARA ACCESO A "COMPONENTEFK"
-	public void setComponenteFK(Integer componenteFK) {
-		this.componenteFK.set(componenteFK);
+	//METODOS DE ACCESO A "COSTO DIRECTO"
+	public void setCostoDirecto(Double costoDirecto) {
+		this.costoDirecto.set(costoDirecto);
 	}//FIN METODO
-	
-	public Integer getComponenteFK() {
-		return this.componenteFK.get();
+				
+	public Double getCostoDirecto() {
+		return this.costoDirecto.get();
 	}//FIN METODO
-	
-	public Componente getComponente(Connection connection) {
-		return ComponenteDAO.readComponente(connection, this.getComponenteFK());
+				
+	public ObjectProperty<Double> costoDirectoProperty() {
+		return this.costoDirecto;
 	}//FIN METODO
-	//FIN METODOS "COMPONENTE"
+		//FIN METODOS "COSTO DIRECTO"
 	
+	//METODOS DE ACCESO A "COSTO INDIRECTO"
+	public void setCostoIndirecto(Double costoIndirecto) {
+		this.costoIndirecto.set(costoIndirecto);
+	}//FIN METODO
+			
+	public Double getCostoIndirecto() {
+		return this.costoIndirecto.get();
+	}//FIN METODO
+			
+	public ObjectProperty<Double> costoIndirectoProperty() {
+		return this.costoIndirecto;
+	}//FIN METODO
+	//FIN METODOS "COSTO INDIRECTO"
+	
+	//METODOS DE ACCESO A "PRECIO"
+	public void setPrecio(Double precio) {
+		this.precio.set(precio);
+	}//FIN METODO
+				
+	public Double getPrecio() {
+		return this.precio.get();
+	}//FIN METODO
+				
+	public ObjectProperty<Double> precioProperty() {
+		return this.precio;
+	}//FIN METODO
+	//FIN METODOS "COSTO INDIRECTO"
+		
 	//METODOS PARA ACCESO A "CLIENTEFK"
 	public void setClienteFK(Integer clienteFK) {
 		this.clienteFK.set(clienteFK);

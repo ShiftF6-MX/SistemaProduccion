@@ -16,14 +16,18 @@ public class ProyectoDAO{
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createProyecto(Connection connection, Proyecto proyecto) {
-		String consulta = "INSERT INTO proyectos (Codigo, Descripcion, Carpeta, EspecificacionTecnica) "
-				+ "VALUES (?, ?, ?, ?)";
+		String consulta = "INSERT INTO proyectos (Codigo, Descripcion, Carpeta, EspecificacionTecnica,CostoDirecto, CostoIndirecto, Precio, ClienteFK) "
+				+ "VALUES (?, ?, ?, ?,?,?,?,?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, proyecto.getCodigo());
 			sentenciaPreparada.setString(2, proyecto.getDescripcion());
 			sentenciaPreparada.setString(3, proyecto.getCarpeta());
 			sentenciaPreparada.setString(4, proyecto.getEspecificacionTecnica());
+			sentenciaPreparada.setDouble(5,proyecto.getCostoDirecto());
+			sentenciaPreparada.setDouble(6, proyecto.getCostoIndirecto());
+			sentenciaPreparada.setDouble(7, proyecto.getPrecio());
+			sentenciaPreparada.setInt(8,proyecto.getClienteFK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -35,7 +39,7 @@ public class ProyectoDAO{
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Proyecto> readProyecto(Connection connection) {
 		ArrayList<Proyecto> arrayListProyecto = new ArrayList<Proyecto>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica "
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto,Precio,ClienteFK "
 				+ "FROM proyectos";
 		try {
 			Statement sentencia = connection.createStatement();
@@ -47,6 +51,10 @@ public class ProyectoDAO{
 				proyecto.setDescripcion(resultados.getString(3));
 				proyecto.setCarpeta(resultados.getString(4));
 				proyecto.setEspecificacionTenica(resultados.getString(5));
+				proyecto.setCostoDirecto(resultados.getDouble(6));
+				proyecto.setCostoIndirecto(resultados.getDouble(7));
+				proyecto.setPrecio(resultados.getDouble(8));
+				proyecto.setClienteFK(resultados.getInt(9));
 				arrayListProyecto.add(proyecto);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -58,7 +66,7 @@ public class ProyectoDAO{
 	//METODO PARA OBTENER UN REGISTRO
 	public static Proyecto readProyecto(Connection connection, int sysPK) {
 		Proyecto proyecto = new Proyecto();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica "
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK "
 				+ "FROM proyectos "
 				+ "WHERE Sys_PK = " + sysPK;
 		try {
@@ -70,6 +78,10 @@ public class ProyectoDAO{
 				proyecto.setDescripcion(resultados.getString(3));
 				proyecto.setCarpeta(resultados.getString(4));
 				proyecto.setEspecificacionTenica(resultados.getString(5));
+				proyecto.setCostoDirecto(resultados.getDouble(6));
+				proyecto.setCostoIndirecto(resultados.getDouble(7));
+				proyecto.setPrecio(resultados.getDouble(8));
+				proyecto.setClienteFK(resultados.getInt(9));
 			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
@@ -80,7 +92,7 @@ public class ProyectoDAO{
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Proyecto> readProyecto(Connection connection, String like) {
 		ArrayList<Proyecto> arrayListProyecto = new ArrayList<Proyecto>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica "
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK "
 				+ "FROM proyectos "
 				+ "WHERE Codigo LIKE '%" + like + "%'";
 		try {
@@ -93,6 +105,10 @@ public class ProyectoDAO{
 				proyecto.setDescripcion(resultados.getString(3));
 				proyecto.setCarpeta(resultados.getString(4));
 				proyecto.setEspecificacionTenica(resultados.getString(5));
+				proyecto.setCostoDirecto(resultados.getDouble(6));
+				proyecto.setCostoIndirecto(resultados.getDouble(7));
+				proyecto.setPrecio(resultados.getDouble(8));
+				proyecto.setClienteFK(resultados.getInt(9));
 				arrayListProyecto.add(proyecto);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -101,9 +117,37 @@ public class ProyectoDAO{
 		return arrayListProyecto;
 	}//FIN METODO
 	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Proyecto> readProyectoCliente(Connection connection, int clienteFK){
+		ArrayList<Proyecto> arrayListProyectoCliente = new ArrayList<Proyecto>();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK "
+				+ " FROM proyectos"
+				+" WHERE ClienteFK= " + clienteFK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Proyecto proyecto = new Proyecto();
+				proyecto.setSysPK(resultados.getInt(1));
+				proyecto.setCodigo(resultados.getString(2));
+				proyecto.setDescripcion(resultados.getString(3));
+				proyecto.setCarpeta(resultados.getString(4));
+				proyecto.setEspecificacionTenica(resultados.getString(5));
+				proyecto.setCostoDirecto(resultados.getDouble(6));
+				proyecto.setCostoIndirecto(resultados.getDouble(7));
+				proyecto.setPrecio(resultados.getDouble(8));
+				proyecto.setClienteFK(resultados.getInt(9));
+				arrayListProyectoCliente.add(proyecto);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListProyectoCliente;
+	}
+	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateProyecto(Connection connection, Proyecto proyecto) {
-		String consulta = "UPDATE proyectos SET Codigo = ?, Descripcion = ?, Carpeta = ?, EspecificacionTecnica = ? "
+		String consulta = "UPDATE proyectos SET Codigo = ?, Descripcion = ?, Carpeta = ?, EspecificacionTecnica = ?, CostoDirecto = ?, CostoIndirecto = ?, Precio= ?, ClienteFK=? "
 				+ "WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
@@ -111,7 +155,11 @@ public class ProyectoDAO{
 			sentenciaPreparada.setString(2, proyecto.getDescripcion());
 			sentenciaPreparada.setString(3, proyecto.getCarpeta());
 			sentenciaPreparada.setString(4, proyecto.getEspecificacionTecnica());
-			sentenciaPreparada.setInt(5, proyecto.getSysPK());
+			sentenciaPreparada.setDouble(5,proyecto.getCostoDirecto());
+			sentenciaPreparada.setDouble(6, proyecto.getCostoIndirecto());
+			sentenciaPreparada.setDouble(7, proyecto.getPrecio());
+			sentenciaPreparada.setInt(8,proyecto.getClienteFK());
+			sentenciaPreparada.setInt(9, proyecto.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
