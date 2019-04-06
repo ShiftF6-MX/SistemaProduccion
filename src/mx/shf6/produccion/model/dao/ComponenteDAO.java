@@ -29,7 +29,10 @@ public class ComponenteDAO {
 				sentenciaPreparada.setString(6, componente.getTipoComponenteChar());
 				sentenciaPreparada.setDouble(7, componente.getCosto());
 				sentenciaPreparada.setString(8, componente.getUnidad());
-				sentenciaPreparada.setInt(9, componente.getMaterialFK());
+				if (componente.getMaterialFK() > 0)
+					sentenciaPreparada.setInt(9, componente.getMaterialFK());
+				else
+					sentenciaPreparada.setNull(9, Types.INTEGER);
 				if (componente.getTipoMiscelaneoFK() > 0)
 					sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
 				else
@@ -183,7 +186,10 @@ public class ComponenteDAO {
 				sentenciaPreparada.setString(6, componente.getTipoComponenteChar());
 				sentenciaPreparada.setDouble(7, componente.getCosto());
 				sentenciaPreparada.setString(8, componente.getUnidad());
-				sentenciaPreparada.setInt(9, componente.getMaterialFK());
+				if (componente.getMaterialFK() > 0)
+					sentenciaPreparada.setInt(9, componente.getMaterialFK());
+				else
+					sentenciaPreparada.setNull(9, Types.INTEGER);
 				if (componente.getTipoMiscelaneoFK() > 0)
 					sentenciaPreparada.setInt(10, componente.getTipoMiscelaneoFK());
 				else

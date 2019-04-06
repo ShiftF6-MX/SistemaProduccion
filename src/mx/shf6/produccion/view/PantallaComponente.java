@@ -29,6 +29,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Componente;
+import mx.shf6.produccion.model.TipoComponente;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.utilities.GestorArchivos;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -114,7 +115,8 @@ public class PantallaComponente {
 				final Button botonEditar = new Button("Editar");
 				final Button botonEliminar = new Button("Eliminar");
 				final Button botonDibujo = new Button("Dibujo");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonDibujo);
+				final Button botonDetalle = new Button("Detalle");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonDibujo, botonDetalle);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -151,6 +153,14 @@ public class PantallaComponente {
 					botonDibujo.setCursor(Cursor.HAND);
 					botonDibujo.setTooltip(new Tooltip("Ver dibujo"));
 					
+					botonDetalle.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
+					botonDetalle.setPrefSize(16.0, 16.0);
+					botonDetalle.setPadding(Insets.EMPTY);
+					botonDetalle.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonDetalle.setStyle("-fx-background-color: transparent");
+					botonDetalle.setCursor(Cursor.HAND);
+					botonDetalle.setTooltip(new Tooltip("Detalle Ensamble"));
+					
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
@@ -176,6 +186,11 @@ public class PantallaComponente {
 						botonDibujo.setOnAction(event -> {
 							componente = getTableView().getItems().get(getIndex());
 							manejadorBotonDibujo(componente);
+						});//FIN MANEJADDOR
+						
+						botonDetalle.setOnAction(event -> {
+							componente = getTableView().getItems().get(getIndex());
+							manejadorBotonDetalle(componente);
 						});//FIN MANEJADDOR
 						
 						cajaBotones.setSpacing(2);
@@ -245,6 +260,14 @@ public class PantallaComponente {
 				else
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El archivo no se pudo cargar al sistema");
 			}//FIN IF ELSE
+		}//FIN IF/ELSE
+	}//FIN METODO
+	
+	private void manejadorBotonDetalle(Componente componente) {
+		if (TipoComponente.isComponenteBasico(componente.getTipoComponente())) {
+			Notificacion.dialogoAlerta(AlertType.WARNING, "", "No existe detalle de ensamble para este componente");
+		} else {
+			this.mainApp.iniciarDialogoDetalleComponente(componente);
 		}//FIN IF/ELSE
 	}//FIN METODO
 		
