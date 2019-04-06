@@ -90,11 +90,12 @@ public class ProyectoDAO{
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO
-	public static ArrayList<Proyecto> readProyecto(Connection connection, String like) {
+	public static ArrayList<Proyecto> readProyecto(Connection connection, String like, int clienteFK) {
 		ArrayList<Proyecto> arrayListProyecto = new ArrayList<Proyecto>();
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK "
 				+ "FROM proyectos "
-				+ "WHERE Codigo LIKE '%" + like + "%'";
+				+ "WHERE Codigo LIKE '%" + like + "%'"
+				+ " AND ClienteFK =" + clienteFK ;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -143,7 +144,7 @@ public class ProyectoDAO{
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 		return arrayListProyectoCliente;
-	}
+	}//FIN METODO
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateProyecto(Connection connection, Proyecto proyecto) {
@@ -169,11 +170,12 @@ public class ProyectoDAO{
 	}//FIN METODO
 	
 	//METODO PARA CREAR UN REGISTRO
-	public static boolean deleteProyecto(Connection connection, Proyecto proyecto) {
+	public static boolean deleteProyecto(Connection connection, Object proyecto) {
 		String consulta = "DELETE FROM proyectos WHERE Sys_PK = ?";
 		try {
+			Proyecto claseProyecto = (Proyecto)proyecto;
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
-			sentenciaPreparada.setInt(1, proyecto.getSysPK());
+			sentenciaPreparada.setInt(1, claseProyecto.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
