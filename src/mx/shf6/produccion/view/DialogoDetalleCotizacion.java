@@ -99,11 +99,11 @@ public class DialogoDetalleCotizacion {
 	//MANEJADORES COMPONENTES	
 	@FXML private void manejadorBotonAceptar() {
 		if (validarDatos())
-		this.mainApp.getEscenarioDialogosSecundarios().close();
+		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
-		this.mainApp.getEscenarioDialogosSecundarios().close();
+		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO	
 	
 	public DetalleCotizacion getDetalleCotizacion() {

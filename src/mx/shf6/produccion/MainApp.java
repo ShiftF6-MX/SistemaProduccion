@@ -31,6 +31,7 @@ import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleComponente;
+import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.TipoMateriaPrima;
@@ -56,6 +57,7 @@ import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaCotizaciones;
+import mx.shf6.produccion.view.PantallaDetalleCotizacion;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
@@ -85,6 +87,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaEspera;
 	private AnchorPane pantallaClientes;
 	private AnchorPane pantallaCotizaciones;
+	private AnchorPane pantallaDetalleCotizacion;
 	private AnchorPane pantallaComponente;
 	private AnchorPane pantallaTipoMateriaPrima;
 	private AnchorPane pantallaTipoMiscelaneo;
@@ -380,19 +383,35 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	//INICIAR PANTALLA COTIZACIONES
-	public void iniciarPantallaCotizaciones() {
+	public void iniciarPantallaCotizaciones(Cliente cliente) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaCotizaciones.fxml"));
 			this.pantallaCotizaciones = (AnchorPane) fxmlLoader.load();
 			this.pantallaBase.setCenter(this.pantallaCotizaciones);
 			PantallaCotizaciones pantallaCotizaciones = fxmlLoader.getController();
-			pantallaCotizaciones.setMainApp(this);
+			pantallaCotizaciones.setMainApp(this, cliente);
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	//INICIAR PANTALLA DETALLE COTIZACIONES
+	public void iniciarPantallaDetalleCotizacion(Cotizacion cotizacion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaDetalleCotizacion.fxml"));
+			this.pantallaDetalleCotizacion = (AnchorPane) fxmlLoader.load();
+			Scene escenaDetalleCotizacion = this.iniciarEscenarioDialogosAlterno(this.pantallaDetalleCotizacion);
+			this.escenarioDialogos.setScene(escenaDetalleCotizacion);
+			PantallaDetalleCotizacion pantallaDetalleCotizacion = fxmlLoader.getController();
+			pantallaDetalleCotizacion.setMainApp(this, cotizacion);
+			this.escenarioDialogos.showAndWait();
+		} catch (IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+		
 	//INICIAR PANTALLA TIPO PRODUCTO
 	public void iniciarPantallaComponente() {
 		try {
@@ -591,18 +610,20 @@ public class MainApp extends Application {
 		return  detalleComponente;
 	}//FIN METODO
 	
-	public void iniciarDialogoDetalleCotizacion(Cotizacion cotizacion) {
+	public DetalleCotizacion iniciarDialogoDetalleCotizacion(Cotizacion cotizacion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleCotizacion.fxml"));
 			this.dialogoDetalleCotizacion = (AnchorPane) fxmlLoader.load();
 			Scene escenaDialogoDetalleCotizacion = this.iniciarEscenarioDialogosAlterno(this.dialogoDetalleCotizacion);
 			this.escenarioDialogosAlterno.setScene(escenaDialogoDetalleCotizacion);
-			DialogoDetalleCotizacion dialogoTipoProducto = fxmlLoader.getController();
-			dialogoTipoProducto.setMainApp(this, cotizacion);
+			DialogoDetalleCotizacion dialogoDetalleCotizacion = fxmlLoader.getController();
+			dialogoDetalleCotizacion.setMainApp(this, cotizacion);
 			this.escenarioDialogosAlterno.showAndWait();
+			return dialogoDetalleCotizacion.getDetalleCotizacion();
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
+			return null;
 		}//FIN METODO
 	}//FIN METODO
 	

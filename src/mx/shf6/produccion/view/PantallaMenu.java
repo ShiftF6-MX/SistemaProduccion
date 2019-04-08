@@ -28,7 +28,7 @@ public class PantallaMenu {
 	}//FIN METODO
 	
 	@FXML private void manejadorMenuCotizaciones() {
-		this.mainApp.iniciarPantallaCotizaciones(); 
+		this.mainApp.iniciarPantallaCotizaciones(null); 
 	}//FIN METODO
 	
 	@FXML private void manejadorMenuComponente() {
