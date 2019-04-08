@@ -183,6 +183,9 @@ public class DialogoCotizacion {
 		}else if (this.comboBoxMonedas.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Moneda\" no puede estar vacio");
 			return false;
+		}else if (this.comboBoxFolio.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Folio\" no puede estar vacio");
+			return false;
 		}else if (this.campoTextoCondicionPago.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Condicion Pago\" no puede estar vacio");
 			return false;
@@ -199,54 +202,54 @@ public class DialogoCotizacion {
 		return true;
 	}//FIN METODO
 	
-	
-	
-	@FXML private void btnGuardar() {
-		if (this.validarDatos() && this.opcion == CREAR) {
-			this.cotizacion.setReferencia(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getFolio() + (listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getSerie() + 1));
-			this.cotizacion.setStatus(Cotizacion.PENDIENTE);
-			this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
-			this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());
-			this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
-			this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
-			this.cotizacion.setEmail(this.campoTextoEmail.getText());
-			this.cotizacion.setTipoServicio(this.campoTextoTipoServicio.getText());
-			this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
-			this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
-			this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
-			this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getValue());
-			this.cotizacion.setTipoCambio(Double.parseDouble(this.campoTextoTipoCambio.getText()));
-			this.cotizacion.setObservaciones(this.campoTextoObservaciones.getText());
-			this.cotizacion.setVigencia(this.campoTextoVigencia.getText());
-			this.cotizacion.setFolioFK(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getSysPK());
-			if (CotizacionDAO.createCotizacion(this.mainApp.getConnection(), cotizacion)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+	@FXML private void manejadorBotonAceptar() {
+		if (this.validarDatos()) {
+			if (this.opcion == CREAR) {
+				this.cotizacion.setReferencia(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getFolio() + (listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getSerie() + 1));
+				this.cotizacion.setStatus(Cotizacion.PENDIENTE);
+				this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
+				this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());
+				this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
+				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
+				this.cotizacion.setEmail(this.campoTextoEmail.getText());
+				this.cotizacion.setTipoServicio(this.campoTextoTipoServicio.getText());
+				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
+				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
+				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
+				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getValue());
+				this.cotizacion.setTipoCambio(Double.parseDouble(this.campoTextoTipoCambio.getText()));
+				this.cotizacion.setObservaciones(this.campoTextoObservaciones.getText());
+				this.cotizacion.setVigencia(this.campoTextoVigencia.getText());
+				this.cotizacion.setFolioFK(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getSysPK());				
+				if (CotizacionDAO.createCotizacion(this.mainApp.getConnection(), this.cotizacion)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+					this.mainApp.getEscenarioDialogos().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
+			} else if (this.opcion == EDITAR) {
+				this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
+				this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());
+				this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
+				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
+				this.cotizacion.setEmail(this.campoTextoEmail.getText());
+				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
+				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
+				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
+				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getValue());
+				this.cotizacion.setTipoCambio(Double.parseDouble(this.campoTextoTipoCambio.getText()));
+				this.cotizacion.setObservaciones(this.campoTextoObservaciones.getText());
+				this.cotizacion.setVigencia(this.campoTextoVigencia.getText());				
+				if (CotizacionDAO.updateCotizacion(this.mainApp.getConnection(), this.cotizacion)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
+					this.mainApp.getEscenarioDialogos().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
+			} else if (this.opcion == VER)
 				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == EDITAR) {
-			this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
-			this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());
-			this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
-			this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
-			this.cotizacion.setEmail(this.campoTextoEmail.getText());
-			this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
-			this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
-			this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
-			this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getValue());
-			this.cotizacion.setTipoCambio(Double.parseDouble(this.campoTextoTipoCambio.getText()));
-			this.cotizacion.setObservaciones(this.campoTextoObservaciones.getText());
-			this.cotizacion.setVigencia(this.campoTextoVigencia.getText());
-			if (CotizacionDAO.updateCotizacion(this.mainApp.getConnection(), cotizacion)) {				
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == VER)
-			this.mainApp.getEscenarioDialogos().close();
+		}//FIN METODO
 	}//FIN METODO
-
-	@FXML private void btnCancelar() {
+	
+	@FXML private void manejadorBotonCerrar() {
 		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO
 }//FIN CLASE

@@ -31,7 +31,6 @@ public class Cotizacion {
 	private StringProperty vigencia;	
 	private ObjectProperty<Integer> clienteFK;
 	private ObjectProperty<Integer> folioFK;
-	private StringProperty nombreCliente;
 	
 	//CONSTANTES
 	public static final int PENDIENTE = 0;
@@ -70,8 +69,7 @@ public class Cotizacion {
 		this.observaciones = new SimpleStringProperty(observaciones);
 		this.vigencia = new SimpleStringProperty(vigencia);
 		this.folioFK = new SimpleObjectProperty<Integer>(folioFK);
-		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);	
-		this.nombreCliente = new SimpleStringProperty("");
+		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 	}//FIN CONSTRUCTOR
 	
 	
@@ -269,7 +267,7 @@ public class Cotizacion {
 	
 	//METODOS DE ACCESO A "CONDICIONPAGO"
 	public void setCondicionPago(String condicionPago) {
-		this.condicionEmbarque.set(condicionPago);
+		this.condicionPago.set(condicionPago);
 	}//FIN METODO
 	
 	public String getCondicionPago() {
@@ -405,18 +403,6 @@ public class Cotizacion {
 	public ObjectProperty<Integer> clienteFKProperty(){
 		return this.clienteFK;
 	}//FIN METODO
-	
-	public String getNombreCliente() {
-		return nombreCliente.get();
-	}
-
-	public void setNombreCliente(String nombreConstructora) {
-		this.nombreCliente.set(nombreConstructora);
-	}
-	
-	public StringProperty nombreClienteProperty() {
-		return this.nombreCliente;
-	}
 	
 	public Cliente getCliente(Connection connection) {
 		return ClienteDAO.readCliente(connection, this.getClienteFK());
