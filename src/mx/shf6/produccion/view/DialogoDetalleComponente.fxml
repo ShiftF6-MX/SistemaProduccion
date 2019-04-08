@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoDetalleComponente">
    <children>
       <VBox prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,7 +28,7 @@
                         <Insets />
                      </HBox.margin>
                      <children>
-                        <TextField editable="false" focusTraversable="false" prefWidth="300.0" promptText="Nombre" styleClass="textFieldTitulos" text="CUBA UTP ASSY SOLDADURA">
+                        <TextField fx:id="campoTextoDescripcion" editable="false" focusTraversable="false" prefWidth="300.0" promptText="Nombre" styleClass="textFieldTitulos" text="CUBA UTP ASSY SOLDADURA">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -36,7 +36,7 @@
                               <Insets left="1.0" />
                            </padding>
                         </TextField>
-                        <TextField editable="false" focusTraversable="false" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="463105536">
+                        <TextField fx:id="campoTextoNumeroParte" editable="false" focusTraversable="false" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="463105536">
                            <padding>
                               <Insets left="1.0" />
                            </padding>
@@ -54,12 +54,12 @@
          <children>
             <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView editable="true" styleClass="tablaDatosDetalle">
+                  <TableView fx:id="tablaDetalleComponente" editable="true" styleClass="tablaDatosDetalle">
                     <columns>
-                      <PTableColumn percentageWidth="0.2" prefWidth="75.0" text="# Parte" />
-                      <PTableColumn percentageWidth="0.3" prefWidth="75.0" text="Componente" />
-                        <PTableColumn percentageWidth="0.2" prefWidth="75.0" text="Cantidad" />
-                        <PTableColumn percentageWidth="0.3" prefWidth="75.0" text="Notas" />
+                      <PTableColumn fx:id="columnaNumeroParte" percentageWidth="0.1" prefWidth="75.0" text="# Parte" />
+                      <PTableColumn fx:id="columnaDescripcion" percentageWidth="0.5" prefWidth="75.0" text="Componente" />
+                        <PTableColumn fx:id="columnaCantidad" percentageWidth="0.1" prefWidth="75.0" text="Cantidad" />
+                        <PTableColumn fx:id="columnaNotas" percentageWidth="0.3" prefWidth="75.0" text="Notas" />
                     </columns>
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
@@ -67,8 +67,8 @@
                      <contextMenu>
                         <ContextMenu>
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Agregar componente" />
-                              <MenuItem mnemonicParsing="false" text="Quitar componente" />
+                            <MenuItem mnemonicParsing="false" onAction="#manejadorBotonAgregarComponente" text="Agregar componente" />
+                              <MenuItem mnemonicParsing="false" onAction="#manejadorBotonQuitarComponente" text="Quitar componente" />
                           </items>
                         </ContextMenu>
                      </contextMenu>
@@ -77,19 +77,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <HBox alignment="TOP_RIGHT" layoutX="570.0" layoutY="124.0" spacing="3.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="76.0">
-         <children>
-            <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <image>
-                  <Image url="@images/1x/SaveIcon.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <image>
             <Image url="@images/1x/CloseWindow.png" />
          </image>

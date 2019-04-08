@@ -337,3 +337,8 @@
 .buttonRed:hover {
 	-fx-background-color: #D8282A;
 }
+
+.comboEditable .text {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+}
