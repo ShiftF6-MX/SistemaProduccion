@@ -4,9 +4,7 @@ package mx.shf6.produccion.view;
 import java.io.File;
 import java.sql.SQLException;
 
-import javax.swing.text.IconView;
 
-import com.sun.deploy.uitoolkit.impl.fx.ui.FXConsole;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -20,7 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Domicilio;
-import mx.shf6.produccion.model.Status;
+import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.DomicilioDAO;
 import mx.shf6.produccion.model.dao.SepomexDAO;
@@ -32,12 +30,12 @@ public class DialogoClientes  {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Cliente cliente;
-	private ClienteDAO clienteDAO;
+	private File renameRuta;
 	private Domicilio domicilio;
-	private DomicilioDAO domicilioDAO;
+	private Proyecto proyecto;
+
 	private SepomexDAO sepomexDAO;
-	private PantallaClientes pantallaClientes;
-	private RestriccionTextField restriccionTextField;
+
 	private ObservableList<String> listaEstados;
 	private ObservableList<String> listaMunicipios;
 	
@@ -76,12 +74,15 @@ public class DialogoClientes  {
 	//INICIALIZA LOS COMPOMENTES QUE SE CONTROLAN EN LA INTERFAZ DE USUARIO
 	@FXML private void initialize() {
 		this.cliente = new Cliente();
-		this.clienteDAO = new ClienteDAO();
+		this.proyecto = new Proyecto();
 		this.domicilio = new Domicilio();
-		this.domicilioDAO = new DomicilioDAO();
 		this.sepomexDAO = new SepomexDAO();
 		
-		
+		RestriccionTextField.limitarNumeroCaracteres(this.codigoPostalField, 8);
+		RestriccionTextField.limitarNumeroCaracteres(this.codigoField, 8);
+		RestriccionTextField.soloLetras(this.nombreField);		
+		RestriccionTextField.limitarNumeroCaracteres(this.registroContribuyenteField, 16);
+		RestriccionTextField.limitarNumeroCaracteres(this.telefonoField, 16);
 		ObservableList<String> listaStatus = FXCollections.observableArrayList("Bloqueado", "Activo", "Baja");
 		this.statusCombo.setItems(listaStatus);	
 		
@@ -94,6 +95,8 @@ public class DialogoClientes  {
 		this.cliente = cliente;
 		this.opcion = opcion;
 		this.domicilio = cliente.getDomicilio(this.mainApp.getConnection());
+		
+		this.renameRuta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre());
 		
 		this.listaEstados = sepomexDAO.leerEstados(mainApp.getConnection()); 
 		estadoCombo.setItems(listaEstados);
@@ -317,10 +320,11 @@ public class DialogoClientes  {
 	@FXML
 	private void btnEliminar() {
 		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
-			ClienteDAO.deleteCliente(mainApp.getConnection(), cliente);
-			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
-			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
-			ruta.delete();
+			if(ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
+				DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
+				File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+				ruta.delete();
+			}			
 			cerrarDialogoButtonHandler();			
 		}//FIN IF
 	}//FIN METODO
@@ -394,6 +398,11 @@ public class DialogoClientes  {
 							this.mainApp.getConnection().commit();
 							this.mainApp.getConnection().setAutoCommit(true);
 							
+							
+							
+							this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText()));
+							
+							
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro actualizado. ");
 							this.mainApp.getEscenarioDialogos().close();
 						} else {
@@ -422,6 +431,9 @@ public class DialogoClientes  {
 		this.mostrarDatosInterfaz();
 		
 	}//FIN METODO
+	
+	
+	
 	@FXML private void cerrarDialogoButtonHandler() {
 		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO

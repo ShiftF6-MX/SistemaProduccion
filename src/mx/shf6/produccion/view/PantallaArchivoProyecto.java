@@ -28,47 +28,46 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
+import mx.shf6.produccion.model.ArchivoProyecto;
 import mx.shf6.produccion.model.Cliente;
-import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Proyecto;
-import mx.shf6.produccion.model.dao.ProyectoDAO;
+import mx.shf6.produccion.model.dao.ArchivoProyectoDAO;
 import mx.shf6.produccion.utilities.GestorArchivos;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaProyectos {
+public class PantallaArchivoProyecto {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Proyecto proyecto;
-	private ArrayList<Proyecto> listaProyecto;
+	private ArrayList<ArchivoProyecto> listaArchivoProyecto;
+	private ArchivoProyecto archivoProyecto ;
 	private Cliente cliente;
 	
 	//VARIABLES
 	
 	//COMPONENTES INTERFAZ
 	@FXML private TextField campoTextoBusqueda;
-	@FXML private TableView<Proyecto> tablaProyecto;
-	@FXML private PTableColumn<Proyecto, String> columnaCodigo;
-	@FXML private PTableColumn<Proyecto, String> columnaDescripcion;
-	@FXML private PTableColumn<Proyecto, String> columnaCarpeta;
-	@FXML private PTableColumn<Proyecto, String> columnaEspecificacionTecnica;
-	@FXML private PTableColumn<Proyecto, Double> columnaCostoDirecto;
-	@FXML private PTableColumn<Proyecto, Double> columnaCostoIndirecto;
-	@FXML private PTableColumn<Proyecto, Double> columnaPrecio;
-	@FXML private PTableColumn<Proyecto, String> columnaAcciones;
+	@FXML private TableView<ArchivoProyecto> tablaArchivoProyecto;
+	@FXML private PTableColumn<ArchivoProyecto, String> columnaCodigo;
+	@FXML private PTableColumn<ArchivoProyecto, String> columnaDescripcion;
+	@FXML private PTableColumn<ArchivoProyecto, String> columnaAcciones;
 		
+			
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.proyecto = new Proyecto();
+		this.archivoProyecto = new ArchivoProyecto();
+		this.cliente = new Cliente();
 		this.inicializaComponentes();
 		this.inicializaTabla();
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
-	public void setMainApp(MainApp mainApp, Cliente cliente) {
+	public void setMainApp(MainApp mainApp, Proyecto proyecto, Cliente cliente) {
 		this.mainApp = mainApp;
+		this.proyecto = proyecto;
 		this.cliente = cliente;
-		this.listaProyecto = ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(),this.cliente.getSysPK());
+		this.listaArchivoProyecto = ArchivoProyectoDAO.readArchivoProyectoCliente(this.mainApp.getConnection(),this.proyecto.getSysPK());
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -87,33 +86,28 @@ public class PantallaProyectos {
 	private void inicializaTabla() {
 		this.columnaCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
-		this.columnaCarpeta.setCellValueFactory(cellData -> cellData.getValue().carpetaProperty());
-		this.columnaEspecificacionTecnica.setCellValueFactory(cellData -> cellData.getValue().especificacionTecnicaProperty());
-		this.columnaCostoDirecto.setCellValueFactory(cellData -> cellData.getValue().costoDirectoProperty());
-		this.columnaCostoIndirecto.setCellValueFactory(cellData -> cellData.getValue().costoIndirectoProperty());
-		this.columnaPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty());
 		this.inicializarColumnaAcciones();
 	}//FIN METODO.
 	
 	private void actualizarTabla() {
-		this.tablaProyecto.setItems(null);
-		this.listaProyecto.clear();
-		this.listaProyecto = ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), this.cliente.getSysPK());
-		this.tablaProyecto.setItems(ProyectoDAO.toObservableList(this.listaProyecto));
+		this.tablaArchivoProyecto.setItems(null);
+		this.listaArchivoProyecto.clear();
+		this.listaArchivoProyecto = ArchivoProyectoDAO.readArchivoProyectoCliente(this.mainApp.getConnection(), this.proyecto.getSysPK());
+		this.tablaArchivoProyecto.setItems(ArchivoProyectoDAO.toObservableList(this.listaArchivoProyecto));
 	}//FIN METODO
 		
 	@FXML private void buscarRegistroTabla() {
-		this.tablaProyecto.setItems(null);
-		this.listaProyecto.clear();
-		this.listaProyecto = ProyectoDAO.readProyecto(this.mainApp.getConnection(), this.campoTextoBusqueda.getText(), this.cliente.getSysPK());
-		
-		this.tablaProyecto.setItems(ProyectoDAO.toObservableList(this.listaProyecto));
+		this.tablaArchivoProyecto.setItems(null);
+		this.listaArchivoProyecto.clear();
+		this.listaArchivoProyecto = ArchivoProyectoDAO.readArchivoProyecto(this.mainApp.getConnection(), this.campoTextoBusqueda.getText(), this.proyecto.getSysPK());
+		this.tablaArchivoProyecto.setItems(ArchivoProyectoDAO.toObservableList(this.listaArchivoProyecto));
 	}//FIN METODO
 	
 	private void inicializarColumnaAcciones() {
 		this.columnaAcciones.setCellValueFactory(new PropertyValueFactory<>("DUM"));
-		Callback<TableColumn<Proyecto, String>, TableCell<Proyecto, String>> cellFactory = param -> {
-			final TableCell<Proyecto, String> cell = new TableCell<Proyecto, String>() {
+		Callback<TableColumn<ArchivoProyecto, String>, TableCell<ArchivoProyecto, String>> cellFactory = param -> {
+			
+			final TableCell<ArchivoProyecto, String> cell = new TableCell<ArchivoProyecto, String>() {
 				final Button botonVer = new Button("Ver");
 				final Button botonEditar = new Button("Editar");
 				final Button botonArchivo = new Button("Archivo");
@@ -139,7 +133,7 @@ public class PantallaProyectos {
 					botonEditar.setCursor(Cursor.HAND);
 					botonEditar.setTooltip(new Tooltip("Editar registro"));
 					
-					botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+					botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
 		        	botonArchivo.setPrefSize(16.0, 16.0);
 		        	botonArchivo.setPadding(Insets.EMPTY);
 		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -162,23 +156,23 @@ public class PantallaProyectos {
 						
 						//MANEJADORES PARA LOS BOTONES
 						botonVer.setOnAction(event -> {
-							proyecto = getTableView().getItems().get(getIndex());
-							manejadorBotonVer(proyecto);
+							archivoProyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonVer(archivoProyecto);
 						});//FIN MANEJADDOR
 						
 						botonEditar.setOnAction(event -> {
-							proyecto = getTableView().getItems().get(getIndex());
-							manejadorBotonEditar(proyecto);
+							archivoProyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonEditar(archivoProyecto);
 						});//FIN MANEJADDOR
 						
 						botonArchivo.setOnAction(event -> {
-							proyecto = getTableView().getItems().get(getIndex());
-							mainApp.iniciarPantallaArchivoProyecto(proyecto , cliente);
+							archivoProyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonDibujo(archivoProyecto);
 						});//FIN MANEJADDOR
 						
 						botonEliminar.setOnAction(event -> {
-							proyecto = getTableView().getItems().get(getIndex());
-							manejadorBotonEliminar(proyecto);
+							archivoProyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonEliminar(archivoProyecto);
 						});//FIN MANEJADDOR
 						
 						cajaBotones.setSpacing(2);
@@ -197,7 +191,7 @@ public class PantallaProyectos {
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
 		
-		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoProyecto.CREAR, cliente);
+		this.mainApp.iniciarDialogoArchivoProyecto(archivoProyecto, DialogoArchivoProyecto.CREAR, proyecto);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -205,25 +199,55 @@ public class PantallaProyectos {
 		this.actualizarTabla();
 	}//FIN METODO
 	
-	private void manejadorBotonVer(Proyecto proyecto) {
-		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoProyecto.VER, cliente);
+	private void manejadorBotonVer(ArchivoProyecto archivoProyecto) {
+		this.mainApp.iniciarDialogoArchivoProyecto(archivoProyecto, DialogoArchivoProyecto.VER, proyecto);
 		this.actualizarTabla();
 	}//FIN METODO
 	
-	private void manejadorBotonEditar(Proyecto proyecto) {
-		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoProyecto.EDITAR, cliente);
+	private void manejadorBotonEditar(ArchivoProyecto archivoProyecto) {
+		this.mainApp.iniciarDialogoArchivoProyecto(archivoProyecto, DialogoArchivoProyecto.EDITAR, proyecto);
 		this.actualizarTabla();
 	}//FIN METODO
 	
+	private void manejadorBotonDibujo(ArchivoProyecto archivoProyecto) {
+		String rutaArchivoDibujo = MainApp.RAIZ_SERVIDOR + "Clientes\\" + cliente.getNombre()  + "\\Proyectos\\" + this.proyecto.getCodigo() + "\\" + this.archivoProyecto.getCodigo() +  ".pdf";
+		File archivoDibujo = new File(rutaArchivoDibujo);
+		if (archivoDibujo.exists()) {
+			//Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "El archivo se va abrir...");
+			try {
+				Desktop.getDesktop().open(archivoDibujo);
+			} catch (IOException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY/CATCH
+		} else {
+			FileChooser escogerArchivo = new FileChooser();
+			List<String> listaExtensiones = new ArrayList<String>();
+			listaExtensiones.add("*.PDF");
+			ExtensionFilter filtroExtensiones = new ExtensionFilter("Archivos de dibujo y diseño (*.pdf)", listaExtensiones);
+			escogerArchivo.getExtensionFilters().add(filtroExtensiones);
+			File archivoCliente = escogerArchivo.showOpenDialog(this.mainApp.getEscenarioPrincipal());
+			if (archivoCliente == null) {
+				Notificacion.dialogoAlerta(AlertType.ERROR, "", "Aun no has seleccionado un archivo");
+				System.out.println("");
+			}else {
+				File rutaCarpetaDibujo = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + "\\Proyectos\\" +this.proyecto.getCodigo()  );
+				rutaCarpetaDibujo.mkdirs();
+				if (GestorArchivos.cargarArchivo(archivoCliente, rutaArchivoDibujo))
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El archivo se ha guardado de forma correcta");
+				else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El archivo no se pudo cargar al sistema");
+			}//FIN IF ELSE
+		}//FIN IF/ELSE
+	}//FIN METODO
 	
-	
-	private void manejadorBotonEliminar(Proyecto proyecto) {
+	private void manejadorBotonEliminar(ArchivoProyecto archivoProyecto) {
 		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?")) {
-			File ruta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" +this.proyecto.getCodigo());
-			ruta.delete();
-			ProyectoDAO.deleteProyecto(this.mainApp.getConnection(), proyecto);
+			String rutaArchivoDibujo = MainApp.RAIZ_SERVIDOR + "Clientes\\" + cliente.getNombre()  + "\\Proyectos\\" + this.proyecto.getCodigo() + "\\" + this.archivoProyecto.getCodigo() +  ".pdf";
+			File archivoDibujo = new File(rutaArchivoDibujo);
+			archivoDibujo.delete();
+			ArchivoProyectoDAO.deleteArchivoProyecto(this.mainApp.getConnection(), archivoProyecto);
 		}
 		this.actualizarTabla();
 	}//FIN METODO
-		
-}//FIN CLASE
+
+}

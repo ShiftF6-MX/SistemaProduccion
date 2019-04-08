@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -179,7 +180,7 @@ public class ProyectoDAO{
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			Notificacion.dialogoException(ex);
+			Notificacion.dialogoAlerta(AlertType.WARNING, "No se puede eliminar este proyecto.", "El proyecto que intentas eliminar contiene archivos o esta en cotización.");
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO

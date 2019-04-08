@@ -104,6 +104,7 @@ public class PantallaClientes {
         		final Button botonArchivo = new Button("A");
         		final HBox acciones = new HBox(botonVer, botonEliminar, botonEstadoCuenta, botonCarpeta, botonArchivo);
         		
+        		
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
 		        public void updateItem(String item, boolean empty) {
@@ -141,6 +142,8 @@ public class PantallaClientes {
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
 		        	super.updateItem(item, empty);
+		        	
+		        	
 		        	if (empty) {
 		        		setGraphic(null);
 		                setText(null);
@@ -151,6 +154,15 @@ public class PantallaClientes {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
 		            			verCliente(cliente);
+		            			if(cliente.getStatus().equals(1)) {
+		            				botonEstadoCuenta.setDisable(false);
+		            				botonArchivo.setDisable(false);
+		            				botonCarpeta.setDisable(false);
+		            			}else {
+		            				botonEstadoCuenta.setDisable(true);
+		            				botonArchivo.setDisable(true);
+		            				botonCarpeta.setDisable(true);
+		            			}
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
@@ -159,11 +171,18 @@ public class PantallaClientes {
 		            	botonEliminar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
 			        			cliente = getTableView().getItems().get(getIndex());
-			        			if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar a " + cliente.getNombre() + "?")){
-			            			ClienteDAO.deleteCliente(mainApp.getConnection(), cliente);
-			            			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
-			            			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
-			            			ruta.delete();
+			        			if (Notificacion.dialogoPreguntar("Confirmación para eliminar.", "¿Desea eliminar a " + cliente.getNombre() + "?")){
+			        				
+			        				if(cliente.getStatus().equals(2)) {
+			        					if(ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
+				        					DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
+				        					File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+					            			ruta.delete();
+				        				}
+			        				}else {
+			        					Notificacion.dialogoAlerta(AlertType.ERROR, "ERROR", "Cambie el estado del cliente a BAJA");
+			        				}
+			            			
 			            			actualizarTabla();
 			            		}//FIN IF
 		            		} else
@@ -173,6 +192,8 @@ public class PantallaClientes {
 		            	//ABRE EL DIALOGO PARA EDITAR LOS DATOS DEL CLIENTE
 		            	botonEstadoCuenta.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			cliente = getTableView().getItems().get(getIndex());
+		            			mainApp.iniciarPantallaCotizaciones(cliente);
 		            			actualizarTabla();
 			                } else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
@@ -196,16 +217,20 @@ public class PantallaClientes {
 		            	botonArchivo.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarPantallaProyecto();
+		            			mainApp.iniciarPantallaProyecto(cliente);
 		            			actualizarTabla();
 			                } else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
-		            	});//FIN LISTENER        	
+		            	});//FIN LISTENER    
+		            	
 		            		
 		            	setGraphic(acciones);		                
 		                setText(null);
 		                
 		            }//FIN IF/ELSE
+		        	
+		        	
+		        	
 		        }//FIN METODO
 		    };//FIN METODO
 		    
@@ -236,5 +261,8 @@ public class PantallaClientes {
 		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.MOSTRAR);
 		this.actualizarTabla();
 	}//FIN METODO
+	
+	
+	
 	 	
 }//FIN CLASE

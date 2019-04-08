@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="465.0" prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoProyecto">
+<AnchorPane prefHeight="393.0" prefWidth="389.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoProyecto">
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,7 +20,7 @@
             </Label>
          </children>
       </VBox>
-      <VBox spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
+      <VBox spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="55.0">
          <children>
             <VBox spacing="2.0">
                <children>
@@ -42,8 +42,6 @@
             <TextField fx:id="campoTextoCarpeta" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
             <Label styleClass="labelRobotoMedium12" text="Especificación Técnica" />
             <TextField fx:id="campoTextoEspecificacionTecnica" layoutX="10.0" layoutY="145.0" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
-            <Label layoutX="10.0" layoutY="180.0" styleClass="labelRobotoMedium12" text="Cliente" />
-            <ComboBox fx:id="comboBoxClientes" maxWidth="1.7976931348623157E308" />
             <VBox layoutX="10.0" layoutY="172.0" spacing="5.0">
                <VBox.margin>
                   <Insets top="5.0" />
@@ -61,5 +59,31 @@
             </Button>
          </children>
       </VBox>
+      <HBox prefHeight="395.0" prefWidth="149.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="55.0">
+         <children>
+            <VBox spacing="10.0">
+               <children>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Costo Directo" />
+                        <TextField fx:id="campoCostoDirecto" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Costo Indirecto" />
+                        <TextField fx:id="campoCostoIndirecto" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Precio" />
+                        <TextField fx:id="campoPrecio" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

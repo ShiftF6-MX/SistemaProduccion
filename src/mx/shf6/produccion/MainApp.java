@@ -27,6 +27,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
+import mx.shf6.produccion.model.ArchivoProyecto;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
@@ -42,6 +43,7 @@ import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
+import mx.shf6.produccion.view.DialogoArchivoProyecto;
 import mx.shf6.produccion.view.DialogoClientes;
 import mx.shf6.produccion.view.DialogoComponente;
 import mx.shf6.produccion.view.DialogoCotizacion;
@@ -53,6 +55,7 @@ import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
 import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTratamiento;
 import mx.shf6.produccion.view.PantallaAcabado;
+import mx.shf6.produccion.view.PantallaArchivoProyecto;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
@@ -95,6 +98,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaTratamiento;
 	private AnchorPane pantallaProyectos;
+	private AnchorPane pantallaArchivoProyecto;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -109,6 +113,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAcabado;
 	private AnchorPane dialogoTratamiento;
 	private AnchorPane dialogoProyecto;
+	private AnchorPane dialogoArchivoProyecto;
 	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
@@ -391,6 +396,7 @@ public class MainApp extends Application {
 			this.pantallaBase.setCenter(this.pantallaCotizaciones);
 			PantallaCotizaciones pantallaCotizaciones = fxmlLoader.getController();
 			pantallaCotizaciones.setMainApp(this, cliente);
+			System.out.println(cliente.getNombre());
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
@@ -504,7 +510,7 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	//INICIAR PANTALLA PROYECTO
-	public void iniciarPantallaProyecto() {
+	public void iniciarPantallaProyecto(Cliente cliente) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaProyectos.fxml"));
@@ -512,11 +518,26 @@ public class MainApp extends Application {
 			this.pantallaBase.setCenter(this.pantallaProyectos);
 			
 			PantallaProyectos pantallaProyecto = fxmlLoader.getController();
-			pantallaProyecto.setMainApp(this);
+			pantallaProyecto.setMainApp(this,cliente);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
+	
+	//INICIAR PANTALLA ARCHIVO PROYECTO
+	public void iniciarPantallaArchivoProyecto(Proyecto proyecto, Cliente cliente) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaArchivoProyecto.fxml"));
+            this.pantallaArchivoProyecto = (AnchorPane) fxmlLoader.load();
+            this.pantallaBase.setCenter(this.pantallaArchivoProyecto);
+            
+            PantallaArchivoProyecto pantallaArchivoProyecto = fxmlLoader.getController();
+            pantallaArchivoProyecto.setMainApp(this,proyecto,cliente);
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
 	
 	//METODOS DIALOGOS
 	public void iniciarDialogoClientes(Cliente cliente , int opcion) {
@@ -717,7 +738,7 @@ public class MainApp extends Application {
 		}//FIN METODO
 	}//FIN METODO
 	
-	public void iniciarDialogoProyecto(Proyecto proyecto, int opcion) {
+	public void iniciarDialogoProyecto(Proyecto proyecto, int opcion, Cliente cliente) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoProyecto.fxml"));
@@ -727,13 +748,31 @@ public class MainApp extends Application {
 			this.escenarioDialogos.setScene(escenaDialogoProyecto);
 			
 			DialogoProyecto dialogoProyecto = fxmlLoader.getController();
-			dialogoProyecto.setMainApp(this, proyecto, opcion);
+			dialogoProyecto.setMainApp(this, proyecto, opcion, cliente);
 			
 			this.escenarioDialogos.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN METODO
 	}//FIN METODO
+	
+	public void iniciarDialogoArchivoProyecto(ArchivoProyecto archivoProyecto, int opcion, Proyecto proyecto) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoArchivoProyecto.fxml"));
+            this.dialogoArchivoProyecto = (AnchorPane) fxmlLoader.load();
+            
+            Scene escenaDialogoArchivoProyecto = this.iniciarEscenarioDialogos(this.dialogoArchivoProyecto);
+            this.escenarioDialogos.setScene(escenaDialogoArchivoProyecto);
+            
+            DialogoArchivoProyecto dialogoArchivoProyecto = fxmlLoader.getController();
+            dialogoArchivoProyecto.setMainApp(this, archivoProyecto, opcion, proyecto);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch (IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN METODO
+    }//FIN METODO
 
 	@Override
 	public void stop() {

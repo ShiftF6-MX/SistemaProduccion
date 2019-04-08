@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.utilities.Notificacion;
 
 public class ClienteDAO{
@@ -143,9 +145,11 @@ public class ClienteDAO{
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, cliente.getSysPK());
 			sentenciaPreparada.execute();
+			
 			return true;
 		} catch (SQLException ex) {
-			Notificacion.dialogoException(ex);
+			Notificacion.dialogoAlerta(AlertType.WARNING, "ERROR", "Este Cliente contiene PROYECTOS.");
+			//Notificacion.dialogoException(ex);
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO

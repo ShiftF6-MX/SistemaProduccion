@@ -220,7 +220,10 @@ public class PantallaCotizaciones {
 	private void actualizarTabla() {
 		tablaCotizacion.setItems(null);
 		listaCotizaciones.clear();
-		listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
+		if (cliente != null)
+			listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), this.cliente.getSysPK());			
+		else
+			listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
 		if (!listaCotizaciones.isEmpty()) {
 			//this.asignarVariables();
 			tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
