@@ -307,15 +307,15 @@ public class Cotizacion {
 	public void setNumeroMoneda(String moneda) {
 		switch (moneda) {
 		case "MXN":
-			this.setStatus(0);
+			this.setMoneda(0);
 			break;
 		case "USD":
-			this.setStatus(1);
+			this.setMoneda(1);
 			break;
 		case "EUR":
-			this.setStatus(2);
+			this.setMoneda(2);
 			break;
-		}//FIN WTITCH
+		}//FIN SSWTITCH
 	}//FIN METODO
 	
 	public StringProperty descripcionMonedaProperty() {
@@ -347,7 +347,7 @@ public class Cotizacion {
 	
 	//METODOS DE ACCESO A "OBSERVACIONES"
 	public void setObservaciones(String observaciones) {
-		this.condicionEmbarque.set(observaciones);
+		this.observaciones.set(observaciones);
 	}//FIN METODO
 	
 	public String getObservaciones() {

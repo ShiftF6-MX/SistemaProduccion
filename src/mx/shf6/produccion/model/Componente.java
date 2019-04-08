@@ -2,6 +2,7 @@ package mx.shf6.produccion.model;
 
 import java.sql.Connection;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -9,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.AcabadoDAO;
 import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
 import mx.shf6.produccion.model.dao.MaterialDAO;
 import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
 import mx.shf6.produccion.model.dao.TipoMiscelaneoDAO;
@@ -295,4 +297,17 @@ public class Componente {
 		return ClienteDAO.readCliente(connection, this.getclienteFK());
 	}//FIN METODO
 	
+	public static void mostrarInformacionEnsamble(Connection connection, Componente componente, int nivel) {
+		nivel += 1;
+		System.out.print(componente.getNumeroParte());
+		System.out.print(" " + componente.getDescripcion() + " - ");
+		System.out.print("Nivel: " + nivel + "\n");
+		if (componente.getTipoComponente() == TipoComponente.ENSAMBLE || componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE) {
+			ArrayList<DetalleComponente> detalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(connection, componente.getSysPK());
+			for (DetalleComponente detalle : detalleComponente) {
+				System.out.print(detalle.getCantidad() + " ");
+				mostrarInformacionEnsamble(connection, detalle.getComponenteInferior(connection), nivel);
+			}
+		}
+	}//FIN METODO
 }//FIN CLASE

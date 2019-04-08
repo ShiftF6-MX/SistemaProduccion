@@ -19,7 +19,7 @@
                   <VBox alignment="CENTER_LEFT">
                      <children>
                         <Label styleClass="labelRobotoMedium16" text="Cotizaciones" />
-                        <Label styleClass="labelRobotoMedium14" text="Gestion de cotizaciones" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestion de las cotizaciones de proyectos" />
                      </children>
                   </VBox>
                </children>
@@ -48,7 +48,7 @@
                   </HBox>
                   <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#nuevaCotizacion" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/1x/AddIcon.png" />
+                        <Image url="@images/1x/AgregarBoton.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -56,7 +56,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
+            <VBox alignment="BOTTOM_CENTER" styleClass="tablaDatosDetalle" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
                   <TableView fx:id="tablaCotizacion" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
                      <columns>
@@ -71,11 +71,6 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Pagination fx:id="paginacionTablaCotizaciones" maxPageIndicatorCount="3" pageCount="2" styleClass="paginacionTabla">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Pagination>
                </children>
             </VBox>
          </children></AnchorPane>

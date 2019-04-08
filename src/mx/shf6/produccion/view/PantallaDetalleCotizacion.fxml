@@ -10,60 +10,51 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDetalleCotizacion">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDetalleCotizacion">
    <children>
-      <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <VBox layoutX="10.0" layoutY="10.0" prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="65.0" prefWidth="503.0" spacing="10.0" styleClass="dashBoardCardGray">
+            <HBox prefHeight="50.0" spacing="10.0">
                <children>
                   <ImageView fitHeight="49.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/1x/StartButton.png" />
                      </image>
                   </ImageView>
-                  <VBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="424.0" spacing="3.0">
+                  <VBox alignment="CENTER_LEFT" fillWidth="false" spacing="3.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox prefHeight="60.0" prefWidth="414.0" />
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Cotizacion">
-                                 <HBox.margin>
-                                    <Insets right="70.0" />
-                                 </HBox.margin>
-                              </Text>
-                              <Label fx:id="labelCotizacion" styleClass="textFieldTitulos" text="Label" textFill="WHITE" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Cliente      ">
-                                 <HBox.margin>
-                                    <Insets right="70.0" />
-                                 </HBox.margin>
-                              </Text>
-                              <Label fx:id="labelCliente" styleClass="textFieldTitulos" text="Label" textFill="WHITE" />
-                           </children>
-                        </HBox>
+                        <TextField fx:id="labelCliente" editable="false" focusTraversable="false" prefWidth="300.0" promptText="Nombre" styleClass="textFieldTitulos" text="CUBA UTP ASSY SOLDADURA">
+                           <padding>
+                              <Insets left="1.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="labelCotizacion" editable="false" focusTraversable="false" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="463105536">
+                           <padding>
+                              <Insets left="1.0" />
+                           </padding>
+                        </TextField>
                      </children>
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </VBox>
-                  <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#btnCancelar" pickOnBounds="true" preserveRatio="true">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <image>
-                        <Image url="@images/1x/CloseButton.png" />
-                     </image>
-                  </ImageView>
                </children>
+               <VBox.margin>
+                  <Insets left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
             </HBox>
-            <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
+         </children>
+      </VBox>
+      <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="tablaDetalleCotizacion" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaDetalleCotizacion" editable="true" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="columnaNumeroDibujo" minWidth="-1.0" prefWidth="96.0" text="No. Dibujo" />
+                        <TableColumn fx:id="columnaNumeroDibujo" minWidth="-1.0" prefWidth="96.0" text="# Parte" />
                         <TableColumn fx:id="columnaDescripcion" minWidth="-1.0" prefWidth="33.0" text="Descripcion" />
                         <TableColumn fx:id="columnaCantidad" minWidth="-1.0" prefWidth="-1.0" text="Cantidad" />
                         <TableColumn fx:id="columaPrecioUnitario" minWidth="-1.0" prefWidth="-1.0" text="Costo Unitario" />
@@ -80,9 +71,20 @@
                           </items>
                         </ContextMenu>
                      </contextMenu>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
                   </TableView>
                </children>
             </VBox>
          </children></AnchorPane>
+      <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#btnCancelar" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="@images/1x/CloseWindow.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

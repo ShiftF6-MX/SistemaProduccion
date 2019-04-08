@@ -15,6 +15,7 @@ import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoDetalleCotizacion {
 
@@ -42,6 +43,7 @@ public class DialogoDetalleCotizacion {
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
+		RestriccionTextField.limitarPuntoDecimal(this.campoTextoCantidad);
 		this.listaNombreProyectos = FXCollections.observableArrayList();
 		this.detalleCotizacio = new DetalleCotizacion();
 	}//FIN METODO

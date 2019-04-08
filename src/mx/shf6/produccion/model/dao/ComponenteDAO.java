@@ -173,6 +173,43 @@ public class ComponenteDAO {
 		return arrayListComponente;
 	}//FIN METODO
 	
+	//METODO PARA OBTENER UN REGISTRO
+	public static ArrayList<Componente> readComponenteNumeroParte(Connection connection, String numeroParte) {
+		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
+		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes WHERE NumeroParte = '" + numeroParte + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Componente componente = new Componente();
+				componente.setSysPK(resultados.getInt(1));
+				componente.setNumeroParte(resultados.getString(2));
+				componente.setDescripcion(resultados.getString(3));
+				Dimensiones dimensiones = new Dimensiones();
+				dimensiones.setLargo(resultados.getDouble(4));
+				dimensiones.setAncho(resultados.getDouble(5));
+				dimensiones.setAltoEspesor(resultados.getDouble(6));
+				componente.setDimensiones(dimensiones);
+				componente.setTipoComponente(resultados.getString(7));
+				componente.setCosto(resultados.getDouble(8));
+				componente.setUnidad(resultados.getString(9));
+				componente.setMaterialFK(resultados.getInt(10));;
+				componente.setTipoMiscelaneoFK(resultados.getInt(11));
+				componente.setTipoMateriaPrimaFK(resultados.getInt(12));
+				componente.setAcabadoFK(resultados.getInt(13));
+				componente.setTratamientoFK(resultados.getInt(14));
+				componente.setNotas(resultados.getString(15));
+				componente.setStatus(resultados.getInt(16));
+				componente.setConsecutivo(resultados.getInt(17));
+				componente.setClienteFK(resultados.getInt(18));
+				arrayListComponente.add(componente);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListComponente;
+	}//FIN METODO
+	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateComponente(Connection connection, Componente componente) {
 		String consulta = "UPDATE componentes SET NumeroParte = ?, Descripcion = ?, Largo = ?, Ancho = ?, AltoEspesor = ?, TipoComponente = ?, Costo = ?, Unidad = ?, MaterialFK = ?, TipoMiscelaneoFK = ?, TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ? WHERE Sys_PK = ?";

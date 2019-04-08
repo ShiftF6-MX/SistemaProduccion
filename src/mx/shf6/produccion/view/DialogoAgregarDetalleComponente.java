@@ -75,7 +75,7 @@ public class DialogoAgregarDetalleComponente {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Componente\" no puedes estar vacio");
 		else {
 			this.detalleComponente.setComponenteSuperiorFK(this.componente.getSysPK());
-			this.detalleComponente.setComponenteInferiorFK(ComponenteDAO.readComponente(this.mainApp.getConnection(), this.comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());
+			this.detalleComponente.setComponenteInferiorFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), this.comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());
 			this.detalleComponente.setCantidad(Double.parseDouble(this.campoTextoCantidad.getText()));
 			this.detalleComponente.setNotas(this.campoTextoNotas.getText());
 			this.mainApp.getEscenarioDialogosAlterno().close();
