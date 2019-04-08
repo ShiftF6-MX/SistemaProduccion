@@ -139,7 +139,7 @@ public class DetalleCotizacionDAO {
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean deleteDetalleCotizacion(Connection connection, DetalleCotizacion detalleCotizacion) {
-		String consulta = "DELETE FROM detallecotizacion WHERE Sys_PK = ?";
+		String consulta = "DELETE FROM detallecotizaciones WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, detalleCotizacion.getSysPK());

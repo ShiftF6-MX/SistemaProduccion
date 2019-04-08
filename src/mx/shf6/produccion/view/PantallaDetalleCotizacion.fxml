@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDetalleCotizacion">
+   <children>
+      <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <HBox prefHeight="65.0" prefWidth="503.0" spacing="10.0" styleClass="dashBoardCardGray">
+               <children>
+                  <ImageView fitHeight="49.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/StartButton.png" />
+                     </image>
+                  </ImageView>
+                  <VBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="424.0" spacing="3.0">
+                     <children>
+                        <HBox prefHeight="60.0" prefWidth="414.0" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Cotizacion">
+                                 <HBox.margin>
+                                    <Insets right="70.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Label fx:id="labelCotizacion" styleClass="textFieldTitulos" text="Label" textFill="WHITE" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Cliente      ">
+                                 <HBox.margin>
+                                    <Insets right="70.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Label fx:id="labelCliente" styleClass="textFieldTitulos" text="Label" textFill="WHITE" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#btnCancelar" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@images/1x/CloseButton.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
+               <children>
+                  <TableView fx:id="tablaDetalleCotizacion" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="columnaNumeroDibujo" minWidth="-1.0" prefWidth="96.0" text="No. Dibujo" />
+                        <TableColumn fx:id="columnaDescripcion" minWidth="-1.0" prefWidth="33.0" text="Descripcion" />
+                        <TableColumn fx:id="columnaCantidad" minWidth="-1.0" prefWidth="-1.0" text="Cantidad" />
+                        <TableColumn fx:id="columaPrecioUnitario" minWidth="-1.0" prefWidth="-1.0" text="Costo Unitario" />
+                        <TableColumn fx:id="columnaObservaciones" minWidth="-1.0" prefWidth="-1.0" text="Observaciones" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                     <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem fx:id="menuItemAgregarProyecto" mnemonicParsing="false" onAction="#manejadorAgregar" text="Agregar Proyecto" />
+                              <MenuItem fx:id="menuItemQuitarProyecto" mnemonicParsing="false" onAction="#manejadorQuitar" text="Quitar Proyecto" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                  </TableView>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

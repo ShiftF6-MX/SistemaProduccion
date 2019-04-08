@@ -1,6 +1,5 @@
 package mx.shf6.produccion.view;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -19,6 +18,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -28,6 +28,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
+import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.dao.CotizacionDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
@@ -38,6 +39,7 @@ public class PantallaCotizaciones {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Cotizacion cotizacion;
+	private Cliente cliente;
 	private int cantidadRenglonesTabla;
 	private int cantidadRegistrosTablaCotizaciones;
 	private int cantidadPaginasTablaCotizaciones;
@@ -72,7 +74,10 @@ public class PantallaCotizaciones {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
     		tablaCotizacion.setItems(null);
     		listaCotizaciones.clear();
-    		listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection(), buscarCotizacion.getText());
+    		if(cliente != null)
+    			listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), cliente.getSysPK(), this.buscarCotizacion.getText());
+    		else
+    			listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection(), this.buscarCotizacion.getText());
     		tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
     	} else {
     		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
@@ -81,11 +86,15 @@ public class PantallaCotizaciones {
     }//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp, Cliente cliente) {
 		this.mainApp = mainApp;
-		listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
+		this.cliente = cliente;
+		if (cliente != null)
+			listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), this.cliente.getSysPK());			
+		else
+			listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
 		this.actualizarTabla();
-		//asignarVariables();
+		asignarVariables();
 	}//FIN METODO	
 	
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE COTIZACIONES
@@ -101,11 +110,10 @@ public class PantallaCotizaciones {
         	
         	final TableCell<Cotizacion, String> cell = new TableCell<Cotizacion, String>() {  
         		final Button botonVer = new Button("V");
-        		final Button botonEliminar = new Button("B");
-        		final Button botonEstadoCuenta = new Button("EC");
-        		final Button botonCarpeta = new Button("C");
-        		final Button botonArchivo = new Button("A");
-        		final HBox acciones = new HBox(botonVer, botonEliminar, botonEstadoCuenta, botonCarpeta, botonArchivo);
+        		final Button botonEditar = new Button("E");
+        		final Button botonEliminar = new Button("B"); 
+        		final Button botonAgregar = new Button("A");
+        		final HBox acciones = new HBox(botonVer, botonEditar, botonEliminar, botonAgregar);
         		
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
@@ -116,30 +124,32 @@ public class PantallaCotizaciones {
 		        	botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonVer.setStyle("-fx-background-color: transparent;");		        	
 		        	botonVer.setCursor(Cursor.HAND);
-		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
-		        	botonEliminar.setPrefSize(16.0, 16.0);
-		        	botonEliminar.setPadding(Insets.EMPTY);
-		        	botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonEliminar.setStyle("-fx-background-color: transparent;");
-		        	botonEliminar.setCursor(Cursor.HAND);
-		        	botonEstadoCuenta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AccountIcon.png"))));
-		        	botonEstadoCuenta.setPrefSize(16.0, 16.0);
-		        	botonEstadoCuenta.setPadding(Insets.EMPTY);
-		        	botonEstadoCuenta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonEstadoCuenta.setStyle("-fx-background-color: transparent;");
-		        	botonEstadoCuenta.setCursor(Cursor.HAND);
-		        	botonCarpeta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/FolderIcon.png"))));
-		        	botonCarpeta.setPrefSize(16.0, 16.0);
-		        	botonCarpeta.setPadding(Insets.EMPTY);
-		        	botonCarpeta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonCarpeta.setStyle("-fx-background-color: transparent;");
-		        	botonCarpeta.setCursor(Cursor.HAND);
-		        	botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
-		        	botonArchivo.setPrefSize(16.0, 16.0);
-		        	botonArchivo.setPadding(Insets.EMPTY);
-		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonArchivo.setStyle("-fx-background-color: transparent;");
-		        	botonArchivo.setCursor(Cursor.HAND);
+		        	botonVer.setTooltip(new Tooltip("Ver registro"));
+		        	
+		        	botonEditar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ActualizarIcono.png"))));
+					botonEditar.setPrefSize(16.0, 16.0);
+					botonEditar.setPadding(Insets.EMPTY);
+					botonEditar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEditar.setStyle("-fx-background-color: transparent");
+					botonEditar.setCursor(Cursor.HAND);
+					botonEditar.setTooltip(new Tooltip("Editar registro"));
+		        	
+					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
+					botonEliminar.setPrefSize(16.0, 16.0);
+					botonEliminar.setPadding(Insets.EMPTY);
+					botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEliminar.setStyle("-fx-background-color: transparent");
+					botonEliminar.setCursor(Cursor.HAND);
+					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
+					
+					botonAgregar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
+					botonAgregar.setPrefSize(16.0, 16.0);
+					botonAgregar.setPadding(Insets.EMPTY);
+					botonAgregar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonAgregar.setStyle("-fx-background-color: transparent");
+					botonAgregar.setCursor(Cursor.HAND);
+					botonAgregar.setTooltip(new Tooltip("Detalle Cotizacion"));
+					
 		        	acciones.setSpacing(5);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
@@ -153,10 +163,19 @@ public class PantallaCotizaciones {
 		            	botonVer.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
-			            		//Inciar JASPER
+		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.VER);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
+		            	
+		            	//ABRE EL DIALOGO PARA EDITAR LA COTIZACION.
+		            	botonEditar.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            			cotizacion = getTableView().getItems().get(getIndex());
+		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.EDITAR);
+		            		}else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");        					                	
+		                });//FIN LISTENER		
 		            	
 		            	//ABRE EL DIALOGO PARA BORRAR LA COTIZACION
 		            	botonEliminar.setOnAction(event -> {
@@ -168,43 +187,23 @@ public class PantallaCotizaciones {
 			            		}//FIN IF
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
+		                });//FIN LISTENER		      
+		            	
+		            	//ABRE EL DIALOGO PARA ABRIR EL DETALLE DE COTIZACION
+		            	botonAgregar.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
+		            			cotizacion = getTableView().getItems().get(getIndex());
+		            			mainApp.iniciarPantallaDetalleCotizacion(cotizacion);
+		            			actualizarTabla();
+		            		} else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
-		            	
-		            	//ABRE EL DIALOGO PARA EDITAR LOS DATOS DE LA COTIZACION
-		            	botonEstadoCuenta.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-		            			actualizarTabla();
-			                } else
-		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
-		            	});//FIN LISTENER
-		            	
-		            	botonCarpeta.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-		            			String ruta ="\\\\192.168.0.216\\Ingeniería y Planeación";
-		            			try {
-		            				Runtime.getRuntime().exec("explorer.exe /select, " + ruta);
-								} catch (IOException e) {
-									
-									e.printStackTrace();
-								}
-			                } else
-		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
-		            	});//FIN LISTENER
-		            	
-		            	botonArchivo.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-		            			actualizarTabla();
-			                } else
-		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
-		            	});//FIN LISTENER        	
-		            		
 		            	setGraphic(acciones);		                
 		                setText(null);
 		                
 		            }//FIN IF/ELSE
 		        }//FIN METODO
-		    };//FIN METODO
-		    
+		    };//FIN METODO		    
 		    return cell;
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
@@ -212,7 +211,9 @@ public class PantallaCotizaciones {
 	
 	
 	@FXML private void nuevaCotizacion() {
+		this.cotizacion = new Cotizacion();
 		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR);
+		this.actualizarTabla();
 	}//FIN METODO	
 
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS

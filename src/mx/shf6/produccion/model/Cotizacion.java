@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.FolioDAO;
 
 public class Cotizacion {
 
@@ -21,6 +22,7 @@ public class Cotizacion {
 	private StringProperty telefonoFax;
 	private StringProperty email;
 	private StringProperty tipoServicio;
+	private StringProperty fechaEntrega;
 	private StringProperty condicionEmbarque;
 	private StringProperty condicionPago;
 	private ObjectProperty<Integer> moneda;
@@ -42,14 +44,14 @@ public class Cotizacion {
 	
 	//CONSTRUCTOR VACIO
 	public Cotizacion() {
-		this(-1, "", null, 0, "", "", "", "", "", "", "", -1, 0.0, "", "", -1, -1);
+		this(-1, "", null, -1, "", "", "", "", "", "", "", "", -1, 0.0, "", "", -1, -1);
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
 	public Cotizacion(int sysPK, String referencia, Date fecha, int status, String solicitante, 
 			String areaDepartamento, String telefonoFax, String email, String tipoServicio, 
-			String condicionEmbarque, String condicionPago, int moneda, double tipoCambio, 
-			String observaciones,	String vigencia, int folioFK, int clienteFK) {
+			String fechaEntrega, String condicionEmbarque, String condicionPago, int moneda, 
+			double tipoCambio, String observaciones, String vigencia, int folioFK, int clienteFK) {
 		
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.referencia = new SimpleStringProperty(referencia);
@@ -60,6 +62,7 @@ public class Cotizacion {
 		this.telefonoFax = new SimpleStringProperty(telefonoFax);
 		this.email = new SimpleStringProperty(email);
 		this.tipoServicio = new SimpleStringProperty(tipoServicio);
+		this.fechaEntrega = new SimpleStringProperty(fechaEntrega);
 		this.condicionEmbarque = new SimpleStringProperty(condicionEmbarque);
 		this.condicionPago = new SimpleStringProperty(condicionPago);
 		this.moneda = new SimpleObjectProperty<Integer>(moneda);
@@ -236,6 +239,20 @@ public class Cotizacion {
 	}//FIN METODO
 	//FIN METODOS "TIPOSERVICIO"
 	
+	//METODOS DE ACCESO A "FECHA ENTREGA"
+	public void setFechaEntrega(String fechaEntrega) {
+		this.fechaEntrega.set(fechaEntrega);
+	}//FIN METODO
+	
+	public String getFechaEntrega() {
+		return this.fechaEntrega.get();
+	}//FIN METODO
+	
+	public StringProperty fechaEntregaProperty() {
+		return this.fechaEntrega;
+	}//FIN METODO
+	//FIN METODOS "FECHA ENTREGA"
+	
 	//METODOS DE ACCESO A "CONDICIONEMBARQUE"
 	public void setCondicionEmbarque(String condicionEmbarque) {
 		this.condicionEmbarque.set(condicionEmbarque);
@@ -371,10 +388,9 @@ public class Cotizacion {
 		return this.folioFK;
 	}//FIN METODO
 	
-	/*public Folio getFolio(Connection connection) {
+	public Folio getFolio(Connection connection) {
 		return FolioDAO.readFolio(connection, this.getFolioFK());
-	}//FIN METODO
-	*/
+	}//FIN METODO	
 	//FIN METODOS "FOLIO"
 	
 	//METODOS DE ACCESO A "CLIENTE"

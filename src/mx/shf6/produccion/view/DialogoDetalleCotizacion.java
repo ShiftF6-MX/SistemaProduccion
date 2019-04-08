@@ -1,5 +1,7 @@
 package mx.shf6.produccion.view;
 
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,7 +12,8 @@ import javafx.scene.control.TextArea;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCotizacion;
-import mx.shf6.produccion.model.Status;
+import mx.shf6.produccion.model.Proyecto;
+import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 
 public class DialogoDetalleCotizacion {
@@ -18,7 +21,10 @@ public class DialogoDetalleCotizacion {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Cotizacion cotizacion;
-	private DetalleCotizacion detalleSolicitud;
+	private Proyecto proyecto;
+	private DetalleCotizacion detalleCotizacio;
+	private ArrayList<Proyecto> listaProyectos;
+	private ObservableList<String> listaNombreProyectos;
 	
 	//VARIABLES
 	private int opcion;
@@ -36,13 +42,19 @@ public class DialogoDetalleCotizacion {
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
-		
+		this.listaNombreProyectos = FXCollections.observableArrayList();
+		this.detalleCotizacio = new DetalleCotizacion();
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp, Cotizacion cotizacion) {
 		this.mainApp = mainApp;
 		this.cotizacion = cotizacion;
+		listaProyectos = ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), cotizacion.getClienteFK());
+		for (Proyecto proyecto : listaProyectos) {
+			listaNombreProyectos.add(proyecto.getDescripcion());
+		}//FIN FOR
+		comboBoxProyectos.setItems(listaNombreProyectos);
 		this.inicializarComponentes();
 	}//FIN METODO
 	
@@ -56,18 +68,18 @@ public class DialogoDetalleCotizacion {
 			this.comboBoxProyectos.getSelectionModel().select("");
 			this.comboBoxProyectos.setDisable(false);
 		} else if (this.opcion == VER) {
-			this.campoTextoCantidad.setText(this.detalleSolicitud.getCantidad().toString());
+			this.campoTextoCantidad.setText(this.detalleCotizacio.getCantidad().toString());
 			this.campoTextoCantidad.setDisable(true);
-			this.campoTextoObservaciones.setText(this.detalleSolicitud.getObservaciones());
+			this.campoTextoObservaciones.setText(this.detalleCotizacio.getObservaciones());
 			this.campoTextoObservaciones.setDisable(true);
-			this.comboBoxProyectos.getSelectionModel().select(this.detalleSolicitud.getProyecto(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxProyectos.setDisable(true);
 		} else if (this.opcion == EDITAR) {
-			this.campoTextoCantidad.setText(this.detalleSolicitud.getCantidad().toString());
+			this.campoTextoCantidad.setText(this.detalleCotizacio.getCantidad().toString());
 			this.campoTextoCantidad.setDisable(false);
-			this.campoTextoObservaciones.setText(this.detalleSolicitud.getObservaciones());
+			this.campoTextoObservaciones.setText(this.detalleCotizacio.getObservaciones());
 			this.campoTextoObservaciones.setDisable(false);
-			this.comboBoxProyectos.getSelectionModel().select(this.detalleSolicitud.getProyecto(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxProyectos.setDisable(false);
 		}//FIN METODO
 	}//FIN METODO
@@ -77,11 +89,8 @@ public class DialogoDetalleCotizacion {
 		if (this.campoTextoCantidad.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Código\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoObservaciones.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
-			return false;
 		} else if (this.comboBoxProyectos.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Proyectos\" no puede estar vacio");
 			return false;
 		}//FIN IF/ESLE
 		return true;
@@ -89,32 +98,23 @@ public class DialogoDetalleCotizacion {
 	
 	//MANEJADORES COMPONENTES	
 	@FXML private void manejadorBotonAceptar() {
-		/*
-		if (this.validarDatos() && this.opcion == CREAR) {
-			this.detalleSolicitud.setCodigo(this.campoTextoCodigo.getText());
-			this.detalleSolicitud.setDescripcion(this.campoTextoDescripcion.getText());
-			this.detalleSolicitud.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TratamientoDAO.createTratamiento(this.mainApp.getConnection(), this.tratamiento)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == EDITAR) {
-			this.tratamiento.setCodigo(this.campoTextoCodigo.getText());
-			this.tratamiento.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tratamiento.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TratamientoDAO.updateTratamiento(this.mainApp.getConnection(), this.tratamiento)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == VER)
-			this.mainApp.getEscenarioDialogos().close();		
-			*/	
+		if (validarDatos())
+		this.mainApp.getEscenarioDialogosSecundarios().close();
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
 		this.mainApp.getEscenarioDialogosSecundarios().close();
+	}//FIN METODO	
+	
+	public DetalleCotizacion getDetalleCotizacion() {
+		this.proyecto = listaProyectos.get(comboBoxProyectos.getSelectionModel().getSelectedIndex());
+		detalleCotizacio.setCantidad(Double.parseDouble(campoTextoCantidad.getText()));
+		detalleCotizacio.setCosto(proyecto.getCostoDirecto() + proyecto.getCostoIndirecto());
+		detalleCotizacio.setPrecio(proyecto.getPrecio());
+		detalleCotizacio.setProyectoFK(proyecto.getSysPK());
+		detalleCotizacio.setCotizacionFK(cotizacion.getSysPK());
+		detalleCotizacio.setObservaciones(campoTextoObservaciones.getText());
+		return detalleCotizacio;
 	}//FIN METODO
 	
 }//FIN CLASE
