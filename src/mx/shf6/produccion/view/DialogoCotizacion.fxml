@@ -10,163 +10,129 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane styleClass="bodyPantallaOverview" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoCotizacion">
+<AnchorPane prefWidth="600.0" styleClass="bodyPantallaOverview" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoCotizacion">
    <children>
-      <HBox prefHeight="65.0" prefWidth="503.0" spacing="10.0" styleClass="dashBoardCardGray">
+      <VBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="3.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="49.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/1x/StartButton.png" />
-               </image>
-            </ImageView>
-            <VBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="424.0" spacing="3.0">
+            <Label styleClass="textFieldTitulos" text="Formulario Registro">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="20.0" layoutY="20.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="55.0">
+         <children>
+            <VBox spacing="2.0">
                <children>
-                  <HBox prefHeight="42.0" prefWidth="414.0">
+                  <Label styleClass="labelRobotoMedium12" text="Folio" />
+                  <HBox maxWidth="1.7976931348623157E308">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Formulario de Registro">
-                           <HBox.margin>
-                              <Insets right="70.0" />
-                           </HBox.margin>
-                        </Text>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Serie">
-                                 <HBox.margin>
-                                    <Insets right="20.0" />
-                                 </HBox.margin>
-                              </Text>
-                              <ComboBox fx:id="comboBoxFolio" prefHeight="25.0" prefWidth="103.0" />
-                           </children>
-                        </HBox>
+                        <ComboBox fx:id="comboBoxFolio" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
             </VBox>
-            <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <image>
-                  <Image url="@images/1x/CloseButton.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-      <HBox layoutX="13.0" layoutY="77.0" prefHeight="417.0" prefWidth="476.0">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="300.0">
+            <VBox spacing="2.0">
                <children>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Cliente" />
-                        <ComboBox fx:id="comboBoxClientes" prefWidth="197.0" styleClass="tablaDatosDetalle" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Solicitó" />
-                        <TextField fx:id="campoTextoSolicito" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Area/Departamento" />
-                        <TextField fx:id="campoTextoAreaDepartamento" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Telefono/Fax" />
-                        <TextField fx:id="campoTextoTelefonoFax" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Email" />
-                        <TextField fx:id="campoTextoEmail" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Tipo de Servicio" />
-                        <TextField fx:id="campoTextoTipoServicio" />
-                     </children>
-                  </VBox>
+                  <Label styleClass="labelRobotoMedium12" text="Cliente" />
+                  <ComboBox fx:id="comboBoxClientes" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" VBox.vgrow="ALWAYS" />
                </children>
-               <HBox.margin>
-                  <Insets right="15.0" />
-               </HBox.margin>
             </VBox>
-            <VBox prefHeight="299.0" prefWidth="333.0">
+            <VBox spacing="2.0">
                <children>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Fecha entrega" />
-                        <TextField fx:id="campoTextoFechaEntrega" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Condiciones de Embarque" />
-                        <TextField fx:id="campoTextoCondicionEmbarque" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Condiciones de Pago" />
-                        <TextField fx:id="campoTextoCondicionPago" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="65.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Moneda" />
-                        <ComboBox fx:id="comboBoxMonedas" prefHeight="25.0" prefWidth="120.0" styleClass="tablaDatosDetalle" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Tipo Cambio" />
-                        <TextField fx:id="campoTextoTipoCambio" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Observaciones" />
-                        <TextField fx:id="campoTextoObservaciones" />
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="60.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textFieldTitulos" text="Vigencia de Cotización" />
-                        <TextField fx:id="campoTextoVigencia" />
-                     </children>
-                  </VBox>
+                  <Label styleClass="labelRobotoMedium12" text="Solicitó" />
+                  <TextField fx:id="campoTextoSolicito" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Área/Departamento" />
+                  <TextField fx:id="campoTextoAreaDepartamento" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Teléfono/Fax" />
+                  <TextField fx:id="campoTextoTelefonoFax" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Email" />
+                  <TextField fx:id="campoTextoEmail" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Tipo servicio" />
+                  <TextField fx:id="campoTextoTipoServicio" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Días entrega" />
+                  <TextField fx:id="campoTextoFechaEntrega" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
          </children>
-      </HBox>
-      <HBox layoutX="288.0" layoutY="494.0" prefHeight="42.0" prefWidth="200.0">
+      </VBox>
+      <VBox layoutX="10.0" layoutY="10.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#manejadorBotonAceptar" prefHeight="30.0" prefWidth="90.0" styleClass="buttonGreen" text="Aceptar">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <padding>
-                  <Insets right="10.0" />
-               </padding>
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#manejadorBotonCerrar" prefHeight="30.0" prefWidth="90.0" styleClass="buttonRed" text="Cancelar">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Condiciones embarque" />
+                  <TextField fx:id="campoTextoCondicionEmbarque" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Condiciones pago" />
+                  <TextField fx:id="campoTextoCondicionPago" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Moneda" />
+                  <ComboBox fx:id="comboBoxMonedas" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Tipo cambio" />
+                  <TextField fx:id="campoTextoTipoCambio" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Observaciones" />
+                  <TextField fx:id="campoTextoObservaciones" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Vigencia cotización" />
+                  <TextField fx:id="campoTextoVigencia" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="5.0">
+               <children>
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#manejadorBotonAceptar" prefHeight="30.0" styleClass="buttonGreen" text="Aceptar">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#manejadorBotonCerrar" onMouseClicked="#manejadorBotonCerrar" prefHeight="30.0" styleClass="buttonRed" text="Cancelar">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </VBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>

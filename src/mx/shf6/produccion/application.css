@@ -102,6 +102,26 @@
 	-fx-border-radius: 0px 0px 0px 0px;
 	-fx-background-radius: 0px 0px 0px 0px;
 }
+
+.campoAreaBuscador {
+    -fx-background-insets: 0;
+    -fx-background-color: #E6E6E6;
+    -fx-background-radius: 0, 0, 0, 0;
+
+    -fx-box-border: none;
+    -fx-focus-color: #E6E6E6;
+    -fx-faint-focus-color: #E6E6E6;
+    -fx-text-box-border: #E6E6E6;
+    -fx-border-width: -1;
+}
+
+.campoAreaBuscador .content {
+	-fx-background-color: #E6E6E6;
+	-fx-border-style: none;
+	-fx-border-width: 0px 0px 0px 0px;
+	-fx-border-radius: 0px 0px 0px 0px;
+	-fx-background-radius: 0px 0px 0px 0px;
+}
 .tablaDatosGestor {
 	-fx-base: #FFFFFF;
 	-fx-control-inner-background: #FFFFFF;
