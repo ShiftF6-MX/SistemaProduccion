@@ -21,25 +21,24 @@ public class CotizacionDAO{
 				+ "(Referencia, Fecha, Status, Solicitante, AreaDepartamento, TelefonoFax, "
 				+ "Email, TipoServicio, FechaEntrega, CondicionEmbarque, CondicionPago, Moneda, TipoCambio, "
 				+ "Observaciones, Vigencia, FolioFK, ClienteFK) "
-				+ "VALUES (?, CURDATE(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "VALUES (?, CURDATE(), 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, cotizacion.getReferencia());
-			sentenciaPreparada.setInt(2, cotizacion.getStatus());
-			sentenciaPreparada.setString(3, cotizacion.getSolicitante());
-			sentenciaPreparada.setString(4, cotizacion.getAreaDepartamento());
-			sentenciaPreparada.setString(5, cotizacion.getTelefonoFax());
-			sentenciaPreparada.setString(6, cotizacion.getEmail());
-			sentenciaPreparada.setString(7, cotizacion.getTipoServicio());
-			sentenciaPreparada.setString(8, cotizacion.getFechaEntrega());
-			sentenciaPreparada.setString(9, cotizacion.getCondicionEmbarque());
-			sentenciaPreparada.setString(10, cotizacion.getCondicionPago());
-			sentenciaPreparada.setInt(11, cotizacion.getMoneda());
-			sentenciaPreparada.setDouble(12, cotizacion.getTipoCambio());
-			sentenciaPreparada.setString(13, cotizacion.getObservaciones());
-			sentenciaPreparada.setString(14, cotizacion.getVigencia());
-			sentenciaPreparada.setInt(15, cotizacion.getFolioFK());
-			sentenciaPreparada.setInt(16, cotizacion.getClienteFK());
+			sentenciaPreparada.setString(2, cotizacion.getSolicitante());
+			sentenciaPreparada.setString(3, cotizacion.getAreaDepartamento());
+			sentenciaPreparada.setString(4, cotizacion.getTelefonoFax());
+			sentenciaPreparada.setString(5, cotizacion.getEmail());
+			sentenciaPreparada.setString(6, cotizacion.getTipoServicio());
+			sentenciaPreparada.setString(7, cotizacion.getFechaEntrega());
+			sentenciaPreparada.setString(8, cotizacion.getCondicionEmbarque());
+			sentenciaPreparada.setString(9, cotizacion.getCondicionPago());
+			sentenciaPreparada.setInt(10, cotizacion.getMoneda());
+			sentenciaPreparada.setDouble(11, cotizacion.getTipoCambio());
+			sentenciaPreparada.setString(12, cotizacion.getObservaciones());
+			sentenciaPreparada.setString(13, cotizacion.getVigencia());
+			sentenciaPreparada.setInt(14, cotizacion.getFolioFK());
+			sentenciaPreparada.setInt(15, cotizacion.getClienteFK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -241,7 +240,8 @@ public class CotizacionDAO{
 	
 	//METODO PARA ATUALIZAR UN REGISTRO
 	public static boolean updateCotizacion(Connection connection, Cotizacion cotizacion) {
-		String consulta = "UPDATE clientes SET Referencia = ? Status = ?, Solicitante = ?, "
+		System.out.println(cotizacion.getCondicionEmbarque());
+		String consulta = "UPDATE cotizaciones SET Referencia = ?, Status = ?, Solicitante = ?, "
 				+ "AreaDepartamento = ?, TelefonoFax = ?, Email = ?, TipoServicio = ?, "
 				+ "FechaEntrega = ?, CondicionEmbarque = ?, CondicionPago = ?, Moneda = ?, "
 				+ "TipoCambio = ?, Observaciones = ?, Vigencia = ?, FolioFK = ?, ClienteFK = ? "
@@ -255,11 +255,11 @@ public class CotizacionDAO{
 			sentenciaPreparada.setString(5, cotizacion.getTelefonoFax());
 			sentenciaPreparada.setString(6, cotizacion.getEmail());
 			sentenciaPreparada.setString(7, cotizacion.getTipoServicio());
-			sentenciaPreparada.setString(8, cotizacion.getCondicionEmbarque());
-			sentenciaPreparada.setString(9, cotizacion.getCondicionPago());
-			sentenciaPreparada.setInt(10, cotizacion.getMoneda());
-			sentenciaPreparada.setDouble(11, cotizacion.getTipoCambio());
-			sentenciaPreparada.setString(12, cotizacion.getFechaEntrega());
+			sentenciaPreparada.setString(8, cotizacion.getFechaEntrega());
+			sentenciaPreparada.setString(9, cotizacion.getCondicionEmbarque());
+			sentenciaPreparada.setString(10, cotizacion.getCondicionPago());
+			sentenciaPreparada.setInt(11, cotizacion.getMoneda());
+			sentenciaPreparada.setDouble(12, cotizacion.getTipoCambio());			
 			sentenciaPreparada.setString(13, cotizacion.getObservaciones());
 			sentenciaPreparada.setString(14, cotizacion.getVigencia());
 			sentenciaPreparada.setInt(15, cotizacion.getFolioFK());
