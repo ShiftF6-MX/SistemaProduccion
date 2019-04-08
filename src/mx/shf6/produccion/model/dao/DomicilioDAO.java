@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.utilities.Notificacion;
 

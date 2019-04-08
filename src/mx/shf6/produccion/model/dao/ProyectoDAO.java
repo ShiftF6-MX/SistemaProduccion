@@ -180,7 +180,7 @@ public class ProyectoDAO{
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			Notificacion.dialogoAlerta(AlertType.WARNING, "No se puede eliminar este proyecto.", "El proyecto que intentas eliminar contiene archivos o esta en cotización.");
+			Notificacion.dialogoAlerta(AlertType.WARNING, "No se puede eliminar este proyecto.", "Solo se puede eliminar PROYECTOS recien agregados.");
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO

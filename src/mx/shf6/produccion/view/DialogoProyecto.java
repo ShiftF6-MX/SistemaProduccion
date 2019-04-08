@@ -1,20 +1,15 @@
 package mx.shf6.produccion.view;
 
 import java.io.File;
-import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
+
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.KeyCode;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Proyecto;
-import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;

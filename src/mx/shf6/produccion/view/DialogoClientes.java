@@ -21,6 +21,7 @@ import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.DomicilioDAO;
+import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.model.dao.SepomexDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
@@ -32,7 +33,7 @@ public class DialogoClientes  {
 	private Cliente cliente;
 	private File renameRuta;
 	private Domicilio domicilio;
-	private Proyecto proyecto;
+	
 
 	private SepomexDAO sepomexDAO;
 
@@ -74,7 +75,6 @@ public class DialogoClientes  {
 	//INICIALIZA LOS COMPOMENTES QUE SE CONTROLAN EN LA INTERFAZ DE USUARIO
 	@FXML private void initialize() {
 		this.cliente = new Cliente();
-		this.proyecto = new Proyecto();
 		this.domicilio = new Domicilio();
 		this.sepomexDAO = new SepomexDAO();
 		
@@ -83,6 +83,9 @@ public class DialogoClientes  {
 		RestriccionTextField.soloLetras(this.nombreField);		
 		RestriccionTextField.limitarNumeroCaracteres(this.registroContribuyenteField, 16);
 		RestriccionTextField.limitarNumeroCaracteres(this.telefonoField, 16);
+		
+		
+		
 		ObservableList<String> listaStatus = FXCollections.observableArrayList("Bloqueado", "Activo", "Baja");
 		this.statusCombo.setItems(listaStatus);	
 		
@@ -95,6 +98,8 @@ public class DialogoClientes  {
 		this.cliente = cliente;
 		this.opcion = opcion;
 		this.domicilio = cliente.getDomicilio(this.mainApp.getConnection());
+		
+		
 		
 		this.renameRuta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre());
 		
@@ -160,6 +165,8 @@ public class DialogoClientes  {
 			
 			this.codigoPostalField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getCodigoPostal());
 			this.codigoPostalField.setDisable(true);
+			
+			this.numeroProyectosField.setText(String.valueOf(proyectosRealizados(this.cliente.getSysPK())));
 			
 			this.eliminar.setDisable(false);
 			this.editar.setDisable(false);
@@ -263,6 +270,8 @@ public class DialogoClientes  {
 			
 			this.codigoPostalField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getCodigoPostal());
 			this.codigoPostalField.setDisable(false);
+			
+			this.numeroProyectosField.setText(String.valueOf(proyectosRealizados(this.cliente.getSysPK())));
 			
 			this.eliminar.setDisable(true);
 			this.editar.setDisable(true);
@@ -432,7 +441,13 @@ public class DialogoClientes  {
 		
 	}//FIN METODO
 	
-	
+	private int proyectosRealizados(int clienteFK) {
+		int contador = 0;
+		for(Proyecto proyecto : ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), clienteFK)) {
+			contador = contador + 1;
+		}
+		return contador;
+	}
 	
 	@FXML private void cerrarDialogoButtonHandler() {
 		this.mainApp.getEscenarioDialogos().close();
