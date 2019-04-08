@@ -3,10 +3,10 @@ package mx.shf6.produccion.view;
 import java.util.ArrayList;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCotizacion;
@@ -21,8 +21,8 @@ public class PantallaDetalleCotizacion {
 	private ArrayList<DetalleCotizacion> listaDetalleCotizacion;
 	
 	//COMPONENTES INTERFAZ
-	@FXML private Label labelCotizacion;
-	@FXML private Label labelCliente;
+	@FXML private TextField labelCotizacion;
+	@FXML private TextField labelCliente;
 	@FXML private TableView<DetalleCotizacion> tablaDetalleCotizacion;
 	@FXML private TableColumn<DetalleCotizacion, String> columnaNumeroDibujo;
 	@FXML private TableColumn<DetalleCotizacion, String> columnaDescripcion;
