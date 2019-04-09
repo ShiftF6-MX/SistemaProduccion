@@ -28,7 +28,7 @@ import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaProyectos {
+public class DialogoPantallaProyectos {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Proyecto proyecto;
@@ -146,6 +146,7 @@ public class PantallaProyectos {
 		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonArchivo.setStyle("-fx-background-color: transparent;");
 		        	botonArchivo.setCursor(Cursor.HAND);
+		        	botonArchivo.setTooltip(new Tooltip("Documento registro"));
 					
 		        	botonListaComponentes.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
 		        	botonListaComponentes.setPrefSize(16.0, 16.0);
@@ -153,6 +154,7 @@ public class PantallaProyectos {
 		        	botonListaComponentes.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonListaComponentes.setStyle("-fx-background-color: transparent;");
 		        	botonListaComponentes.setCursor(Cursor.HAND);
+		        	botonListaComponentes.setTooltip(new Tooltip("Lista componentes"));
 															
 					super.updateItem(item, empty);
 					if (empty) {
@@ -232,5 +234,10 @@ public class PantallaProyectos {
 	private void manejadorBotonListaComponentes(Proyecto proyecto) {
 		Notificacion.dialogoDetalleMensaje(Componente.mostrarInformacionEnsamble(this.mainApp.getConnection(), proyecto.getComponente(this.mainApp.getConnection()), 0, ""));
 	}//FIN METODO
+	
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogosAlternoSecundario().close();
+	}//FIN METODO
+		
 		
 }//FIN CLASE

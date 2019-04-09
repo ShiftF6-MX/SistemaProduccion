@@ -2,22 +2,20 @@ package mx.shf6.produccion.view;
 
 import java.io.File;
 
-<<<<<<< HEAD
+
 import javafx.collections.ObservableList;
-=======
 
 
->>>>>>> branch 'master' of https://github.com/ShiftF6-MX/SistemaProduccion.git
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Proyecto;
-<<<<<<< HEAD
+
 import mx.shf6.produccion.model.dao.ComponenteDAO;
-=======
->>>>>>> branch 'master' of https://github.com/ShiftF6-MX/SistemaProduccion.git
+
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -183,7 +181,7 @@ public class DialogoProyecto {
 			    this.proyecto.setCostoIndirecto(Double.valueOf(this.campoCostoIndirecto.getText()));
 			    this.proyecto.setPrecio(Double.valueOf(this.campoPrecio.getText()));
 			    this.proyecto.setClienteFK(this.cliente.getSysPK());
-			    this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());			
+			    //this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());			
 				if (ProyectoDAO.createProyecto(this.mainApp.getConnection(), this.proyecto)) {
 					File ruta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" +this.proyecto.getCodigo());
 					ruta.mkdirs();
@@ -200,7 +198,7 @@ public class DialogoProyecto {
 				this.proyecto.setCostoDirecto(Double.parseDouble(this.campoCostoDirecto.getText()));	
 			    this.proyecto.setCostoIndirecto(Double.valueOf(this.campoCostoIndirecto.getText()));
 			    this.proyecto.setPrecio(Double.valueOf(this.campoPrecio.getText()));
-			    this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());				    				
+			  //  this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());				    				
 				
 				if (ProyectoDAO.updateProyecto(this.mainApp.getConnection(), this.proyecto)) {
 					this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" + this.campoTextoCodigo.getText()));

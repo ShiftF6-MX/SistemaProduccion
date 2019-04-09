@@ -139,6 +139,7 @@ public class PantallaArchivoProyecto {
 		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonArchivo.setStyle("-fx-background-color: transparent;");
 		        	botonArchivo.setCursor(Cursor.HAND);
+		        	botonArchivo.setTooltip(new Tooltip("Ver Dibujo"));
 					
 					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
 					botonEliminar.setPrefSize(16.0, 16.0);

@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
@@ -332,7 +333,7 @@ public class DialogoClientes  {
 			if(ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
 				DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
 				File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
-				ruta.delete();
+	    		ruta.delete();
 			}			
 			cerrarDialogoButtonHandler();			
 		}//FIN IF
@@ -369,7 +370,7 @@ public class DialogoClientes  {
 							this.mainApp.getConnection().commit();
 							this.mainApp.getConnection().setAutoCommit(true);
 							
-							File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
+							File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText() + "\\Proyectos");
 							ruta.mkdirs();
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
 							
@@ -409,7 +410,7 @@ public class DialogoClientes  {
 							
 							
 							
-							this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText()));
+							this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText() ));
 							
 							
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro actualizado. ");
@@ -437,6 +438,7 @@ public class DialogoClientes  {
 	
 	@FXML private void btnEditar() {
 		this.opcion = EDITAR;
+		
 		this.mostrarDatosInterfaz();
 		
 	}//FIN METODO

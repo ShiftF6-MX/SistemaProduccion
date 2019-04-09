@@ -14,6 +14,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -111,30 +112,40 @@ public class PantallaClientes {
 		        	botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonVer.setStyle("-fx-background-color: transparent;");		        	
 		        	botonVer.setCursor(Cursor.HAND);
+		        	botonVer.setTooltip(new Tooltip("Ver cliente"));
+		        	
 		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
 		        	botonEliminar.setPrefSize(16.0, 16.0);
 		        	botonEliminar.setPadding(Insets.EMPTY);
 		        	botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonEliminar.setStyle("-fx-background-color: transparent;");
 		        	botonEliminar.setCursor(Cursor.HAND);
+		        	botonEliminar.setTooltip(new Tooltip("Eliminar cliente"));
+		        	
 		        	botonEstadoCuenta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AccountIcon.png"))));
 		        	botonEstadoCuenta.setPrefSize(16.0, 16.0);
 		        	botonEstadoCuenta.setPadding(Insets.EMPTY);
 		        	botonEstadoCuenta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonEstadoCuenta.setStyle("-fx-background-color: transparent;");
 		        	botonEstadoCuenta.setCursor(Cursor.HAND);
+		        	botonEstadoCuenta.setTooltip(new Tooltip("Estado de cuenta del cliente"));
+		        	
 		        	botonCarpeta.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/FolderIcon.png"))));
 		        	botonCarpeta.setPrefSize(16.0, 16.0);
 		        	botonCarpeta.setPadding(Insets.EMPTY);
 		        	botonCarpeta.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonCarpeta.setStyle("-fx-background-color: transparent;");
 		        	botonCarpeta.setCursor(Cursor.HAND);
-		        	botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+		        	botonCarpeta.setTooltip(new Tooltip("Abrir carpeta de proyectos"));
+		        	
+		        	botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ProyectoIcono.png"))));
 		        	botonArchivo.setPrefSize(16.0, 16.0);
 		        	botonArchivo.setPadding(Insets.EMPTY);
 		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonArchivo.setStyle("-fx-background-color: transparent;");
 		        	botonArchivo.setCursor(Cursor.HAND);
+		        	botonArchivo.setTooltip(new Tooltip("Archivos del cliente"));
+		        	
 		        	acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
@@ -151,15 +162,6 @@ public class PantallaClientes {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
 		            			verCliente(cliente);
-		            			if(cliente.getStatus().equals(1)) {
-		            				botonEstadoCuenta.setDisable(false);
-		            				botonArchivo.setDisable(false);
-		            				botonCarpeta.setDisable(false);
-		            			}else {
-		            				botonEstadoCuenta.setDisable(true);
-		            				botonArchivo.setDisable(true);
-		            				botonCarpeta.setDisable(true);
-		            			}
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
@@ -171,8 +173,7 @@ public class PantallaClientes {
 			        			if (Notificacion.dialogoPreguntar("Confirmación para eliminar.", "¿Desea eliminar a " + cliente.getNombre() + "?")){
 			        				eliminarCliente(cliente);
 			        				actualizarTabla();
-			        			}
-			        				
+			        			}			        				
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
@@ -181,7 +182,7 @@ public class PantallaClientes {
 		            	botonEstadoCuenta.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarPantallaCotizaciones(cliente);
+		            			mainApp.iniciarDialogoCotizacionCliente(cliente);
 		            			actualizarTabla();
 			                } else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
@@ -190,10 +191,11 @@ public class PantallaClientes {
 		            	botonCarpeta.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-		            			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
-								ruta.mkdirs();
+		            			/*File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+								ruta.mkdirs();*/
 		            			try {
-		            				Runtime.getRuntime().exec("explorer.exe /n, " + MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre()+ "\\");
+		            				Runtime.getRuntime().exec("explorer.exe /n, " + MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre()+ "\\Proyectos");
+		            				
 								} catch (IOException e) {
 									
 									e.printStackTrace();
@@ -205,7 +207,7 @@ public class PantallaClientes {
 		            	botonArchivo.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarPantallaProyecto(cliente);
+		            			mainApp.iniciarDialogoPantallaProyecto(cliente);
 		            			actualizarTabla();
 			                } else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
