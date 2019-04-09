@@ -396,7 +396,6 @@ public class MainApp extends Application {
 			this.pantallaBase.setCenter(this.pantallaCotizaciones);
 			PantallaCotizaciones pantallaCotizaciones = fxmlLoader.getController();
 			pantallaCotizaciones.setMainApp(this, cliente);
-			System.out.println(cliente.getNombre());
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH

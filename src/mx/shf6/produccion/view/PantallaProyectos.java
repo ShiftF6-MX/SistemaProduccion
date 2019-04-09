@@ -1,16 +1,7 @@
 package mx.shf6.produccion.view;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/ShiftF6-MX/SistemaProduccion.git
 import java.io.File;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/ShiftF6-MX/SistemaProduccion.git
-
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -31,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
