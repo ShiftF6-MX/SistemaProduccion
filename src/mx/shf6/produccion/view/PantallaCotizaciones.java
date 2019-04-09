@@ -3,17 +3,13 @@ package mx.shf6.produccion.view;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,9 +36,6 @@ public class PantallaCotizaciones {
 	private MainApp mainApp;
 	private Cotizacion cotizacion;
 	private Cliente cliente;
-	private int cantidadRenglonesTabla;
-	private int cantidadRegistrosTablaCotizaciones;
-	private int cantidadPaginasTablaCotizaciones;
 	private ArrayList<Cotizacion> listaCotizaciones;
 	
 	//COMPONENTES INTERZAS USUARIO
@@ -53,7 +46,6 @@ public class PantallaCotizaciones {
 	@FXML private TableColumn<Cotizacion, String> statusColumna;
 	@FXML private TableColumn<Cotizacion, String> observacionesColumna;
 	@FXML private TableColumn<Cotizacion, String> accionesColumn;	
-	@FXML private Pagination paginacionTablaCotizaciones;
 	@FXML private TextField buscarCotizacion;	
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
@@ -94,7 +86,6 @@ public class PantallaCotizaciones {
 		else
 			listaCotizaciones = CotizacionDAO.readCotizacion(this.mainApp.getConnection());
 		this.actualizarTabla();
-		asignarVariables();
 	}//FIN METODO	
 	
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE COTIZACIONES
@@ -113,7 +104,9 @@ public class PantallaCotizaciones {
         		final Button botonEditar = new Button("E");
         		final Button botonEliminar = new Button("B"); 
         		final Button botonAgregar = new Button("A");
-        		final HBox acciones = new HBox(botonVer, botonEditar, botonEliminar, botonAgregar);
+        		final Button botonAprobar = new Button ("Aprobar");
+        		final Button botonCancelar= new Button ("C");
+        		final HBox acciones = new HBox(botonVer, botonEditar, botonEliminar, botonAgregar, botonAprobar, botonCancelar);
         		
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
@@ -142,13 +135,29 @@ public class PantallaCotizaciones {
 					botonEliminar.setCursor(Cursor.HAND);
 					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
 					
-					botonAgregar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
+					botonAgregar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
 					botonAgregar.setPrefSize(16.0, 16.0);
 					botonAgregar.setPadding(Insets.EMPTY);
 					botonAgregar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 					botonAgregar.setStyle("-fx-background-color: transparent");
 					botonAgregar.setCursor(Cursor.HAND);
-					botonAgregar.setTooltip(new Tooltip("Detalle Cotizacion"));
+					botonAgregar.setTooltip(new Tooltip("Detalle Cotización"));
+					
+					botonAprobar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+					botonAprobar.setPrefSize(16.0, 16.0);
+					botonAprobar.setPadding(Insets.EMPTY);
+					botonAprobar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonAprobar.setStyle("-fx-background-color: transparent");
+					botonAprobar.setCursor(Cursor.HAND);
+					botonAprobar.setTooltip(new Tooltip("Aprobar Cotización"));
+					
+					botonCancelar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
+					botonCancelar.setPrefSize(16.0, 16.0);
+					botonCancelar.setPadding(Insets.EMPTY);
+					botonCancelar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonCancelar.setStyle("-fx-background-color: transparent");
+					botonCancelar.setCursor(Cursor.HAND);
+					botonCancelar.setTooltip(new Tooltip("Cancelar Cotización"));
 					
 		        	acciones.setSpacing(5);
 		        	acciones.setPrefWidth(80.0);
@@ -198,6 +207,28 @@ public class PantallaCotizaciones {
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
+		            	
+		            	//ACEPTA LA COTIZACION
+		            	botonAprobar.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
+		            			cotizacion = getTableView().getItems().get(getIndex());
+		            			cotizacion.setStatus(Cotizacion.APROBADA);
+		            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+		            			actualizarTabla();
+		            		} else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
+		                });//FIN LISTENER
+		            	
+		            	//CANCELA LA COTIZACION
+		            	botonCancelar.setOnAction(event -> {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
+		            			cotizacion = getTableView().getItems().get(getIndex());
+		            			cotizacion.setStatus(Cotizacion.CANCELADA);
+		            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+		            			actualizarTabla();
+		            		} else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
+		                });//FIN LISTENER
 		            	setGraphic(acciones);		                
 		                setText(null);
 		                
@@ -228,31 +259,7 @@ public class PantallaCotizaciones {
 			//this.asignarVariables();
 			tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
 	    	buscarCotizacion.setText("");	
-			this.paginacionTablaCotizaciones.setDisable(false);
-		} else
-			this.paginacionTablaCotizaciones.setDisable(true);
+		}//FIN IF
 	}//FIN METODO
-	 
-	private void asignarVariables() {
-		this.cantidadRenglonesTabla = 4;
-		this.cantidadRegistrosTablaCotizaciones = this.listaCotizaciones.size();
-		if ((this.cantidadRegistrosTablaCotizaciones % this.cantidadRenglonesTabla) == 0)
-			this.cantidadPaginasTablaCotizaciones = this.cantidadRegistrosTablaCotizaciones / this.cantidadRenglonesTabla;
-		else
-			this.cantidadPaginasTablaCotizaciones = (this.cantidadRegistrosTablaCotizaciones / this.cantidadRenglonesTabla) + 1;
-		
-		//INICIALIZA PAGINACION
-			this.paginacionTablaCotizaciones.setPageFactory(this::createPaginaTablaCotizaciones);
-			this.paginacionTablaCotizaciones.setMaxPageIndicatorCount(3);
-			this.paginacionTablaCotizaciones.setPageCount(cantidadPaginasTablaCotizaciones);
-    }//FIN METODO
 	
-	//PAGINACION DE LA TABLA COTIZACION
-	private Node createPaginaTablaCotizaciones(int indicePagina) {
-		int indiceInicial = indicePagina * this.cantidadRenglonesTabla;
-		int indiceFinal = Math.min(indiceInicial + this.cantidadRenglonesTabla, this.cantidadRegistrosTablaCotizaciones);
-		ObservableList<Cotizacion> lista = CotizacionDAO.toObservableList(listaCotizaciones);
-		tablaCotizacion.setItems(FXCollections.observableArrayList(lista.subList(indiceInicial, indiceFinal)));
-		return tablaCotizacion;
-	}//FIN METODO
 }//FIN CLASE

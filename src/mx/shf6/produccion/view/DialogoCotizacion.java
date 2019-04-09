@@ -17,6 +17,7 @@ import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.CotizacionDAO;
 import mx.shf6.produccion.model.dao.FolioDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoCotizacion {
 	
@@ -53,6 +54,17 @@ public class DialogoCotizacion {
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
+		RestriccionTextField.soloLetras(this.campoTextoSolicito);
+		RestriccionTextField.soloLetras(this.campoTextoAreaDepartamento);
+		RestriccionTextField.soloLetras(this.campoTextoTelefonoFax);
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoEmail, 64);
+		RestriccionTextField.soloLetras(this.campoTextoTipoServicio);
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoFechaEntrega, 64);
+		RestriccionTextField.soloLetras(this.campoTextoCondicionEmbarque);
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoCondicionPago, 64);
+		RestriccionTextField.limitarPuntoDecimal(this.campoTextoTipoCambio);
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoObservaciones, 64);
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoVigencia, 64);
 		listaMonedas = FXCollections.observableArrayList();
 		listaClientes = new ArrayList<Cliente>();
 		listaFolios = new ArrayList<Folio>();
@@ -66,7 +78,7 @@ public class DialogoCotizacion {
 		
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
 	public void setMainApp(MainApp mainApp, Cotizacion cotizacion, int opcion) {
-		this.cotizacion = cotizacion;
+		this.cotizacion = cotizacion;		
 		this.mainApp = mainApp;
 		this.opcion = opcion;		
 		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection());
@@ -170,7 +182,7 @@ public class DialogoCotizacion {
 			this.campoTextoVigencia.setText(this.cotizacion.getVigencia());
 			this.campoTextoVigencia.setDisable(false);			
 		}//FIN IF/ELSE
-	}	
+	}//FIN METODO
 	
 	//FIN METODO
 	private boolean validarDatos() {
@@ -216,7 +228,7 @@ public class DialogoCotizacion {
 				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
 				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
 				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
-				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getValue());
+				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getSelectionModel().getSelectedItem());
 				this.cotizacion.setTipoCambio(Double.parseDouble(this.campoTextoTipoCambio.getText()));
 				this.cotizacion.setObservaciones(this.campoTextoObservaciones.getText());
 				this.cotizacion.setVigencia(this.campoTextoVigencia.getText());
@@ -235,7 +247,7 @@ public class DialogoCotizacion {
 				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
 				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
 				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
-				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getValue());
+				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getSelectionModel().getSelectedItem());
 				this.cotizacion.setTipoCambio(Double.parseDouble(this.campoTextoTipoCambio.getText()));
 				this.cotizacion.setObservaciones(this.campoTextoObservaciones.getText());
 				this.cotizacion.setVigencia(this.campoTextoVigencia.getText());				

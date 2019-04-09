@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -240,7 +241,6 @@ public class CotizacionDAO{
 	
 	//METODO PARA ATUALIZAR UN REGISTRO
 	public static boolean updateCotizacion(Connection connection, Cotizacion cotizacion) {
-		System.out.println(cotizacion.getCondicionEmbarque());
 		String consulta = "UPDATE cotizaciones SET Referencia = ?, Status = ?, Solicitante = ?, "
 				+ "AreaDepartamento = ?, TelefonoFax = ?, Email = ?, TipoServicio = ?, "
 				+ "FechaEntrega = ?, CondicionEmbarque = ?, CondicionPago = ?, Moneda = ?, "
@@ -275,14 +275,14 @@ public class CotizacionDAO{
 	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean deleteCotizacion(Connection connection, Cotizacion cotizacion) {
-		String consulta = "DELETE FROM clientes WHERE Sys_PK = ?";
+		String consulta = "DELETE FROM cotizaciones WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, cotizacion.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			Notificacion.dialogoException(ex);
+			Notificacion.dialogoAlerta(AlertType.INFORMATION, "Mensaje del Sistema", "Solo se pueden eliminar cotizaciones recien registradas");
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO

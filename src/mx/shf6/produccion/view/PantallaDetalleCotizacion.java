@@ -7,6 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCotizacion;
@@ -72,10 +73,12 @@ public class PantallaDetalleCotizacion {
 	}//FIN METODO
 	
 	@FXML private void manejadorQuitar() {
-		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar el proyecto de la cotización?")){
-			DetalleCotizacionDAO.deleteDetalleCotizacion(mainApp.getConnection(), this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem());
-			actualizarTabla();
-		}//FIN IF
+		if(this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem() != null) {
+			if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar el proyecto de la cotización?"))
+				DetalleCotizacionDAO.deleteDetalleCotizacion(mainApp.getConnection(), this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem());
+		}else
+			Notificacion.dialogoAlerta(AlertType.ERROR, "Mensaje Sistema", "Seleccione el elemento que desea borrar.");
+		actualizarTabla();
 	}//FIN METODO
 		
 }//FIN CLASE

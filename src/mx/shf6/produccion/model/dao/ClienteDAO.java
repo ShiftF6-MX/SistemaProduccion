@@ -11,7 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.model.Cliente;
-import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.utilities.Notificacion;
 
 public class ClienteDAO{
@@ -148,7 +147,7 @@ public class ClienteDAO{
 			
 			return true;
 		} catch (SQLException ex) {
-			Notificacion.dialogoAlerta(AlertType.WARNING, "ERROR", "Este Cliente contiene PROYECTOS.");
+			Notificacion.dialogoAlerta(AlertType.WARNING, "ERROR", "Solo se puede eliminar CLIENTES recien registradas.");
 			//Notificacion.dialogoException(ex);
 			return false;
 		}//FIN TRY/CATCH

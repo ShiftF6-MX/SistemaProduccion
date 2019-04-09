@@ -24,7 +24,6 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
-import mx.shf6.produccion.model.Domicilio;
 import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.DomicilioDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
@@ -35,7 +34,6 @@ public class PantallaClientes {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Cliente cliente;
-	private Domicilio domicilio;
 	private ArrayList<Cliente> listaClientes;
 	
 		
@@ -53,7 +51,6 @@ public class PantallaClientes {
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
 		this.cliente = new Cliente();
-		this.domicilio  = new Domicilio();
 		this.buscarCliente.setOnKeyPressed(new EventHandler<KeyEvent>() {
     		@Override
     		public void handle(KeyEvent event) {
@@ -172,19 +169,10 @@ public class PantallaClientes {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
 			        			cliente = getTableView().getItems().get(getIndex());
 			        			if (Notificacion.dialogoPreguntar("Confirmación para eliminar.", "¿Desea eliminar a " + cliente.getNombre() + "?")){
+			        				eliminarCliente(cliente);
+			        				actualizarTabla();
+			        			}
 			        				
-			        				if(cliente.getStatus().equals(2)) {
-			        					if(ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
-				        					DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
-				        					File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
-					            			ruta.delete();
-				        				}
-			        				}else {
-			        					Notificacion.dialogoAlerta(AlertType.ERROR, "ERROR", "Cambie el estado del cliente a BAJA");
-			        				}
-			            			
-			            			actualizarTabla();
-			            		}//FIN IF
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
@@ -262,6 +250,13 @@ public class PantallaClientes {
 		this.actualizarTabla();
 	}//FIN METODO
 	
+	private void eliminarCliente(Cliente cliente) {
+		if(ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
+			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
+			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
+    		ruta.delete();
+		}
+	}//FIN METODO
 	
 	
 	 	
