@@ -53,6 +53,42 @@ public class Notificacion {
         alert.showAndWait();
     }//END METHOD
     
+    public static void dialogoDetalleMensaje(String mensaje) {
+    	Toolkit.getDefaultToolkit().beep();
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle("Información del Sistema");
+        alert.setHeaderText("Manufacturas G");
+        //alert.setContentText("Ocurrio un error inesperado durante la ejecución del sistema: \n" + mensaje);
+
+        // Create expandable Exception.
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        //ex.printStackTrace(pw);
+        String exceptionText = mensaje;
+
+        Label label = new Label("Lista de materiales:");
+
+        TextArea textArea = new TextArea(exceptionText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(label, 0, 0);
+        expContent.add(textArea, 0, 1);
+
+        // Set expandable Exception into the dialog pane.
+        alert.getDialogPane().setExpandableContent(expContent);
+
+        alert.showAndWait();
+    }//END METHOD
+    
     public static void dialogoAlerta(AlertType alertaTipo, String titulo, String mensaje) {
     	Toolkit.getDefaultToolkit().beep();
     	Alert alert = new Alert(alertaTipo);

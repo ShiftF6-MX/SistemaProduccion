@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.ComponenteDAO;
 
 
 
@@ -22,14 +23,15 @@ public class Proyecto {
 	private ObjectProperty<Double> precio;
 	private ObjectProperty<Double> costoDirecto;
 	public ObjectProperty<Integer> clienteFK;
+	private ObjectProperty<Integer> componenteFK;
 	
 	//CONTRUCTOR SIN PARAMETROS
 	public Proyecto() {
-		this(-1,"","","","",0.0,0.0,0.0,0);
+		this(-1,"","","","",0.0,0.0,0.0,0,0);
 	}//FIN CONSTUCTOR
 	
 	//CONTRUCTOR CON PARAMETROS
-	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica, Double costoDirecto, Double costoIndirecto, Double precio,  int clienteFK) {
+	public Proyecto(Integer sysPK, String codigo, String descripcion, String carpeta, String especificacionTecnica, Double costoDirecto, Double costoIndirecto, Double precio,  int clienteFK, int componenteFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -39,7 +41,7 @@ public class Proyecto {
 		this.costoIndirecto = new SimpleObjectProperty<Double>(costoIndirecto);
 		this.precio = new SimpleObjectProperty<Double>(precio);
 		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
-		
+		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A "SYSPK"
@@ -167,5 +169,21 @@ public class Proyecto {
 		return ClienteDAO.readCliente(connection, this.getClienteFK());
 	}//FIN METODO
 	//FIN METODOS "CLIENTE"
+	
+	public void setComponenteFK(int componenteFK) {
+		this.componenteFK.set(componenteFK);
+	}//FIN METODO
+	
+	public int getComponenteFK() {
+		return this.componenteFK.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> componenteFKProperty() {
+		return this.componenteFK;
+	}//FIN METODO
+	
+	public Componente getComponente(Connection connection) {
+		return ComponenteDAO.readComponente(connection, this.getComponenteFK());
+	}//FIN METODO
 		
 }//FIN METODO

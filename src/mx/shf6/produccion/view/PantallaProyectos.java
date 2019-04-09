@@ -1,10 +1,7 @@
 package mx.shf6.produccion.view;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,15 +21,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
-import mx.shf6.produccion.utilities.GestorArchivos;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -118,7 +112,8 @@ public class PantallaProyectos {
 				final Button botonEditar = new Button("Editar");
 				final Button botonArchivo = new Button("Archivo");
 				final Button botonEliminar = new Button("Eliminar");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonArchivo, botonEliminar);
+				final Button botonListaComponentes = new Button("Lista Componentes");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo,botonListaComponentes);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -139,13 +134,6 @@ public class PantallaProyectos {
 					botonEditar.setCursor(Cursor.HAND);
 					botonEditar.setTooltip(new Tooltip("Editar registro"));
 					
-					botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
-		        	botonArchivo.setPrefSize(16.0, 16.0);
-		        	botonArchivo.setPadding(Insets.EMPTY);
-		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonArchivo.setStyle("-fx-background-color: transparent;");
-		        	botonArchivo.setCursor(Cursor.HAND);
-					
 					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
 					botonEliminar.setPrefSize(16.0, 16.0);
 					botonEliminar.setPadding(Insets.EMPTY);
@@ -153,6 +141,20 @@ public class PantallaProyectos {
 					botonEliminar.setStyle("-fx-background-color: transparent");
 					botonEliminar.setCursor(Cursor.HAND);
 					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
+					
+					botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+		        	botonArchivo.setPrefSize(16.0, 16.0);
+		        	botonArchivo.setPadding(Insets.EMPTY);
+		        	botonArchivo.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonArchivo.setStyle("-fx-background-color: transparent;");
+		        	botonArchivo.setCursor(Cursor.HAND);
+					
+		        	botonListaComponentes.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
+		        	botonListaComponentes.setPrefSize(16.0, 16.0);
+		        	botonListaComponentes.setPadding(Insets.EMPTY);
+		        	botonListaComponentes.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonListaComponentes.setStyle("-fx-background-color: transparent;");
+		        	botonListaComponentes.setCursor(Cursor.HAND);
 															
 					super.updateItem(item, empty);
 					if (empty) {
@@ -179,6 +181,11 @@ public class PantallaProyectos {
 						botonEliminar.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonEliminar(proyecto);
+						});//FIN MANEJADDOR
+						
+						botonListaComponentes.setOnAction(event -> {
+							proyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonListaComponentes(proyecto);
 						});//FIN MANEJADDOR
 						
 						cajaBotones.setSpacing(2);
@@ -215,8 +222,6 @@ public class PantallaProyectos {
 		this.actualizarTabla();
 	}//FIN METODO
 	
-	
-	
 	private void manejadorBotonEliminar(Proyecto proyecto) {
 		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?")) {
 			File ruta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" +this.proyecto.getCodigo());
@@ -224,6 +229,10 @@ public class PantallaProyectos {
 			ProyectoDAO.deleteProyecto(this.mainApp.getConnection(), proyecto);
 		}
 		this.actualizarTabla();
+	}//FIN METODO
+	
+	private void manejadorBotonListaComponentes(Proyecto proyecto) {
+		Notificacion.dialogoDetalleMensaje(Componente.mostrarInformacionEnsamble(this.mainApp.getConnection(), proyecto.getComponente(this.mainApp.getConnection()), 0, ""));
 	}//FIN METODO
 		
 }//FIN CLASE

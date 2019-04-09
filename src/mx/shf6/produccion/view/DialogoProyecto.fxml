@@ -65,6 +65,12 @@
                <children>
                   <VBox spacing="2.0">
                      <children>
+                        <Label styleClass="labelRobotoMedium12" text="Componente" />
+                        <ComboBox fx:id="comboBoxComponentes" editable="true" prefWidth="150.0" styleClass="comboEditable" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
                         <Label styleClass="labelRobotoMedium12" text="Costo Directo" />
                         <TextField fx:id="campoCostoDirecto" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                      </children>

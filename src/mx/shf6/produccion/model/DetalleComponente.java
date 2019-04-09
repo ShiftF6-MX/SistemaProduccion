@@ -64,7 +64,7 @@ public class DetalleComponente {
 		return this.componenteInferiorFK.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> componenteInferiorFK() {
+	public ObjectProperty<Integer> componenteInferiorFKProperty() {
 		return this.componenteInferiorFK;
 	}//FIN METODO
 	

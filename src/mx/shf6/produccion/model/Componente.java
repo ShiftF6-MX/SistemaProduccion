@@ -297,17 +297,22 @@ public class Componente {
 		return ClienteDAO.readCliente(connection, this.getclienteFK());
 	}//FIN METODO
 	
-	public static void mostrarInformacionEnsamble(Connection connection, Componente componente, int nivel) {
+	public static String mostrarInformacionEnsamble(Connection connection, Componente componente, int nivel, String lista) {
 		nivel += 1;
 		System.out.print(componente.getNumeroParte());
+		lista += componente.getNumeroParte();
 		System.out.print(" " + componente.getDescripcion() + " - ");
+		lista += " " + componente.getDescripcion() + " - ";
 		System.out.print("Nivel: " + nivel + "\n");
+		lista += "Nivel: " + nivel + "\n";
 		if (componente.getTipoComponente() == TipoComponente.ENSAMBLE || componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE) {
 			ArrayList<DetalleComponente> detalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(connection, componente.getSysPK());
 			for (DetalleComponente detalle : detalleComponente) {
 				System.out.print(detalle.getCantidad() + " ");
-				mostrarInformacionEnsamble(connection, detalle.getComponenteInferior(connection), nivel);
+				lista += detalle.getCantidad() + " ";
+				mostrarInformacionEnsamble(connection, detalle.getComponenteInferior(connection), nivel, lista);
 			}
 		}
+		return lista;
 	}//FIN METODO
 }//FIN CLASE
