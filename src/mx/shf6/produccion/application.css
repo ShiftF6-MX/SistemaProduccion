@@ -95,8 +95,17 @@
 .bodyPantallaOverview {
 	-fx-background-color: #FFFFFF;
 }
+
 .campoBuscador {
 	-fx-background-color: #E6E6E6;
+	-fx-border-style: none;
+	-fx-border-width: 0px 0px 0px 0px;
+	-fx-border-radius: 0px 0px 0px 0px;
+	-fx-background-radius: 0px 0px 0px 0px;
+}
+
+.menuContext {
+	-fx-background-color: #FFFFFF;
 	-fx-border-style: none;
 	-fx-border-width: 0px 0px 0px 0px;
 	-fx-border-radius: 0px 0px 0px 0px;

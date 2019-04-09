@@ -174,9 +174,44 @@ public class ComponenteDAO {
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO
-	public static ArrayList<Componente> readComponenteNumeroParte(Connection connection, String numeroParte) {
-		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
+	public static Componente readComponenteNumeroParte(Connection connection, String numeroParte) {
+		Componente componente = new Componente();
 		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes WHERE NumeroParte = '" + numeroParte + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				componente.setSysPK(resultados.getInt(1));
+				componente.setNumeroParte(resultados.getString(2));
+				componente.setDescripcion(resultados.getString(3));
+				Dimensiones dimensiones = new Dimensiones();
+				dimensiones.setLargo(resultados.getDouble(4));
+				dimensiones.setAncho(resultados.getDouble(5));
+				dimensiones.setAltoEspesor(resultados.getDouble(6));
+				componente.setDimensiones(dimensiones);
+				componente.setTipoComponente(resultados.getString(7));
+				componente.setCosto(resultados.getDouble(8));
+				componente.setUnidad(resultados.getString(9));
+				componente.setMaterialFK(resultados.getInt(10));;
+				componente.setTipoMiscelaneoFK(resultados.getInt(11));
+				componente.setTipoMateriaPrimaFK(resultados.getInt(12));
+				componente.setAcabadoFK(resultados.getInt(13));
+				componente.setTratamientoFK(resultados.getInt(14));
+				componente.setNotas(resultados.getString(15));
+				componente.setStatus(resultados.getInt(16));
+				componente.setConsecutivo(resultados.getInt(17));
+				componente.setClienteFK(resultados.getInt(18));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return componente;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER TODOS LOS COMPONENTES DE UN TIPOP EN ESPECIFICO
+	public static ArrayList<Componente> readComponenteTipoComponente(Connection connection, String tipoComponenteChar) {
+		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
+		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, TipoComponente, Costo, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes WHERE TipoComponente = '" + tipoComponenteChar + "'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

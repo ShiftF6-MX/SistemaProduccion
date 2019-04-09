@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -55,6 +56,12 @@ public class PantallaComponente {
 	@FXML private PTableColumn<Componente, String> columnaNotas;
 	@FXML private PTableColumn<Componente, String> columnaStatus;
 	@FXML private PTableColumn<Componente, String> columnaAcciones;
+	@FXML private RadioMenuItem checkMenuTodos;
+	@FXML private RadioMenuItem checkMenuMateriaPrima;
+	@FXML private RadioMenuItem checkMenuMiscelaneo;
+	@FXML private RadioMenuItem checkMenuPartePrimaria;
+	@FXML private RadioMenuItem checkMenuSubEnsamble;
+	@FXML private RadioMenuItem checkMenuEnsamble;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -79,7 +86,7 @@ public class PantallaComponente {
 					buscarRegistroTabla();
 			}//FIN METODO
 			
-		});//FIN SENTENCIA
+		});//FIN SENTENCIA		
 	}//FIN METODO
 	
 	private void inicializaTabla() {
@@ -96,7 +103,18 @@ public class PantallaComponente {
 	private void actualizarTabla() {
 		this.tablaComponente.setItems(null);
 		this.listaComponente.clear();
-		this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
+		if (this.checkMenuTodos.isSelected())
+			this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
+		else if (this.checkMenuMateriaPrima.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponente(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.MATERIA_PRIMA));
+		else if (this.checkMenuMiscelaneo.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponente(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.COMPRADO));
+		else if (this.checkMenuPartePrimaria.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponente(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.PARTE_PRIMARIA));
+		else if (this.checkMenuSubEnsamble.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponente(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.SUB_ENSAMBLE));
+		else if (this.checkMenuEnsamble.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponente(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.ENSAMBLE));
 		this.tablaComponente.setItems(ComponenteDAO.toObservableList(this.listaComponente));
 	}//FIN METODO
 	
@@ -270,6 +288,10 @@ public class PantallaComponente {
 			this.mainApp.iniciarDialogoDetalleComponente(componente);
 			Componente.mostrarInformacionEnsamble(this.mainApp.getConnection(), componente, 0, "");
 		}//FIN IF/ELSE
+	}//FIN METODO
+	
+	@FXML private void manejadorBotonFiltroTodos() {
+		this.actualizarTabla();
 	}//FIN METODO
 		
 }//FIN CLASE

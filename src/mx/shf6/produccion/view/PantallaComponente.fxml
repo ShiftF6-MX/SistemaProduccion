@@ -28,10 +28,34 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
+                  <MenuButton mnemonicParsing="false" styleClass="menuContext" text="Filtro">
+                    <items>
+                        <RadioMenuItem fx:id="checkMenuTodos" mnemonicParsing="false" onAction="#manejadorBotonActualizar" selected="true" text="Todos">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="TipoComponente" />
+                           </toggleGroup>
+                        </RadioMenuItem>
+                        <RadioMenuItem fx:id="checkMenuMateriaPrima" mnemonicParsing="false" onAction="#manejadorBotonActualizar" text="Materias Primas" toggleGroup="$TipoComponente" />
+                        <RadioMenuItem fx:id="checkMenuMiscelaneo" mnemonicParsing="false" onAction="#manejadorBotonActualizar" text="Miscelaneos" toggleGroup="$TipoComponente" />
+                        <RadioMenuItem fx:id="checkMenuPartePrimaria" mnemonicParsing="false" onAction="#manejadorBotonActualizar" text="Partes Primarias" toggleGroup="$TipoComponente" />
+                        <RadioMenuItem fx:id="checkMenuSubEnsamble" mnemonicParsing="false" onAction="#manejadorBotonActualizar" text="Sub Ensables" toggleGroup="$TipoComponente" />
+                        <RadioMenuItem fx:id="checkMenuEnsamble" mnemonicParsing="false" onAction="#manejadorBotonActualizar" text="Ensambles" toggleGroup="$TipoComponente" />
+                    </items>
+                     <graphic>
+                        <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/1x/FiltroIcono.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MenuButton>
                   <TextField fx:id="campoTextoBusqueda" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
                      <font>
                         <Font name="Roboto" size="12.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </TextField>
                   <HBox alignment="CENTER" fillHeight="false" maxHeight="30.0" maxWidth="30.0" onMouseClicked="#buscarRegistroTabla" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
