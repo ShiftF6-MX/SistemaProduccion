@@ -28,7 +28,7 @@ import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class DialogoPantallaProyectos {
+public class DialogoProyectos {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Proyecto proyecto;
@@ -175,7 +175,7 @@ public class DialogoPantallaProyectos {
 						
 						botonArchivo.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
-							mainApp.iniciarPantallaArchivoProyecto(proyecto , cliente);
+							mainApp.iniciarDialogoArchivos(proyecto , cliente);
 						});//FIN MANEJADDOR
 						
 						botonEliminar.setOnAction(event -> {
@@ -204,7 +204,7 @@ public class DialogoPantallaProyectos {
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
 		
-		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoProyecto.CREAR, cliente);
+		this.mainApp.iniciarDialogoProyectosCliente(proyecto, DialogoProyectosCliente.CREAR, cliente);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -213,12 +213,12 @@ public class DialogoPantallaProyectos {
 	}//FIN METODO
 	
 	private void manejadorBotonVer(Proyecto proyecto) {
-		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoProyecto.VER, cliente);
+		this.mainApp.iniciarDialogoProyectosCliente(proyecto, DialogoProyectosCliente.VER, cliente);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(Proyecto proyecto) {
-		this.mainApp.iniciarDialogoProyecto(proyecto, DialogoProyecto.EDITAR, cliente);
+		this.mainApp.iniciarDialogoProyectosCliente(proyecto, DialogoProyectosCliente.EDITAR, cliente);
 		this.actualizarTabla();
 	}//FIN METODO
 	

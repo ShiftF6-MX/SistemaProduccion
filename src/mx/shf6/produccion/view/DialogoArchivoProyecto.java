@@ -120,6 +120,6 @@ public class DialogoArchivoProyecto {
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
-		this.mainApp.getEscenarioDialogos().close();
+		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 }

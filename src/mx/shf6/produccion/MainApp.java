@@ -44,6 +44,7 @@ import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
+import mx.shf6.produccion.view.DialogoArchivos;
 import mx.shf6.produccion.view.DialogoClientes;
 import mx.shf6.produccion.view.DialogoComponente;
 import mx.shf6.produccion.view.DialogoCotizacion;
@@ -51,13 +52,12 @@ import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoMaterial;
-import mx.shf6.produccion.view.DialogoPantallaProyectos;
-import mx.shf6.produccion.view.DialogoProyecto;
+import mx.shf6.produccion.view.DialogoProyectos;
+import mx.shf6.produccion.view.DialogoProyectosCliente;
 import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
 import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTratamiento;
 import mx.shf6.produccion.view.PantallaAcabado;
-import mx.shf6.produccion.view.PantallaArchivoProyecto;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
@@ -100,7 +100,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaMaterial;
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaTratamiento;
-	private AnchorPane pantallaArchivoProyecto;
+	
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -114,11 +114,11 @@ public class MainApp extends Application {
 	private AnchorPane dialogoMaterial;
 	private AnchorPane dialogoAcabado;
 	private AnchorPane dialogoTratamiento;
-	private AnchorPane dialogoProyecto;
-	private AnchorPane dialogoArchivoProyecto;
 	private AnchorPane dialogoCotizacionCliente;
-	private AnchorPane dialogoPantallaProyectos;
-	
+	private AnchorPane dialogoProyectos;
+	private AnchorPane dialogoProyectosCliente;	
+	private AnchorPane dialogoArchivos;
+	private AnchorPane dialogoArchivoProyecto;
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
 	
@@ -538,20 +538,8 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	//INICIAR PANTALLA ARCHIVO PROYECTO
-	public void iniciarPantallaArchivoProyecto(Proyecto proyecto, Cliente cliente) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaArchivoProyecto.fxml"));
-            this.pantallaArchivoProyecto = (AnchorPane) fxmlLoader.load();
-            this.pantallaBase.setCenter(this.pantallaArchivoProyecto);
-            
-            PantallaArchivoProyecto pantallaArchivoProyecto = fxmlLoader.getController();
-            pantallaArchivoProyecto.setMainApp(this,proyecto,cliente);
-        } catch(IOException | IllegalStateException ex) {
-            Notificacion.dialogoException(ex);
-        }//FIN TRY/CATCH
-    }//FIN METODO
+	
+	
 	
 	//METODOS DIALOGOS
 	public void iniciarDialogoClientes(Cliente cliente , int opcion) {
@@ -752,16 +740,16 @@ public class MainApp extends Application {
 		}//FIN METODO
 	}//FIN METODO
 	
-	public void iniciarDialogoProyecto(Proyecto proyecto, int opcion, Cliente cliente) {
+	public void iniciarDialogoProyectosCliente(Proyecto proyecto, int opcion, Cliente cliente) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoProyecto.fxml"));
-			this.dialogoProyecto = (AnchorPane) fxmlLoader.load();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoProyectosCliente.fxml"));
+			this.dialogoProyectosCliente = (AnchorPane) fxmlLoader.load();
 			
-			Scene escenaDialogoProyecto = this.iniciarEscenarioDialogos(this.dialogoProyecto);
+			Scene escenaDialogoProyecto = this.iniciarEscenarioDialogos(this.dialogoProyectosCliente);
 			this.escenarioDialogos.setScene(escenaDialogoProyecto);
 			
-			DialogoProyecto dialogoProyecto = fxmlLoader.getController();
+			DialogoProyectosCliente dialogoProyecto = fxmlLoader.getController();
 			dialogoProyecto.setMainApp(this, proyecto, opcion, cliente);
 			
 			this.escenarioDialogos.showAndWait();
@@ -776,13 +764,13 @@ public class MainApp extends Application {
             fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoArchivoProyecto.fxml"));
             this.dialogoArchivoProyecto = (AnchorPane) fxmlLoader.load();
             
-            Scene escenaDialogoArchivoProyecto = this.iniciarEscenarioDialogos(this.dialogoArchivoProyecto);
-            this.escenarioDialogos.setScene(escenaDialogoArchivoProyecto);
+            Scene escenaDialogoArchivoProyecto = this.iniciarEscenarioDialogosAlterno(this.dialogoArchivoProyecto);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoArchivoProyecto);
             
             DialogoArchivoProyecto dialogoArchivoProyecto = fxmlLoader.getController();
             dialogoArchivoProyecto.setMainApp(this, archivoProyecto, opcion, proyecto);
             
-            this.escenarioDialogos.showAndWait();
+            this.escenarioDialogosAlterno.showAndWait();
         } catch (IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
         }//FIN METODO
@@ -808,16 +796,16 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	
-	public void iniciarDialogoPantallaProyecto(Cliente cliente) {
+	public void iniciarDialogoProyectos(Cliente cliente) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoPantallaProyectos.fxml"));
-			this.dialogoPantallaProyectos = (AnchorPane) fxmlLoader.load();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoProyectos.fxml"));
+			this.dialogoProyectos = (AnchorPane) fxmlLoader.load();
 			
-			Scene escenaDialogoPantallaProyecto = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoPantallaProyectos);
-            this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoPantallaProyecto);
+			Scene escenaDialogoProyectos = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoProyectos);
+            this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoProyectos);
 			
-			DialogoPantallaProyectos pantallaProyecto = fxmlLoader.getController();
+			DialogoProyectos pantallaProyecto = fxmlLoader.getController();
 			pantallaProyecto.setMainApp(this,cliente);
 			
 			this.escenarioDialogosAlternoSecundario.showAndWait();
@@ -825,6 +813,24 @@ public class MainApp extends Application {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
+	
+	public void iniciarDialogoArchivos(Proyecto proyecto, Cliente cliente) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoArchivos.fxml"));
+            this.dialogoArchivos = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoArchivos = this.iniciarEscenarioDialogos(this.dialogoArchivos);
+            this.escenarioDialogos.setScene(escenaDialogoArchivos);
+            
+            DialogoArchivos pantallaArchivoProyecto = fxmlLoader.getController();
+            pantallaArchivoProyecto.setMainApp(this,proyecto,cliente);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
 
 	@Override
 	public void stop() {

@@ -207,7 +207,7 @@ public class PantallaClientes {
 		            	botonArchivo.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cliente = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarDialogoPantallaProyecto(cliente);
+		            			mainApp.iniciarDialogoProyectos(cliente);
 		            			actualizarTabla();
 			                } else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");

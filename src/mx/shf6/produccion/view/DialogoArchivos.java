@@ -36,7 +36,7 @@ import mx.shf6.produccion.utilities.GestorArchivos;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaArchivoProyecto {
+public class DialogoArchivos {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Proyecto proyecto;
@@ -249,6 +249,10 @@ public class PantallaArchivoProyecto {
 			ArchivoProyectoDAO.deleteArchivoProyecto(this.mainApp.getConnection(), archivoProyecto);
 		}
 		this.actualizarTabla();
+	}//FIN METODO
+	
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO
 
 }

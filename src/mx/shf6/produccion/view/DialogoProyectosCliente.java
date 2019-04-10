@@ -21,7 +21,7 @@ import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
-public class DialogoProyecto {
+public class DialogoProyectosCliente {
 
 	
 	//PROPIEDADES

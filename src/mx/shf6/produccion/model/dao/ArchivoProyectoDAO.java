@@ -78,6 +78,7 @@ public class ArchivoProyectoDAO {
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion,ProyectoFK "
 				+ "FROM archivoproyectos "
 				+ "WHERE Codigo LIKE '%" + like + "%'"
+				+ " OR Descripcion LIKE '%" + like + "%'"
 				+ " AND ProyectoFK=" + proyectoFK;
 		try {
 			Statement sentencia = connection.createStatement();
