@@ -167,7 +167,7 @@ public class DialogoCotizacionCliente {
 		            	botonVer.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.VER);
+		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.VER, cliente);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
@@ -176,7 +176,7 @@ public class DialogoCotizacionCliente {
 		            	botonEditar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.EDITAR);
+		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.EDITAR, cliente);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");        					                	
 		                });//FIN LISTENER		
@@ -238,7 +238,7 @@ public class DialogoCotizacionCliente {
 	
 	@FXML private void nuevaCotizacion() {
 		this.cotizacion = new Cotizacion();
-		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR);
+		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR, cliente);
 		this.actualizarTabla();
 	}//FIN METODO	
 

@@ -143,7 +143,7 @@ public class PantallaCotizaciones {
 					botonAgregar.setCursor(Cursor.HAND);
 					botonAgregar.setTooltip(new Tooltip("Detalle Cotización"));
 					
-					botonAprobar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+					botonAprobar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AprobarIcono.png"))));
 					botonAprobar.setPrefSize(16.0, 16.0);
 					botonAprobar.setPadding(Insets.EMPTY);
 					botonAprobar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -151,7 +151,7 @@ public class PantallaCotizaciones {
 					botonAprobar.setCursor(Cursor.HAND);
 					botonAprobar.setTooltip(new Tooltip("Aprobar Cotización"));
 					
-					botonCancelar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
+					botonCancelar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/NoAprobarIcono.png"))));
 					botonCancelar.setPrefSize(16.0, 16.0);
 					botonCancelar.setPadding(Insets.EMPTY);
 					botonCancelar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -159,7 +159,7 @@ public class PantallaCotizaciones {
 					botonCancelar.setCursor(Cursor.HAND);
 					botonCancelar.setTooltip(new Tooltip("Cancelar Cotización"));
 					
-		        	acciones.setSpacing(5);
+		        	acciones.setSpacing(2);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
 		        	super.updateItem(item, empty);
@@ -170,25 +170,25 @@ public class PantallaCotizaciones {
 		            	
 		            	//ABRE EL DIALOGO PARA VER LOS DATOS DE LA COTIZACION
 		            	botonVer.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCotizacion")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.VER);
+		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.VER, cliente);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
 		            	
 		            	//ABRE EL DIALOGO PARA EDITAR LA COTIZACION.
 		            	botonEditar.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
-		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.EDITAR);
+		            			mainApp.iniciarDialogoCotizacion(cotizacion, DialogoCotizacion.EDITAR, cliente);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");        					                	
 		                });//FIN LISTENER		
 		            	
 		            	//ABRE EL DIALOGO PARA BORRAR LA COTIZACION
 		            	botonEliminar.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCotizacion")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
 			            		if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar la cotizacion " + cotizacion.getReferencia() + "?")){
 			            			CotizacionDAO.deleteCotizacion(mainApp.getConnection(), cotizacion);
@@ -200,7 +200,7 @@ public class PantallaCotizaciones {
 		            	
 		            	//ABRE EL DIALOGO PARA ABRIR EL DETALLE DE COTIZACION
 		            	botonAgregar.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
 		            			mainApp.iniciarPantallaDetalleCotizacion(cotizacion);
 		            			actualizarTabla();
@@ -210,22 +210,26 @@ public class PantallaCotizaciones {
 		            	
 		            	//ACEPTA LA COTIZACION
 		            	botonAprobar.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
-		            			cotizacion = getTableView().getItems().get(getIndex());
-		            			cotizacion.setStatus(Cotizacion.APROBADA);
-		            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-		            			actualizarTabla();
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
+		            			if (Notificacion.dialogoPreguntar("Confirmación para aprobación", "¿Desea APROBAR la cotizacion " + cotizacion.getReferencia() + "?")){
+		            				cotizacion = getTableView().getItems().get(getIndex());
+			            			cotizacion.setStatus(Cotizacion.APROBADA);
+			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+			            			actualizarTabla();
+			            		}//FIN IF		            			
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
 		            	
 		            	//CANCELA LA COTIZACION
 		            	botonCancelar.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
-		            			cotizacion = getTableView().getItems().get(getIndex());
-		            			cotizacion.setStatus(Cotizacion.CANCELADA);
-		            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-		            			actualizarTabla();
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
+		            			if (Notificacion.dialogoPreguntar("Confirmación para cancelación", "¿Desea CANCELAR la cotizacion " + cotizacion.getReferencia() + "?")){
+		            				cotizacion = getTableView().getItems().get(getIndex());
+			            			cotizacion.setStatus(Cotizacion.CANCELADA);
+			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+			            			actualizarTabla();
+		            			}//FIN IF		            			
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
@@ -241,11 +245,15 @@ public class PantallaCotizaciones {
     }//FIN METODO
 	
 	
-	@FXML private void nuevaCotizacion() {
+	@FXML private void manejadorBotonNuevo() {
 		this.cotizacion = new Cotizacion();
-		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR);
+		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR, cliente);
 		this.actualizarTabla();
 	}//FIN METODO	
+	
+	@FXML private void manejadorBotonActualizar() {
+		this.actualizarTabla();
+	}//FIN METODO
 
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {

@@ -165,7 +165,7 @@ public class CotizacionDAO{
 	public static ArrayList<Cotizacion> readCotizacion(Connection connection, String like) {
 		ArrayList<Cotizacion> arrayListCotizacion = new ArrayList<Cotizacion>();
 		String consulta = "SELECT Sys_PK, Referencia, Fecha, Status, Solicitante, AreaDepartamento, TelefonoFax, "
-				+ "Email, TipoServicio, CondicionEmbarque, CondicionPago, Moneda, TipoCambio, Observaciones, "
+				+ "Email, TipoServicio, FechaEntrega, CondicionEmbarque, CondicionPago, Moneda, TipoCambio, Observaciones, "
 				+ "Vigencia, FolioFK, ClienteFK "
 				+ "FROM cotizaciones "
 				+ "WHERE Referencia LIKE '%" + like + "%'";

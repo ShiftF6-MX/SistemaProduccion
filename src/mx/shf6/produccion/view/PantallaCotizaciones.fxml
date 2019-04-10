@@ -46,13 +46,27 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </HBox>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#nuevaCotizacion" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@images/1x/ActualizarBoton.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonNuevo" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/1x/AgregarBoton.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <HBox.margin>
+                        <Insets left="3.0" />
+                     </HBox.margin>
                   </ImageView>
                </children>
             </HBox>

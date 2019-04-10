@@ -561,7 +561,7 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	//INICIAR PANTALLA DIALOGO COTIZACIONES
-	public void iniciarDialogoCotizacion(Cotizacion cotizacion, int opcion) {
+	public void iniciarDialogoCotizacion(Cotizacion cotizacion, int opcion, Cliente cliente) {
  		try {
  			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoCotizacion.fxml"));
@@ -569,7 +569,7 @@ public class MainApp extends Application {
 			Scene PantallaSecundariaCotizaciones = this.iniciarEscenarioDialogos(this.dialogoCotizacion);
 			this.escenarioDialogos.setScene(PantallaSecundariaCotizaciones);
 			DialogoCotizacion dialogoCotizacion = fxmlLoader.getController();
-			dialogoCotizacion.setMainApp(this, cotizacion, opcion);
+			dialogoCotizacion.setMainApp(this, cotizacion, opcion, cliente);
 			this.escenarioDialogos.showAndWait();;
  		} catch (IOException | IllegalStateException ex) {
  			Notificacion.dialogoException(ex);
