@@ -171,4 +171,11 @@ public class Domicilio {
 		return informacionDomicilio;
 	}//FIN METODO
 	
+	public String showDomicilioCompleto() {
+		String informacionDomicilio = this.getCalle() + " #" + this.getNumeroExterior() + ", Int#" + this.getNumeroInterior() + 
+				", Colonia " + this.getColonia()+ ", " + this.getLocalidad() + ", " + this.getMunicipio() + ", " 
+				+ this.getEstado() + ", CP: " + this.getCodigoPostal();
+		return informacionDomicilio;
+	}//FIN METODO
+	
 }//FIN CLASE
