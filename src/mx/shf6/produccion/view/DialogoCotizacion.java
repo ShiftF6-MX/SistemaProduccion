@@ -1,5 +1,6 @@
 package mx.shf6.produccion.view;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -30,6 +31,8 @@ public class DialogoCotizacion {
 	private MainApp mainApp;
 	private Cotizacion cotizacion;
 	private int opcion;
+	private Cliente cliente;
+	private DecimalFormat decimalFormat;
 	private ArrayList<Folio> listaFolios;
 	private ArrayList<Cliente> listaClientes;
 	private ObservableList<String> listaLetraFolio;
@@ -56,7 +59,7 @@ public class DialogoCotizacion {
 	@FXML private void initialize() {
 		RestriccionTextField.soloLetras(this.campoTextoSolicito);
 		RestriccionTextField.soloLetras(this.campoTextoAreaDepartamento);
-		RestriccionTextField.soloLetras(this.campoTextoTelefonoFax);
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoTelefonoFax, 16);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoEmail, 64);
 		RestriccionTextField.soloLetras(this.campoTextoTipoServicio);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoFechaEntrega, 64);
@@ -74,17 +77,24 @@ public class DialogoCotizacion {
 		listaMonedas.add("USD");
 		listaMonedas.add("EUR");
 		comboBoxMonedas.setItems(listaMonedas);		
+		this.decimalFormat = new DecimalFormat("0000000");
 	}//FIN METODO
 		
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
-	public void setMainApp(MainApp mainApp, Cotizacion cotizacion, int opcion) {
+	public void setMainApp(MainApp mainApp, Cotizacion cotizacion, int opcion, Cliente cliente) {
 		this.cotizacion = cotizacion;		
 		this.mainApp = mainApp;
 		this.opcion = opcion;		
+		this.cliente = cliente;
 		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection());
 		listaFolios = FolioDAO.readFolio(this.mainApp.getConnection());
-		for (Cliente cliente : listaClientes)
-			this.listaNombreClientes.add(cliente.getNombre());
+		if (cliente != null) {
+			for (Cliente nombreCliente : listaClientes)
+				this.listaNombreClientes.add(nombreCliente.getNombre());
+		}else {
+			for (Cliente nombreCliente: listaClientes)
+				this.listaNombreClientes.add(nombreCliente.getNombre());
+		}//FIN IF-ELSE		
 		for (Folio folio : listaFolios) 
 			this.listaLetraFolio.add(folio.getFolio());
 		this.comboBoxClientes.setItems(listaNombreClientes);
@@ -95,8 +105,13 @@ public class DialogoCotizacion {
 	//MUESTRA DATOS DEL LA SOLICITUD
 	private void mostrarDatosInterfaz() {
 		if (this.opcion == CREAR) {
-			this.comboBoxClientes.getSelectionModel().select("");
-			this.comboBoxClientes.setDisable(false);
+			if(this.cliente != null) {
+				this.comboBoxClientes.getSelectionModel().select(this.cliente.getNombre());
+				this.comboBoxClientes.setDisable(true);
+			}else {
+				this.comboBoxClientes.getSelectionModel().select("");
+				this.comboBoxClientes.setDisable(false);
+			}			
 			this.campoTextoSolicito.setText("");
 			this.campoTextoSolicito.setDisable(false);
 			this.campoTextoAreaDepartamento.setText("");
@@ -156,7 +171,7 @@ public class DialogoCotizacion {
 			this.comboBoxFolio.setDisable(true);
 			this.comboBoxFolio.setValue(this.cotizacion.getFolio(this.mainApp.getConnection()).getFolio());
 			this.comboBoxClientes.getSelectionModel().select(this.cotizacion.getCliente(this.mainApp.getConnection()).getNombre());
-			this.comboBoxClientes.setDisable(false);
+			this.comboBoxClientes.setDisable(true);
 			this.campoTextoSolicito.setText(this.cotizacion.getSolicitante());
 			this.campoTextoSolicito.setDisable(false);
 			this.campoTextoAreaDepartamento.setText(this.cotizacion.getAreaDepartamento());
@@ -186,29 +201,29 @@ public class DialogoCotizacion {
 	
 	//FIN METODO
 	private boolean validarDatos() {
-		if (this.campoTextoVigencia.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Vigencia\" no puede estar vacio");
+		if (this.comboBoxFolio.getSelectionModel().getSelectedItem() == null) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Folio\" no puede estar vacio");
 			return false;
-		}else if (this.campoTextoTipoCambio.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Cambio\" no puede estar vacio");
+		}else if (this.comboBoxClientes.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cliente\" no puede estar vacio");
+			return false;
+		}else if (this.campoTextoTipoServicio.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Servicio\" no puede estar vacio");
+			return false;
+		}else if (this.campoTextoCondicionPago.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Condiciones Pago\" no puede estar vacio");
+			return false;
+		} else if (this.campoTextoFechaEntrega.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Días Entrega\" no puede estar vacio");
 			return false;
 		}else if (this.comboBoxMonedas.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Moneda\" no puede estar vacio");
 			return false;
-		}else if (this.comboBoxFolio.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Folio\" no puede estar vacio");
+		}else if (this.campoTextoTipoCambio.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Cambio\" no puede estar vacio");
 			return false;
-		}else if (this.campoTextoCondicionPago.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Condicion Pago\" no puede estar vacio");
-			return false;
-		}else if (this.campoTextoCondicionEmbarque.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Condicion Embarque\" no puede estar vacio");
-			return false;
-		}else if (this.campoTextoFechaEntrega.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Código\" no puede estar vacio");
-			return false;
-		} else if (this.comboBoxClientes.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cliente\" no puede estar vacio");
+		}else if (this.campoTextoVigencia.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Vigencia\" no puede estar vacio");
 			return false;
 		}//FIN IF/ESLE
 		return true;
@@ -217,7 +232,8 @@ public class DialogoCotizacion {
 	@FXML private void manejadorBotonAceptar() {
 		if (this.validarDatos()) {
 			if (this.opcion == CREAR) {
-				this.cotizacion.setReferencia(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getFolio() + (listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getSerie() + 1));
+				String consecutivo = decimalFormat.format(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getSerie());
+				this.cotizacion.setReferencia(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getFolio() + consecutivo);
 				this.cotizacion.setStatus(Cotizacion.PENDIENTE);
 				this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());

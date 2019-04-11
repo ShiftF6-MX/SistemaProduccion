@@ -16,7 +16,7 @@ public class FolioDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createFolio(Connection connection, Folio folio) {
-		String consulta = "INSERT INTO folio (Folio, Serie, Descripcion) VALUES (?, 0, ?)";
+		String consulta = "INSERT INTO folio (Folio, Serie, Descripcion) VALUES (?, 1, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, folio.getFolio());
