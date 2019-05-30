@@ -100,7 +100,23 @@ public class ExistenciaDAO {
 		return arrayListExistencia;
 	}// FIN METODO
 
+	public static final Double readExistenciaComponente(Connection connection, int componenteFK, int almacenFK) {
+		Double existenciaComponente = 0.0;
+		String consulta = "SELECT Existencia FROM existencias WHERE ComponenteFK = "+ componenteFK +" AND AlmacenFK = "+ almacenFK;
 
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				existenciaComponente = resultados.getDouble(1);
+				System.out.println("existencia desde el dao: "+ existenciaComponente);
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			System.out.println("en excepcion");
+//			Notificacion.dialogoException(ex);
+		} // FIN TRY-CATCH
+		return existenciaComponente;
+	}// FIN METODO
 
 	// METODO PARA ACTUALIZAR UN REGISTRO
 	public static final boolean update(Connection connection, Existencia existencia) {
@@ -140,5 +156,21 @@ public class ExistenciaDAO {
 			listaObservableExistencia.add(existencia);
 		return listaObservableExistencia;
 	}// FIN METODO
+
+
+	public static ObservableList<String> readDescripcionComponente(Connection connection, String almacenOrigen) {
+		ObservableList<String> observableListDescripcionComponente = FXCollections.observableArrayList();
+		String consulta = "SELECT existencias.Sys_PK, existencias.Existencia, existencias.ComponenteFK, existencias.AlmacenFK, componentes.NumeroParte, componentes.Descripcion FROM existencias  INNER JOIN componentes ON componentes.Sys_PK = existencias.ComponenteFK INNER JOIN almacenes ON almacenes.Sys_PK = existencias.AlmacenFK  WHERE almacenes.Descripcion LIKE '%"+ almacenOrigen +"%'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				observableListDescripcionComponente.add(resultados.getString(5));
+			}//FIN WHILE
+		}  catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return observableListDescripcionComponente;
+	}//FIN METODO
 
 }
