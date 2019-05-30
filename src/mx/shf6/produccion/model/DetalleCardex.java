@@ -5,9 +5,12 @@ import java.sql.Date;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.AlmacenDAO;
 import mx.shf6.produccion.model.dao.CardexDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
+import mx.shf6.produccion.model.dao.ExistenciaDAO;
 
 public class DetalleCardex {
 
@@ -20,13 +23,21 @@ public class DetalleCardex {
 	private ObjectProperty<Integer> componenteFK;
 	private ObjectProperty<Date> fecha;
 	
+	//PROPIEDADES COMPONENTEFK
+	private StringProperty noPartesComponente;
+	private StringProperty descripcionComponente;
+	
+	//PROPIEDADES ALMACENFK
+	private StringProperty codigoAlmacen;
+	private StringProperty descripcionAlmacen;
+			
 	//CONSTRUCTOR VACIO
 	public DetalleCardex() {
-		this (0, 0.0, 0.0, 0, 0, 0, new Date(System.currentTimeMillis()));
+		this (0, 0.0, 0.0, 0, 0, 0, new Date(System.currentTimeMillis()), "", "", "", "");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR
-	public DetalleCardex(Integer sysPK, double entrada, double salida, Integer cardexFK, Integer almacenFK, Integer componenteFK, Date fecha) {
+	public DetalleCardex(Integer sysPK, double entrada, double salida, Integer cardexFK, Integer almacenFK, Integer componenteFK, Date fecha, String noPartesComponente, String descripcionComponente, String codigoAlmacen, String descripcionAlmacen) {
 		this.sysPK = new SimpleObjectProperty<Integer> (sysPK);
 		this.entrada = new SimpleObjectProperty<Double> (entrada);
 		this.salida = new SimpleObjectProperty<Double> (salida);
@@ -34,6 +45,10 @@ public class DetalleCardex {
 		this.almacenFK = new SimpleObjectProperty<Integer> (almacenFK);
 		this.componenteFK = new SimpleObjectProperty<Integer> (componenteFK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
+		this.noPartesComponente = new SimpleStringProperty(noPartesComponente);
+		this.descripcionComponente = new SimpleStringProperty(descripcionComponente);
+		this.codigoAlmacen = new SimpleStringProperty(codigoAlmacen);
+		this.descripcionAlmacen = new SimpleStringProperty(descripcionAlmacen);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCEDER AL SYSPK
@@ -137,5 +152,81 @@ public class DetalleCardex {
 	
 	public ObjectProperty<Date> fechaProperty(){
 		return this.fecha;
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A NOPARTESCOMPONENTE
+	public void setNoPartesComponente(String noPartesComponentes) {
+		this.noPartesComponente.set(noPartesComponentes);
+	}//FIN METODO
+	
+	public String getNoPartesComponente() {
+		return this.noPartesComponente.get();
+	}//FIN METODO
+	
+	public StringProperty noPartesComponenteProperty() {
+		return this.noPartesComponente;
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A DESCRIPCIONCOMPONENTE
+	public void setDescripcionComponente (String descripcionComponente) {
+		this.descripcionComponente.set(descripcionComponente);
+	}//FIN METODO
+	
+	public String getDescripcionComponente() {
+		return this.descripcionComponente.get();
+	}//FIN METODO
+	
+	public StringProperty descripcionComponenteProperty() {
+		return this.descripcionComponente;
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A CODIGOALMACEN
+	public void setCodigoAlmacen(String codigoAlmacen) {
+		this.codigoAlmacen.set(codigoAlmacen);
+	}//FIN METODO
+	
+	public String getCodigoAlmacen() {
+		return this.codigoAlmacen.get();
+	}//FIN METODO
+	
+	public StringProperty codigoAlmacenProperty() {
+		return this.codigoAlmacen;
+	}//FIN METODO
+	
+	//METODO PARA ACCEDER A DESCRIPCIONALMACEN
+	public void setDescripcionAlmacen(String descripcionAlmacen) {
+		this.descripcionAlmacen.set(descripcionAlmacen);
+	}//FIN METODO
+	
+	public String getDescripcionAlmacen() {
+		return this.descripcionAlmacen.get();
+	}//FIN METODO
+	
+	public StringProperty descripcionAlmacenProperty() {
+		return this.descripcionAlmacen;
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A EXISTENCIACOMPONENTE
+	public Double getExistenciaComponente(Connection connection){
+		return ExistenciaDAO.readExistenciaComponente(connection, this.getComponenteFK(), this.getAlmacenFK());
+	}//FIN METODO
+	
+	public ObjectProperty<Double> existenciaComponenteProperty(Connection connection){
+		return new SimpleObjectProperty<Double>(this.getExistenciaComponente(connection));
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A NUEVA EXISTENCIA
+	public Double getNuevaExistencia(Connection connection) {
+		Double nuevaExistencia = 0.0;
+		if (this.getEntrada() > 0) {
+			nuevaExistencia = this.getExistenciaComponente(connection) + this.getEntrada();	
+		}else {
+			nuevaExistencia = this.getExistenciaComponente(connection) - this.getSalida();
+		}
+		return nuevaExistencia;
+	}//FIN METODO
+	
+	public ObjectProperty<Double> nuevaExistenciaProperty(Connection connection){
+		return new SimpleObjectProperty<Double>(this.getNuevaExistencia(connection));
 	}//FIN METODO
 }//FIN CLASE
