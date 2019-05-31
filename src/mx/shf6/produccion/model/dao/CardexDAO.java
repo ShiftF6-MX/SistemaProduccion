@@ -148,4 +148,21 @@ public class CardexDAO {
 			return false;
 		}//FIN TRY-CATCH
 	}//FIN METODO
+	
+	//METODO PARA OBTENER EL ULTIMO SYSPK
+	public static final int ultimoSysPK(Connection connection ) {
+		String query = "SELECT Sys_PK FROM cardex ORDER BY Sys_PK ASC";
+		int ultimoSysPK = 0;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				ultimoSysPK = resultados.getInt(1);
+			}//FIN WHILE
+			return ultimoSysPK;
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return ultimoSysPK;
+	}//FIN METODO
 }//FIN CLASE
