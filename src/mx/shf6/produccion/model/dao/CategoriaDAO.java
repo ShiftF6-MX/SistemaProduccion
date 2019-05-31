@@ -84,7 +84,7 @@ public class CategoriaDAO {
 	}//FIN METODO
 	
 	//METODO PARA LEER DESCRIPCIONES EN UN OBSERVABLElIST
-	public static final ObservableList<String> readDescripciones (Connection connection, String descripcion){
+	public static final ObservableList<String> readDescripciones (Connection connection){
 		ObservableList<String> observableListDescripcion = FXCollections.observableArrayList();
 		String query ="SELECT Sys_PK, Codigo, Descripcion FROM categorias ORDER BY Descripcion ASC";
 		try {
