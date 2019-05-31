@@ -3,7 +3,7 @@ package mx.shf6.produccion.view;
 
 import java.util.ArrayList;
 
-import javax.swing.JTextField;
+
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -14,6 +14,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -24,6 +25,7 @@ import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Puesto;
 import mx.shf6.produccion.model.dao.PuestoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.PTableColumn;
 
 public class PantallaPuesto {
 
@@ -38,10 +40,10 @@ public class PantallaPuesto {
 	
 	//COMPONENTES INTERFAZ
 	@FXML private TableView<Puesto> tablaPuesto;
-	@FXML private TableColumn<Puesto, String> columnaCodigo;
-	@FXML private TableColumn<Puesto, String> columnaDescripcion;
-	@FXML private TableColumn<Puesto, String> columnaAcciones;
-	@FXML private JTextField buscarPuesto;
+	@FXML private PTableColumn<Puesto, String> columnaCodigo;
+	@FXML private PTableColumn<Puesto, String> columnaDescripcion;
+	@FXML private PTableColumn<Puesto, String> columnaAcciones;
+	@FXML private TextField buscarPuesto;
 	
 	//INICIALIZA COMPONENTES QUE CONTRALAN INTERFAZ
 	@FXML private void initilize() {
@@ -53,7 +55,6 @@ public class PantallaPuesto {
 		this.mainApp = mainApp;
 		this.puesto = new  Puesto();
 		this.listaPuesto = PuestoDAO.readPuesto(this.mainApp.getConnection());
-		
 		actualizarTabla();
 		
 	}// FIN METODO
@@ -70,7 +71,7 @@ public class PantallaPuesto {
 		this.tablaPuesto.setItems(null);
 		this.listaPuesto.clear();
 		this.listaPuesto = PuestoDAO.readPuesto(mainApp.getConnection());
-		this.tablaPuesto.setItems(FXCollections.observableList(listaPuesto));
+		this.tablaPuesto.setItems(FXCollections.observableArrayList(listaPuesto));
 	}//FIN METODO ACTUALIZAR
 	
 	//BUSCAR REGISTRO
@@ -78,7 +79,7 @@ public class PantallaPuesto {
 		tablaPuesto.setItems(null);
 		listaPuesto.clear();
 		listaPuesto = PuestoDAO.readPuesto(mainApp.getConnection(), buscarPuesto.getText());
-		this.tablaPuesto.setItems(FXCollections.observableList(listaPuesto));	
+		this.tablaPuesto.setItems(FXCollections.observableArrayList(listaPuesto));	
 	}//FIN METODO BUSCAR
 	
 	//INICIALIZAR COLUMNA ACCIONES
