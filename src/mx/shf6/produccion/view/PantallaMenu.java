@@ -55,4 +55,9 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaTratamiento();
 	}//FIN METODO
 	
+	
+	@FXML private void manejadorMenuPuesto() {
+		this.mainApp.iniciarPantallaPuesto();
+	}//FIN METODO
+	
 }//FIN CLASE
