@@ -46,8 +46,7 @@ public class PantallaPuesto {
 	@FXML private TextField buscarPuesto;
 	
 	//INICIALIZA COMPONENTES QUE CONTRALAN INTERFAZ
-	@FXML private void initilize() {
-		
+	@FXML private void initialize() {
 		inicializarTabla();
 	}
 	
