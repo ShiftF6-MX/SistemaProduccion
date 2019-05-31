@@ -54,10 +54,12 @@ public class PantallaMenu {
 	@FXML private void manejadorMenuTratamiento() {
 		this.mainApp.iniciarPantallaTratamiento();
 	}//FIN METODO
-	
-	
+		
 	@FXML private void manejadorMenuPuesto() {
 		this.mainApp.iniciarPantallaPuesto();
-	}//FIN METODO
+	}//FIN METODO		
 	
+	@FXML private void manejadorMenuGrupoTrabajo() {
+		this.mainApp.iniciarPantallaGrupoTrabajo();
+	}//FIN METODO
 }//FIN CLASE

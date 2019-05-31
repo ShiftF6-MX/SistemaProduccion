@@ -286,7 +286,6 @@ public class PantallaComponente {
 			Notificacion.dialogoAlerta(AlertType.WARNING, "", "No existe detalle de ensamble para este componente");
 		} else {
 			this.mainApp.iniciarDialogoDetalleComponente(componente);
-			Componente.mostrarInformacionEnsamble(this.mainApp.getConnection(), componente, 0, "");
 		}//FIN IF/ELSE
 	}//FIN METODO
 	
