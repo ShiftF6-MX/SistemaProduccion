@@ -27,6 +27,7 @@ public class Cliente {
 	public static final int BLOQUEADO = 0;
 	public static final int ACTIVO = 1;
 	public static final int BAJA = 2;
+	public static final String FOLIO = "CL";
 	
 	//CONSTRUCTOR VACIO
 	public Cliente () {
