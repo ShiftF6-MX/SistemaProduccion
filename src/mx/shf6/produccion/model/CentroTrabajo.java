@@ -1,9 +1,12 @@
 package mx.shf6.produccion.model;
 
+import com.mysql.jdbc.Connection;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 
 	public class CentroTrabajo {
 	
@@ -27,7 +30,7 @@ import javafx.beans.property.StringProperty;
 		this.grupoTrabajoFK = new SimpleIntegerProperty(grupoTrabajoFK);
 	}//FIN CONSTRUCTOR
 	
-	//METODOS
+	//METODOS ACCEDER AL SYS_PK
 	public int getSysPK() {
 		return sysPK.get();
 	}//FIN METODO
@@ -39,7 +42,9 @@ import javafx.beans.property.StringProperty;
 	public IntegerProperty sysPKProperty() {
 		return sysPK;
 	}//FIN METODO
+	//FIN METODOS SYS_PK
 	
+	//METODO ACCEDER AL CODIGO
 	public String getCodigo() {
 		return codigo.get();
 	}//FIN METODO
@@ -51,7 +56,9 @@ import javafx.beans.property.StringProperty;
 	public StringProperty codigoProperty() {
 		return codigo;
 	}//FIN METODO
+	//FIN METODOS CODIGO
 	
+	//METODO ACCEDER A LA DESCRIPCION
 	public String getDescripcion() {
 		return descripcion.get();
 	}//FIN METODO
@@ -63,7 +70,9 @@ import javafx.beans.property.StringProperty;
 	public StringProperty descripcionProperty() {
 		return descripcion;
 	}//FIN METODO
+	//FIN METODOS DESCRIPCION
 	
+	//METODO ACCDEDER AL GRUPO_TRABAJO
 	public int getGrupoTrabajoFK() {
 		return grupoTrabajoFK.get();
 	}//FIN METODO
@@ -75,4 +84,9 @@ import javafx.beans.property.StringProperty;
 	public IntegerProperty grupoTrabajoFK() {
 		return grupoTrabajoFK;
 	}//FIN METODO
+	
+	public GrupoTrabajo getGrupoTrabajo(Connection conection) {
+		return GrupoTrabajoDAO.readGrupoTrabajo(conection, getGrupoTrabajoFK());
+	}
+	//FIN METODOS GRUPO TRABAJO
 }//FIN CLASE

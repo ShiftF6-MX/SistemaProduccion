@@ -1,9 +1,13 @@
 package mx.shf6.produccion.model;
 
+import com.mysql.jdbc.Connection;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import mx.shf6.produccion.model.dao.EmpleadoDAO;
+import mx.shf6.produccion.model.dao.PuestoDAO;
 
 public class Empleado {
 
@@ -28,7 +32,7 @@ public class Empleado {
 		this.puestoFK = new SimpleIntegerProperty(puestoFK);
 	}//FIN CONSTRUCTOR
 	
-	///METODOS
+	///METODO PARA ACCESO AL "SYS_PK"
 	public Integer getSysPK() {
 		return sysPK.get();
 	}//FIN METODO
@@ -39,8 +43,10 @@ public class Empleado {
 	
 	public IntegerProperty sysPKProperty() {
 		return sysPK;
-	}//FIN METODO
+	}//FIN METODO 
+	//FIN METODOS SYS_PK
 	
+	///METODO PARA ACCESO AL "CODIGO"
 	public String getCodigo() {
 		return codigo.get();
 	}//FIN METODO
@@ -52,7 +58,9 @@ public class Empleado {
 	public StringProperty codigoProperty() {
 		return codigo;
 	}//FIN METODO
+	//FIN METODOS CODIGO
 	
+	///METODO PARA ACCESO AL "NOMBRE"
 	public String getNombre() {
 		return nombre.get();
 	}//FIN METODO
@@ -64,7 +72,9 @@ public class Empleado {
 	public StringProperty nombreProperty() {
 		return nombre;
 	}//FIN METODO
+	//FIN METODOS NOMBRE
 	
+	///METODO PARA ACCESO AL "PUESTO"
 	public int getPuestoFK() {
 		return puestoFK.get();
 	}//FIN METODO
@@ -73,8 +83,13 @@ public class Empleado {
 		this.puestoFK.set(puestoFK);	
 	}//FIN METODO
 	
-	public IntegerProperty puestoFK() {
+	public IntegerProperty puestoFKProperty() {
 		return puestoFK;
 	}//FIN METODO
+	
+	public Puesto getPuesto(Connection conection) {
+		return PuestoDAO.readPuesto(conection, this.getPuestoFK());
+	}//FIN METODO
+	//FIN METODOS PUESTO
 
 }//FIN CLASE
