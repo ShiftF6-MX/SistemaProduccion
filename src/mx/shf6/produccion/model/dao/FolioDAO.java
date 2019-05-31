@@ -68,6 +68,25 @@ public class FolioDAO {
 		}//FIN TRY/CATCH
 		return folio;
 	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static Folio readFolioByFolio(Connection connection, String byFolio) {
+		Folio folio = new Folio();
+		String consulta = "SELECT Sys_PK, Folio, Serie, Descripcion FROM folios WHERE Folio = '" + byFolio + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				folio.setSysPK(resultados.getInt(1));
+				folio.setFolio(resultados.getString(2));
+				folio.setSerie(resultados.getInt(3));
+				folio.setDescripcion(resultados.getString(4));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return folio;
+	}//FIN METODO
 		
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateFolio(Connection connection, Folio folio) {
