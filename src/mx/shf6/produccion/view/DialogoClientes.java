@@ -3,8 +3,7 @@ package mx.shf6.produccion.view;
 
 import java.io.File;
 import java.sql.SQLException;
-
-
+import java.text.DecimalFormat;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -19,9 +18,11 @@ import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Domicilio;
+import mx.shf6.produccion.model.Folio;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.DomicilioDAO;
+import mx.shf6.produccion.model.dao.FolioDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.model.dao.SepomexDAO;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -175,8 +176,8 @@ public class DialogoClientes  {
 			
 			
 		} else if (this.opcion == CREAR) {
-			this.codigoField.setText("");
-			this.codigoField.setDisable(false);
+			this.codigoField.setText("<A>");
+			this.codigoField.setDisable(true);
 			
 			this.nombreField.setText("");
 			this.nombreField.setDisable(false);
@@ -341,7 +342,10 @@ public class DialogoClientes  {
 	
 	@FXML
 	private void btnGuardar()  {
-		this.cliente.setCodigo(this.codigoField.getText());
+		DecimalFormat decimalFormat = new DecimalFormat("000000");
+		Folio folio = FolioDAO.readFolioByFolio(this.mainApp.getConnection(), Cliente.FOLIO);
+		String codigo = folio.getFolio() + decimalFormat.format(folio.getSerie() + 1);
+		this.cliente.setCodigo(codigo);
 		this.cliente.setNombre(this.nombreField.getText());
 		this.cliente.setRegistroContribuyente(this.registroContribuyenteField.getText());
 		this.cliente.setTelefono(this.telefonoField.getText());
