@@ -1,20 +1,24 @@
-package model;
+package mx.shf6.produccion.model;
+
+import java.sql.Date;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 
 public class Proceso {
 
 	//PROPIEDADES
 	private IntegerProperty sysPK;
-	private IntegerProperty fecha;
+	private ObjectProperty<Date> fecha;
 	private IntegerProperty cantidad;
 	private IntegerProperty ordenamiento;
 	private IntegerProperty nivel;
 	private StringProperty destino;
-	private IntegerProperty tiempo;
+	//private IntegerProperty tiempo;
 	private IntegerProperty componenteFK;
 	private IntegerProperty empleadoFK;
 
@@ -24,18 +28,18 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0,0,0,0,0,"",0,0,0);
+		this(0,null,0,0,0,"",0,0);
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public Proceso(Integer sysPK, Integer fecha, Integer cantidad, Integer ordenamiento, Integer nivel, String destino, Integer tiempo, Integer componenteFK, Integer empleadoFK){
+	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, String destino, Integer componenteFK, Integer empleadoFK){
 		this.sysPK = new SimpleIntegerProperty(sysPK);
-		this.fecha = new SimpleIntegerProperty(fecha);
+		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.cantidad = new SimpleIntegerProperty(cantidad);
 		this.ordenamiento = new SimpleIntegerProperty(ordenamiento);
 		this.nivel = new SimpleIntegerProperty(nivel);
 		this.destino = new SimpleStringProperty(destino);
-		this.tiempo = new SimpleIntegerProperty(tiempo);
+		//this.tiempo = new SimpleIntegerProperty(tiempo);
 		this.componenteFK = new SimpleIntegerProperty(componenteFK);
 		this.empleadoFK = new SimpleIntegerProperty(empleadoFK);
 	}//FIN CONSTRUCTOR
@@ -55,15 +59,15 @@ public class Proceso {
 	//FIN METODOS "SYSPK"
 
 	//METODOS PARA ACCESO A FECHA
-	public Integer getFecha() {
+	public Date getFecha() {
 		return fecha.get();
 	}//FIN METODO
 
-	public void setFecha(Integer fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha.set(fecha);
 	}//FIN METODO
 
-	public IntegerProperty fechaProperty() {
+	public ObjectProperty<Date> fechaProperty() {
 		return fecha;
 	}//FIN METODO
 	//FIN METODOS "FECHA"
@@ -125,6 +129,7 @@ public class Proceso {
 	//FIN METODOS "DESTINO"
 
 	//METODOS PARA ACCESO A "TIEMPO"
+	/*
 	public Integer getTiempo() {
 		return tiempo.get();
 	}//FIN METODO
@@ -137,6 +142,7 @@ public class Proceso {
 	   	return tiempo;
 	 }//FIN METODO
 	//FIN METODOS A "TIEMPO"
+	 */
 
 	//METODOS PARA ACCESO A "COMPONENTEFK"
 	public Integer getComponenteFK() {

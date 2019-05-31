@@ -1,4 +1,4 @@
-package model;
+package mx.shf6.produccion.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -27,13 +27,14 @@ public class DetalleProceso {
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Integer tiempoPreparacion, Integer tiempoOperacion, Integer centroTabajo, Integer grupoTrabajo, Integer procesoFK) {
+	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Integer tiempoPreparacion, Integer tiempoOperacion, Integer centroTrabajoFK, Integer grupoTrabajoFK, Integer procesoFK) {
 		this.sysPK = new SimpleIntegerProperty(sysPK);
 		this.operacion = new SimpleIntegerProperty(operacion);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.tiempoPreparacion = new SimpleIntegerProperty(tiempoPreparacion);
 		this.tiempoOperacion = new SimpleIntegerProperty(tiempoOperacion);
-		this.centroTrabajoFK = new SimpleIntegerProperty(grupoTrabajo);
+		this.centroTrabajoFK = new SimpleIntegerProperty(centroTrabajoFK);
+		this.grupoTrabajoFK = new SimpleIntegerProperty(grupoTrabajoFK);
 		this.procesoFK = new SimpleIntegerProperty(procesoFK);
 	}//FIN CONSTRUCTOR
 
@@ -137,7 +138,7 @@ public class DetalleProceso {
 
 	//METODOS PARA ACCESO A "PROCESOFK"
 	public Integer getProcesoFK() {
-		return centroTrabajoFK.get();
+		return procesoFK.get();
 	}//FIN METODO
 
 	public void setProcesoFK(Integer procesoFK) {
