@@ -63,6 +63,7 @@ import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaCotizaciones;
 import mx.shf6.produccion.view.PantallaDetalleCotizacion;
+import mx.shf6.produccion.view.PantallaGrupoTrabajo;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
@@ -102,7 +103,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaTratamiento;
 	private AnchorPane pantallaPuesto;
-	
+	private AnchorPane pantallaGrupoTrabajo;	
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -550,6 +551,21 @@ public class MainApp extends Application {
 			
 			PantallaPuesto pantallaPuesto = fxmlLoader.getController();
 			pantallaPuesto.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//INICIAR PANTALLA PUESTO
+	public void iniciarPantallaGrupoTrabajo() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaGrupoTrabajo.fxml"));
+			this.pantallaGrupoTrabajo = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaGrupoTrabajo);
+			
+			PantallaGrupoTrabajo pantallaGrupoTrabajo = fxmlLoader.getController();
+			pantallaGrupoTrabajo.setMainApp(this);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
