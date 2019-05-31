@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Categoria;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -81,7 +81,23 @@ public class CategoriaDAO {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY-CATCH
 		return arrayListCategoria;
-	}//fin metodo
+	}//FIN METODO
+	
+	//METODO PARA LEER DESCRIPCIONES EN UN OBSERVABLElIST
+	public static final ObservableList<String> readDescripciones (Connection connection, String descripcion){
+		ObservableList<String> observableListDescripcion = FXCollections.observableArrayList();
+		String query ="SELECT Sys_PK, Codigo, Descripcion FROM categorias ORDER BY Descripcion ASC";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				observableListDescripcion.add(resultados.getString(3));
+			}//FIN WHILE
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return observableListDescripcion;
+	}//FIN METODO
 	
 	//METODO PARA ACTUALIZAR UN REGISTRO
 	public static final boolean update(Connection connection, Categoria categoria) {
