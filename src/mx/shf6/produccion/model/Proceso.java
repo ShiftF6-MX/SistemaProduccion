@@ -5,9 +5,7 @@ import java.sql.Date;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
 
 public class Proceso {
 
@@ -17,7 +15,7 @@ public class Proceso {
 	private IntegerProperty cantidad;
 	private IntegerProperty ordenamiento;
 	private IntegerProperty nivel;
-	private StringProperty destino;
+	private IntegerProperty centroTrabajoFK;
 	//private IntegerProperty tiempo;
 	private IntegerProperty componenteFK;
 	private IntegerProperty empleadoFK;
@@ -28,17 +26,17 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0,null,0,0,0,"",0,0);
+		this(0,null,0,0,0,0,0,0);
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, String destino, Integer componenteFK, Integer empleadoFK){
+	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, Integer componenteFK, Integer empleadoFK){
 		this.sysPK = new SimpleIntegerProperty(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.cantidad = new SimpleIntegerProperty(cantidad);
 		this.ordenamiento = new SimpleIntegerProperty(ordenamiento);
 		this.nivel = new SimpleIntegerProperty(nivel);
-		this.destino = new SimpleStringProperty(destino);
+		this.centroTrabajoFK = new SimpleIntegerProperty(centroTrabajoFK);
 		//this.tiempo = new SimpleIntegerProperty(tiempo);
 		this.componenteFK = new SimpleIntegerProperty(componenteFK);
 		this.empleadoFK = new SimpleIntegerProperty(empleadoFK);
@@ -114,19 +112,19 @@ public class Proceso {
     }//FIN METODO
 	//FIN METODOS "NIVEL"
 
-	//METODOS PARA ACCESO A "DESTINO"
-	public String getDestino() {
-		return destino.get();
+	//METODOS PARA ACCESO A "CENTROTRABAJOFK"
+	public Integer getCentroTrabajoFK() {
+		return centroTrabajoFK.get();
 	}//FIN METODO
 
-	public void setDestino(String destino) {
-    	this.destino.set(destino);
+	public void setCentroTrabajoFK(Integer centroTrabajoFK) {
+    	this.centroTrabajoFK.set(centroTrabajoFK);
     }//FIN METODO
 
-	public StringProperty destinoProperty() {
-    	return destino;
+	public IntegerProperty centroTrabajoFKProperty() {
+    	return centroTrabajoFK;
     }//FIN METODO
-	//FIN METODOS "DESTINO"
+	//FIN METODOS "CENTROTRABAJOFK"
 
 	//METODOS PARA ACCESO A "TIEMPO"
 	/*
@@ -167,7 +165,7 @@ public class Proceso {
 	    this.empleadoFK.set(empleadoFK);
 	 }//FIN METODO
 
-	 public IntegerProperty empleadoFK() {
+	 public IntegerProperty empleadoFKProperty() {
 	    return empleadoFK;
 	 }//FIN METODO
 	//FIN METODOS "EMPLEADOFK"
