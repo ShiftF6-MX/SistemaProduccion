@@ -66,6 +66,7 @@ import mx.shf6.produccion.view.PantallaDetalleCotizacion;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
+import mx.shf6.produccion.view.PantallaPuesto;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
 import mx.shf6.produccion.view.PantallaTratamiento;
@@ -100,6 +101,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaMaterial;
 	private AnchorPane pantallaAcabado;
 	private AnchorPane pantallaTratamiento;
+	private AnchorPane pantallaPuesto;
 	
 	
 	//DIALOGOS DEL SISTEMA
@@ -538,7 +540,20 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	
+	//INICIAR PANTALLA PUESTO
+	public void iniciarPantallaPuesto() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaPuesto.fxml"));
+			this.pantallaPuesto = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaPuesto);
+			
+			PantallaPuesto pantallaPuesto = fxmlLoader.getController();
+			pantallaPuesto.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
 	
 	
 	//METODOS DIALOGOS
