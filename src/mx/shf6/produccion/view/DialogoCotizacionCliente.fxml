@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="560.0" prefWidth="828.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoCotizacionCliente">
    <children>
-      <VBox prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER_LEFT" prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="50.0" spacing="10.0">
                <children>
@@ -22,10 +22,19 @@
                      <image>
                         <Image url="@images/1x/StartButton.png" />
                      </image>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
                   </ImageView>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="50.0">
+                  <VBox alignment="CENTER_LEFT">
                      <children>
-                        <TextField fx:id="buscarCotizacion" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
+                        <Label fx:id="etiquetaNombreCliente" styleClass="labelRobotoMedium16" text="Nombre cliente" textFill="WHITE" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestión de las cotizaciones realizadas al cliente" textFill="WHITE" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="50.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="buscarCotizacion" prefHeight="30.0" prefWidth="200.0" promptText="Buscar" styleClass="campoBuscador">
                            <font>
                               <Font name="Roboto" size="12.0" />
                            </font>
@@ -52,19 +61,16 @@
                            <image>
                               <Image url="@images/1x/AgregarBoton.png" />
                            </image>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
                         </ImageView>
                      </children>
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
                   </HBox>
-                  <VBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label styleClass="labelRobotoMedium16" text="Cotizaciones" textFill="WHITE" />
-                        <Label styleClass="labelRobotoMedium14" text="Gestion de las cotizaciones de proyectos" textFill="WHITE" />
-                     </children>
-                  </VBox>
                </children>
-               <VBox.margin>
-                  <Insets left="15.0" right="15.0" top="15.0" />
-               </VBox.margin>
             </HBox>
          </children>
       </VBox>
@@ -77,7 +83,6 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                      <columns>
-                        <TableColumn fx:id="clienteColumna" minWidth="-1.0" prefWidth="-1.0" text="Cliente" />
                         <TableColumn fx:id="referenciaColumna" minWidth="-1.0" prefWidth="-1.0" text="Referencia" />
                         <TableColumn fx:id="fechaColumna" minWidth="-1.0" prefWidth="48.0" text="Fecha" />
                         <TableColumn fx:id="statusColumna" minWidth="-1.0" prefWidth="141.0" text="Status" />
