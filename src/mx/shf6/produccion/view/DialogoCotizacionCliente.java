@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,17 +41,16 @@ public class DialogoCotizacionCliente {
 	
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TableView<Cotizacion> tablaCotizacion;
-	@FXML private TableColumn<Cotizacion, String> clienteColumna;
 	@FXML private TableColumn<Cotizacion, String> referenciaColumna;
 	@FXML private TableColumn<Cotizacion, Date> fechaColumna;
 	@FXML private TableColumn<Cotizacion, String> statusColumna;
 	@FXML private TableColumn<Cotizacion, String> observacionesColumna;
 	@FXML private TableColumn<Cotizacion, String> accionesColumn;	
 	@FXML private TextField buscarCotizacion;	
+	@FXML private Label etiquetaNombreCliente;
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.cotizacion = new Cotizacion();
 		this.buscarCotizacion.setOnKeyPressed(new EventHandler<KeyEvent>() {
     		@Override
     		public void handle(KeyEvent event) {
@@ -61,31 +61,18 @@ public class DialogoCotizacionCliente {
 		this.inicializaTabla();
 	}//FIN METODO
 	
-	//ACTUALIZA LA TABLA DE ACUERDO AL CRITERIO DE BÚSQUEDA
-	@FXML private void buscarButtonHandler() {
-    	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
-    		tablaCotizacion.setItems(null);
-    		listaCotizaciones.clear();
-    		listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), cliente.getSysPK(), this.buscarCotizacion.getText());
-    		tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
-    	} else {
-    		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
-    	}//FIN IF-ELSE
-    	
-    }//FIN METODO
-	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
 	public void setMainApp(MainApp mainApp, Cliente cliente) {
 		this.mainApp = mainApp;
 		this.cliente = cliente;
+		this.cotizacion = new Cotizacion();
 		listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), this.cliente.getSysPK());			
-		
 		this.actualizarTabla();
+		this.etiquetaNombreCliente.setText(this.cliente.getNombre());
 	}//FIN METODO	
 	
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE COTIZACIONES
 	private void inicializaTabla() {
-    	clienteColumna.setCellValueFactory(cellData -> cellData.getValue().getCliente(this.mainApp.getConnection()).nombreProperty());
         referenciaColumna.setCellValueFactory(cellData -> cellData.getValue().referenciaProperty());
         fechaColumna.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
         statusColumna.setCellValueFactory(cellData -> cellData.getValue().descripcionStatusProperty());
@@ -138,7 +125,7 @@ public class DialogoCotizacionCliente {
 					botonAgregar.setCursor(Cursor.HAND);
 					botonAgregar.setTooltip(new Tooltip("Detalle Cotización"));
 					
-					botonAprobar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+					botonAprobar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AprobarIcono.png"))));
 					botonAprobar.setPrefSize(16.0, 16.0);
 					botonAprobar.setPadding(Insets.EMPTY);
 					botonAprobar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -146,7 +133,7 @@ public class DialogoCotizacionCliente {
 					botonAprobar.setCursor(Cursor.HAND);
 					botonAprobar.setTooltip(new Tooltip("Aprobar Cotización"));
 					
-					botonCancelar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
+					botonCancelar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/NoAprobarIcono.png"))));
 					botonCancelar.setPrefSize(16.0, 16.0);
 					botonCancelar.setPadding(Insets.EMPTY);
 					botonCancelar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -208,8 +195,10 @@ public class DialogoCotizacionCliente {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
 		            			cotizacion.setStatus(Cotizacion.APROBADA);
-		            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-		            			actualizarTabla();
+		            			if (Notificacion.dialogoPreguntar("", "¿Realmente deseas aprobar esta cotización?")) {
+		            				CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+		            				actualizarTabla();
+		            			}
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
@@ -219,8 +208,10 @@ public class DialogoCotizacionCliente {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
 		            			cotizacion = getTableView().getItems().get(getIndex());
 		            			cotizacion.setStatus(Cotizacion.CANCELADA);
-		            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-		            			actualizarTabla();
+		            			if (Notificacion.dialogoPreguntar("", "¿Realmente deseas cancelar esta cotización?")) {
+		            				CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+		            				actualizarTabla();
+		            			}
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
@@ -235,14 +226,6 @@ public class DialogoCotizacionCliente {
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
 	
-	
-	@FXML private void nuevaCotizacion() {
-		this.cotizacion = new Cotizacion();
-		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR, cliente);
-		this.actualizarTabla();
-	}//FIN METODO	
-
-	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {
 		tablaCotizacion.setItems(null);
 		listaCotizaciones.clear();
@@ -255,7 +238,28 @@ public class DialogoCotizacionCliente {
 			tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
 	    	buscarCotizacion.setText("");	
 		}//FIN IF
-	}//FIN METODO
+	}//FIN METODO	
+	
+	//MANEJADORES
+	@FXML private void buscarButtonHandler() {
+    	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
+    		tablaCotizacion.setItems(null);
+    		listaCotizaciones.clear();
+    		listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), cliente.getSysPK(), this.buscarCotizacion.getText());
+    		tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
+    	} else {
+    		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
+    	}//FIN IF-ELSE
+    	
+    }//FIN METODO
+	
+	@FXML private void nuevaCotizacion() {
+		this.cotizacion = new Cotizacion();
+		this.mainApp.iniciarDialogoCotizacion(this.cotizacion, DialogoCotizacion.CREAR, cliente);
+		this.actualizarTabla();
+	}//FIN METODO	
+
+
 	
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCerrar() {
