@@ -68,7 +68,7 @@ public class PantallaDetalleCotizacion {
 	}//FIN METODO
 	
 	@FXML private void manejadorAgregar() {
-		DetalleCotizacionDAO.createDetalleCotizacion(this.mainApp.getConnection(), this.mainApp.iniciarDialogoDetalleCotizacion(this.cotizacion));
+		this.mainApp.iniciarDialogoDetalleCotizacion(this.cotizacion);
 		this.actualizarTabla();
 	}//FIN METODO
 	
