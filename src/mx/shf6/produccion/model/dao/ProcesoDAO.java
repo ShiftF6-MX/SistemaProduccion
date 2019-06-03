@@ -103,6 +103,7 @@ public class ProcesoDAO {
 					proceso.setCentroTrabajoFK(resultados.getInt(6));
 					proceso.setComponenteFK(resultados.getInt(7));
 					proceso.setEmpleadoFK(resultados.getInt(8));
+					arrayListProceso.add(proceso);
 				}//FIN WHILE
 			} catch(SQLException ex) {
 				Notificacion.dialogoException(ex);
@@ -149,7 +150,7 @@ public class ProcesoDAO {
 		//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
 		public static ObservableList<Proceso> toObservableList(ArrayList<Proceso> arrayList) {
 			ObservableList<Proceso> listaObservableProceso = FXCollections.observableArrayList();
-			for(Proceso proceso : arrayList) {
+			for (Proceso proceso : arrayList) {
 				listaObservableProceso.add(proceso);
 			}
 		    return listaObservableProceso;
