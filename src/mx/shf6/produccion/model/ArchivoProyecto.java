@@ -6,7 +6,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 
 public class ArchivoProyecto {

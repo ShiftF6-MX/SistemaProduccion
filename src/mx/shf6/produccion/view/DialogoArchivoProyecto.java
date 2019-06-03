@@ -113,7 +113,7 @@ public class DialogoArchivoProyecto {
 				} else
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
 			} else if ( this.opcion == VER) {
-				this.mainApp.getEscenarioDialogos().close();
+				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN ELSE IF
 		}//FIN IF
 		
