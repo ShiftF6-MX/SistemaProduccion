@@ -1,24 +1,34 @@
 package mx.shf6.produccion.model;
 
+import java.sql.Connection;
 import java.sql.Date;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import mx.shf6.produccion.model.dao.CentroTrabajoDAO;
+import mx.shf6.produccion.model.dao.ComponenteDAO;
+import mx.shf6.produccion.model.dao.DomicilioDAO;
+import mx.shf6.produccion.model.dao.EmpleadoDAO;
 import javafx.beans.property.ObjectProperty;
 
 public class Proceso {
 
 	//PROPIEDADES
-	private IntegerProperty sysPK;
+	private ObjectProperty<Integer> sysPK;
 	private ObjectProperty<Date> fecha;
-	private IntegerProperty cantidad;
-	private IntegerProperty ordenamiento;
-	private IntegerProperty nivel;
-	private IntegerProperty centroTrabajoFK;
+	private ObjectProperty<Integer> cantidad;
+	private ObjectProperty<Integer> ordenamiento;
+	private ObjectProperty<Integer> nivel;
+	private ObjectProperty<Integer> centroTrabajoFK;
+	private StringProperty nombreCentroTrabajo;
 	//private IntegerProperty tiempo;
-	private IntegerProperty componenteFK;
-	private IntegerProperty empleadoFK;
+	private ObjectProperty<Integer> componenteFK;
+	private StringProperty nombreComponente;
+	private ObjectProperty<Integer> empleadoFK;
+	private StringProperty nombreEmpleado;
 
 	//VARIABLES
 
@@ -26,43 +36,46 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0,null,0,0,0,0,0,0);
+		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "",0, "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, Integer componenteFK, Integer empleadoFK){
-		this.sysPK = new SimpleIntegerProperty(sysPK);
+	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer componenteFK, String nombreComponente, Integer empleadoFK, String nombreEmpleado){
+		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
-		this.cantidad = new SimpleIntegerProperty(cantidad);
-		this.ordenamiento = new SimpleIntegerProperty(ordenamiento);
-		this.nivel = new SimpleIntegerProperty(nivel);
-		this.centroTrabajoFK = new SimpleIntegerProperty(centroTrabajoFK);
+		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
+		this.ordenamiento = new SimpleObjectProperty<Integer>(ordenamiento);
+		this.nivel = new SimpleObjectProperty<Integer>(nivel);
+		this.centroTrabajoFK = new SimpleObjectProperty<Integer>(centroTrabajoFK);
+		this.nombreCentroTrabajo = new SimpleStringProperty(nombreCentroTrabajo);
 		//this.tiempo = new SimpleIntegerProperty(tiempo);
-		this.componenteFK = new SimpleIntegerProperty(componenteFK);
-		this.empleadoFK = new SimpleIntegerProperty(empleadoFK);
+		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
+		this.nombreComponente = new SimpleStringProperty(nombreComponente);
+		this.empleadoFK = new SimpleObjectProperty<Integer>(empleadoFK);
+		this.nombreEmpleado = new SimpleStringProperty(nombreEmpleado);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
+	public void setSysPK(Integer sysPK) {
+		this.sysPK.set(sysPK);
+	}//FIN METODO
+	
 	public Integer getSysPK() {
 		return sysPK.get();
 	}//FIN METODO
 
-	public void setSysPK(Integer sysPK) {
-		this.sysPK.set(sysPK);
-	}//FIN METODO
-
-	public IntegerProperty sysPKProperty() {
+	public ObjectProperty<Integer> sysPKProperty() {
     	return sysPK;
     }//FIN METODO
 	//FIN METODOS "SYSPK"
 
 	//METODOS PARA ACCESO A FECHA
-	public Date getFecha() {
-		return fecha.get();
-	}//FIN METODO
-
 	public void setFecha(Date fecha) {
 		this.fecha.set(fecha);
+	}//FIN METODO
+	
+	public Date getFecha() {
+		return fecha.get();
 	}//FIN METODO
 
 	public ObjectProperty<Date> fechaProperty() {
@@ -71,59 +84,75 @@ public class Proceso {
 	//FIN METODOS "FECHA"
 
 	//METODOS PARA ACCESO A "CANTIDAD"
+	public void setCantidad(Integer cantidad) {
+        this.cantidad.set(cantidad);
+    }//FIN METODO
+	
 	public Integer getCantidad() {
         return cantidad.get();
     }//FIN METODO
 
-	public void setCantidad(Integer cantidad) {
-        this.cantidad.set(cantidad);
-    }//FIN METODO
-
-	public IntegerProperty cantidadProperty() {
+	public ObjectProperty<Integer> cantidadProperty() {
         return cantidad;
     }//FIN METODO
 	//FIN METODOS "CANTIDAD"
 
 	//METODO PARA ACCESO A "ORDENAMIENTO"
+	 public void setOrdenamiento(Integer ordenamiento) {
+		 this.ordenamiento.set(ordenamiento);
+	 }//FIN METODO
+	
 	public Integer getOrdenamiento() {
         return ordenamiento.get();
     }//FIN METODO
 
-	 public void setOrdenamiento(Integer ordenamiento) {
-		 this.ordenamiento.set(ordenamiento);
-	 }//FIN METODO
-
-	 public IntegerProperty ordenamientoProperty() {
+	 public ObjectProperty<Integer> ordenamientoProperty() {
 	      return ordenamiento;
 	 }//FIN METODO
 	//FIN METODOS "ORDENAMIENTO"
 
 	 //METODO PARA ACCESO A "NIVEL"
-	public Integer getNivel() {
+	 public void setNivel(Integer nivel) {
+	   	this.nivel.set(nivel);
+	 }//FIN METODO
+		
+	 public Integer getNivel() {
 		return nivel.get();
 	}//FIN METODO
 
-	public void setNivel(Integer nivel) {
-    	this.nivel.set(nivel);
-    }//FIN METODO
-
-	public IntegerProperty nivelProperty() {
+	public ObjectProperty<Integer> nivelProperty() {
     	return nivel;
     }//FIN METODO
 	//FIN METODOS "NIVEL"
 
 	//METODOS PARA ACCESO A "CENTROTRABAJOFK"
+	public void setCentroTrabajoFK(Integer centroTrabajoFK) {
+    	this.centroTrabajoFK.set(centroTrabajoFK);
+    }//FIN METODO
+	
 	public Integer getCentroTrabajoFK() {
 		return centroTrabajoFK.get();
 	}//FIN METODO
 
-	public void setCentroTrabajoFK(Integer centroTrabajoFK) {
-    	this.centroTrabajoFK.set(centroTrabajoFK);
-    }//FIN METODO
-
-	public IntegerProperty centroTrabajoFKProperty() {
+	public ObjectProperty<Integer> centroTrabajoFKProperty() {
     	return centroTrabajoFK;
     }//FIN METODO
+	
+	public CentroTrabajo getCentroTrabajo(Connection connection) {
+		return CentroTrabajoDAO.readCentroTrabajo(connection, this.getCentroTrabajoFK());
+	}//FIN METODO
+	
+	public void setNombreCentroTrabajo(String nombreCentroTrabajo) {
+		this.nombreCentroTrabajo.set(nombreCentroTrabajo);
+	}//FIN METODO
+	
+	public String getNombreTrabajo() {
+		return this.nombreCentroTrabajo.get();
+	}//FIN METODO
+	
+	public StringProperty nombreCentroTrabajoProperty() {
+		return this.nombreCentroTrabajo;
+	}//FIN METODO
 	//FIN METODOS "CENTROTRABAJOFK"
 
 	//METODOS PARA ACCESO A "TIEMPO"
@@ -143,31 +172,63 @@ public class Proceso {
 	 */
 
 	//METODOS PARA ACCESO A "COMPONENTEFK"
+	public void setComponenteFK(Integer componenteFK) {
+    	this.componenteFK.set(componenteFK);
+    }//FIN METODO
+	
 	public Integer getComponenteFK() {
 		return componenteFK.get();
 	}//FIN METODO
 
-	public void setComponenteFK(Integer componenteFK) {
-    	this.componenteFK.set(componenteFK);
-    }//FIN METODO
-
-	public IntegerProperty componenteFKProperty() {
+	public ObjectProperty<Integer> componenteFKProperty() {
     	return componenteFK;
     }//FIN METODO
+	
+	public Componente getComponente(Connection connection) {
+		return ComponenteDAO.readComponente(connection, this.getComponenteFK());
+	}//FIN METODO
+	
+	public void setNombreComponente(String nombreComponente) {
+		this.nombreComponente.set(nombreComponente);
+	}//FIN METODO
+	
+	public String getNombreComponente() {
+		return this.nombreComponente.get();
+	}//FIN METODO
+	
+	public StringProperty nombreComponenteProperty() {
+		return this.nombreComponente;
+	}//FIN METODO
 	//FIN METODOS "COMPONENTEFK"
 
 	//METODOS PARA ACCESO A "EMPLEADOFK"
+	public void setEmpleadoFK(Integer empleadoFK) {
+	    this.empleadoFK.set(empleadoFK);
+	 }//FIN METODO
+	
 	public Integer getEmpleadoFK() {
 		return empleadoFK.get();
 	}//FIN METODO
 
-	 public void setEmpleadoFK(Integer empleadoFK) {
-	    this.empleadoFK.set(empleadoFK);
-	 }//FIN METODO
-
-	 public IntegerProperty empleadoFKProperty() {
+	 public ObjectProperty<Integer> empleadoFKProperty() {
 	    return empleadoFK;
 	 }//FIN METODO
+	 
+	 public Empleado getEmpleado(Connection connection) {
+		return EmpleadoDAO.readEmpleado(connection, this.getEmpleadoFK());
+	 }//FIN METODO
+	 
+	 public void setNombreEmpleado(String nombreEmpleado) {
+		this.nombreEmpleado.set(nombreEmpleado); 
+	 }//FIN METODO
+	 
+	 public String getEmpleado() {
+		 return nombreEmpleado.get();
+	 }//FIN METODO
+	 
+	 public StringProperty nombreEmpleadoProperty() {
+		 return this.nombreEmpleado;
+	 } //FIN METODO
 	//FIN METODOS "EMPLEADOFK"
 
 }//FIN CLASE
