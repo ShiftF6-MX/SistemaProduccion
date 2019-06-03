@@ -77,6 +77,22 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </HBox>
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuProceso" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/PuestosIcono.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Procesos" textFill="#d1d0d2" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </HBox>
             <Label styleClass="labelRobotoBold14" text="CATÁLOGOS" textFill="#d1d0d2">
                <VBox.margin>
                   <Insets top="5.0" />
