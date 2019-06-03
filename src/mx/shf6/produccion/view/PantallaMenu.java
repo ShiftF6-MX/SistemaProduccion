@@ -70,4 +70,9 @@ public class PantallaMenu {
 	@FXML private void manejadorMenuEmpleado() {
 		this.mainApp.iniciarPantallaEmpleado();
 	}//FIN METODO
+	
+	@FXML private void manejadorMenuProceso() {
+		this.mainApp.iniciarPantallaProceso();
+	}//FIN METODO
+	
 }//FIN CLASE
