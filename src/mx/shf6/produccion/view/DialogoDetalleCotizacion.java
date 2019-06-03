@@ -13,6 +13,7 @@ import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.Proyecto;
+import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
@@ -100,8 +101,13 @@ public class DialogoDetalleCotizacion {
 	
 	//MANEJADORES COMPONENTES	
 	@FXML private void manejadorBotonAceptar() {
-		if (validarDatos())
-		this.mainApp.getEscenarioDialogosAlterno().close();
+		if (validarDatos()) {
+			if (DetalleCotizacionDAO.createDetalleCotizacion(this.mainApp.getConnection(), getDetalleCotizacion())) {
+				Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "El proyecto se agrego de forma correcta a la cotización");
+				this.mainApp.getEscenarioDialogosAlterno().close();
+			} else
+				Notificacion.dialogoAlerta(AlertType.WARNING, "", "El proyecto no se pudo agregar a la cotización, ¡revisa que la información sea correcta!");
+		}//FIN IF
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
