@@ -58,10 +58,12 @@ import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTratamiento;
 import mx.shf6.produccion.view.PantallaAcabado;
 import mx.shf6.produccion.view.PantallaCabecera;
+import mx.shf6.produccion.view.PantallaCentroTrabajo;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaCotizaciones;
 import mx.shf6.produccion.view.PantallaDetalleCotizacion;
+import mx.shf6.produccion.view.PantallaEmpleado;
 import mx.shf6.produccion.view.PantallaGrupoTrabajo;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
@@ -103,6 +105,8 @@ public class MainApp extends Application {
 	private AnchorPane pantallaTratamiento;
 	private AnchorPane pantallaPuesto;
 	private AnchorPane pantallaGrupoTrabajo;	
+	private AnchorPane pantallaCentroTrabajo;
+	private AnchorPane pantallaEmpleado;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -555,7 +559,6 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	//INICIAR PANTALLA PUESTO
 	public void iniciarPantallaGrupoTrabajo() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -565,6 +568,35 @@ public class MainApp extends Application {
 			
 			PantallaGrupoTrabajo pantallaGrupoTrabajo = fxmlLoader.getController();
 			pantallaGrupoTrabajo.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaCentroTrabajo() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaCentroTrabajo.fxml"));
+			this.pantallaCentroTrabajo = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaCentroTrabajo);
+			
+			PantallaCentroTrabajo pantallaCentroTrabajo = fxmlLoader.getController();
+			pantallaCentroTrabajo.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	//INICIAR PANTALLA PUESTO
+	public void iniciarPantallaEmpleado() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaEmpleado.fxml"));
+			this.pantallaEmpleado = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaEmpleado);
+			
+			PantallaEmpleado pantallaEmpleado = fxmlLoader.getController();
+			pantallaEmpleado.setMainApp(this);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
