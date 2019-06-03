@@ -68,6 +68,7 @@ import mx.shf6.produccion.view.PantallaGrupoTrabajo;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
+import mx.shf6.produccion.view.PantallaProceso;
 import mx.shf6.produccion.view.PantallaPuesto;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
@@ -107,6 +108,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaGrupoTrabajo;	
 	private AnchorPane pantallaCentroTrabajo;
 	private AnchorPane pantallaEmpleado;
+	private AnchorPane pantallaProceso;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -587,7 +589,6 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	//INICIAR PANTALLA PUESTO
 	public void iniciarPantallaEmpleado() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -597,6 +598,20 @@ public class MainApp extends Application {
 			
 			PantallaEmpleado pantallaEmpleado = fxmlLoader.getController();
 			pantallaEmpleado.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaProceso() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaProceso.fxml"));
+			this.pantallaProceso = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaProceso);
+			
+			PantallaProceso pantallaProceso = fxmlLoader.getController();
+			pantallaProceso.setMainApp(this);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
