@@ -1,9 +1,8 @@
 package mx.shf6.produccion.view;
 
 
+import java.sql.Connection;
 import java.util.ArrayList;
-
-
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -39,14 +38,20 @@ public class PantallaPuesto {
 	//CONSTANTES
 	
 	//COMPONENTES INTERFAZ
-	@FXML private TableView<Puesto> tablaPuesto;
-	@FXML private PTableColumn<Puesto, String> columnaCodigo;
-	@FXML private PTableColumn<Puesto, String> columnaDescripcion;
-	@FXML private PTableColumn<Puesto, String> columnaAcciones;
-	@FXML private TextField buscarPuesto;
+	@FXML 
+	private TableView<Puesto> tablaPuesto;
+	@FXML
+	private PTableColumn<Puesto, String> columnaCodigo;
+	@FXML 
+	private PTableColumn<Puesto, String> columnaDescripcion;
+	@FXML
+	private PTableColumn<Puesto, String> columnaAcciones;
+	@FXML
+	private TextField buscarPuesto;
 	
 	//INICIALIZA COMPONENTES QUE CONTRALAN INTERFAZ
-	@FXML private void initialize() {
+	@FXML 
+	private void initialize() {
 		inicializarTabla();
 	}
 	
@@ -91,71 +96,71 @@ public class PantallaPuesto {
 				final Button botonEliminar = new Button("Eliminar");
 				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar);
 				
-	@Override
-	public void updateItem(String item, boolean empty) {
-	//INICALIZA BOTONES
-		botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/VerIcono.png"))));
-		botonVer.setPrefSize(16.0, 16.0);
-		botonVer.setPadding(Insets.EMPTY);
-		botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		botonVer.setStyle("-fx-background-color: transparent");
-		botonVer.setCursor(Cursor.HAND);
-		botonVer.setTooltip(new Tooltip("Ver registro"));
+				@Override
+				public void updateItem(String item, boolean empty) {
+					//INICALIZA BOTONES
+					botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/VerIcono.png"))));
+					botonVer.setPrefSize(16.0, 16.0);
+					botonVer.setPadding(Insets.EMPTY);
+					botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonVer.setStyle("-fx-background-color: transparent");
+					botonVer.setCursor(Cursor.HAND);
+					botonVer.setTooltip(new Tooltip("Ver registro"));
 			
-		botonEditar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ActualizarIcono.png"))));
-		botonEditar.setPrefSize(16.0, 16.0);
-		botonEditar.setPadding(Insets.EMPTY);
-		botonEditar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		botonEditar.setStyle("-fx-background-color: transparent");
-		botonEditar.setCursor(Cursor.HAND);
-		botonEditar.setTooltip(new Tooltip("Editar registro"));
+					botonEditar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ActualizarIcono.png"))));
+					botonEditar.setPrefSize(16.0, 16.0);
+					botonEditar.setPadding(Insets.EMPTY);
+					botonEditar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEditar.setStyle("-fx-background-color: transparent");
+					botonEditar.setCursor(Cursor.HAND);
+					botonEditar.setTooltip(new Tooltip("Editar registro"));
 			
-		botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
-		botonEliminar.setPrefSize(16.0, 16.0);
-		botonEliminar.setPadding(Insets.EMPTY);
-		botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		botonEliminar.setStyle("-fx-background-color: transparent");
-		botonEliminar.setCursor(Cursor.HAND);
-		botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
+					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
+					botonEliminar.setPrefSize(16.0, 16.0);
+					botonEliminar.setPadding(Insets.EMPTY);
+					botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEliminar.setStyle("-fx-background-color: transparent");
+					botonEliminar.setCursor(Cursor.HAND);
+					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
 			
-		super.updateItem(item, empty);
-			if (empty) {
-				super.setGraphic(null);
-				super.setText(null);
-				} else {
+					super.updateItem(item, empty);
+						if (empty) {
+							super.setGraphic(null);
+							super.setText(null);
+						} else {
 						
-		//MANEJADORES PARA LOS BOTONES
-		botonVer.setOnAction(event -> {
-		puesto = getTableView().getItems().get(getIndex());
-		manejadorBotonVer(puesto);
-		});//FIN MANEJADDOR
+					//MANEJADORES PARA LOS BOTONES
+							botonVer.setOnAction(event -> {
+								puesto = getTableView().getItems().get(getIndex());
+								manejadorBotonVer(puesto);
+							});//FIN MANEJADDOR
 						
-		botonEditar.setOnAction(event -> {
-		puesto = getTableView().getItems().get(getIndex());
-		manejadorBotonEditar(puesto);
-		});//FIN MANEJADDOR
+							botonEditar.setOnAction(event -> {
+								puesto = getTableView().getItems().get(getIndex());
+								manejadorBotonEditar(puesto);
+						});//FIN MANEJADDOR
 						
-		botonEliminar.setOnAction(event -> {
-			puesto = getTableView().getItems().get(getIndex());
-			manejadorBotonEliminar(puesto);
-		});//FIN MANEJADDOR
+						botonEliminar.setOnAction(event -> {
+							 puesto = getTableView().getItems().get(getIndex());
+							 manejadorBotonEliminar(puesto);
+						});//FIN MANEJADDOR
 						
-			cajaBotones.setSpacing(2);
-			super.setGraphic(cajaBotones);
-			super.setText(null);
-		}//FIN IF ELSE
+						cajaBotones.setSpacing(2);
+						super.setGraphic(cajaBotones);
+						super.setText(null);
+						}//FIN IF ELSE
 						
-	}//FIN METODO
+				}//FIN METODO
 				
-	};//FIN INSTRUCCION
+			};//FIN INSTRUCCION
 			return cell;
-	};//FIN INSTRUCCION
-		columnaAcciones.setCellFactory(cellFactory);
-}//FIN METODO
+		};//FIN INSTRUCCION
+			columnaAcciones.setCellFactory(cellFactory);
+	}//FIN METODO
 	
 	//MANEJADORES COMPONENTES
 		@FXML private void manejadorBotonCrear() {
-			//this.mainApp.iniciarDialogoAcabado(puesto, DialogoAcabado.CREAR);
+			//this.mainApp.iniciarDialogoPuesto(puesto, DialogoPuesto.CREAR);
 			this.actualizarTabla();
 		}//FIN METODO
 		
@@ -163,26 +168,23 @@ public class PantallaPuesto {
 			this.actualizarTabla();
 		}//FIN METODO
 		
+		//MANEJADORES
 		private void manejadorBotonVer(Puesto puesto) {
-		//	this.mainApp.iniciarDialogoAcabado(puesto, DialogoAcabado.VER);
+		//	this.mainApp.iniciarDialogoAcabado(puesto, DialogoPuesto.VER);
 			this.actualizarTabla();
 		}//FIN METODO
 		
 		private void manejadorBotonEditar(Puesto puesto) {
-		//	this.mainApp.iniciarDialogoAcabado(puesto, DialogoAcabado.EDITAR);
+			//this.mainApp.iniciarDialogoPuesto(puesto, DialogoPuesto.EDITAR);
 			this.actualizarTabla();
 		}//FIN METODO
-		
+
+		//MANEJADOR ELIMINAR
 		private void manejadorBotonEliminar(Puesto puesto) {
-			if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
-		//		AcabadoDAO.deleteAcabado(this.mainApp.getConnection(), puesto);
+			if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"));
+				PuestoDAO.deletePuesto(this.mainApp.getConnection(), puesto);
 			this.actualizarTabla();
-		}//FIN METODO
-	
-	
-	
-	
-	
-	//MANEJADORES
-	
+		}//FIN MANEJADOR ELIMINAR
+		
 }
+

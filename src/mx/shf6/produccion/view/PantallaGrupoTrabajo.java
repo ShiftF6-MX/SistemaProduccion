@@ -1,6 +1,6 @@
 package mx.shf6.produccion.view;
 
-import java.awt.TextField;
+
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -12,6 +12,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -20,7 +21,6 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.GrupoTrabajo;
-import mx.shf6.produccion.model.Puesto;
 import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
@@ -51,13 +51,14 @@ public class PantallaGrupoTrabajo {
 	// INICIALIZA COMPONENTES QUE CONTROLAN INTERFAZ
 	@FXML
 	private void initialize() {
-
+		inicializarTabla();
 	}// FIN METODO INICIALIZAR COMPONENTE
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		this.grupoTrabajo = new GrupoTrabajo();
 		this.listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajo(this.mainApp.getConnection());
+		actualizarTabla();
 	}// FIN METODO
 
 	// METODO INICIALIZAR TABLA
