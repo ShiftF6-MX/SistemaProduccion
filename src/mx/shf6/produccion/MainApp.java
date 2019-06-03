@@ -32,7 +32,6 @@ import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleComponente;
-import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.TipoMateriaPrima;
@@ -664,20 +663,21 @@ public class MainApp extends Application {
 		return  detalleComponente;
 	}//FIN METODO
 	
-	public DetalleCotizacion iniciarDialogoDetalleCotizacion(Cotizacion cotizacion) {
+	public void iniciarDialogoDetalleCotizacion(Cotizacion cotizacion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleCotizacion.fxml"));
 			this.dialogoDetalleCotizacion = (AnchorPane) fxmlLoader.load();
+			
 			Scene escenaDialogoDetalleCotizacion = this.iniciarEscenarioDialogosAlterno(this.dialogoDetalleCotizacion);
 			this.escenarioDialogosAlterno.setScene(escenaDialogoDetalleCotizacion);
+			
 			DialogoDetalleCotizacion dialogoDetalleCotizacion = fxmlLoader.getController();
 			dialogoDetalleCotizacion.setMainApp(this, cotizacion);
+			
 			this.escenarioDialogosAlterno.showAndWait();
-			return dialogoDetalleCotizacion.getDetalleCotizacion();
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
-			return null;
 		}//FIN METODO
 	}//FIN METODO
 	
