@@ -7,8 +7,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<?import mx.shf6.produccion.utilities.*?>
 
-<AnchorPane stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaProceso">
    <children>
       <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
@@ -24,10 +26,10 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="136.0" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <TextField prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador" />
+                  <TextField fx:id="buscarProceso" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador" />
                   <HBox alignment="CENTER" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarProceso" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/1x/MagnifierIcon.png" />
                            </image>
@@ -40,10 +42,13 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </HBox>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/1x/ActualizarBoton.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -52,21 +57,24 @@
                      <HBox.margin>
                         <Insets left="3.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
             </HBox>
             <VBox alignment="BOTTOM_CENTER" styleClass="tablaDatosDetalle" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
-                  <TableView editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaProceso" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Fecha" />
-                      <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Cantidad" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Ordenamiento" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Nivel" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Destino" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Componente" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Empleado" />
-                        <TableColumn minWidth="-1.0" prefWidth="-1.0" text="Acciones" />
+                      <PTableColumn fx:id="fechaColumna" minWidth="-1.0" prefWidth="-1.0" text="Fecha" />
+                      <PTableColumn fx:id="cantidadColumna" minWidth="-1.0" prefWidth="-1.0" text="Cantidad" />
+                        <PTableColumn fx:id="ordenamientoColumna" minWidth="-1.0" prefWidth="-1.0" text="Ordenamiento" />
+                        <PTableColumn fx:id="nivelColumna" minWidth="-1.0" prefWidth="-1.0" text="Nivel" />
+                        <PTableColumn fx:id="nombreCentroTrabajoColumna" minWidth="-1.0" prefWidth="-1.0" text="Centro Trabajo" />
+                        <PTableColumn fx:id="nombreParteComponenteColumna" minWidth="-1.0" prefWidth="-1.0" text="Parte Componente" />
+                        <PTableColumn fx:id="nombreEmpleadoColumna" minWidth="-1.0" prefWidth="-1.0" text="Empleado" />
+                        <PTableColumn fx:id="accionesColumna" minWidth="-1.0" prefWidth="-1.0" text="Acciones" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
