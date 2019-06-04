@@ -35,6 +35,7 @@ import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.Material;
+import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.Puesto;
 import mx.shf6.produccion.model.TipoMateriaPrima;
@@ -55,6 +56,7 @@ import mx.shf6.produccion.view.DialogoCotizacion;
 import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
+import mx.shf6.produccion.view.DialogoDetalleProceso;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import mx.shf6.produccion.view.DialogoProyectos;
@@ -214,7 +216,7 @@ public class MainApp extends Application {
 		this.escenarioDialogosAlterno.setMaximized(false);
 		this.escenarioDialogosAlterno.initModality(Modality.WINDOW_MODAL);
 		this.escenarioDialogosAlterno.initStyle(StageStyle.TRANSPARENT);
-		this.escenarioDialogosAlterno.initOwner(this.escenarioPrincipal);
+		this.escenarioDialogosAlterno.initOwner(this.escenarioDialogos);
 	} //FIN METODO
 		
 	public Stage getEscenarioDialogosAlterno() {
