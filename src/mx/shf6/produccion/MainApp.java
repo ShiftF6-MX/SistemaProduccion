@@ -98,6 +98,7 @@ public class MainApp extends Application {
 	private Stage escenarioDialogos;
 	private Stage escenarioDialogosAlterno;
 	private Stage escenarioDialogosAlternoSecundario;
+	
 	private BorderPane pantallaBase;
 	private AnchorPane pantallaInicio;
 	private AnchorPane pantallaSesion;
@@ -1014,12 +1015,12 @@ public class MainApp extends Application {
             this.dialogoAgregarMovimientoComponente = (AnchorPane) fxmlLoader.load();
            
             Scene escenaDialogoAgregarMovimientoComponente = this.iniciarEscenarioDialogos(this.dialogoAgregarMovimientoComponente);
-            this.escenarioDialogos.setScene(escenaDialogoAgregarMovimientoComponente);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarMovimientoComponente);
             
             DialogoAgregarMovimientoComponente dialogoAgregarMovimientoComponente = fxmlLoader.getController();
             dialogoAgregarMovimientoComponente.setMainApp(this, almacenOrigen, tipoMovimiento);
             
-            this.escenarioDialogos.showAndWait();
+            this.escenarioDialogosAlterno.showAndWait();
             return dialogoAgregarMovimientoComponente.getDetalleCardex();
         } catch(IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
