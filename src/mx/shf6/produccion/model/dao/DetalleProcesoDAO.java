@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -46,8 +49,11 @@ public class DetalleProcesoDAO {
 					detalleProceso.setTiempoPreparacion(resultados.getInt(4));
 					detalleProceso.setTiempoOperacion(resultados.getInt(5));
 					detalleProceso.setCentroTrabajoFK(resultados.getInt(6));
-					detalleProceso.setGrupoTrabajoFK(resultados.getInt(7));
-					detalleProceso.setProcesoFK(resultados.getInt(8));
+					detalleProceso.setNombreCentroTrabajo(resultados.getString(7));
+					detalleProceso.setGrupoTrabajoFK(resultados.getInt(8));
+					detalleProceso.setNombreGrupoTrabajo(resultados.getString(9));
+					detalleProceso.setProcesoFK(resultados.getInt(10));
+					arrayListDetalleProceso.add(detalleProceso);
 				}//FIN WHILE
 			} catch(SQLException ex) {
 				Notificacion.dialogoException(ex);
@@ -93,8 +99,10 @@ public class DetalleProcesoDAO {
 					detalleProceso.setTiempoPreparacion(resultados.getInt(4));
 					detalleProceso.setTiempoOperacion(resultados.getInt(5));
 					detalleProceso.setCentroTrabajoFK(resultados.getInt(6));
-					detalleProceso.setGrupoTrabajoFK(resultados.getInt(7));
-					detalleProceso.setProcesoFK(resultados.getInt(8));
+					detalleProceso.setNombreCentroTrabajo(resultados.getString(7));
+					detalleProceso.setGrupoTrabajoFK(resultados.getInt(8));
+					detalleProceso.setNombreGrupoTrabajo(resultados.getString(9));
+					detalleProceso.setProcesoFK(resultados.getInt(10));
 					arrayListDetalleProceso.add(detalleProceso);
 				}//FIN WHILE
 			} catch(SQLException ex) {
@@ -137,4 +145,12 @@ public class DetalleProcesoDAO {
 			return false;
 			}//FIN TRY/CATCH
 		}//FIN METODO
-}
+		
+		public static ObservableList<DetalleProceso> toObservableList(ArrayList<DetalleProceso> arrayList) {
+			ObservableList<DetalleProceso> listaObservableDetalleProceso = FXCollections.observableArrayList();
+			for (DetalleProceso detalleProceso : arrayList) {
+				listaObservableDetalleProceso.add(detalleProceso);
+			}
+			return listaObservableDetalleProceso;
+		}//FIN METODO
+}//FIN CLASE
