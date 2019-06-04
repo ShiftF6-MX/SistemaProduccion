@@ -49,6 +49,46 @@ public class ExistenciaDAO {
 		return existencia;
 	}// FIN METODO
 
+	public static final Existencia readExistencia(Connection connection, int componenteFK, int almacenFK) {
+		String consulta = "SELECT Sys_PK, Existencia, ComponenteFK, AlmacenFK  FROM existencias WHERE ComponenteFK = " + componenteFK + " AND AlmacenFK = " + almacenFK;
+		Existencia existencia = new Existencia();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				existencia.setSysPK(resultados.getInt(1));
+				existencia.setExistencia(resultados.getDouble(2));
+				existencia.setComponenteFK(resultados.getInt(3));
+				existencia.setAlmacenFK(resultados.getInt(4));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY-CATCH
+		return existencia;
+	}// FIN METODO
+
+
+	public static final int readPorComponenteAlmacen(Connection connection, int componenteFK, int almacenFK) {
+		int sysPK = 0;
+		String consulta = "SELECT Sys_PK, Existencia, ComponenteFK, AlmacenFK  FROM existencias WHERE ComponenteFK = " + componenteFK + " AND AlmacenFK = " + almacenFK;
+//		Existencia existencia = new Existencia();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				sysPK = resultados.getInt(1);
+//				existencia.setSysPK(resultados.getInt(1));
+//				existencia.setExistencia(resultados.getDouble(2));
+//				existencia.setComponenteFK(resultados.getInt(3));
+//				existencia.setAlmacenFK(resultados.getInt(4));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			//Notificacion.dialogoException(ex);
+		} // FIN TRY-CATCH
+		return sysPK;
+	}// FIN METODO
+
+
 	// METODO PARA LEER TODOS LOS REGISTROS
 	public static final ArrayList<Existencia> readTodosPorAlmacen(Connection connection, String almacenDescripcion) {
 		ArrayList<Existencia> arrayListExistencia = new ArrayList<Existencia>();
