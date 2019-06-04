@@ -65,8 +65,6 @@ public class AlmacenDAO {
 		return almacen;
 	}// FIN METODO
 
-
-
 	// METODO PARA LEER TODOS LOS REGISTROS
 	public static final ArrayList<Almacen> readTodos(Connection connection) {
 		ArrayList<Almacen> arrayListAlmacen = new ArrayList<Almacen>();
@@ -144,7 +142,6 @@ public class AlmacenDAO {
 			listaObservableAlmacen.add(almacen);
 		return listaObservableAlmacen;
 	}// FIN METODO
-
 
 	public static ObservableList<String> readDescripcion(Connection connection) {
 		ObservableList<String> observableListAlmacen = FXCollections.observableArrayList();
