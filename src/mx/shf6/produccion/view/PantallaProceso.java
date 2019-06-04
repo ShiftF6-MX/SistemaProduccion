@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -26,7 +25,6 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.dao.ProcesoDAO;
-import mx.shf6.produccion.model.dao.Seguridad;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -59,23 +57,23 @@ public class PantallaProceso {
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
-		public void setMainApp(MainApp mainApp) {
-			this.mainApp = mainApp;
-			this.listaProceso = ProcesoDAO.readProceso(this.mainApp.getConnection());
-			this.inicializaTabla();
-			this.actualizarTabla();
-		}//FIN METODO
+	public void setMainApp(MainApp mainApp) {
+		this.mainApp = mainApp;
+		this.listaProceso = ProcesoDAO.readProceso(this.mainApp.getConnection());
+		this.inicializaTabla();
+		this.actualizarTabla();
+	}//FIN METODO
 		
-		private void inicializaComponentes() {
-			this.buscarProceso.setOnKeyReleased(new EventHandler<KeyEvent>() {
-				@Override
-				public void handle(KeyEvent event) {
-					if(event.getCode().equals(KeyCode.ENTER)) {
-						buscarProceso();
-					}
-				}//FIN METODO
-			});//FIN SENTENCIA
-		}//FIN METODO
+	private void inicializaComponentes() {
+		this.buscarProceso.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER)) {
+					buscarProceso();
+				}
+			}//FIN METODO
+		});//FIN SENTENCIA
+	}//FIN METODO
 		
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE PROCESOS
 	private void inicializaTabla() {
@@ -87,15 +85,15 @@ public class PantallaProceso {
 		this.nombreParteComponenteColumna.setCellValueFactory(cellData -> cellData.getValue().nombreComponenteProperty());
 		this.nombreEmpleadoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreEmpleadoProperty());
 		this.inicializarColumnaAcciones();
-	}
+	}//FIN METODO
 	
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
 	private void actualizarTabla() {
 		this.tablaProceso.setItems(null);
 		this.listaProceso.clear();
-		listaProceso = ProcesoDAO.readProceso(this.mainApp.getConnection());
-		tablaProceso.setItems(ProcesoDAO.toObservableList(listaProceso));
-		buscarProceso.setText("");
+		this.listaProceso = ProcesoDAO.readProceso(this.mainApp.getConnection());
+		this.tablaProceso.setItems(ProcesoDAO.toObservableList(this.listaProceso));
+		//this.buscarProceso.setText("");
 	}//FIN METODO
 	
 	//ACTUALIZA LA TABLA DE ACUERDO AL CRITERIO DE BÚSQUEDA
@@ -113,9 +111,9 @@ public class PantallaProceso {
 			
 			final TableCell<Proceso, String> cell = new TableCell<Proceso, String>() {
 				final Button botonVer = new Button("Ver");
-				final Button botonEliminar = new Button("Eliminar");
 				final Button botonModificar = new Button("Modificar");
-				final HBox acciones = new HBox(botonVer, botonEliminar, botonModificar);
+				final Button botonEliminar = new Button("Eliminar");
+				final HBox acciones = new HBox(botonVer, botonModificar, botonEliminar);
 				
 				//PARA MOSTRAR LOS DIALOGOS
 				@Override
@@ -128,6 +126,14 @@ public class PantallaProceso {
 					botonVer.setCursor(Cursor.HAND);
 		        	botonVer.setTooltip(new Tooltip("Ver proceso"));
 		        	
+		        	botonModificar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ActualizarIcono.png"))));
+		        	botonModificar.setPrefSize(16.0, 16.0);
+		        	botonModificar.setPadding(Insets.EMPTY);
+		        	botonModificar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonModificar.setStyle("-fx-background-color: transparent;");
+		        	botonModificar.setCursor(Cursor.HAND);
+		        	botonModificar.setTooltip(new Tooltip("Modificar datos del proceso"));
+		        	
 		        	botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/RemoveIcon.png"))));
 		        	botonEliminar.setPrefSize(16.0, 16.0);
 		        	botonEliminar.setPadding(Insets.EMPTY);
@@ -135,14 +141,6 @@ public class PantallaProceso {
 		        	botonEliminar.setStyle("-fx-background-color: transparent;");
 		        	botonEliminar.setCursor(Cursor.HAND);
 		        	botonEliminar.setTooltip(new Tooltip("Eliminar proceso"));
-		        	
-		        	botonModificar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/UpdateeIcon.png"))));
-		        	botonModificar.setPrefSize(16.0, 16.0);
-		        	botonModificar.setPadding(Insets.EMPTY);
-		        	botonModificar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonModificar.setStyle("-fx-background-color: transparent;");
-		        	botonModificar.setCursor(Cursor.HAND);
-		        	botonModificar.setTooltip(new Tooltip("Modificar datos del proceso"));
 		        	
 		        	acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
@@ -180,31 +178,31 @@ public class PantallaProceso {
 		accionesColumna.setCellFactory(cellFactory);
 	}//FIN METODO
 	
-	
-	//CREAR PROCESO
+
 	//ACTUALIZAR DATOS
 	@FXML private void manejadorBotonActualizar() {
 		this.actualizarTabla();
 	}//FIN METODO
-	
-	//MOSTRAR PROCESO
-	private void manejadorBotonCrear() {
-		//this.mainApp.iniciarDialogoProceso(proceso, DialogoComponente.CREAR);
+	 
+	//CREAR PROCESO
+	private void manejadorBotonCrear(Proceso proceso) {
+		//this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.CREAR);
 		this.actualizarTabla();
 	}
-	
+
+	//VER DATOS
 	private void manejadorBotonVer(Proceso proceso) {
 		//this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.MOSTRAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	//ELIMINAR PROCESO
-	private void manejadorBotonEliminar(Proceso proceso) {
-		if(Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?")) {
+	 private void manejadorBotonEliminar(Proceso proceso) {
+		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
 			ProcesoDAO.deleteProceso(this.mainApp.getConnection(), proceso);
-		}
 		this.actualizarTabla();
 	}//FIN METODO
+	 
 	
 	private void manejadorBotonModificar(Proceso proceso) {
 		//this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.EDITAR);
