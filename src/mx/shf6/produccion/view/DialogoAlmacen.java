@@ -63,9 +63,10 @@ public class DialogoAlmacen {
 
 	public boolean validacion() {
 		if (this.campoTextoCodigo.getText().isEmpty()) {
-//			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"codigo\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"codigo\" no puede estar vacio");
+			return false;
 		} else if (this.campoTextoDescripcion.getText().isEmpty()) {
-//			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"descripción\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"descripción\" no puede estar vacio");
 			return false;
 		} // FIN IF/ESLE
 		return true;
@@ -81,13 +82,13 @@ public class DialogoAlmacen {
 		if (this.validacion()) {
 			if (this.opcion == CREAR) {
 				if (AlmacenDAO.create(this.conexion, almacen)) {
-					// Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "¡El registro se guardó de forma correcta!");
+					 Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "¡El registro se guardó de forma correcta!");
 					this.mainApp.getEscenarioDialogos().close();
 				} else
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "","No se pudo crear el registro, revisa que la información sea correcta");
 			} else if (this.opcion == EDITAR) {
 				if (AlmacenDAO.update(this.conexion, almacen)) {
-					// Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "¡El registro se actualizó de forma correcta!");
+					 Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "¡El registro se actualizó de forma correcta!");
 					this.mainApp.getEscenarioDialogos().close();
 				} else
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "","No se pudo actualizar el registro, revisa que la información sea correcta");
