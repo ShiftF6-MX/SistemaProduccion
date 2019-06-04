@@ -38,7 +38,7 @@ public class DialogoPuesto {
 	//INICIA COMPONENTES INTERFAZ DE USUARIO
 	@FXML
 	private void initialize(){
-		this.puesto = new Puesto();		
+		//this.puesto = new Puesto();		
 	}
 	//ACCESO A LA CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp, Puesto puesto, int opcion) {
