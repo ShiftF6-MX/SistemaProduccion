@@ -131,8 +131,8 @@ public class PantallaAlmacen {
 
 						botonEliminar.setOnAction(event -> {
 							almacen = getTableView().getItems().get(getIndex());
-							// if (Notificacion.dialogoPreguntar("", "¿Deseaseliminar el registro?"))
-							eliminarAlmacen(almacen);
+							if (Notificacion.dialogoPreguntar("", "¿Deseaseliminar el registro?"))
+								eliminarAlmacen(almacen);
 						});// FIN LISTENER
 						setGraphic(acciones);
 						setText(null);
@@ -211,7 +211,7 @@ public class PantallaAlmacen {
 	}//FIN METODO
 
 	@FXML private void manejadorBotonExistencias() {
-		this.mainApp.iniciarPantalaExistencia();
+		this.mainApp.iniciarPantallaExistencia();
 	}//FIN METODO
 
 }

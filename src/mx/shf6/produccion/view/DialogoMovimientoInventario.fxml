@@ -24,67 +24,70 @@
                         <Image url="@images/1x/StartButton.png" />
                      </image>
                   </ImageView>
-                  <VBox prefHeight="200.0" prefWidth="250.0" spacing="5.0">
+                  <VBox spacing="5.0">
                      <children>
-                        <HBox prefHeight="25.0" spacing="5.0">
+                        <Label fx:id="etiquetaTitulo" styleClass="labelRobotoMedium16" text="Existencias" textFill="WHITE" />
+                        <Label contentDisplay="BOTTOM" styleClass="labelRobotoMedium14" text="Gestión de Movimientos en Almacén" textFill="WHITE" />
+                        <HBox>
                            <children>
-                              <Label prefWidth="150.0" styleClass="labelRobotoMedium14" text="Referencia" textFill="WHITE" />
-                              <TextField fx:id="campoTextoReferencia" prefWidth="150.0" />
+                              <Label prefWidth="100.0" styleClass="labelRobotoMedium12" text="Referencia" textFill="WHITE" />
+                              <TextField fx:id="campoTextoReferencia" prefWidth="100.0" />
                            </children>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
                         </HBox>
-                        <HBox prefHeight="25.0" spacing="5.0">
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <HBox>
                            <children>
-                              <Label prefWidth="150.0" styleClass="labelRobotoMedium14" text="Fecha" textFill="WHITE" />
+                              <Label prefWidth="60.0" styleClass="labelRobotoMedium12" text="Fecha" textFill="WHITE" />
                               <DatePicker fx:id="selectorFecha" prefWidth="150.0" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                        <HBox>
                            <children>
-                              <Label prefWidth="150.0" styleClass="labelRobotoMedium14" text="Notas" textFill="WHITE" />
-                              <TextArea fx:id="areaTextoNotas" prefWidth="150.0" />
+                              <Label prefWidth="60.0" styleClass="labelRobotoMedium12" text="Notas" textFill="WHITE" />
+                              <TextArea fx:id="areaTextoNotas" prefHeight="100.0" prefWidth="150.0" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="250.0" spacing="5.0">
+                  <VBox spacing="5.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                        <HBox>
                            <children>
-                              <Label prefWidth="150.0" styleClass="labelRobotoMedium14" text="Almacen Origen" textFill="WHITE" />
-                              <ComboBox fx:id="comboBoxAlmacenOrigen" prefWidth="150.0" />
+                              <Label prefWidth="120.0" styleClass="labelRobotoMedium12" text="Almacen Origen" textFill="WHITE" />
+                              <ComboBox fx:id="comboBoxAlmacenOrigen" prefWidth="120.0" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                        <HBox>
                            <children>
-                              <Label prefWidth="150.0" styleClass="labelRobotoMedium14" text="Almacen Destino" textFill="WHITE" />
-                              <ComboBox fx:id="comboBoxAlmacenDestino" prefWidth="150.0" />
+                              <Label prefWidth="120.0" styleClass="labelRobotoMedium12" text="Almacen Destino" textFill="WHITE" />
+                              <ComboBox fx:id="comboBoxAlmacenDestino" prefWidth="120.0" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                        <HBox>
                            <children>
-                              <Label prefWidth="150.0" styleClass="labelRobotoMedium14" text="Categoría" textFill="WHITE" />
-                              <ComboBox fx:id="comboBoxCategoria" prefWidth="150.0" />
+                              <Label prefWidth="120.0" styleClass="labelRobotoMedium12" text="Categoría" textFill="WHITE" />
+                              <ComboBox fx:id="comboBoxCategoria" prefWidth="120.0" />
                            </children>
                         </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label fx:id="etiquetaTitulo" styleClass="labelRobotoMedium16" text="Existencias" textFill="WHITE" />
-                        <Label contentDisplay="BOTTOM" prefHeight="50.0" styleClass="labelRobotoMedium12" text="Gestión de Movimientos en Almacén" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>
                <VBox.margin>
-                  <Insets left="15.0" right="15.0" top="15.0" />
+                  <Insets left="15.0" right="15.0" top="25.0" />
                </VBox.margin>
             </HBox>
          </children>
       </VBox>
-      <AnchorPane AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="120.0">
+      <AnchorPane AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0">
          <children>
             <VBox alignment="BOTTOM_CENTER" layoutX="22.0" layoutY="29.0" prefHeight="386.0" prefWidth="603.0" styleClass="tablaDatosDetalle" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>

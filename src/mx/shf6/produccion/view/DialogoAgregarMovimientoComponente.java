@@ -3,15 +3,16 @@ package mx.shf6.produccion.view;
 import java.sql.Connection;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.DetalleCardex;
-import mx.shf6.produccion.model.Existencia;
 import mx.shf6.produccion.model.dao.AlmacenDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.ExistenciaDAO;
+import mx.shf6.produccion.utilities.Notificacion;
 
 
 public class DialogoAgregarMovimientoComponente {
@@ -22,7 +23,6 @@ public class DialogoAgregarMovimientoComponente {
 	private ObservableList<String> observableListaComponentes;
 	private DetalleCardex detalleCardex;
 	private Componente componente;
-	private Existencia existencia;
 
 	// VARIABLES
 	String almacenOrigen = "";
@@ -46,7 +46,6 @@ public class DialogoAgregarMovimientoComponente {
 		this.almacenOrigen = almacenOrigen;
 		this.tipoMovimiento = tipoMovimiento;
 		this.componente = new Componente();
-		this.existencia = new Existencia();
 
 		this.mostrarDatosInterfaz();
 	}// FIN METODO
@@ -55,17 +54,17 @@ public class DialogoAgregarMovimientoComponente {
 		if (this.tipoMovimiento == DialogoMovimientoInventario.ENTRADA)
 			this.observableListaComponentes = ComponenteDAO.listaNumerosParte(conexion);
 		else
-			this.observableListaComponentes = ExistenciaDAO.readDescripcionComponente(conexion, almacenOrigen);
+			this.observableListaComponentes = ExistenciaDAO.readNumeroParteComponente(conexion, almacenOrigen);
 
 		this.comboBoxComponentes.setItems(observableListaComponentes);
 	}// FIN METODO
 
 	public boolean validacion() {
 		if (this.comboBoxComponentes.getSelectionModel().getSelectedIndex() == -1) {
-			// Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Componente\" no puede estar vacio");
+			 Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Componente\" no puede estar vacio");
 			return false;
 		} else if (this.campoTextoCantidad.getText().isEmpty()) {
-			// Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cantidad\" no puede estar vacio");
+			 Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cantidad\" no puede estar vacio");
 			return false;
 		} // FIN IF/ESLE
 		return true;
@@ -77,11 +76,11 @@ public class DialogoAgregarMovimientoComponente {
 			detalleCardex.setComponenteFK(componente.getSysPK());
 			detalleCardex.setAlmacenFK(AlmacenDAO.readPorDescripcion(conexion, almacenOrigen).getSysPK());
 
-			existencia = ExistenciaDAO.readExistencia(conexion, detalleCardex.getComponenteFK(), detalleCardex.getAlmacenFK());
-			detalleCardex.setExistenciaComponente(existencia.getExistencia());
+			Double existenciaComponente = ExistenciaDAO.readExistenciaComponente(conexion, detalleCardex.getComponenteFK(), detalleCardex.getAlmacenFK());
+			detalleCardex.setExistenciaComponente(existenciaComponente);
 
 			if ((tipoMovimiento == DialogoMovimientoInventario.SALIDA || tipoMovimiento == DialogoMovimientoInventario.TRASPASO) && (detalleCardex.getExistenciaComponente() < Double.parseDouble(this.campoTextoCantidad.getText()))) {
-
+				Notificacion.dialogoAlerta(AlertType.ERROR, "", "La existencia actual del componente no es sufiente para realizar el movimiento requerido");
 			} else {
 				detalleCardex.setDescripcionComponente(componente.getDescripcion());
 				detalleCardex.setNoPartesComponente(componente.getNumeroParte());
@@ -94,7 +93,6 @@ public class DialogoAgregarMovimientoComponente {
 			}//FIN IF
 			this.mainApp.getEscenarioDialogosAlterno().close();
 		}//FIIN IF
-
 	}// FIN METODO
 
 	public DetalleCardex getDetalleCardex() {
@@ -104,7 +102,6 @@ public class DialogoAgregarMovimientoComponente {
 	// MANEJADOR DE COMPONENTES
 	@FXML private void manejadorBotonAceptar() {
 		this.accionarBotonAceptar();
-
 	}// FIN METODO
 
 	@FXML private void manejadorBotonCancelar() {

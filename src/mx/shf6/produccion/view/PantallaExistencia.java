@@ -77,7 +77,6 @@ public class PantallaExistencia {
 		this.columnaComponente.setCellValueFactory(cellData->cellData.getValue().descripcionComponenteProperty());
 		this.columnaAlmacen.setCellValueFactory(cellData->cellData.getValue().descripcionAlmacenProperty());
 		this.columnaCantidad.setCellValueFactory(cellData->cellData.getValue().existenciaProperty());
-
 	}// FIN METODO
 
 	private void actualizarTabla() {
@@ -92,7 +91,6 @@ public class PantallaExistencia {
 			almacenDescripcion = "";
 		else
 			this.almacenDescripcion = comboBoxAlmacen.getValue();
-		this.actualizarTabla();
 		this.tablaExistencias.setItems(null);
 		this.listaExistencias.clear();
 		this.listaExistencias = ExistenciaDAO.readTodosPorComponenteAlmacenParecido(conexion, this.campoTextoBuscar.getText(), this.almacenDescripcion);
@@ -122,18 +120,22 @@ public class PantallaExistencia {
 
 	@FXML private void manejadorBotonEntradas() {
 		this.mainApp.iniciarDialogoMovimientoInventario(DialogoMovimientoInventario.ENTRADA);
+		actualizarTabla();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonSalidas() {
 		this.mainApp.iniciarDialogoMovimientoInventario(DialogoMovimientoInventario.SALIDA);
+		actualizarTabla();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonTraspasos() {
 		this.mainApp.iniciarDialogoMovimientoInventario(DialogoMovimientoInventario.TRASPASO);
+		actualizarTabla();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonExistencias() {
-		this.mainApp.iniciarPantalaExistencia();
+		this.mainApp.iniciarPantallaExistencia();
+		actualizarTabla();
 	}//FIN METODO
 
 }
