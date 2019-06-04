@@ -27,6 +27,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
+import mx.shf6.produccion.model.Almacen;
 import mx.shf6.produccion.model.ArchivoProyecto;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
@@ -43,6 +44,8 @@ import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
+import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
+import mx.shf6.produccion.view.DialogoAlmacen;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
 import mx.shf6.produccion.view.DialogoArchivos;
 import mx.shf6.produccion.view.DialogoClientes;
@@ -52,6 +55,7 @@ import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoMaterial;
+import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import mx.shf6.produccion.view.DialogoProyectos;
 import mx.shf6.produccion.view.DialogoProyectosCliente;
 import mx.shf6.produccion.view.DialogoPuesto;
@@ -59,6 +63,7 @@ import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
 import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTratamiento;
 import mx.shf6.produccion.view.PantallaAcabado;
+import mx.shf6.produccion.view.PantallaAlmacen;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaCentroTrabajo;
 import mx.shf6.produccion.view.PantallaClientes;
@@ -66,6 +71,7 @@ import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaCotizaciones;
 import mx.shf6.produccion.view.PantallaDetalleCotizacion;
 import mx.shf6.produccion.view.PantallaEmpleado;
+import mx.shf6.produccion.view.PantallaExistencia;
 import mx.shf6.produccion.view.PantallaGrupoTrabajo;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.PantallaMaterial;
@@ -111,6 +117,8 @@ public class MainApp extends Application {
 	private AnchorPane pantallaCentroTrabajo;
 	private AnchorPane pantallaEmpleado;
 	private AnchorPane pantallaProceso;
+	private AnchorPane pantallaExistencia;
+	private AnchorPane pantallaAlmacen;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -130,6 +138,9 @@ public class MainApp extends Application {
 	private AnchorPane dialogoArchivos;
 	private AnchorPane dialogoArchivoProyecto;
 	private AnchorPane dialogoPuesto;
+	private AnchorPane dialogoAlmacen;
+	private AnchorPane dialogoMovimientoInventario;
+	private AnchorPane dialogoAgregarMovimientoComponente;
 	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
@@ -621,6 +632,33 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	public void iniciarPantallaExistencia() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaExistencia.fxml"));
+			this.pantallaExistencia = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaExistencia);
+			
+			PantallaExistencia pantallaExistencia = fxmlLoader.getController();
+			pantallaExistencia.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaAlmacen() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaAlmacen.fxml"));
+			this.pantallaAlmacen = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaAlmacen);
+			
+			PantallaAlmacen pantallaAlmacen = fxmlLoader.getController();
+			pantallaAlmacen.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
 	
 	//METODOS DIALOGOS
 	public void iniciarDialogoClientes(Cliente cliente , int opcion) {
@@ -925,6 +963,60 @@ public class MainApp extends Application {
             
             DialogoPuesto dialogoPuesto = fxmlLoader.getController();
             dialogoPuesto.setMainApp(this, puesto, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAlmacen(Almacen almacen, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAlmacen.fxml"));
+            this.dialogoAlmacen = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoAlmacen = this.iniciarEscenarioDialogos(this.dialogoAlmacen);
+            this.escenarioDialogos.setScene(escenaDialogoAlmacen);
+            
+            DialogoAlmacen dialogoAlmacen = fxmlLoader.getController();
+            dialogoAlmacen.setMainApp(this, almacen, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoMovimientoInventario(int tipoMovimiento) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoMovimientoInventario.fxml"));
+            this.dialogoMovimientoInventario = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoMovimientoInventario = this.iniciarEscenarioDialogos(this.dialogoMovimientoInventario);
+            this.escenarioDialogos.setScene(escenaDialogoMovimientoInventario);
+            
+            DialogoMovimientoInventario dialogoMovimientoInventario = fxmlLoader.getController();
+            dialogoMovimientoInventario.setMainApp(this, tipoMovimiento);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarMovimientoComponente(String almacenOrigen, int tipoMovimiento) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarMovimientoComponente.fxml"));
+            this.dialogoAgregarMovimientoComponente = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoAgregarMovimientoComponente = this.iniciarEscenarioDialogos(this.dialogoAgregarMovimientoComponente);
+            this.escenarioDialogos.setScene(escenaDialogoAgregarMovimientoComponente);
+            
+            DialogoAgregarMovimientoComponente dialogoAgregarMovimientoComponente = fxmlLoader.getController();
+            dialogoAgregarMovimientoComponente.setMainApp(this, almacenOrigen, tipoMovimiento);
             
             this.escenarioDialogos.showAndWait();
         } catch(IOException | IllegalStateException ex) {
