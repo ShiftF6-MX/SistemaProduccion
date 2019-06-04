@@ -34,6 +34,7 @@ import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proyecto;
+import mx.shf6.produccion.model.Puesto;
 import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.TipoMiscelaneo;
 import mx.shf6.produccion.model.Tratamiento;
@@ -53,6 +54,7 @@ import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoProyectos;
 import mx.shf6.produccion.view.DialogoProyectosCliente;
+import mx.shf6.produccion.view.DialogoPuesto;
 import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
 import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTratamiento;
@@ -127,6 +129,8 @@ public class MainApp extends Application {
 	private AnchorPane dialogoProyectosCliente;	
 	private AnchorPane dialogoArchivos;
 	private AnchorPane dialogoArchivoProyecto;
+	private AnchorPane dialogoPuesto;
+	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
 	
@@ -903,6 +907,24 @@ public class MainApp extends Application {
             
             DialogoArchivos pantallaArchivoProyecto = fxmlLoader.getController();
             pantallaArchivoProyecto.setMainApp(this,proyecto,cliente);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoPuesto(Puesto puesto, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoPuesto.fxml"));
+            this.dialogoPuesto = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoPuesto = this.iniciarEscenarioDialogos(this.dialogoPuesto);
+            this.escenarioDialogos.setScene(escenaDialogoPuesto);
+            
+            DialogoPuesto dialogoPuesto = fxmlLoader.getController();
+            dialogoPuesto.setMainApp(this, puesto, opcion);
             
             this.escenarioDialogos.showAndWait();
         } catch(IOException | IllegalStateException ex) {
