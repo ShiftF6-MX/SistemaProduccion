@@ -32,6 +32,7 @@ import mx.shf6.produccion.model.ArchivoProyecto;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
+import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proyecto;
@@ -1006,7 +1007,7 @@ public class MainApp extends Application {
         }//FIN TRY/CATCH
     }//FIN METODO
 	
-	public void iniciarDialogoAgregarMovimientoComponente(String almacenOrigen, int tipoMovimiento) {
+	public DetalleCardex iniciarDialogoAgregarMovimientoComponente(String almacenOrigen, int tipoMovimiento) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarMovimientoComponente.fxml"));
@@ -1019,8 +1020,10 @@ public class MainApp extends Application {
             dialogoAgregarMovimientoComponente.setMainApp(this, almacenOrigen, tipoMovimiento);
             
             this.escenarioDialogos.showAndWait();
+            return dialogoAgregarMovimientoComponente.getDetalleCardex();
         } catch(IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
+            return null;
         }//FIN TRY/CATCH
     }//FIN METODO
 
