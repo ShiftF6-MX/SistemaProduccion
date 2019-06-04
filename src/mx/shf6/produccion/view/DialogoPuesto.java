@@ -41,11 +41,11 @@ public class DialogoPuesto {
 		this.puesto = new Puesto();		
 	}
 	//ACCESO A LA CLASE PRINCIPAL
-	public void setMain(MainApp mainApp, Puesto puesto, int opcion) {
+	public void setMainApp(MainApp mainApp, Puesto puesto, int opcion) {
 		this.mainApp = mainApp;
 		this.puesto = puesto;
 		this.opcion = opcion;
-		this.inicializarComponentes();
+		this.inicializarComponentes();  
 		
 	}
 	
