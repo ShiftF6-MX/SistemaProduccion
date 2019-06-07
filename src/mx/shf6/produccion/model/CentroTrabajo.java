@@ -20,19 +20,21 @@ import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 	private StringProperty codigo;
 	private StringProperty descripcion;
 	private ObjectProperty<Integer> grupoTrabajoFK;
+	private StringProperty codigoGrupoTrabajo;
 	
 	//VARIABLES
 	
 	//CONSTRUCTORES
 	public CentroTrabajo() {
-		this(0, "", "" ,0);	
+		this(0, "", "" ,0, "");	
 	}//FIN CONSTRUCTOR
 	
-	public CentroTrabajo(Integer sysPK, String codigo, String descripcion, Integer grupoTrabajoFK) {
+	public CentroTrabajo(Integer sysPK, String codigo, String descripcion, Integer grupoTrabajoFK, String codigoGrupoTrabajo) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.grupoTrabajoFK = new SimpleObjectProperty<Integer>(grupoTrabajoFK);
+		this.codigoGrupoTrabajo = new SimpleStringProperty(codigoGrupoTrabajo);
 	}//FIN CONSTRUCTOR
 	
 	//METODO SET SYSPK
@@ -95,7 +97,24 @@ import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 		return grupoTrabajoFK;
 	}//FIN METODO
 	
-	public GrupoTrabajo getGrupoTrabajo(Connection connection) {
+	
+	//OBTENER CODIGO GRUPO TRABAJO
+	
+	//METODO SET CODIGO GRUPO
+	public void setCodigoGrupoTrabajo(String codigoGrupoTrabajo) {
+		this.codigoGrupoTrabajo.set(codigoGrupoTrabajo);
+	}// FIN METODO
+	
+	//METODO GET CODIGO GRUPO TRABAJO
+	public String getCodigoGrupoTrabajo() {
+		return codigoGrupoTrabajo.get();
+	}//FIN METODO
+
+	public StringProperty codigoGrupoTrabajo(){
+		return this.codigoGrupoTrabajo;
+	}
+
+	public GrupoTrabajo getGrupoTrabajoFK(Connection connection) {
 		return GrupoTrabajoDAO.readGrupoTrabajo(connection, getGrupoTrabajoFK());
 	}
 	//FIN METODOS GRUPO TRABAJO

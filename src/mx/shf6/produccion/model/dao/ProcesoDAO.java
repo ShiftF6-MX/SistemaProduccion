@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -56,6 +55,7 @@ public class ProcesoDAO {
 				proceso.setNombreComponente(resultados.getString(9));
 				proceso.setEmpleadoFK(resultados.getInt(10));
 				proceso.setNombreEmpleado(resultados.getString(11));
+				arrayListProceso.add(proceso);
 			}//FIN WHILE
 		} catch(SQLException ex) {
 			Notificacion.dialogoException(ex);
@@ -89,7 +89,7 @@ public class ProcesoDAO {
 		//METODO PARA OBTENER UN REGISTRO POR LIKE
 		public static ArrayList<Proceso> readProceso(Connection connection, String like) {
 			ArrayList<Proceso> arrayListProceso = new ArrayList<Proceso>();
-			String consulta = "SELECT Sys_PK, Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK, EmpleadoFK FROM procesos WHERE componentes.NumeroParte LIKE " + like + "%'";
+			String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE componentes.NumeroParte LIKE '%" + like + "%' OR empleados.Nombre LIKE '%" + like + "%'";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -101,8 +101,11 @@ public class ProcesoDAO {
 					proceso.setOrdenamiento(resultados.getInt(4));
 					proceso.setNivel(resultados.getInt(5));
 					proceso.setCentroTrabajoFK(resultados.getInt(6));
-					proceso.setComponenteFK(resultados.getInt(7));
-					proceso.setEmpleadoFK(resultados.getInt(8));
+					proceso.setNombreCentroTrabajo(resultados.getString(7));
+					proceso.setComponenteFK(resultados.getInt(8));
+					proceso.setNombreComponente(resultados.getString(9));
+					proceso.setEmpleadoFK(resultados.getInt(10));
+					proceso.setNombreEmpleado(resultados.getString(11));
 					arrayListProceso.add(proceso);
 				}//FIN WHILE
 			} catch(SQLException ex) {

@@ -7,29 +7,27 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.*?>
-<?import mx.shf6.produccion.utilities.*?>
 
-<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaProceso">
+<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoDetalleProceso">
    <children>
       <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <VBox alignment="CENTER_LEFT">
+                  <VBox alignment="BOTTOM_LEFT">
                      <children>
-                        <Label styleClass="labelRobotoMedium16" text="Procesos" />
-                        <Label styleClass="labelRobotoMedium14" text="Gestión de los procesos" />
+                        <Label styleClass="labelRobotoMedium16" text="Detalleprocesos" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestión de los detalles del proceso" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="136.0" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <TextField fx:id="buscarProceso" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador" />
+                  <TextField fx:id="buscarDetalleProceso" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador" />
                   <HBox alignment="CENTER" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarProceso" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarDetalleProceso" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/1x/MagnifierIcon.png" />
                            </image>
@@ -65,15 +63,15 @@
             </HBox>
             <VBox alignment="BOTTOM_CENTER" styleClass="tablaDatosDetalle" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
-                  <TableView fx:id="tablaProceso" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaDetalleProceso" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
                     <columns>
-                      <PTableColumn fx:id="fechaColumna" minWidth="-1.0" prefWidth="-1.0" text="Fecha" />
-                      <PTableColumn fx:id="cantidadColumna" minWidth="-1.0" prefWidth="-1.0" text="Cantidad" />
-                        <PTableColumn fx:id="ordenamientoColumna" minWidth="-1.0" prefWidth="-1.0" text="Ordenamiento" />
-                        <PTableColumn fx:id="nivelColumna" minWidth="-1.0" prefWidth="-1.0" text="Nivel" />
-                        <PTableColumn fx:id="nombreCentroTrabajoColumna" minWidth="-1.0" prefWidth="-1.0" text="Centro Trabajo" />
-                        <PTableColumn fx:id="nombreParteComponenteColumna" minWidth="-1.0" prefWidth="-1.0" text="Parte Componente" />
-                        <PTableColumn fx:id="nombreEmpleadoColumna" minWidth="-1.0" prefWidth="-1.0" text="Empleado" />
+                      <PTableColumn fx:id="operacionColumna" minWidth="-1.0" prefWidth="-1.0" text="Operación" />
+                      <PTableColumn fx:id="descripcionColumna" minWidth="-1.0" prefWidth="-1.0" text="Descripción" />
+                        <PTableColumn fx:id="tiempoPreparacionColumna" minWidth="-1.0" prefWidth="-1.0" text="Tiempo de preparación" />
+                        <PTableColumn fx:id="tiempoOperacionColumna" minWidth="-1.0" prefWidth="-1.0" text="Tiempo de operación" />
+                        <PTableColumn fx:id="centroTrabajoColumna" minWidth="-1.0" prefWidth="-1.0" text="Centro de trabajo" />
+                        <PTableColumn fx:id="grupoTrabajoColumna" minWidth="-1.0" prefWidth="-1.0" text="Grupo de trabajo" />
+                        <PTableColumn fx:id="procesoColumna" minWidth="-1.0" prefWidth="-1.0" text="Proceso" />
                         <PTableColumn fx:id="accionesColumna" minWidth="-1.0" prefWidth="-1.0" text="Acciones" />
                     </columns>
                      <columnResizePolicy>

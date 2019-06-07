@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import mx.shf6.produccion.model.Empleado;
+import mx.shf6.produccion.utilities.Notificacion;
 
 
 
@@ -26,7 +27,7 @@ public class EmpleadoDAO {
 			senteciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 			return false;
 		} // FIN TRY/CATCH
 	}// FIN METODO
@@ -34,7 +35,7 @@ public class EmpleadoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Empleado> readEmpleado(Connection connection) {
 		ArrayList<Empleado> arrayListEmpleado = new ArrayList<Empleado>();
-		String consulta = "SELECT Sys_PK, Codigo, Nombre, PuestoFK FROM empleados";
+		String consulta = "SELECT empleados.Sys_PK, empleados.Codigo, empleados.Nombre, empleados.PuestoFK,  puestos.Codigo FROM empleados INNER JOIN puestos ON empleados.PuestoFK = puestos.Sys_PK ORDER BY puestos.Codigo";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -44,10 +45,11 @@ public class EmpleadoDAO {
 				empleado.setCodigo(resultados.getString(2));
 				empleado.setNombre(resultados.getString(3));
 				empleado.setPuestoFK(resultados.getInt(4));
+				empleado.setCodigoPuesto(resultados.getString(5));
 				arrayListEmpleado.add(empleado);
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY/CATH
 		return arrayListEmpleado;
 	}// FIN METODO
@@ -66,15 +68,15 @@ public class EmpleadoDAO {
 				empleado.setPuestoFK(resultados.getInt(4));
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY/CATCH
 		return empleado;
 	}// FIN METODO
 
 	// METODO PARA OBTENER UN REGISTRO
-	public static ArrayList<Empleado> readEmpleado2(Connection connection, String like) {
+	public static ArrayList<Empleado> readEmpleadoLike(Connection connection, String like) {
 		ArrayList<Empleado> arrayListaEmpleado = new ArrayList<Empleado>();
-		String consulta = "SELECT Sys_PK, Codigo, Nombre, PuestoFK FROM empleados WHERE Nombre LIKE '%" + like + "%' OR Codigo LIKE '%" + like + "%';";
+		String consulta = "SELECT empleados.Sys_PK, empleados.Codigo, empleados.Nombre,  puestos.Codigo FROM empleados INNER JOIN puestos ON empleados.PuestoFK = puestos.Sys_PK  WHERE empleados.Nombre LIKE '%" + like + "%' OR empleados.Codigo LIKE '%" + like + "%';";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -83,11 +85,11 @@ public class EmpleadoDAO {
 				empleado.setSysPK(resultados.getInt(1));
 				empleado.setCodigo(resultados.getString(2));
 				empleado.setNombre(resultados.getString(3));
-				empleado.setPuestoFK(resultados.getInt(4));
+				empleado.setCodigoPuesto(resultados.getString(4));
 				arrayListaEmpleado.add(empleado);
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			// Notificacion.dialogoException(ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY/CATCH
 		return arrayListaEmpleado;
 	}// FIN METODO
@@ -104,7 +106,7 @@ public class EmpleadoDAO {
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 			return false;
 		} // FIN TRY/CATCH
 	}// FIN METODO
@@ -118,7 +120,7 @@ public class EmpleadoDAO {
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 			return false;
 		} // FIN TRY/CATCH
 	}// FIN METODO

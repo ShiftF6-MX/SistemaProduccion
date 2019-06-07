@@ -28,7 +28,7 @@ public class FolioDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Folio> readFolio(Connection connection) {
 		ArrayList<Folio> arrayListFolio = new ArrayList<Folio>();
@@ -49,7 +49,22 @@ public class FolioDAO {
 		}//FIN TRY/CATCH
 		return arrayListFolio;
 	}//FIN METODO
-	
+
+	public static int readSerieMovimientoIventario(Connection connection, String folio) {
+		int serie = 0;
+		String consulta = "SELECT Sys_PK, Folio, Serie, Descripcion FROM folios WHERE Folio = '" + folio + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				serie = resultados.getInt(3);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return serie;
+	}//FIN METODO
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static Folio readFolio(Connection connection, int sysPK) {
 		Folio folio = new Folio();
@@ -68,7 +83,7 @@ public class FolioDAO {
 		}//FIN TRY/CATCH
 		return folio;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static Folio readFolioByFolio(Connection connection, String byFolio) {
 		Folio folio = new Folio();
@@ -87,7 +102,7 @@ public class FolioDAO {
 		}//FIN TRY/CATCH
 		return folio;
 	}//FIN METODO
-		
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateFolio(Connection connection, Folio folio) {
 		String consulta = "UPDATE folios SET Folio = ?, Serie = ?, Descripcion = ? WHERE Sys_PK = ?";
@@ -104,7 +119,7 @@ public class FolioDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean deleteFolio(Connection connection, Folio folio) {
 		String consulta = "DELETE FROM folios WHERE Sys_PK = ?";
@@ -118,13 +133,13 @@ public class FolioDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
 	public static ObservableList<Folio> toObservableList(ArrayList<Folio> arrayList) {
 		ObservableList<Folio> listaObservableFolio = FXCollections.observableArrayList();
-		for (Folio folio : arrayList) 
+		for (Folio folio : arrayList)
 			listaObservableFolio.add(folio);
 		return listaObservableFolio;
 	}//FIN METODO
-	
+
 }//FIN CLASE

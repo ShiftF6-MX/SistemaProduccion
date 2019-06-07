@@ -2,15 +2,13 @@ package mx.shf6.produccion.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
-import com.sun.org.apache.regexp.internal.REUtil;
-
 import mx.shf6.produccion.model.GrupoTrabajo;
+import mx.shf6.produccion.utilities.Notificacion;
 
 
 
@@ -25,18 +23,18 @@ public class GrupoTrabajoDAO {
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 			return false;
 		} // FIN TRY/CATCH
-	}// FIN METODO
+	}// FIN METODO 
 
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<GrupoTrabajo> readGrupoTrabajo(Connection connection) {
 		ArrayList<GrupoTrabajo> arrayListGrupoTrabajo = new ArrayList<GrupoTrabajo>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo order by Codigo ASC";
 		try {
 			Statement sentencia = connection.createStatement();
-			java.sql.ResultSet resultados = sentencia.executeQuery(consulta);
+			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				GrupoTrabajo grupotrabajo = new GrupoTrabajo();
 				grupotrabajo.setSysPK(resultados.getInt(1));
@@ -45,7 +43,7 @@ public class GrupoTrabajoDAO {
 				arrayListGrupoTrabajo.add(grupotrabajo);
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY/CATCH
 		return arrayListGrupoTrabajo;
 	}// FIN METODO
@@ -53,10 +51,10 @@ public class GrupoTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static GrupoTrabajo readGrupoTrabajo(Connection connection, int sysPK) {
 		GrupoTrabajo grupotrabajo = new GrupoTrabajo();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion from grupostrabajo WHERE Sys_PK = " + sysPK;
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion from grupostrabajo WHERE Sys_PK = " + sysPK ;
 		try {
 			Statement sentencia = connection.createStatement();
-			java.sql.ResultSet resultados = sentencia.executeQuery(consulta);
+			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				grupotrabajo.setSysPK(resultados.getInt(1));
 				grupotrabajo.setCodigo(resultados.getString(2));
@@ -64,18 +62,18 @@ public class GrupoTrabajoDAO {
 
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY/CATCH
 		return grupotrabajo;
 	}// FIN METODO
 
 	// METODO PARA OBTENER UN REGISTRO
-	public static ArrayList<GrupoTrabajo> readGrupoTrabajo(Connection connection, String like) {
+	public static ArrayList<GrupoTrabajo> readGrupoTrabajoLike(Connection connection, String like) {
 		ArrayList<GrupoTrabajo> arrayListaGrupoTrabajo = new ArrayList<GrupoTrabajo>();
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo WHERE Codigo LIKE '%" + like + "%';";
 		try {
 			Statement sentencia = connection.createStatement();
-			java.sql.ResultSet resultados = sentencia.executeQuery(consulta);
+			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				GrupoTrabajo grupos = new GrupoTrabajo();
 				grupos.setSysPK(resultados.getInt(1));
@@ -84,7 +82,7 @@ public class GrupoTrabajoDAO {
 				arrayListaGrupoTrabajo.add(grupos);
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			// Notificacion.dialogoException(ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY/CATCH
 		return arrayListaGrupoTrabajo;
 	}// FIN METODO
@@ -100,7 +98,7 @@ public class GrupoTrabajoDAO {
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 			return false;
 		} // FIN TRY/CATCH
 	}// FIN METODO
@@ -114,7 +112,7 @@ public class GrupoTrabajoDAO {
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Error " + ex);
+			Notificacion.dialogoException(ex);
 			return false;
 		} // FIN TRY/CATCH
 	}// FIN METODO

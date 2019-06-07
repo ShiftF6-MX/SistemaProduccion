@@ -49,6 +49,24 @@ public class ExistenciaDAO {
 		return existencia;
 	}// FIN METODO
 
+	public static final Existencia readExistencia(Connection connection, int componenteFK, int almacenFK) {
+		String consulta = "SELECT Sys_PK, Existencia, ComponenteFK, AlmacenFK  FROM existencias WHERE ComponenteFK = " + componenteFK + " AND AlmacenFK = " + almacenFK;
+		Existencia existencia = new Existencia();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				existencia.setSysPK(resultados.getInt(1));
+				existencia.setExistencia(resultados.getDouble(2));
+				existencia.setComponenteFK(resultados.getInt(3));
+				existencia.setAlmacenFK(resultados.getInt(4));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY-CATCH
+		return existencia;
+	}// FIN METODO
+
 	// METODO PARA LEER TODOS LOS REGISTROS
 	public static final ArrayList<Existencia> readTodosPorAlmacen(Connection connection, String almacenDescripcion) {
 		ArrayList<Existencia> arrayListExistencia = new ArrayList<Existencia>();
@@ -103,17 +121,14 @@ public class ExistenciaDAO {
 	public static final Double readExistenciaComponente(Connection connection, int componenteFK, int almacenFK) {
 		Double existenciaComponente = 0.0;
 		String consulta = "SELECT Existencia FROM existencias WHERE ComponenteFK = "+ componenteFK +" AND AlmacenFK = "+ almacenFK;
-
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				existenciaComponente = resultados.getDouble(1);
-				System.out.println("existencia desde el dao: "+ existenciaComponente);
 			} // FIN WHILE
 		} catch (SQLException ex) {
-			System.out.println("en excepcion");
-//			Notificacion.dialogoException(ex);
+			Notificacion.dialogoException(ex);
 		} // FIN TRY-CATCH
 		return existenciaComponente;
 	}// FIN METODO
@@ -158,19 +173,19 @@ public class ExistenciaDAO {
 	}// FIN METODO
 
 
-	public static ObservableList<String> readDescripcionComponente(Connection connection, String almacenOrigen) {
-		ObservableList<String> observableListDescripcionComponente = FXCollections.observableArrayList();
+	public static ObservableList<String> readNumeroParteComponente(Connection connection, String almacenOrigen) {
+		ObservableList<String> observableLisNumeroParteComponente = FXCollections.observableArrayList();
 		String consulta = "SELECT existencias.Sys_PK, existencias.Existencia, existencias.ComponenteFK, existencias.AlmacenFK, componentes.NumeroParte, componentes.Descripcion FROM existencias  INNER JOIN componentes ON componentes.Sys_PK = existencias.ComponenteFK INNER JOIN almacenes ON almacenes.Sys_PK = existencias.AlmacenFK  WHERE almacenes.Descripcion LIKE '%"+ almacenOrigen +"%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
-				observableListDescripcionComponente.add(resultados.getString(5));
+				observableLisNumeroParteComponente.add(resultados.getString(5));
 			}//FIN WHILE
 		}  catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-		return observableListDescripcionComponente;
+		return observableLisNumeroParteComponente;
 	}//FIN METODO
 
 }

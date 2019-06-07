@@ -3,14 +3,11 @@ package mx.shf6.produccion.model;
 import java.sql.Connection;
 import java.sql.Date;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.CentroTrabajoDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
-import mx.shf6.produccion.model.dao.DomicilioDAO;
 import mx.shf6.produccion.model.dao.EmpleadoDAO;
 import javafx.beans.property.ObjectProperty;
 

@@ -20,20 +20,22 @@ public class Empleado {
 	private StringProperty codigo;
 	private StringProperty nombre;
 	private ObjectProperty<Integer> puestoFK;
+	private StringProperty codigoPuesto;
 	
 	//VARIABLES
 	
 	//CONSTRUCTORES
 	
 	public Empleado() {
-		this(0, "", "", 0);		
+		this(0, "", "", 0, "");		
 	}//FIN CONSTRUCTOR
 	
-	public Empleado(Integer sysPK, String codigo, String nombre, Integer puestoFK) {
+	public Empleado(Integer sysPK, String codigo, String nombre, Integer puestoFK, String codigoPuesto) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.codigo = new SimpleStringProperty(codigo);
 		this.nombre = new SimpleStringProperty(nombre);
 		this.puestoFK = new SimpleObjectProperty<Integer>(puestoFK);
+		this.codigoPuesto = new SimpleStringProperty(codigoPuesto);
 	}//FIN CONSTRUCTOR
 	
 	///METODO PARA ACCESO AL "SYS_PK"
@@ -94,6 +96,22 @@ public class Empleado {
 	public ObjectProperty<Integer> puestoFKProperty() {
 		return puestoFK;
 	}//FIN METODO
+	
+	
+	//METODO SET CODIGO PUESTO
+	public void setCodigoPuesto(String codigoPuesto) {
+		this.codigoPuesto.set(codigoPuesto);
+	}//FIN METODO SET
+	
+	//METODO GET CODIGO PUESTO
+	public String getCodigoPuesto() {
+		return codigoPuesto.get();
+	} //FIN METODO
+	
+	public StringProperty codigoPuesto() {
+		return this.codigoPuesto;
+	}
+	
 	
 	public Puesto getPuesto(Connection conection) {
 		return PuestoDAO.readPuesto(conection, this.getPuestoFK());

@@ -48,6 +48,23 @@ public class AlmacenDAO {
 		return almacen;
 	}// FIN METODO
 
+	public static final Almacen readPorDescripcion(Connection connection, String  descripcion) {
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM almacenes WHERE Descripcion = '"+ descripcion +"'";
+		Almacen almacen = new Almacen();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				almacen.setSysPK(resultados.getInt(1));
+				almacen.setCodigo(resultados.getString(2));
+				almacen.setDescripcion(resultados.getString(3));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY-CATCH
+		return almacen;
+	}// FIN METODO
+
 	// METODO PARA LEER TODOS LOS REGISTROS
 	public static final ArrayList<Almacen> readTodos(Connection connection) {
 		ArrayList<Almacen> arrayListAlmacen = new ArrayList<Almacen>();
@@ -125,7 +142,6 @@ public class AlmacenDAO {
 			listaObservableAlmacen.add(almacen);
 		return listaObservableAlmacen;
 	}// FIN METODO
-
 
 	public static ObservableList<String> readDescripcion(Connection connection) {
 		ObservableList<String> observableListAlmacen = FXCollections.observableArrayList();

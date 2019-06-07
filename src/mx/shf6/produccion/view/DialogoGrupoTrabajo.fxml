@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoPuesto">
+<AnchorPane prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoGrupoTrabajo">
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,7 +28,7 @@
                   <TextField fx:id="campoTextoCodigo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
-            <VBox spacing="2.0">
+            <VBox layoutX="10.0" layoutY="10.0" spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Descripción" />
                   <TextField fx:id="campoTextoDescripcion" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
@@ -39,6 +39,9 @@
                   <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#manejadorBotonAceptar" prefHeight="30.0" styleClass="buttonGreen" text="Aceptar" />
                   <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#manejadorBotonCerrar" prefHeight="30.0" styleClass="buttonRed" text="Cancelar" />
                </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
             </VBox>
          </children>
       </VBox>

@@ -344,7 +344,7 @@
 	-fx-border-width: 1px 1px 1px 1px;
 	-fx-border-radius: 3px;
 	-fx-background-radius: 3px;
-	
+
 	-fx-font-size: 12px;
 	-fx-font-family: "Roboto Medium";
 	-fx-text-fill: white;
@@ -358,7 +358,7 @@
 	-fx-border-width: 1px 1px 1px 1px;
 	-fx-border-radius: 3px;
 	-fx-background-radius: 3px;
-	
+
 	-fx-font-size: 12px;
 	-fx-font-family: "Roboto Medium";
 	-fx-text-fill: white;
@@ -370,4 +370,35 @@
 .comboEditable .text {
 	-fx-background-color: black;
 	-fx-text-fill: white;
+}
+
+.botonMenuPantalla {
+	-fx-background-color: #FFFFFF;
+	-fx-border-radius: 0px;
+	-fx-background-radius: 0px;
+
+	-fx-focus-color: transparent;
+	-fx-padding: -1px;
+    -fx-border-style: none;
+    -fx-border-width: 0px;
+    -fx-border-insets: 0px;
+}
+
+.botonMenuPantalla > .arrow-button {
+	-fx-padding: -1px;
+}
+
+.botonMenuPantalla > .arrow-button > .arrow {
+	-fx-padding: -1px;
+}
+
+.itemMenu {
+	-fx-background-color: #FFFFFF;
+	-fx-cursor: hand;
+}
+
+.itemMenu > .label {
+	-fx-font-family: "Roboto Medium";
+	-fx-font-size: 12px;
+	-fx-text-fill: #666666;
 }
