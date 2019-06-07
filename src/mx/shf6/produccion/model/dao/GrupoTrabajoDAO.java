@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -51,7 +50,7 @@ public class GrupoTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static GrupoTrabajo readGrupoTrabajo(Connection connection, int sysPK) {
 		GrupoTrabajo grupotrabajo = new GrupoTrabajo();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion from grupostrabajo WHERE Sys_PK = " + sysPK ;
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo WHERE Sys_PK = " + sysPK ;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

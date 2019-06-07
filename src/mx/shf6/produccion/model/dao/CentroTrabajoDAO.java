@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
 import mx.shf6.produccion.model.CentroTrabajo;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -32,7 +30,7 @@ public class CentroTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<CentroTrabajo> readCentroTrabajo(Connection connection) {
 		ArrayList<CentroTrabajo> arrayListCentroTrabajo = new ArrayList<CentroTrabajo>();
-		String consulta = "select centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, centrostrabajo.GrupoTrabajoFK, grupostrabajo.Codigo from centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK order by centrostrabajo.codigo";
+		String consulta = "SELECT centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, centrostrabajo.GrupoTrabajoFK, grupostrabajo.Codigo FROM centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK ORDER BY centrostrabajo.codigo";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -52,7 +50,7 @@ public class CentroTrabajoDAO {
 	}// FIN METODO
 
 	// METODO PARA OBTENER UN REGISTRO
-	public static CentroTrabajo readCentroTrabajo(Connection connection, String sysPK) {
+	public static CentroTrabajo readCentroTrabajo(Connection connection, int sysPK) {
 		CentroTrabajo centrotrabajo = new CentroTrabajo();
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion, GrupoTrabajoFK FROM centrostrabajo order by Codigo ASC WHERE Sys_PK = "
 				+ sysPK;
