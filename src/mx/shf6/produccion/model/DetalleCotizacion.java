@@ -12,7 +12,7 @@ import mx.shf6.produccion.model.dao.ProyectoDAO;
 
 public class DetalleCotizacion {
 
-	//PROPIEDADES
+	//PROPIEDADES	
 	private ObjectProperty<Integer> sysPK;
 	private ObjectProperty<Double> cantidad;
 	private ObjectProperty<Double> precio;
@@ -21,14 +21,17 @@ public class DetalleCotizacion {
 	private StringProperty observaciones;
 	private ObjectProperty<Integer> proyectoFK;
 	private ObjectProperty<Integer> cotizacionFK;
+	private ObjectProperty<Integer> partida;
+	private StringProperty numeroDibujo;
+	private StringProperty nombreProyecto;
 	
 	//CONSTRUCTOR VACIO
 	public DetalleCotizacion() {
-		this(-1, 0.0, 0.0, 0.0, null, "", -1, -1);
+		this(-1, 0.0, 0.0, 0.0, null, "", -1, -1, -1, "", "");
 	}//FIN CONTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleCotizacion(int sysPK, double cantidad, double precio, double costo, Date fechaEntrega, String observaciones, int proyectoFK, int cotizacionFK) {
+	public DetalleCotizacion(int sysPK, double cantidad, double precio, double costo, Date fechaEntrega, String observaciones, int proyectoFK, int cotizacionFK, int partida, String numeroDibujo, String nombreProyecto) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.cantidad = new SimpleObjectProperty<Double>(cantidad);
 		this.precio = new SimpleObjectProperty<Double>(precio);
@@ -37,8 +40,11 @@ public class DetalleCotizacion {
 		this.observaciones = new SimpleStringProperty(observaciones);
 		this.proyectoFK = new SimpleObjectProperty<Integer>(proyectoFK);
 		this.cotizacionFK = new SimpleObjectProperty<Integer>(cotizacionFK);
+		this.partida = new SimpleObjectProperty<Integer>(partida);
+		this.numeroDibujo = new SimpleStringProperty(numeroDibujo);
+		this.nombreProyecto = new SimpleStringProperty(nombreProyecto);
 	}//FIN CONSTRUCTOR
-
+	
 	//METODOS DE ACCESO A "SYSPK"
 	public void setSysPK(Integer sysPK) {
 		this.sysPK.set(sysPK);
@@ -150,4 +156,40 @@ public class DetalleCotizacion {
 		return CotizacionDAO.readCotizacion(connection, this.getCotizacionFK());
 	}//FIN METODO
 	//FIN METODOS "COTIZACION"
+	
+	public void setPartida(int partida) {
+		this.partida.set(partida);
+	}//FIN METODOS
+	
+	public int getPartida() {
+		return this.partida.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> partidaProperty (){
+		return this.partida;
+	}//FIN METODO
+	
+	public void setNumeroDibujo(String numeroDibujo) {
+		this.numeroDibujo.set(numeroDibujo);
+	}//FIN METODO
+	
+	public String getNumeroDibujo() {
+		return this.numeroDibujo.get();
+	}//FIN METODO
+	
+	public StringProperty numeroDibujoProperty() {
+		return this.numeroDibujo;
+	}//FIN METODO
+	
+	public void setNombreProyecto(String nombreProyecto) {
+		this.nombreProyecto.set(nombreProyecto);
+	}//FIN METODO
+	
+	public String getNombreProyecto() {
+		return this.nombreProyecto.get();
+	}//FIN METODO
+	
+	public StringProperty nombreProyectoProperty() {
+		return this.nombreProyecto;
+	}//FIN METODO
 }//FIN CLASE
