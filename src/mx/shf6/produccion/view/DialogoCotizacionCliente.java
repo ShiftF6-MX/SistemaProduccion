@@ -13,6 +13,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -226,6 +227,7 @@ public class DialogoCotizacionCliente {
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
 	
+	@SuppressWarnings("unchecked")
 	private void actualizarTabla() {
 		tablaCotizacion.setItems(null);
 		listaCotizaciones.clear();
@@ -238,6 +240,8 @@ public class DialogoCotizacionCliente {
 			tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
 	    	buscarCotizacion.setText("");	
 		}//FIN IF
+		this.referenciaColumna.setSortType(SortType.DESCENDING);
+		this.tablaCotizacion.getSortOrder().addAll(this.referenciaColumna);
 	}//FIN METODO	
 	
 	//MANEJADORES

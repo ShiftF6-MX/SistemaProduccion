@@ -62,12 +62,23 @@
                               <Image url="@images/1x/AgregarBoton.png" />
                            </image>
                            <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <image>
+                              <Image url="@images/1x/CerrarBoton.png" />
+                           </image>
+                           <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </ImageView>
                      </children>
                      <HBox.margin>
-                        <Insets top="20.0" />
+                        <Insets />
                      </HBox.margin>
                   </HBox>
                </children>
@@ -97,13 +108,5 @@
             </VBox>
          </children>
       </AnchorPane>
-      <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <image>
-            <Image url="@images/1x/CloseWindow.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
    </children>
 </AnchorPane>

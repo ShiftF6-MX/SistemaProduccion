@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -227,6 +228,7 @@ public class PantallaClientes {
 		    return cell;
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
+		this.codigoColumna.setSortType(SortType.ASCENDING);
     }//FIN METODO
 	
 	
@@ -238,12 +240,14 @@ public class PantallaClientes {
 	}//FIN METODO	
 	
 	//ACTUALIZA LA TABLA CON LOS ULTIMOS CAMBIOS EN LA BASE DE DATOS
+	@SuppressWarnings("unchecked")
 	@FXML private void actualizarTabla() {
 		tablaCliente.setItems(null);
 		listaClientes.clear();
 		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection());
 		tablaCliente.setItems(ClienteDAO.toObservableList(listaClientes));
 	    buscarCliente.setText("");	
+	    this.tablaCliente.getSortOrder().addAll(this.codigoColumna);
 	}//FIN METODO
 	
 	private void verCliente(Cliente cliente) {
