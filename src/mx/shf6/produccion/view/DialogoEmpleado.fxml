@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoPuesto">
+<AnchorPane prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoEmpleado">
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -30,8 +31,14 @@
             </VBox>
             <VBox spacing="2.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Descripción" />
-                  <TextField fx:id="campoTextoDescripcion" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <Label styleClass="labelRobotoMedium12" text="Nombre" />
+                  <TextField fx:id="campoTextoNombre" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox layoutX="10.0" layoutY="64.0" spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Puesto" />
+                  <ComboBox fx:id="comboPuesto" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
             <VBox layoutX="10.0" layoutY="172.0" spacing="5.0">

@@ -6,42 +6,48 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="320.0" prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoCentroTrabajo">
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label prefHeight="21.0" prefWidth="189.0" styleClass="textFieldTitulos" text="Formulario Centro de Trabajo">
+            <Label styleClass="textFieldTitulos" text="Formulario Registro">
                <VBox.margin>
-                  <Insets left="10.0" />
+                  <Insets />
                </VBox.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </Label>
          </children>
       </VBox>
-      <VBox prefHeight="320.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
+      <VBox spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+            <VBox spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Código" />
-                  <TextField maxWidth="1.7976931348623157E308" />
+                  <TextField fx:id="campoTextoCodigo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Descripción" />
-                  <TextField maxWidth="1.7976931348623157E308" />
+                  <TextField fx:id="campoTextoDescripcion" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+            <VBox layoutX="10.0" layoutY="64.0" spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Grupo trabajo " />
-                  <ComboBox maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <ComboBox fx:id="comboGrupoTrabajo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
-            <VBox layoutX="10.0" layoutY="172.0" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+            <VBox layoutX="10.0" layoutY="172.0" spacing="5.0">
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" styleClass="buttonGreen" text="Aceptar" />
-                  <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" styleClass="buttonRed" text="Cancelar" />
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#manejadorBotonAceptar" prefHeight="30.0" styleClass="buttonGreen" text="Aceptar" />
+                  <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#manejadorBotonCerrar" prefHeight="30.0" styleClass="buttonRed" text="Cancelar" />
                </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
             </VBox>
          </children>
       </VBox>

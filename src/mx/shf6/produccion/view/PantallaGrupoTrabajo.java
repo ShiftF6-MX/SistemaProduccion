@@ -1,9 +1,9 @@
 package mx.shf6.produccion.view;
 
-
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -17,6 +17,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
@@ -37,21 +39,16 @@ public class PantallaGrupoTrabajo {
 	// VARIABLES
 
 	// COMPONENTES INTERFAZ
-	@FXML
-	private TableView<GrupoTrabajo> tablaGrupoTrabajo;
-	@FXML
-	private PTableColumn<GrupoTrabajo, String> columnaCodigo;
-	@FXML
-	private PTableColumn<GrupoTrabajo, String> columnaDescripcion;
-	@FXML
-	private PTableColumn<GrupoTrabajo, String> columnaAcciones;
-	@FXML
-	private TextField buscarGrupoTrabajo;
+	@FXML private TableView<GrupoTrabajo> tablaGrupoTrabajo;
+	@FXML private PTableColumn<GrupoTrabajo, String> columnaCodigo;
+	@FXML private PTableColumn<GrupoTrabajo, String> columnaDescripcion;
+	@FXML private PTableColumn<GrupoTrabajo, String> columnaAcciones;
+	@FXML private TextField buscarGrupoTrabajo;
 
 	// INICIALIZA COMPONENTES QUE CONTROLAN INTERFAZ
 	@FXML
 	private void initialize() {
-		inicializarTabla();
+		inicializaComponentes();
 	}// FIN METODO INICIALIZAR COMPONENTE
 
 	public void setMainApp(MainApp mainApp) {
@@ -59,6 +56,7 @@ public class PantallaGrupoTrabajo {
 		this.grupoTrabajo = new GrupoTrabajo();
 		this.listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajo(this.mainApp.getConnection());
 		actualizarTabla();
+		inicializarTabla();
 	}// FIN METODO
 
 	// METODO INICIALIZAR TABLA
@@ -68,20 +66,30 @@ public class PantallaGrupoTrabajo {
 		inicializarColumnaAcciones();
 	}// FIN METODO INICIALIZAR TABLA
 
-	//METODO ACTUALIZAR TABLA
+	// METODO ACTUALIZAR TABLA
 	public void actualizarTabla() {
 		this.tablaGrupoTrabajo.setItems(null);
 		this.listaGrupoTrabajo.clear();
 		this.listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajo(mainApp.getConnection());
 		this.tablaGrupoTrabajo.setItems(FXCollections.observableArrayList(listaGrupoTrabajo));
-	}//FIN METODO ACTUALIZAR TABLA
-	
+	}// FIN METODO ACTUALIZAR TABLA
+
+	private void inicializaComponentes() {
+		this.buscarGrupoTrabajo.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER))
+					buscarRegistroTabla();
+			}// FIN METODO
+
+		});// FIN SENTENCIA
+	}// FIN METODO
+
 	// BUSCAR REGISTRO
-	@FXML
 	public void buscarRegistroTabla() {
 		tablaGrupoTrabajo.setItems(null);
 		listaGrupoTrabajo.clear();
-		listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajo(mainApp.getConnection(), buscarGrupoTrabajo.getText());
+		listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajoLike(mainApp.getConnection(), buscarGrupoTrabajo.getText());
 		this.tablaGrupoTrabajo.setItems(FXCollections.observableArrayList(listaGrupoTrabajo));
 	}// FIN METODO BUSCAR
 
@@ -105,7 +113,7 @@ public class PantallaGrupoTrabajo {
 					botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 					botonVer.setStyle("-fx-background-color: transparent");
 					botonVer.setCursor(Cursor.HAND);
-					
+
 					botonVer.setTooltip(new Tooltip("Ver registro"));
 
 					botonEditar.setGraphic(new ImageView(
@@ -135,17 +143,17 @@ public class PantallaGrupoTrabajo {
 						// MANEJADORES PARA LOS BOTONES
 						botonVer.setOnAction(event -> {
 							grupoTrabajo = getTableView().getItems().get(getIndex());
-							manejadorBotonVer(grupoTrabajo);
+							botonVer(grupoTrabajo);
 						});// FIN MANEJADDOR
 
 						botonEditar.setOnAction(event -> {
 							grupoTrabajo = getTableView().getItems().get(getIndex());
-							manejadorBotonEditar(grupoTrabajo);
+							botonEditar(grupoTrabajo);
 						});// FIN MANEJADDOR
 
 						botonEliminar.setOnAction(event -> {
 							grupoTrabajo = getTableView().getItems().get(getIndex());
-							manejadorBotonEliminar(grupoTrabajo);
+							botonEliminar(grupoTrabajo);
 						});// FIN MANEJADDOR
 
 						cajaBotones.setSpacing(2);
@@ -160,30 +168,42 @@ public class PantallaGrupoTrabajo {
 		};// FIN INSTRUCCION
 		columnaAcciones.setCellFactory(cellFactory);
 	}// FIN METODO
-	//MANEJADORES COMPONENTES
-			@FXML private void manejadorBotonCrear() {
-				//this.mainApp.iniciarDialogoAcabado(puesto, DialogoAcabado.CREAR);
-				this.actualizarTabla();
-			}//FIN METODO
-			
-			@FXML private void manejadorBotonActualizar() {
-				this.actualizarTabla();
-			}//FIN METODO
-			
-			private void manejadorBotonVer(GrupoTrabajo grupoTrabajo) {
-			//	this.mainApp.iniciarDialogoAcabado(puesto, DialogoAcabado.VER);
-				this.actualizarTabla();
-			}//FIN METODO
-			
-			private void manejadorBotonEditar(GrupoTrabajo grupoTrabajo) {
-			//	this.mainApp.iniciarDialogoAcabado(puesto, DialogoAcabado.EDITAR);
-				this.actualizarTabla();
-			}//FIN METODO
-			
-			private void manejadorBotonEliminar(GrupoTrabajo grupoTrabajo) {
-				if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
-			//		AcabadoDAO.deleteAcabado(this.mainApp.getConnection(), puesto);
-				this.actualizarTabla();
-			}//FIN METODO
+	
+	@FXML
+	private void manejadorBotonCrear() {
+		this.mainApp.iniciarGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.CREAR);
+		this.actualizarTabla();
+	}// FIN METODO
+
+	private void botonVer(GrupoTrabajo grupoTrabajo) {
+		 this.mainApp.iniciarGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.VER);
+		 this.actualizarTabla();
+	}// FIN METODO
+
+	private void botonEditar(GrupoTrabajo grupoTrabajo) {
+		 this.mainApp.iniciarGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.EDITAR);
+		 this.actualizarTabla();
+	}// FIN METODO
+
+	private void botonEliminar(GrupoTrabajo grupoTrabajo) {
+		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
+			 GrupoTrabajoDAO.deleteGrupoTrabajo(mainApp.getConnection(), grupoTrabajo);
+			this.actualizarTabla();
+	}// FIN METODO
+	
+	// MANEJADORES COMPONENTES
+	
+	@FXML
+	private void manejadorBotonActualizar() {
+		this.actualizarTabla();
+	}// FIN METODO
+	@FXML
+	private void manejadorBotonBuscar() {
+		this.buscarRegistroTabla();
+	}// FIN MANEJADOR BUSCAR
+
+
+
+
 
 }

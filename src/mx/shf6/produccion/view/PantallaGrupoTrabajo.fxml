@@ -13,29 +13,29 @@
 
 <AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaGrupoTrabajo">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="520.0" prefWidth="462.0" styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane styleClass="bodyPantallaOverview" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <HBox prefHeight="510.0" prefWidth="452.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <VBox prefHeight="50.0" prefWidth="425.0">
+                  <VBox alignment="CENTER_LEFT">
                      <children>
-                        <Label prefHeight="25.0" prefWidth="130.0" styleClass="labelRobotoMedium16" text="Grupo de Trabajo" />
-                        <Label prefHeight="20.0" prefWidth="425.0" styleClass="labelRobotoMedium14" text="Gestion de los Grupos de Trabajo" />
+                        <Label styleClass="labelRobotoMedium16" text="Grupo de Trabajo" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestion de los grupos de trabajo" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
                   <TextField fx:id="buscarGrupoTrabajo" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
                      <font>
                         <Font size="12.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </HBox.margin>
                   </TextField>
-                  <HBox alignment="CENTER" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
+                  <HBox alignment="CENTER" maxHeight="30.0" maxWidth="30.0" onMouseClicked="#manejadorBotonBuscar" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <cursor>
@@ -47,9 +47,20 @@
                         </ImageView>
                      </children>
                      <HBox.margin>
-                        <Insets />
+                        <Insets right="5.0" />
                      </HBox.margin>
                   </HBox>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="396.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <image>
+                        <Image url="@images/1x/ActualizarBoton.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
                   <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCrear" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -61,26 +72,15 @@
                         <Insets left="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <image>
-                        <Image url="@images/1x/ActualizarBoton.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="3.0" />
-                     </HBox.margin>
-                  </ImageView>
                </children>
             </HBox>
             <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
                   <TableView fx:id="tablaGrupoTrabajo" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                      <columns>
-                        <PTableColumn fx:id="columnaCodigo" minWidth="-1.0" percentageWidth="0.25" prefWidth="-1.0" text="Código" />
-                        <PTableColumn fx:id="columnaDescripcion" minWidth="-1.0" percentageWidth="0.5" prefWidth="-1.0" text="Descripción" />
-                        <PTableColumn fx:id="columnaAcciones" minWidth="-1.0" percentageWidth="0.25" prefWidth="-1.0" text="Acciones" />
+                        <PTableColumn fx:id="columnaCodigo" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Código" />
+                        <PTableColumn fx:id="columnaDescripcion" minWidth="-1.0" percentageWidth="0.7" prefWidth="-1.0" text="Descripción" />
+                        <PTableColumn fx:id="columnaAcciones" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Acciones" />
                      </columns>
                   </TableView>
                </children>

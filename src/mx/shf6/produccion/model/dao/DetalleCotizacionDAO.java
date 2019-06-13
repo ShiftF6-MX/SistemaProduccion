@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -89,9 +90,8 @@ public class DetalleCotizacionDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<DetalleCotizacion> readCotizacionDetalle(Connection connection, int CotizacionFK) {
 		ArrayList<DetalleCotizacion> arrayListDetalleCotizacion = new ArrayList<DetalleCotizacion>();
-		String consulta = "SELECT Sys_PK, Cantidad, Precio, Costo, FechaEntrega, Observaciones, ProyectoFK, CotizacionFK "
-				+ "FROM detallecotizaciones "
-				+ "WHERE CotizacionFK = " + CotizacionFK;
+		String consulta = "SELECT detallecotizaciones.Sys_PK, detallecotizaciones.Cantidad, detallecotizaciones.Precio, detallecotizaciones.Costo, detallecotizaciones.FechaEntrega, detallecotizaciones.Observaciones, detallecotizaciones.ProyectoFK, detallecotizaciones.CotizacionFK, proyectos.Codigo, proyectos.Descripcion FROM detallecotizaciones INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK WHERE CotizacionFK = " + CotizacionFK;
+		int consecutivo = 1;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -106,6 +106,9 @@ public class DetalleCotizacionDAO {
 				detalleCotizacion.setObservaciones(resultados.getString(6));
 				detalleCotizacion.setProyectoFK(resultados.getInt(7));
 				detalleCotizacion.setCotizacionFK(resultados.getInt(8));
+				detalleCotizacion.setNumeroDibujo(resultados.getString(9));
+				detalleCotizacion.setNombreProyecto(resultados.getString(10));
+				detalleCotizacion.setPartida(consecutivo++);
 				arrayListDetalleCotizacion.add(detalleCotizacion);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -157,5 +160,12 @@ public class DetalleCotizacionDAO {
 		for (DetalleCotizacion detalleCotizacion : arrayList) 
 			listaObservableDetalleCotizacion.add(detalleCotizacion);
 		return listaObservableDetalleCotizacion;
+	}//FIN METODO
+	
+	public static List<DetalleCotizacion> toList(ArrayList<DetalleCotizacion> arrayList){
+		List<DetalleCotizacion> listaDetalleCotizacion = new ArrayList<DetalleCotizacion>();
+		for (DetalleCotizacion detalleCotizacion : arrayList)
+			listaDetalleCotizacion.add(detalleCotizacion);
+		return listaDetalleCotizacion;
 	}//FIN METODO
 }//FIN CLASE

@@ -11,18 +11,20 @@ import javafx.beans.property.StringProperty;
 		private ObjectProperty<Integer> sysPK;
 		private StringProperty codigo;
 		private StringProperty descripcion;
+		private ObjectProperty<Integer> grupoTrabajoFK;
 		
 		//VARIABLES
 		
 		//CONTRUCTORES
 		public GrupoTrabajo() {
-			this(0, "", "");
+			this(0, "", "", 0);
 
 		}//FIN CONSTRUCTOR
-		public GrupoTrabajo(Integer sysPK, String codigo, String descripcion) {
+		public GrupoTrabajo(Integer sysPK, String codigo, String descripcion,Integer grupoTrabajoFK) {
 			this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 			this.codigo = new SimpleStringProperty(codigo);
 			this.descripcion = new SimpleStringProperty(descripcion);
+			this.grupoTrabajoFK = new SimpleObjectProperty<Integer>(grupoTrabajoFK);
 		}//FIN CONSTRUCTOR
 		
 		
@@ -66,11 +68,25 @@ import javafx.beans.property.StringProperty;
 		public String getDescripcion() {
 			return descripcion.get();
 		}//FIN METODO
-
+		
 		//METODO PROPERTY DESCRIPCION
 		public StringProperty descripcionProperty() {
 			return descripcion;
 		}//FIN METODO
+		
+		public void setGrupoTrabajoFK(Integer grupoTrabajoFK) {
+			this.grupoTrabajoFK.set(grupoTrabajoFK);	
+		}//FIN METODO
+		
+		public int getGrupoTrabajoFK() {
+			return grupoTrabajoFK.get();
+		}//FIN METODO
+		
+		public ObjectProperty<Integer> grupoTrabajoFK(){
+			return grupoTrabajoFK;
+		}//FIN METODO
+		
+		
 		
 	}//FIN CLASE
 
