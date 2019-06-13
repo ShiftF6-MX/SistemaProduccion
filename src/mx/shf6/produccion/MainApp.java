@@ -966,7 +966,7 @@ public class MainApp extends Application {
             this.escenarioDialogos.setScene(escenaDialogoPuesto);
             
             DialogoPuesto dialogoPuesto = fxmlLoader.getController();
-            dialogoPuesto.setMainApp(this, puesto, opcion);
+            dialogoPuesto.setMain(this, puesto, opcion);
             
             this.escenarioDialogos.showAndWait();
         } catch(IOException | IllegalStateException ex) {
