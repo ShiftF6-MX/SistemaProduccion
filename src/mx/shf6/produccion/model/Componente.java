@@ -23,9 +23,13 @@ public class Componente {
 	private ObjectProperty<Integer> sysPK;
 	private StringProperty numeroParte;
 	private StringProperty descripcion;
-	private ObjectProperty<Dimensiones> dimensiones;			
+	private ObjectProperty<Dimensiones> dimensiones;
+	private StringProperty gradoMaterial;
+	private StringProperty espesorMaterial;
 	private StringProperty tipoComponente;
 	private ObjectProperty<Double> costo;
+	private ObjectProperty<Double> costoDirecto;
+	private ObjectProperty<Double> costoIndirecto;
 	private StringProperty unidad;
 	private ObjectProperty<Integer> materialFK;
 	private ObjectProperty<Integer> tipoMiscelaneoFK;
@@ -39,17 +43,21 @@ public class Componente {
 		
 	//CONSTRUCTOR VACIO
 	public Componente() {
-		this(0, "", "", new Dimensiones(), "", 0.0, "", 0, 0, 0, 0, 0, "", "", 0, 0);
+		this(0, "", "", new Dimensiones(), "", "", "", 0.0, 0.0, 0.0, "", 0, 0, 0, 0, 0, "", "", 0, 0);
 	}//FIN CONSTRUCTOR
 
-	public Componente(int sysPK, String numeroParte, String descripcion, Dimensiones dimensiones, String tipoComponente, Double costo, String unidad, int materialFK, int tipoMiscelaneoFK,
+	public Componente(int sysPK, String numeroParte, String descripcion, Dimensiones dimensiones, String gradoMaterial, String espesorMaterial, String tipoComponente, Double costo, Double costoDirecto, Double costoIndirecto, String unidad, int materialFK, int tipoMiscelaneoFK,
 			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.numeroParte = new SimpleStringProperty(numeroParte);
 		this.descripcion = new SimpleStringProperty(descripcion);
 		this.dimensiones = new SimpleObjectProperty<Dimensiones>(dimensiones);
+		this.gradoMaterial = new SimpleStringProperty(gradoMaterial);
+		this.espesorMaterial = new SimpleStringProperty(espesorMaterial);
 		this.tipoComponente = new SimpleStringProperty(tipoComponente);
 		this.costo = new SimpleObjectProperty<Double>(costo);
+		this.costoDirecto = new SimpleObjectProperty<Double>(costoDirecto);
+		this.costoIndirecto = new SimpleObjectProperty<Double>(costoIndirecto);
 		this.unidad = new SimpleStringProperty(unidad);
 		this.materialFK = new SimpleObjectProperty<Integer>(materialFK);
 		this.tipoMiscelaneoFK = new SimpleObjectProperty<Integer>(tipoMiscelaneoFK);
@@ -109,6 +117,30 @@ public class Componente {
 		return this.descripcion;
 	}//FIN METODO
 	
+	public void setGradoMaterial(String gradoMaterial) {
+		this.gradoMaterial.set(gradoMaterial);
+	}//FIN METODO
+	
+	public String getGradoMaterial() {
+		return this.gradoMaterial.get();
+	}//FIN METODO
+	
+	public StringProperty gradoMaterialProperty() {
+		return this.gradoMaterial;
+	}//FIN METODO
+	
+	public void setEspesorMaterial(String espesorMaterial) {
+		this.espesorMaterial.set(espesorMaterial);
+	}//FIN METODO
+	
+	public String getEspesorMaterial() {
+		return this.espesorMaterial.get();
+	}//FIN METODO
+	
+	public StringProperty espesorMaterialProperty() {
+		return this.espesorMaterial;
+	}//FIN METODO
+	
 	public void setDimensiones(Dimensiones dimensiones) {
 		this.dimensiones.set(dimensiones);
 	}//FIN METODO
@@ -147,6 +179,30 @@ public class Componente {
 	
 	public ObjectProperty<Double> costoProperty() {
 		return this.costo;
+	}//FIN METODO
+	
+	public void setCostoDirecto(Double costoDirecto) {
+		this.costoDirecto.set(costoDirecto);
+	}//FIN METODO
+	
+	public Double getCostoDirecto() {
+		return this.costoDirecto.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Double> costoDirectoProperty() {
+		return this.costoDirecto;
+	}//FIN METODO
+	
+	public void setCostoIndirecto(Double costoIndirecto) {
+		this.costoIndirecto.set(costoIndirecto);
+	}//FIN METODO
+	
+	public Double getCostoIndirecto() {
+		return this.costoIndirecto.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Double> costoIndirectoProperty() {
+		return this.costoIndirecto;
 	}//FIN METODO
 	
 	public void setUnidad(String unidad) {

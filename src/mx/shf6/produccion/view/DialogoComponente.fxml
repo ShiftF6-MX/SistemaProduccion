@@ -106,30 +106,66 @@
                   </VBox>
                   <VBox spacing="2.0">
                      <children>
-                        <Label styleClass="labelRobotoMedium12" text="Alto/Espesor" />
+                        <Label styleClass="labelRobotoMedium12" text="Alto" />
                         <TextField fx:id="campoTextoAltoEspesor" styleClass="campoBuscador" />
                      </children>
                   </VBox>
                </children>
             </HBox>
-            <VBox spacing="2.0">
+            <HBox spacing="5.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Costo" />
-                  <TextField fx:id="campoTextoCosto" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Grado Material" />
+                        <TextField fx:id="campoTextoGradoMaterial" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Espesor Material" />
+                        <TextField fx:id="campoTextoEspesorMaterial" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox spacing="2.0">
+            </HBox>
+            <HBox spacing="5.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Unidad" />
-                  <TextField fx:id="campoTextoUnidad" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Costo Mat." />
+                        <TextField fx:id="campoTextoCosto" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Costo Dir." />
+                        <TextField fx:id="campoTextoCostoDirecto" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Costo Ind." />
+                        <TextField fx:id="campoTextoCostoIndirecto" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox spacing="2.0">
+            </HBox>
+            <HBox spacing="5.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Notas" />
-                  <TextField fx:id="campoTextoNotas" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Unidad" />
+                        <TextField fx:id="campoTextoUnidad" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Notas" />
+                        <TextField fx:id="campoTextoNotas" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
             <VBox spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Status" />

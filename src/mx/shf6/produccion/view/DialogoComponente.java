@@ -47,7 +47,11 @@ public class DialogoComponente {
 	@FXML private TextField campoTextoLargo;
 	@FXML private TextField campoTextoAncho;
 	@FXML private TextField campoTextoAltoEspesor;
+	@FXML private TextField campoTextoGradoMaterial;
+	@FXML private TextField campoTextoEspesorMaterial;
 	@FXML private TextField campoTextoCosto;
+	@FXML private TextField campoTextoCostoDirecto;
+	@FXML private TextField campoTextoCostoIndirecto;
 	@FXML private TextField campoTextoUnidad;
 	@FXML private TextField campoTextoNotas;
 	@FXML private ComboBox<String> comboBoxStatus;
@@ -104,6 +108,10 @@ public class DialogoComponente {
 					campoTextoAltoEspesor.setText("0.0");
 					campoTextoAltoEspesor.setDisable(true);
 					campoTextoNumeroParte.setDisable(true);
+					campoTextoGradoMaterial.setText("");
+					campoTextoGradoMaterial.setDisable(true);
+					campoTextoEspesorMaterial.setText("");
+					campoTextoEspesorMaterial.setDisable(true);
 				} else if (newValue == TipoComponente.MATERIA_PRIMA) {
 					comboBoxCliente.getSelectionModel().select("");
 					comboBoxCliente.setDisable(true);
@@ -118,12 +126,16 @@ public class DialogoComponente {
 					comboBoxTratamiento.getSelectionModel().select("");
 					comboBoxTratamiento.setDisable(true);
 					campoTextoLargo.setText("0.0");
-					campoTextoLargo.setDisable(true);
+					campoTextoLargo.setDisable(false);
 					campoTextoAncho.setText("0.0");
-					campoTextoAncho.setDisable(true);
+					campoTextoAncho.setDisable(false);
 					campoTextoAltoEspesor.setText("0.0");
-					campoTextoAltoEspesor.setDisable(true);
+					campoTextoAltoEspesor.setDisable(false);
 					campoTextoNumeroParte.setDisable(true);
+					campoTextoGradoMaterial.setText("");
+					campoTextoGradoMaterial.setDisable(false);
+					campoTextoEspesorMaterial.setText("");
+					campoTextoEspesorMaterial.setDisable(false);
 				} else if (newValue == TipoComponente.SUB_ENSAMBLE || newValue == TipoComponente.PARTE_PRIMARIA) {
 					comboBoxCliente.getSelectionModel().select("");
 					comboBoxCliente.setDisable(false);
@@ -144,6 +156,10 @@ public class DialogoComponente {
 					//campoTextoAltoEspesor.setText("");
 					campoTextoAltoEspesor.setDisable(false);
 					campoTextoNumeroParte.setDisable(true);;
+					campoTextoGradoMaterial.setText("");
+					campoTextoGradoMaterial.setDisable(true);
+					campoTextoEspesorMaterial.setText("");
+					campoTextoEspesorMaterial.setDisable(true);
 				} else if (newValue == TipoComponente.ENSAMBLE) {
 					comboBoxCliente.getSelectionModel().select("");
 					comboBoxCliente.setDisable(false);
@@ -164,6 +180,10 @@ public class DialogoComponente {
 					campoTextoAltoEspesor.setText("0.0");
 					campoTextoAltoEspesor.setDisable(true);
 					campoTextoNumeroParte.setDisable(false);
+					campoTextoGradoMaterial.setText("");
+					campoTextoGradoMaterial.setDisable(true);
+					campoTextoEspesorMaterial.setText("");
+					campoTextoEspesorMaterial.setDisable(true);
 				}//FIN IF/ELSE
 			} //FIN METODO
 			
@@ -196,8 +216,12 @@ public class DialogoComponente {
 			this.campoTextoAncho.setDisable(false);
 			this.campoTextoAltoEspesor.setText("");
 			this.campoTextoAltoEspesor.setDisable(false);
-			this.campoTextoCosto.setText("");
+			this.campoTextoCosto.setText("0.0");
 			this.campoTextoCosto.setDisable(false);
+			this.campoTextoCostoDirecto.setText("");
+			this.campoTextoCostoDirecto.setDisable(false);
+			this.campoTextoCostoIndirecto.setText("");
+			this.campoTextoCostoIndirecto.setDisable(false);
 			this.campoTextoUnidad.setText("");
 			this.campoTextoUnidad.setDisable(false);
 			this.campoTextoNotas.setText("");
@@ -220,6 +244,10 @@ public class DialogoComponente {
 			this.comboBoxAcabado.setDisable(false);
 			this.comboBoxTratamiento.getSelectionModel().select("");
 			this.comboBoxTratamiento.setDisable(false);
+			this.campoTextoGradoMaterial.setText("");
+			this.campoTextoGradoMaterial.setDisable(true);
+			this.campoTextoEspesorMaterial.setText("");
+			this.campoTextoEspesorMaterial.setDisable(true);
 		} else if (this.opcion == VER) {
 			this.campoTextoNumeroParte.setText(this.componente.getNumeroParte());
 			this.campoTextoNumeroParte.setDisable(true);
@@ -233,6 +261,10 @@ public class DialogoComponente {
 			this.campoTextoAltoEspesor.setDisable(true);
 			this.campoTextoCosto.setText(String.valueOf(componente.getCosto()));
 			this.campoTextoCosto.setDisable(true);
+			this.campoTextoCostoDirecto.setText(String.valueOf(componente.getCostoDirecto()));
+			this.campoTextoCostoDirecto.setDisable(true);
+			this.campoTextoCostoIndirecto.setText(String.valueOf(componente.getCostoIndirecto()));
+			this.campoTextoCostoIndirecto.setDisable(true);
 			this.campoTextoUnidad.setText(componente.getUnidad());
 			this.campoTextoUnidad.setDisable(true);
 			this.campoTextoNotas.setText(componente.getNotas());
@@ -256,6 +288,10 @@ public class DialogoComponente {
 			this.comboBoxAcabado.setDisable(true);
 			this.comboBoxTratamiento.getSelectionModel().select(componente.getTratamiento(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxTratamiento.setDisable(true);
+			this.campoTextoGradoMaterial.setText(this.componente.getGradoMaterial());
+			this.campoTextoGradoMaterial.setDisable(true);
+			this.campoTextoEspesorMaterial.setText(this.componente.getEspesorMaterial());
+			this.campoTextoEspesorMaterial.setDisable(true);
 		} else if (this.opcion == EDITAR) {
 			this.campoTextoNumeroParte.setText(this.componente.getNumeroParte());
 			this.campoTextoNumeroParte.setDisable(true);
@@ -269,6 +305,10 @@ public class DialogoComponente {
 			this.campoTextoAltoEspesor.setDisable(false);
 			this.campoTextoCosto.setText(String.valueOf(componente.getCosto()));
 			this.campoTextoCosto.setDisable(false);
+			this.campoTextoCostoDirecto.setText(String.valueOf(componente.getCostoDirecto()));
+			this.campoTextoCostoDirecto.setDisable(false);
+			this.campoTextoCostoIndirecto.setText(String.valueOf(componente.getCostoIndirecto()));
+			this.campoTextoCostoIndirecto.setDisable(false);
 			this.campoTextoUnidad.setText(componente.getUnidad());
 			this.campoTextoUnidad.setDisable(false);
 			this.campoTextoNotas.setText(componente.getNotas());
@@ -295,6 +335,10 @@ public class DialogoComponente {
 			this.comboBoxAcabado.setDisable(true);
 			this.comboBoxTratamiento.getSelectionModel().select(componente.getTratamiento(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxTratamiento.setDisable(true);
+			this.campoTextoGradoMaterial.setText(this.componente.getGradoMaterial());
+			this.campoTextoGradoMaterial.setDisable(false);
+			this.campoTextoEspesorMaterial.setText(this.componente.getEspesorMaterial());
+			this.campoTextoEspesorMaterial.setDisable(false);
 		}//FIN METODO
 	}//FIN METODO
 	
@@ -330,7 +374,13 @@ public class DialogoComponente {
 		} else if (this.campoTextoCosto.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Costo\" no puede estar vacio");
 			return false;
-		}  else if (this.comboBoxStatus.getSelectionModel().getSelectedItem().isEmpty()) {
+		}  else if (this.campoTextoCostoDirecto.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Costo Directo\" no puede estar vacio");
+			return false;
+		} else if (this.campoTextoCostoIndirecto.getText().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Costo Indirecto\" no puede estar vacio");
+			return false;
+		} else if (this.comboBoxStatus.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Status\" no puede estar vacio");
 			return false;
 		}//FIN IF/ESLE
@@ -380,7 +430,11 @@ public class DialogoComponente {
 				dimensiones.setAltoEspesor(Double.parseDouble(this.campoTextoAltoEspesor.getText()));
 				this.componente.setDimensiones(dimensiones);
 				
+				this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
+				this.componente.setEspesorMaterial(this.campoTextoEspesorMaterial.getText());
 				this.componente.setCosto(Double.parseDouble(this.campoTextoCosto.getText()));
+				this.componente.setCostoDirecto(Double.parseDouble(this.campoTextoCostoDirecto.getText()));
+				this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
 				this.componente.setUnidad(this.campoTextoUnidad.getText());
 				this.componente.setNotas(this.campoTextoNotas.getText());
 				this.componente.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
@@ -421,7 +475,11 @@ public class DialogoComponente {
 				dimensiones.setAltoEspesor(Double.parseDouble(this.campoTextoAltoEspesor.getText()));
 				this.componente.setDimensiones(dimensiones);
 				
+				this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
+				this.componente.setEspesorMaterial(this.campoTextoEspesorMaterial.getText());
 				this.componente.setCosto(Double.parseDouble(this.campoTextoCosto.getText()));
+				this.componente.setCostoDirecto(Double.parseDouble(this.campoTextoCostoDirecto.getText()));
+				this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
 				this.componente.setUnidad(this.campoTextoUnidad.getText());
 				this.componente.setNotas(this.campoTextoNotas.getText());
 				this.componente.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));

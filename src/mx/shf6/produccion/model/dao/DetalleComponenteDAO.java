@@ -133,5 +133,5 @@ public class DetalleComponenteDAO {
 			listaObservableDetalleComponente.add(detalleComponente);
 		return listaObservableDetalleComponente;
 	}//FIN METODO
-
+	
 }//FIN CLASE
