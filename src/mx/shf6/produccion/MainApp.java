@@ -2,10 +2,6 @@ package mx.shf6.produccion;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -14,7 +10,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -38,9 +33,9 @@ import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
+import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.Material;
-import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.Puesto;
 import mx.shf6.produccion.model.TipoMateriaPrima;
@@ -62,7 +57,7 @@ import mx.shf6.produccion.view.DialogoCotizacion;
 import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
-import mx.shf6.produccion.view.DialogoDetalleProceso;
+import mx.shf6.produccion.view.DialogoEmpleado;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
@@ -1021,6 +1016,24 @@ public class MainApp extends Application {
         }//FIN TRY/CATCH
     }//FIN METODO
 	
+	public void iniciarDialogoEmpleado(Empleado empleado, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoEmpleado.fxml"));
+            this.dialogoEmpleado = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoEmpleado = this.iniciarEscenarioDialogos(this.dialogoEmpleado);
+            this.escenarioDialogos.setScene(escenaDialogoEmpleado);
+            
+            DialogoEmpleado dialogoEmpleado = fxmlLoader.getController();
+            dialogoEmpleado.setMainApp(this, empleado, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
 	public void iniciarDialogoAlmacen(Almacen almacen, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1079,7 +1092,7 @@ public class MainApp extends Application {
 
 	@Override
 	public void stop() {
-		System.out.println("Cerrando aplicacion...");
+		//System.out.println("Cerrando aplicacion...");
 		boolean opcion = Notificacion.dialogoPreguntar("Sistema de Producción", "Estas a punto de salir del sistema, ¿Realmente deseas cerrar la aplicación?");
 		if (opcion) {
 			this.conexionBD.terminarConexion(this.getConnection());
