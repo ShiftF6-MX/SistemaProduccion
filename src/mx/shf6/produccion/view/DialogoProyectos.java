@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,6 +39,7 @@ public class DialogoProyectos {
 	//VARIABLES
 	
 	//COMPONENTES INTERFAZ
+	@FXML private Label etiquetaCliente;
 	@FXML private TextField campoTextoBusqueda;
 	@FXML private TableView<Proyecto> tablaProyecto;
 	@FXML private PTableColumn<Proyecto, String> columnaCodigo;
@@ -62,6 +64,7 @@ public class DialogoProyectos {
 		this.cliente = cliente;
 		this.listaProyecto = ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(),this.cliente.getSysPK());
 		this.actualizarTabla();
+		this.etiquetaCliente.setText(this.cliente.getNombre());
 	}//FIN METODO
 	
 	private void inicializaComponentes() {
@@ -85,7 +88,7 @@ public class DialogoProyectos {
 		this.columnaCostoIndirecto.setCellValueFactory(cellData -> cellData.getValue().costoIndirectoProperty());
 		this.columnaPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty());
 		this.inicializarColumnaAcciones();
-	}//FIN METODO.
+	}//FIN METODO
 	
 	private void actualizarTabla() {
 		this.tablaProyecto.setItems(null);

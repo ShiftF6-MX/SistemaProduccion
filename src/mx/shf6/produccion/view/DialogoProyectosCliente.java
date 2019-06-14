@@ -1,10 +1,9 @@
 package mx.shf6.produccion.view;
 
 import java.io.File;
+import java.util.ArrayList;
 
-
-import javafx.collections.ObservableList;
-
+import javafx.collections.FXCollections;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Proyecto;
 
 import mx.shf6.produccion.model.dao.ComponenteDAO;
@@ -22,14 +22,14 @@ import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoProyectosCliente {
-
 	
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Proyecto proyecto;
 	private Cliente cliente;
 	private File renameRuta;
-	
+	private ArrayList<Componente> arrayListComponentesEnsambleCliente;
+	private ArrayList<String> arrayListNumeroParteComponentesEnsambleCliente;
 	
 	//VARIABLES
 	private int opcion;
@@ -47,9 +47,7 @@ public class DialogoProyectosCliente {
 	@FXML private TextField campoCostoDirecto;
 	@FXML private TextField campoCostoIndirecto;
 	@FXML private TextField campoPrecio;
-	@FXML private ComboBox<String> comboBoxComponentes;
-	
-	
+	@FXML private ComboBox<String> comboBoxComponentes;	
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -72,8 +70,13 @@ public class DialogoProyectosCliente {
 		
 		this.renameRuta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" +this.proyecto.getCodigo());
 		
-		ObservableList<String> listaComponentes = ComponenteDAO.listaNumerosParte(this.mainApp.getConnection());
-		this.comboBoxComponentes.setItems(listaComponentes);
+		this.arrayListComponentesEnsambleCliente = ComponenteDAO.readComponentesEnsambleCliente(this.mainApp.getConnection(), this.cliente.getSysPK());
+		this.arrayListNumeroParteComponentesEnsambleCliente = new ArrayList<String>();
+		
+		for (Componente componente : this.arrayListComponentesEnsambleCliente)
+			this.arrayListNumeroParteComponentesEnsambleCliente.add(componente.getNumeroParte());
+
+		this.comboBoxComponentes.setItems(FXCollections.observableArrayList(this.arrayListNumeroParteComponentesEnsambleCliente));
 		new AutoCompleteComboBoxListener(comboBoxComponentes);
 		
 		this.inicializarComponentes();

@@ -62,7 +62,7 @@
                               <Image url="@images/1x/AgregarBoton.png" />
                            </image>
                            <HBox.margin>
-                              <Insets right="5.0" />
+                              <Insets right="3.0" />
                            </HBox.margin>
                         </ImageView>
                         <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true">
