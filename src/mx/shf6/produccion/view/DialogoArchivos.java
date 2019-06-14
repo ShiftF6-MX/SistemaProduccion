@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -47,6 +48,7 @@ public class DialogoArchivos {
 	//VARIABLES
 	
 	//COMPONENTES INTERFAZ
+	@FXML private Label etiquetaNombreProyecto;
 	@FXML private TextField campoTextoBusqueda;
 	@FXML private TableView<ArchivoProyecto> tablaArchivoProyecto;
 	@FXML private PTableColumn<ArchivoProyecto, String> columnaCodigo;
@@ -56,8 +58,6 @@ public class DialogoArchivos {
 			
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.archivoProyecto = new ArchivoProyecto();
-		this.cliente = new Cliente();
 		this.inicializaComponentes();
 		this.inicializaTabla();
 	}//FIN METODO
@@ -67,7 +67,9 @@ public class DialogoArchivos {
 		this.mainApp = mainApp;
 		this.proyecto = proyecto;
 		this.cliente = cliente;
+		this.archivoProyecto = new ArchivoProyecto();
 		this.listaArchivoProyecto = ArchivoProyectoDAO.readArchivoProyectoCliente(this.mainApp.getConnection(),this.proyecto.getSysPK());
+		this.etiquetaNombreProyecto.setText(this.proyecto.getCodigo());
 		this.actualizarTabla();
 	}//FIN METODO
 	
