@@ -119,9 +119,7 @@ public class Sesion {
 	}//FIN METODO
 	
 	public Usuario getUsuario(Connection connection) {
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		Usuario usuario = (Usuario) usuarioDAO.leer(connection, "SysPK", "" + this.getusuarioFk()).get(0);
-		return usuario;
+		return UsuarioDAO.readPorCampo(connection, "SysPK", "" + this.getusuarioFk()).get(0);
 	}//FIN METODO
 	//FIN METODOS "USUARIO"
 	

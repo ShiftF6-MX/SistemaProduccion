@@ -5,7 +5,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import mx.shf6.produccion.MainApp;
-import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.model.dao.UsuarioDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -13,7 +12,7 @@ public class PantallaSesion {
 
 	//PROPIEDADES
 	private MainApp mainApp;
-	private UsuarioDAO usuarioDAO;
+
 	
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TextField campoTextoUsuario;
@@ -24,7 +23,7 @@ public class PantallaSesion {
 		
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.usuarioDAO = new UsuarioDAO();
+		
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
@@ -34,7 +33,7 @@ public class PantallaSesion {
 	
 	//COMPRUEBA CREDENCIALES USUARIO
 	private boolean autenticarUsuario() {
-		int resultado = this.usuarioDAO.validarUsuario(this.mainApp.getConnection(), this.campoTextoUsuario.getText(), this.campoTextoContrasena.getText());
+		int resultado = UsuarioDAO.validarUsuario(this.mainApp.getConnection(), this.campoTextoUsuario.getText(), this.campoTextoContrasena.getText());
 		switch (resultado) {
 			case UsuarioDAO.NO_REGISTRADO:
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "Usuario no registrado", "Lo sentimos no puedes ingresar al sistema con este nombre de usuario.");
@@ -46,7 +45,7 @@ public class PantallaSesion {
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "Contraseña incorrecta", "Lo sentimos la contraseña con la que intentas ingresar no es la correcta, si la has olvidado, por favor ponte en contacto con el administrador del sistema.");
 				return false;
 			case UsuarioDAO.ACCESO_CORRECTO:
-				this.mainApp.setUsuario((Usuario) usuarioDAO.leer(this.mainApp.getConnection(), "Usuario", campoTextoUsuario.getText()).get(0));
+				this.mainApp.setUsuario(UsuarioDAO.readPorCampo(this.mainApp.getConnection(), "Usuario", campoTextoUsuario.getText()).get(0));
 				return true;
 			default:
 				return false;
