@@ -100,7 +100,7 @@ public class DialogoArchivoProyecto {
 			    				
 				if (ArchivoProyectoDAO.createArchivoProyecto(this.mainApp.getConnection(), this.archivoProyecto)) {
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-					this.mainApp.getEscenarioDialogos().close();
+					this.mainApp.getEscenarioDialogosAlterno().close();
 				} else
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
 			} else if (this.opcion == EDITAR) {
@@ -109,7 +109,7 @@ public class DialogoArchivoProyecto {
 								
 				if (ArchivoProyectoDAO.updateArchivoProyecto(this.mainApp.getConnection(), this.archivoProyecto)) {
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
-					this.mainApp.getEscenarioDialogos().close();
+					this.mainApp.getEscenarioDialogosAlterno().close();
 				} else
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
 			} else if ( this.opcion == VER) {
