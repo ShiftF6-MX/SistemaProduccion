@@ -3,10 +3,12 @@ package mx.shf6.produccion.utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.Executors;
 
-public class ConnectionDB {
+public class ConnectionDB extends Thread{
     
     //VARIABLES
     private Connection conexion;
@@ -45,5 +47,22 @@ public class ConnectionDB {
             Notificacion.dialogoException(sqle);
         }//END TRY-CATCH
     }//END TERMINAR CONEXION
+    
+    public void run() {
+    	String consulta = "SHOW SESSION VARIABLES LIKE 'wait_timeout'";
+		try {
+			while (true) {
+				Statement sentencia = conexion.createStatement();
+				ResultSet resultados = sentencia.executeQuery(consulta);
+				while (resultados.next()) {
+					//System.out.println(resultados.getString(1));
+					//System.out.println(resultados.getString(2));
+				}//FIN WHILE
+			Thread.sleep(600000);
+			}//FIN WHILE
+		} catch (SQLException | InterruptedException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+    }//FIN METODO
     
 }//END CLASS
