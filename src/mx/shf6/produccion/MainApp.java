@@ -2,7 +2,10 @@ package mx.shf6.produccion;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -29,11 +32,13 @@ import javafx.stage.StageStyle;
 import mx.shf6.produccion.model.Acabado;
 import mx.shf6.produccion.model.Almacen;
 import mx.shf6.produccion.model.ArchivoProyecto;
+import mx.shf6.produccion.model.CentroTrabajo;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
+import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
@@ -50,6 +55,7 @@ import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
 import mx.shf6.produccion.view.DialogoAlmacen;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
 import mx.shf6.produccion.view.DialogoArchivos;
+import mx.shf6.produccion.view.DialogoCentroTrabajo;
 import mx.shf6.produccion.view.DialogoClientes;
 import mx.shf6.produccion.view.DialogoComponente;
 import mx.shf6.produccion.view.DialogoCotizacion;
@@ -57,6 +63,7 @@ import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoDetalleProceso;
+import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import mx.shf6.produccion.view.DialogoProyectos;
@@ -142,6 +149,9 @@ public class MainApp extends Application {
 	private AnchorPane dialogoArchivos;
 	private AnchorPane dialogoArchivoProyecto;
 	private AnchorPane dialogoPuesto;
+	private AnchorPane dialogoGrupoTrabajo;
+	private AnchorPane dialogoCentroTrabajo;
+	private AnchorPane dialogoEmpleado;
 	private AnchorPane dialogoAlmacen;
 	private AnchorPane dialogoMovimientoInventario;
 	private AnchorPane dialogoAgregarMovimientoComponente;
@@ -183,6 +193,7 @@ public class MainApp extends Application {
 		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
+		this.conexionBD.start();
 	}//FIN METODO
 	
 	private void configurarEscenarioPrincipal(Stage primaryStage) {
@@ -974,6 +985,42 @@ public class MainApp extends Application {
         }//FIN TRY/CATCH
     }//FIN METODO
 	
+	public void iniciarDialogoGrupoTrabajo(GrupoTrabajo grupoTrabajo, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoGrupoTrabajo.fxml"));
+            this.dialogoGrupoTrabajo = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoGrupoTrabajo = this.iniciarEscenarioDialogos(this.dialogoGrupoTrabajo);
+            this.escenarioDialogos.setScene(escenaDialogoGrupoTrabajo);
+            
+            DialogoGrupoTrabajo dialogoGrupoTrabajo = fxmlLoader.getController();
+            dialogoGrupoTrabajo.setMainApp(this, grupoTrabajo, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoCentroTrabajo(CentroTrabajo centroTrabajo, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoCentroTrabajo.fxml"));
+            this.dialogoCentroTrabajo = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoCentroTrabajo = this.iniciarEscenarioDialogos(this.dialogoCentroTrabajo);
+            this.escenarioDialogos.setScene(escenaDialogoCentroTrabajo);
+            
+            DialogoCentroTrabajo dialogoCentroTrabajo = fxmlLoader.getController();
+            dialogoCentroTrabajo.setMainApp(this, centroTrabajo, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
 	public void iniciarDialogoAlmacen(Almacen almacen, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1042,14 +1089,6 @@ public class MainApp extends Application {
 	
 	//METODOS DE ACCESO CONEXION
 	public Connection getConnection() {
-		try {
-			if (this.conexion.isClosed()) {
-				this.configurarBaseDatos();
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "La conexión a la basa de datos se a perdido");
-			}
-		} catch (SQLException ex) {
-			Notificacion.dialogoException(ex);
-		}
 		return this.conexion;
 	}//FIN METODO
 	
