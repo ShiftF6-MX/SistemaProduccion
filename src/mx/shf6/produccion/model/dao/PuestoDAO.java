@@ -69,7 +69,7 @@ public class PuestoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Puesto> readPuestoLike(Connection connection, String like) {
 		ArrayList<Puesto> arrayListPuesto = new ArrayList<Puesto>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM puestos WHERE Codigo LIKE '%" + like + "%';";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM puestos WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

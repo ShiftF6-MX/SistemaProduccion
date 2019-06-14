@@ -9,6 +9,7 @@ import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoGrupoTrabajo {
 
@@ -17,7 +18,6 @@ public class DialogoGrupoTrabajo {
 	private MainApp mainApp;
 	private GrupoTrabajo grupoTrabajo;
 	private Connection conexion;
-	
 	
 	//VARIABLES
 	private int opcion;
@@ -40,11 +40,13 @@ public class DialogoGrupoTrabajo {
 	@FXML
 	private void initialize() {
 		grupoTrabajo = new GrupoTrabajo();
+		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoCodigo, 8);
 	}//FIN METODO COMPONENTES
 	
 	//ACCESO A CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp, GrupoTrabajo grupoTrabajo, int opcion) {
 		this.mainApp = mainApp;
+		this.conexion = this.mainApp.getConnection();
 		this.grupoTrabajo = grupoTrabajo;
 		this.opcion = opcion;
 		this.conexion = mainApp.getConnection();
@@ -90,7 +92,7 @@ public class DialogoGrupoTrabajo {
 			if (opcion == CREAR) {
 				this.grupoTrabajo.setCodigo(this.campoTextoCodigo.getText());
 				this.grupoTrabajo.setDescripcion(this.campoTextoDescripcion.getText());
-				if (GrupoTrabajoDAO.createGrupoTrabajo(this.mainApp.getConnection(), this.grupoTrabajo)) {
+				if (GrupoTrabajoDAO.createGrupoTrabajo(this.conexion, this.grupoTrabajo)) {
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
 					this.mainApp.getEscenarioDialogos().close();
 				} else 
@@ -98,7 +100,7 @@ public class DialogoGrupoTrabajo {
 			}else if ( opcion == EDITAR) {
 				this.grupoTrabajo.setCodigo(this.campoTextoCodigo.getText());
 				this.grupoTrabajo.setDescripcion(this.campoTextoDescripcion.getText());		
-				if (GrupoTrabajoDAO.updateGrupoTrabajo(mainApp.getConnection(), grupoTrabajo)) {
+				if (GrupoTrabajoDAO.updateGrupoTrabajo(this.conexion, this.grupoTrabajo)) {
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
 					this.mainApp.getEscenarioDialogos().close();
 				} else 

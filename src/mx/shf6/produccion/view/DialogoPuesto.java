@@ -42,13 +42,12 @@ public class DialogoPuesto {
 		this.mainApp = mainApp;
 		this.puesto = puesto;
 		this.opcion = opcion;
-<<<<<<< HEAD
+
 		this.conexion = this.mainApp.getConnection();
 		this.inicializarComponentes();  
-=======
+
 		this.inicializarComponentes();
->>>>>>> 4eab3272f5a427dc1243d55d626c5ebdb145e913
-		
+
 	}
 	
 	//INICIALIZA COMPONENTE

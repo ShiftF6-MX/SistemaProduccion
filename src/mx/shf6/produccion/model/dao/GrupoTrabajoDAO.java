@@ -69,7 +69,7 @@ public class GrupoTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<GrupoTrabajo> readGrupoTrabajoLike(Connection connection, String like) {
 		ArrayList<GrupoTrabajo> arrayListaGrupoTrabajo = new ArrayList<GrupoTrabajo>();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo WHERE Codigo LIKE '%" + like + "%';";
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo WHERE Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

@@ -171,17 +171,17 @@ public class PantallaGrupoTrabajo {
 	
 	@FXML
 	private void manejadorBotonCrear() {
-		this.mainApp.iniciarGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.CREAR);
+		this.mainApp.iniciarDialogoGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.CREAR);
 		this.actualizarTabla();
 	}// FIN METODO
 
 	private void botonVer(GrupoTrabajo grupoTrabajo) {
-		 this.mainApp.iniciarGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.VER);
+		 this.mainApp.iniciarDialogoGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.VER);
 		 this.actualizarTabla();
 	}// FIN METODO
 
 	private void botonEditar(GrupoTrabajo grupoTrabajo) {
-		 this.mainApp.iniciarGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.EDITAR);
+		 this.mainApp.iniciarDialogoGrupoTrabajo(grupoTrabajo, DialogoGrupoTrabajo.EDITAR);
 		 this.actualizarTabla();
 	}// FIN METODO
 

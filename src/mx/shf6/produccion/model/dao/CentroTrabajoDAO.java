@@ -52,8 +52,7 @@ public class CentroTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static CentroTrabajo readCentroTrabajo(Connection connection, int sysPK) {
 		CentroTrabajo centrotrabajo = new CentroTrabajo();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, GrupoTrabajoFK FROM centrostrabajo order by Codigo ASC WHERE Sys_PK = "
-				+ sysPK;
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, GrupoTrabajoFK FROM centrostrabajo order by Codigo ASC WHERE Sys_PK = " + sysPK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -73,7 +72,7 @@ public class CentroTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<CentroTrabajo> readCentroTrabajoLike(Connection connection, String like) {
 		ArrayList<CentroTrabajo> arrayListaCentroTrabajo = new ArrayList<CentroTrabajo>();
-		String consulta = "select centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, grupostrabajo.Codigo from centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK WHERE centrostrabajo.Codigo LIKE '%"+ like + "%';";
+		String consulta = "SELECT centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, grupostrabajo.Codigo FROM centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK WHERE centrostrabajo.Codigo LIKE '%"+ like + "%' OR centrostrabajo.Descripcion LIKE '%" + like + "%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
