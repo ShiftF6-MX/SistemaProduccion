@@ -36,6 +36,7 @@ import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
+import mx.shf6.produccion.model.GrupoUsuario;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
@@ -130,6 +131,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaProceso;
 	private AnchorPane pantallaExistencia;
 	private AnchorPane pantallaAlmacen;
+	private AnchorPane pantallaUsuario;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -158,6 +160,9 @@ public class MainApp extends Application {
 	private AnchorPane dialogoProceso;
 	private AnchorPane dialogoDetalleProceso;
 	private AnchorPane dialogoAgregarDetalleProceso;
+	private AnchorPane dialogoGrupoUsuario;
+	private AnchorPane dialogoAgregarGrupoUsuario;
+	private AnchorPane dialogoEsquemaSeguridad;
 	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
@@ -678,6 +683,20 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
+	public void iniciarPantallaUsuario() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaUsuario.fxml"));
+			this.pantallaUsuario = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaUsuario);
+			
+			PantallaUsuario pantallaUsuario = fxmlLoader.getController();
+			pantallaUsuario.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
 	//METODOS DIALOGOS
 	public void iniciarDialogoClientes(Cliente cliente , int opcion) {
 		try {
@@ -1153,6 +1172,61 @@ public class MainApp extends Application {
             return null;
         }//FIN TRY/CATCH
     }//FIN METODO
+	
+	public void iniciarDialogoGrupoUsuario() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoGrupoUsuario.fxml"));
+            this.dialogoGrupoUsuario = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoGrupoUsuario = this.iniciarEscenarioDialogos(this.dialogoGrupoUsuario);
+            this.escenarioDialogos.setScene(escenaDialogoGrupoUsuario);
+            
+            DialogoGrupoUsuario dialogoGrupoUsuario = fxmlLoader.getController();
+            dialogoGrupoUsuario.setMainApp(this);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarGrupoUsuario(GrupoUsuario grupoUsuario, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarGrupoUsuario.fxml"));
+            this.dialogoAgregarGrupoUsuario = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoAgregarGrupoUsuario = this.iniciarEscenarioDialogos(this.dialogoAgregarGrupoUsuario);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarGrupoUsuario);
+            
+            DialogoAgregarGrupoUsuario dialogoAgregarGrupoUsuario = fxmlLoader.getController();
+            dialogoAgregarGrupoUsuario.setMainApp(this, grupoUsuario, opcion);
+            
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoEsquemaSeguridad(GrupoUsuario grupoUsuario) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoEsquemaSeguridad.fxml"));
+            this.dialogoEsquemaSeguridad = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoEsquemaSeguridad = this.iniciarEscenarioDialogos(this.dialogoEsquemaSeguridad);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoEsquemaSeguridad);
+            
+            DialogoEsquemaSeguridad dialogoEsquemaSeguridad = fxmlLoader.getController();
+            dialogoEsquemaSeguridad.setMainApp(this, grupoUsuario);
+            
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+
 
 	@Override
 	public void stop() {
