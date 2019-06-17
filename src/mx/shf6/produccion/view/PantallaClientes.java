@@ -64,12 +64,14 @@ public class PantallaClientes {
 	}//FIN METODO
 	
 	//ACTUALIZA LA TABLA DE ACUERDO AL CRITERIO DE BÚSQUEDA
+	@SuppressWarnings("unchecked")
 	@FXML private void buscarButtonHandler() {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
     		tablaCliente.setItems(null);
     		listaClientes.clear();
     		listaClientes = ClienteDAO.readCliente(this.mainApp.getConnection(), this.buscarCliente.getText());
     		tablaCliente.setItems(ClienteDAO.toObservableList(listaClientes));
+    		this.tablaCliente.getSortOrder().addAll(this.codigoColumna);
     	} else {
     		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
     	}//FIN IF-ELSE
@@ -216,25 +218,18 @@ public class PantallaClientes {
 		            	
 		            		
 		            	setGraphic(acciones);		                
-		                setText(null);
-		                
-		            }//FIN IF/ELSE
-		        	
-		        	
-		        	
+		                setText(null);		                
+		            }//FIN IF/ELSE		        	
 		        }//FIN METODO
-		    };//FIN METODO
-		    
+		    };//FIN METODO		    
 		    return cell;
 		};//FIN METODO
 		accionesColumn.setCellFactory(cellFactory);
-		this.codigoColumna.setSortType(SortType.ASCENDING);
     }//FIN METODO
 	
 	
 	@FXML private void nuevoCliente() {
-		Cliente cliente = new Cliente(); 
-		
+		Cliente cliente = new Cliente(); 		
 		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO	
@@ -251,19 +246,16 @@ public class PantallaClientes {
 	}//FIN METODO
 	
 	private void verCliente(Cliente cliente) {
-		
 		this.mainApp.iniciarDialogoClientes(cliente, DialogoClientes.MOSTRAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void eliminarCliente(Cliente cliente) {
-		if(ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
+		if (ClienteDAO.deleteCliente(mainApp.getConnection(), cliente)) {
 			DomicilioDAO.deleteDomicilio(mainApp.getConnection(),cliente.getDomicilio(mainApp.getConnection()));
 			File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" + cliente.getNombre());
     		ruta.delete();
-		}
+		}//FIN IF
 	}//FIN METODO
-	
-	
-	 	
+		 	
 }//FIN CLASE
