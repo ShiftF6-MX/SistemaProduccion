@@ -52,7 +52,7 @@ public class CentroTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static CentroTrabajo readCentroTrabajo(Connection connection, int sysPK) {
 		CentroTrabajo centrotrabajo = new CentroTrabajo();
-		String consulta = "SELECT Sys_PK, Codigo, Descripcion, GrupoTrabajoFK FROM centrostrabajo order by Codigo ASC WHERE Sys_PK = " + sysPK;
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, GrupoTrabajoFK FROM centrostrabajo WHERE Sys_PK = " + sysPK + " ORDER BY Codigo";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -61,7 +61,6 @@ public class CentroTrabajoDAO {
 				centrotrabajo.setCodigo(resultados.getString(2));
 				centrotrabajo.setDescripcion(resultados.getString(3));
 				centrotrabajo.setgrupoTrabajoFK(resultados.getInt(4));
-				centrotrabajo.setCodigoGrupoTrabajo(resultados.getString(5));
 			} // FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
