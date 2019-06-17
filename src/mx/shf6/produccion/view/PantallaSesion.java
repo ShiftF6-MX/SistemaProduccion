@@ -1,9 +1,12 @@
 package mx.shf6.produccion.view;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.dao.UsuarioDAO;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -23,7 +26,15 @@ public class PantallaSesion {
 		
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		
+		this.campoTextoContrasena.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode().equals(KeyCode.ENTER))
+					ingresarButtonHandler();
+			}//FIN METODO
+			
+		});
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL CONTROLA VISTAS
