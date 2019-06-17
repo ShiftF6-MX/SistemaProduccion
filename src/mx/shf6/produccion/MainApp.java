@@ -65,6 +65,7 @@ import mx.shf6.produccion.view.DialogoEmpleado;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
+import mx.shf6.produccion.view.DialogoProceso;
 import mx.shf6.produccion.view.DialogoProyectos;
 import mx.shf6.produccion.view.DialogoProyectosCliente;
 import mx.shf6.produccion.view.DialogoPuesto;
@@ -154,6 +155,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAlmacen;
 	private AnchorPane dialogoMovimientoInventario;
 	private AnchorPane dialogoAgregarMovimientoComponente;
+	private AnchorPane dialogoProceso;
 	private AnchorPane dialogoDetalleProceso;
 	private AnchorPane dialogoAgregarDetalleProceso;
 	
@@ -1093,6 +1095,24 @@ public class MainApp extends Application {
         } catch(IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
             return null;
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoProceso(Proceso proceso, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoProceso.fxml"));
+            this.dialogoProceso = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoProceso = this.iniciarEscenarioDialogos(this.dialogoProceso);
+            this.escenarioDialogos.setScene(escenaDialogoProceso);
+            
+            DialogoProceso dialogoProceso = fxmlLoader.getController();
+            dialogoProceso.setMainApp(this, proceso, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
 	
