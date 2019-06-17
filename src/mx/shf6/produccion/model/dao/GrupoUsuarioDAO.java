@@ -5,131 +5,134 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.GrupoUsuario;
+import mx.shf6.produccion.utilities.Notificacion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class GrupoUsuarioDAO implements ObjectDAO {
+public class GrupoUsuarioDAO {
 	
 	//METODO PARA HACER CREATE EN TABLA GRUPOUSUARIO
-	@Override
-	public boolean crear(Connection connection, Object grupousuario) {
-		GrupoUsuario grupoUsuario=(GrupoUsuario)grupousuario;
+	public static final boolean create(Connection connection, GrupoUsuario grupoUsuario) {
 		String query=" INSERT INTO gruposusuario (nombre, descripcion) values ( ?, ?)";
 		try {		
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, grupoUsuario.getNombre());
 			preparedStatement.setString(2, grupoUsuario.getDescripcion());
 			preparedStatement.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método crear");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
 		}
 	}//FIN METODO
 	
+	//METODO PARA OBTENER REGISTROS DE LA TABLA GRUPOUSUARIO
+	public static final ArrayList<GrupoUsuario> readTodos(Connection connection){
+		String query="SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario ORDER BY sysPK";
+		ArrayList<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			while (resultSet.next()) {
+				GrupoUsuario grupoUsuario = new GrupoUsuario();
+				grupoUsuario.setSysPk(resultSet.getInt(1));
+				grupoUsuario.setNombre(resultSet.getString(2));
+				grupoUsuario.setDescripcion(resultSet.getString(3));
+				listaGrupoUsuario.add(grupoUsuario);
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return listaGrupoUsuario;
+	}//FIN METODO
+	
 	
 	//METODO PARA HACER SELECT EN LA TABLA GRUPOSUSUARIO
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query ="";
-		ArrayList<Object> listaGrupoUsuario = new ArrayList<Object>();
-		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query="SELECT * FROM gruposusuario ORDER BY sysPK";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);
-				GrupoUsuario grupoUsuario = null;
-				while (resultSet.next()) {
-					grupoUsuario = new GrupoUsuario();
-					grupoUsuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
-					grupoUsuario.setNombre(resultSet.getString(2));
-					grupoUsuario.setDescripcion(resultSet.getString(3));
-					listaGrupoUsuario.add(grupoUsuario);
-				}
-			}catch (SQLException e) {
-					System.out.println("Error: En método leer");
-					e.printStackTrace();
-			}
-		}else {
-			query="SELECT * FROM gruposusuario WHERE "+campoBusqueda+" = ?  ORDER BY sysPK";
-			
-			try {
-				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				GrupoUsuario grupoUsuario = null;
-				while (resultSet.next()) {
-					grupoUsuario = new GrupoUsuario();
-					grupoUsuario.setSysPk(resultSet.getInt(1));
-					grupoUsuario.setNombre(resultSet.getString(2));
-					grupoUsuario.setDescripcion(resultSet.getString(3));
-					listaGrupoUsuario.add(grupoUsuario);
-				}
-			}catch (SQLException e) {
-					System.out.println("Error: En método leer");
-					e.printStackTrace();
-			}
-		}
+	public static final GrupoUsuario readPorSysPK(Connection connection, int sysPK) {
+		String query = "SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario WHERE Sys_PK = " + sysPK;
+		GrupoUsuario grupoUsuario = new GrupoUsuario();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultSet = sentencia.executeQuery(query);
+			while (resultSet.next()) {
+				grupoUsuario.setSysPk(resultSet.getInt(1));
+				grupoUsuario.setNombre(resultSet.getString(2));
+				grupoUsuario.setDescripcion(resultSet.getString(3));
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRYcATCH
+		return grupoUsuario;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER REGISTROS SEGUN SU NOMBRE O DESCRIPCION
+	public static final ArrayList<GrupoUsuario> readPorNombreDescripcionLike(Connection connection, String like){
+		ArrayList<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
+		String query = "SELECT Sys_PK, Nombre, Descripcion FROM grupousuario WHERE Nombre LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while (resultados.next()) {
+				GrupoUsuario grupoUsuario = new GrupoUsuario();
+				grupoUsuario.setSysPk(resultados.getInt(1));
+				grupoUsuario.setNombre(resultados.getString(2));
+				grupoUsuario.setDescripcion(resultados.getString(3));
+				listaGrupoUsuario.add(grupoUsuario);
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRYCATch
 		return listaGrupoUsuario;
 	}//FIN METODO
 	
 	//METODO PARA HACER UPDATE EN LA TABLA GRUPOSUSUARIO
-	@Override
-	public boolean modificar(Connection connection, Object grupousuario) {
+	public static final boolean update(Connection connection, GrupoUsuario grupoUsuario) {
 		String query="UPDATE gruposusuario SET nombreGrupo= ?, descripcion= ? WHERE sysPK= ?;";
 		try {
-			GrupoUsuario grupoUsuario=(GrupoUsuario)grupousuario;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, grupoUsuario.getNombre());
 			preparedStatement.setString(2, grupoUsuario.getDescripcion());	
 			preparedStatement.setInt(3, grupoUsuario.getSysPk());
 			preparedStatement.execute();
 			return true;
-			} catch (SQLException e) {
-				System.out.println("Error: En método modificar");
-				e.printStackTrace();
-				return false;
-			}
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY-CATCH
 	}//FIN METODO
 	
 	//METODO PARA HACER DELETE EN LA TABLA GRUPOSUSUARIO
-	@Override
-	public boolean eliminar(Connection connection, Object grupousuario) {
+	public static final boolean delete(Connection connection, GrupoUsuario grupoUsuario) {
 		String query=" DELETE FROM gruposusuario WHERE sysPK= ?";
 		try {			
-			GrupoUsuario grupoUsuario=(GrupoUsuario)grupousuario;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, grupoUsuario.getSysPk());
 			preparedStatement.execute();
 			return true;
-			} catch (SQLException e) {
-				System.out.println("Error: En método eliminar");
-				e.printStackTrace();
-				return false;
-			}	
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY-CATCH
 	}//FIN METODO
 	
-	//METODO PARA CONVERTIR UNA ARRAYLIST A OBSERVABLELIST
+	/*//METODO PARA CONVERTIR UNA ARRAYLIST A OBSERVABLELIST
 	public ObservableList<GrupoUsuario> toObservableList(ArrayList<Object> arrayList) {
 		ObservableList<GrupoUsuario> grupoUsuarioData = FXCollections.observableArrayList();         
      	for(Object usuario : arrayList) {
      		grupoUsuarioData.add((GrupoUsuario) usuario);
      	}//FIN FOR
      	return grupoUsuarioData;
-	}//FIN METODO
+	}//FIN METODO*/
 	
-	//METODO PARA CONVERTIR UNA ARRAYLIST A OBSERVABLELIST
+	/*//METODO PARA CONVERTIR UNA ARRAYLIST A OBSERVABLELIST
 		public ObservableList<String> nombresGruposUsuario(ArrayList<Object> arrayList) {
 			ObservableList<String> gruposUsuarioData = FXCollections.observableArrayList();         
 	     	for(Object gruposUsuario : arrayList) {
 	     		gruposUsuarioData.add(((GrupoUsuario)gruposUsuario).getNombre());
 	     	}//FIN FOR
 	     	return gruposUsuarioData;
-		}//FIN METODO
+		}//FIN METODO*/
 	
 }//FIN CLASE

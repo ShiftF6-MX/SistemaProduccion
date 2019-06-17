@@ -39,6 +39,7 @@ public class PantallaUsuarios {
 	private MainApp mainApp;
 	private Connection connection;
 	private ArrayList<Usuario> listaUsuarios;
+	private Usuario usuario;
 	
 	//VARIABLES
 	
@@ -57,6 +58,7 @@ public class PantallaUsuarios {
 	//METODOS
 	@FXML private void initialize() {
 		this.listaUsuarios = new ArrayList<Usuario>();
+		this.usuario = new Usuario();
 		this.iniciarComponentes();
 	}//FIN METODO
 
@@ -149,19 +151,25 @@ public class PantallaUsuarios {
 		            } else {
 		            	
 		            	botonVer.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) {
-		            			
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) { 
+		            			usuario = getTableView().getItems().get(getIndex());
+		            			verUsuario(usuario);
 		            		}else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		            		
 		            	});//FIN LISTENER
 		            	
 		            	botonEditar.setOnAction(event -> {
-		            		
+		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "rCliente")) { 
+		            			usuario = getTableView().getItems().get(getIndex());
+		            			modificarUsuario(usuario);
+		            		}else
+		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
 		            	});//FIN LISTENER
 		            
 		            	botonEliminar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "dCliente")) {
-			        			        				
+		            			usuario = getTableView().getItems().get(getIndex());
+		            			eliminarUsuario(usuario);
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
@@ -179,6 +187,18 @@ public class PantallaUsuarios {
 		this.acciones.setCellFactory(cellFactory);
 	}//FIN METODO
 	
+	private void verUsuario(Usuario usuario) {
+		this.mainApp.iniciarDialogoUsuario(usuario, DialogoUsuario.VER);
+	}//FIN METODO
+	
+	private void modificarUsuario(Usuario usuario) {
+		this.mainApp.iniciarDialogoUsuario(usuario, DialogoUsuario.MODIFICAR);
+	}//FIN METODO
+	
+	private void eliminarUsuario(Usuario usuario) {
+		UsuarioDAO.eliminar(this.connection, usuario);
+	}//FIN METODO
+	
 	//MANEJADORES
 	@FXML private void manejadorBotonActualizar() {
 		this.actualizarTabla();
@@ -189,14 +209,14 @@ public class PantallaUsuarios {
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCrear() {
-		
+		this.mainApp.iniciarDialogoUsuario(usuario, DialogoUsuario.CREAR);
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonPermisos() {
-		
+		this.mainApp.iniciarDialogoPermiso();
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonGrupoUsuario() {
-		
+		this.mainApp.iniciarDialogoGrupoUsuario();
 	}//FIN METODO
 }//FIN CLASE 

@@ -26,14 +26,14 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <TextField fx:id="buscarCliente" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
+                  <TextField fx:id="campoBuscar" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
                      <font>
                         <Font name="Roboto" size="12.0" />
                      </font>
                   </TextField>
                   <HBox alignment="CENTER" fillHeight="false" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#buscarButtonHandler" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#manejadorBotonBuscar" pickOnBounds="true" preserveRatio="true">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -46,7 +46,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </HBox>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="396.0" layoutY="23.0" onMouseClicked="#actualizarTabla" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="396.0" layoutY="23.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -54,7 +54,7 @@
                         <Image url="@images/1x/ActualizarBoton.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#nuevoCliente" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCrear" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -65,7 +65,7 @@
                         <Insets left="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="422.0" layoutY="23.0" onMouseClicked="#nuevoCliente" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="422.0" layoutY="23.0" onMouseClicked="#manejadorBotonPermisos" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -76,7 +76,7 @@
                         <Insets left="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="446.0" layoutY="23.0" onMouseClicked="#nuevoCliente" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="446.0" layoutY="23.0" onMouseClicked="#manejadorBotonGrupoUsuario" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -91,17 +91,17 @@
             </HBox>
             <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
-                  <TableView fx:id="tablaCliente" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tablaUsuario" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                      <columns>
-                        <PTableColumn fx:id="columnaCodigo" minWidth="-1.0" percentageWidth="0.15" prefWidth="-1.0" text="Usuario" />
-                        <PTableColumn fx:id="columnaCodigo1" minWidth="-1.0" percentageWidth="0.5" prefWidth="-1.0" text="Correo Electrónico" />
-                        <PTableColumn fx:id="columnaCodigo11" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="FechaRegistro" />
-                        <PTableColumn fx:id="columnaCodigo111" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="FechaBloqueo" />
-                        <PTableColumn fx:id="columnaCodigo1111" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="Status" />
-                        <PTableColumn fx:id="columnaCodigo11111" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Acciones" />
+                        <PTableColumn fx:id="columnaUsuario" minWidth="-1.0" percentageWidth="0.15" prefWidth="-1.0" text="Usuario" />
+                        <PTableColumn fx:id="columnaCorreo" minWidth="-1.0" percentageWidth="0.5" prefWidth="-1.0" text="Correo Electrónico" />
+                        <PTableColumn fx:id="columnaFechaRegistro" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="FechaRegistro" />
+                        <PTableColumn fx:id="columnaFechaBloqueo" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="FechaBloqueo" />
+                        <PTableColumn fx:id="columnaStatus" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="Status" />
+                        <PTableColumn fx:id="acciones" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Acciones" />
                      </columns>
                   </TableView>
                </children>

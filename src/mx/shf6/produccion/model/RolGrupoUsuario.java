@@ -45,14 +45,12 @@ public class RolGrupoUsuario {
 		this.grupoUsuarioFk.set(grupoUsuarioFk);
 	}//FIN METODO
 	
-	public Integer geGrupoUsuarioFk() {
+	public Integer getGrupoUsuarioFk() {
 		return this.grupoUsuarioFk.get();
 	}//FIN METODO
 	
 	public GrupoUsuario getGrupoUsuario(Connection connection) {
-		GrupoUsuarioDAO grupoUsuarioDAO = new GrupoUsuarioDAO();
-		GrupoUsuario grupoUsuario = (GrupoUsuario) grupoUsuarioDAO.leer(connection, "SysPK", "" + this.geGrupoUsuarioFk()).get(0);
-		return grupoUsuario;
+		return GrupoUsuarioDAO.readPorSysPK(connection, getGrupoUsuarioFk());
 	}//FIN METODO
 	//FIN METODOS "GRUPO USUARIO"
 	
@@ -67,7 +65,7 @@ public class RolGrupoUsuario {
 	
 	public Rol getRol(Connection connection) {
 		RolDAO rolDAO = new RolDAO();
-		Rol rol = (Rol) rolDAO.leer(connection, "SysPK", "" + this.geGrupoUsuarioFk()).get(0);
+		Rol rol = (Rol) rolDAO.leer(connection, "SysPK", "" + this.getGrupoUsuarioFk()).get(0);
 		return rol;
 	}//FIN METODO
 	//FIN METODOS
