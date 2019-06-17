@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.concurrent.Executors;
 
 public class ConnectionDB extends Thread{
     
@@ -28,7 +27,6 @@ public class ConnectionDB extends Thread{
         try{
             Class.forName("java.sql.Driver");
             conexion = DriverManager.getConnection("jdbc:mysql://" + hostBD + "/" + nombreBD + "?useSSL=true", usuarioBD, contrasenaBD);
-            this.conexion.setNetworkTimeout(Executors.newSingleThreadExecutor(), 30000);
             //System.out.println("Conexion exitosa");
             return conexion;
         }catch(ClassNotFoundException | SQLException e){
@@ -58,7 +56,7 @@ public class ConnectionDB extends Thread{
 					//System.out.println(resultados.getString(1));
 					//System.out.println(resultados.getString(2));
 				}//FIN WHILE
-			Thread.sleep(600000);
+			Thread.sleep(300000);
 			}//FIN WHILE
 		} catch (SQLException | InterruptedException ex) {
 			Notificacion.dialogoException(ex);
