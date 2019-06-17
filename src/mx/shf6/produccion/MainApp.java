@@ -33,9 +33,11 @@ import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
+import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.Material;
+import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.Puesto;
 import mx.shf6.produccion.model.TipoMateriaPrima;
@@ -46,6 +48,7 @@ import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
+import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
 import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
 import mx.shf6.produccion.view.DialogoAlmacen;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
@@ -57,6 +60,7 @@ import mx.shf6.produccion.view.DialogoCotizacion;
 import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
+import mx.shf6.produccion.view.DialogoDetalleProceso;
 import mx.shf6.produccion.view.DialogoEmpleado;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoMaterial;
@@ -150,6 +154,8 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAlmacen;
 	private AnchorPane dialogoMovimientoInventario;
 	private AnchorPane dialogoAgregarMovimientoComponente;
+	private AnchorPane dialogoDetalleProceso;
+	private AnchorPane dialogoAgregarDetalleProceso;
 	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
@@ -1084,6 +1090,44 @@ public class MainApp extends Application {
             
             this.escenarioDialogosAlterno.showAndWait();
             return dialogoAgregarMovimientoComponente.getDetalleCardex();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+            return null;
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoDetalleProceso(Proceso proceso) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleProceso.fxml"));
+            this.dialogoDetalleProceso = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoDetalleProceso = this.iniciarEscenarioDialogos(this.dialogoDetalleProceso);
+            this.escenarioDialogos.setScene(escenaDialogoDetalleProceso);
+            
+            DialogoDetalleProceso dialogoDetalleProceso = fxmlLoader.getController();
+            dialogoDetalleProceso.setMainApp(this, proceso);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public DetalleProceso iniciarDialogoAgregarDetalleProceso(DetalleProceso detalleProceso, int opcion, int procesoFK, Componente componente) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarDetalleProceso.fxml"));
+            this.dialogoAgregarDetalleProceso = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoAgregarDetalleProceso = this.iniciarEscenarioDialogos(this.dialogoAgregarDetalleProceso);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarDetalleProceso);
+            
+            DialogoAgregarDetalleProceso dialogoAgregarDetalleProceso = fxmlLoader.getController();
+            dialogoAgregarDetalleProceso.setMainApp(this, detalleProceso, opcion, procesoFK, componente);;
+            
+            this.escenarioDialogosAlterno.showAndWait();
+            return dialogoAgregarDetalleProceso.getDetalleProceso();
         } catch(IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
             return null;
