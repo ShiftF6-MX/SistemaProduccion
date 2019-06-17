@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -30,6 +29,7 @@ import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.DomicilioDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.PTableColumn;
 
 public class PantallaClientes {
 
@@ -41,13 +41,13 @@ public class PantallaClientes {
 		
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private TableView<Cliente> tablaCliente;
-	@FXML private TableColumn<Cliente, String> codigoColumna;
-	@FXML private TableColumn<Cliente, String> nombreColumna;
-	@FXML private TableColumn<Cliente, String> registroContribuyentesColumna;
-	@FXML private TableColumn<Cliente, String> telefonoColumna;
-	@FXML private TableColumn<Cliente, String> correoColumna;
-	@FXML private TableColumn<Cliente, Double> saldoColumna;
-	@FXML private TableColumn<Cliente, String> accionesColumn;
+	@FXML private PTableColumn<Cliente, String> codigoColumna;
+	@FXML private PTableColumn<Cliente, String> nombreColumna;
+	@FXML private PTableColumn<Cliente, String> registroContribuyentesColumna;
+	@FXML private PTableColumn<Cliente, String> telefonoColumna;
+	@FXML private PTableColumn<Cliente, String> correoColumna;
+	@FXML private PTableColumn<Cliente, Double> saldoColumna;
+	@FXML private PTableColumn<Cliente, String> accionesColumn;
 	@FXML private TextField buscarCliente;	
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
