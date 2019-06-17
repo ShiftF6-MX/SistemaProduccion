@@ -78,9 +78,9 @@ public class PantallaProceso {
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE PROCESOS
 	private void inicializaTabla() {
 		this.fechaColumna.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
-		this.cantidadColumna.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
-		this.ordenamientoColumna.setCellValueFactory(cellData -> cellData.getValue().ordenamientoProperty());
-		this.nivelColumna.setCellValueFactory(cellData -> cellData.getValue().nivelProperty());
+		//this.cantidadColumna.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
+		//this.ordenamientoColumna.setCellValueFactory(cellData -> cellData.getValue().ordenamientoProperty());
+		//this.nivelColumna.setCellValueFactory(cellData -> cellData.getValue().nivelProperty());
 		this.nombreCentroTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreCentroTrabajoProperty());
 		this.nombreParteComponenteColumna.setCellValueFactory(cellData -> cellData.getValue().nombreComponenteProperty());
 		this.nombreEmpleadoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreEmpleadoProperty());
@@ -113,7 +113,8 @@ public class PantallaProceso {
 				final Button botonVer = new Button("Ver");
 				final Button botonModificar = new Button("Modificar");
 				final Button botonEliminar = new Button("Eliminar");
-				final HBox acciones = new HBox(botonVer, botonModificar, botonEliminar);
+				final Button botonDetalle = new Button("Detalles");
+				final HBox acciones = new HBox(botonVer, botonModificar, botonEliminar, botonDetalle);
 				
 				//PARA MOSTRAR LOS DIALOGOS
 				@Override
@@ -142,6 +143,14 @@ public class PantallaProceso {
 		        	botonEliminar.setCursor(Cursor.HAND);
 		        	botonEliminar.setTooltip(new Tooltip("Eliminar proceso"));
 		        	
+		        	botonDetalle.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
+		        	botonDetalle.setPrefSize(16.0, 16.0);
+		        	botonDetalle.setPadding(Insets.EMPTY);
+		        	botonDetalle.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonDetalle.setStyle("-fx-background-color: transparent;");
+		        	botonDetalle.setCursor(Cursor.HAND);
+		        	botonDetalle.setTooltip(new Tooltip("Detalles"));
+		        	
 		        	acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
@@ -168,6 +177,11 @@ public class PantallaProceso {
 		            		manejadorBotonModificar(proceso);
 		            	});//FIN MANEJADOR
 		            	
+		            	botonDetalle.setOnAction(event -> {
+		            		proceso = getTableView().getItems().get(getIndex());
+		            		manejadorBotonDetalles(proceso);
+		            	});
+		            	
 		            	setGraphic(acciones);
 		            	setText(null);
 		            }//FIN IF-ELSE
@@ -185,14 +199,14 @@ public class PantallaProceso {
 	}//FIN METODO
 	 
 	//CREAR PROCESO
-	private void manejadorBotonCrear(Proceso proceso) {
-		//this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.CREAR);
+	@FXML private void manejadorBotonCrear() {
+		this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.CREAR);
 		this.actualizarTabla();
 	}
 
 	//VER DATOS
 	private void manejadorBotonVer(Proceso proceso) {
-		//this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.MOSTRAR);
+		this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.MOSTRAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -203,10 +217,15 @@ public class PantallaProceso {
 		this.actualizarTabla();
 	}//FIN METODO
 	 
-	
+	//MODIFICAR PROCESO
 	private void manejadorBotonModificar(Proceso proceso) {
-		//this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.EDITAR);
+		this.mainApp.iniciarDialogoProceso(proceso, DialogoProceso.EDITAR);
 		this.actualizarTabla();
+	}//FIN METODO
+	
+	//VER MAS DETALLES DE PROCESO
+	private void manejadorBotonDetalles(Proceso proceso) {
+		this.mainApp.iniciarDialogoDetalleProceso(proceso);
 	}//FIN METODO
 	
 }//FIN CLASE
