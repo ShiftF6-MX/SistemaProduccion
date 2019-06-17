@@ -245,12 +245,14 @@ public class DialogoCotizacionCliente {
 	}//FIN METODO	
 	
 	//MANEJADORES
+	@SuppressWarnings("unchecked")
 	@FXML private void buscarButtonHandler() {
     	if (Seguridad.verificarAcceso(this.mainApp.getConnection(), this.mainApp.getUsuario().getGrupoUsuarioFk(), "rClientes")) {
     		tablaCotizacion.setItems(null);
     		listaCotizaciones.clear();
     		listaCotizaciones = CotizacionDAO.readCotizacionCliente(this.mainApp.getConnection(), cliente.getSysPK(), this.buscarCotizacion.getText());
     		tablaCotizacion.setItems(CotizacionDAO.toObservableList(listaCotizaciones));
+    		this.tablaCotizacion.getSortOrder().addAll(this.referenciaColumna);
     	} else {
     		Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
     	}//FIN IF-ELSE
