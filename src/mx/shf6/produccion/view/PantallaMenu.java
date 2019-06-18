@@ -83,4 +83,8 @@ public class PantallaMenu {
 		this.mainApp.iniciarPantallaAlmacen();
 	}//FIN METODO
 	
+	@FXML private void manejadorMenuUsuarios() {
+		this.mainApp.iniciarPantallaUsuario();
+	}//FIN METODO
+	
 }//FIN CLASE
