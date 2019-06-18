@@ -50,6 +50,7 @@ import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
 import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
+import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
 import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
 import mx.shf6.produccion.view.DialogoAlmacen;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
@@ -63,7 +64,9 @@ import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoDetalleProceso;
 import mx.shf6.produccion.view.DialogoEmpleado;
+import mx.shf6.produccion.view.DialogoEsquemaSeguridad;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
+import mx.shf6.produccion.view.DialogoGrupoUsuario;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import mx.shf6.produccion.view.DialogoProceso;
@@ -73,6 +76,7 @@ import mx.shf6.produccion.view.DialogoPuesto;
 import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
 import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoTratamiento;
+import mx.shf6.produccion.view.DialogoUsuario;
 import mx.shf6.produccion.view.PantallaAcabado;
 import mx.shf6.produccion.view.PantallaAlmacen;
 import mx.shf6.produccion.view.PantallaCabecera;
@@ -92,6 +96,7 @@ import mx.shf6.produccion.view.PantallaPuesto;
 import mx.shf6.produccion.view.PantallaSesion;
 import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
 import mx.shf6.produccion.view.PantallaTratamiento;
+import mx.shf6.produccion.view.PantallaUsuario;
 import mx.shf6.produccion.view.PantallaTipoMiscelaneo;
 
 
@@ -163,6 +168,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoGrupoUsuario;
 	private AnchorPane dialogoAgregarGrupoUsuario;
 	private AnchorPane dialogoEsquemaSeguridad;
+	private AnchorPane dialogoUsuario;
 	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
@@ -1226,7 +1232,24 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-
+	
+	public void iniciarDialogoUsuario(Usuario usuario, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoUsuario.fxml"));
+            this.dialogoUsuario = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoUsuario = this.iniciarEscenarioDialogos(this.dialogoUsuario);
+            this.escenarioDialogos.setScene(escenaDialogoUsuario);
+            
+            DialogoUsuario dialogoUsuario = fxmlLoader.getController();
+            dialogoUsuario.setMainApp(this, usuario, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
 
 	@Override
 	public void stop() {
