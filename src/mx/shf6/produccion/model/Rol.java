@@ -1,6 +1,8 @@
 package mx.shf6.produccion.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,17 +13,19 @@ public class Rol {
 	private ObjectProperty<Integer> sysPk;
 	private StringProperty codigoItem;
 	private StringProperty descripcion;
+	private BooleanProperty seleccionado;
 	
 	//CONSTRUCTOR SIN PARAMETROS
 	public Rol() {
-		this(0,"","");
+		this(0,"","", false);
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public Rol(Integer sysPk, String codigoItem, String descripcion) {
+	public Rol(Integer sysPk, String codigoItem, String descripcion, boolean seleccionado) {
 		this.sysPk =  new SimpleObjectProperty<Integer>(sysPk);
 		this.codigoItem = new SimpleStringProperty(codigoItem);
 		this.descripcion = new SimpleStringProperty(descripcion);
+		this.seleccionado = new SimpleBooleanProperty(seleccionado);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -73,4 +77,16 @@ public class Rol {
 		return informacionRol;
 	}//FIN METODO
 	
+	//METODOS PARA ACCEDER A SELECCIONADO
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado.set(seleccionado);
+	}//FIN METODO
+	
+	public Boolean getSeleccionado() {
+		return this.seleccionado.get();
+	}//FIN METODO
+	
+	public BooleanProperty seleccionadoProperty() {
+		return this.seleccionado;
+	}//FIN METODO
 }//FIN CLASE

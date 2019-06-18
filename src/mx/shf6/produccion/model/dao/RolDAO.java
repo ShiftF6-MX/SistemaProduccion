@@ -6,112 +6,94 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import mx.shf6.produccion.model.Rol;
-import mx.shf6.produccion.model.dao.ObjectDAO;
+import mx.shf6.produccion.utilities.Notificacion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class RolDAO implements ObjectDAO{
+public class RolDAO {
 	
 	//METODO PARA HACER CREATE EN LA TABLA ROLES
-	@Override
-	public boolean crear(Connection connection, Object rol) {	
-		Rol claseRol=(Rol)rol;
+	public static final boolean create(Connection connection, Rol rol) {	
 		String query=" INSERT INTO roles (codigoItem, descripcion) values ( ?, ?)";
 		try {	
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, claseRol.getCodigoItem());
-			preparedStatement.setString(2, claseRol.getDescripcion());
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, rol.getCodigoItem());
+			preparedStatement.setString(2, rol.getDescripcion());
 			preparedStatement.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método crear");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
-		}		
+		}//FIN TRY-CATCH
 	}//FIN METODO
 	
-	
-	//METODO PARA HACER SELECT EN LA TABLA ROLES
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query ="";
-		ArrayList<Object> listaRol = new ArrayList<Object>();
-		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query="SELECT * FROM roles ORDER BY sysPK;";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);
-				Rol claseRol = null;
-				while (resultSet.next()) {	
-					claseRol = new Rol();
-					claseRol.setSysPk(resultSet.getInt(1));
-					claseRol.setCodigoItem(resultSet.getString(2));
-					claseRol.setDescripcion(resultSet.getString(3));
-					listaRol.add(claseRol);
-				}
-			}catch (SQLException e) {
-				System.out.println("Error: En método leer");
-				e.printStackTrace();
-			}
-		}else {
-			query="SELECT * FROM roles WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement(query);
-					preparedStatement.setString(1, valorBusqueda);
-					ResultSet resultSet=preparedStatement.executeQuery();
-					Rol claseRol = null;
-					while (resultSet.next()) {
-						claseRol = new Rol();
-						claseRol.setSysPk(resultSet.getInt(1));
-						claseRol.setCodigoItem(resultSet.getString(2));
-						claseRol.setDescripcion(resultSet.getString(3));
-						listaRol.add(claseRol);
-					}
-				}catch (SQLException e) {
-					System.out.println("Error: En método leer");
-					e.printStackTrace();
-				}
-		}
-		return listaRol;
+	//METODO PARA OBTENER TODOS LOS REGISTROS DE LA TABLA ROLES
+	public static final ArrayList<Rol> readTodos (Connection connection){
+		ArrayList<Rol> arrayListRol = new ArrayList<Rol>();
+		String query = "SELECT Sys_PK, CodigoItem, Descripcion FROM roles ORDER BY Sys_PK";
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			while (resultSet.next()) {	
+				Rol claseRol = new Rol();
+				claseRol.setSysPk(resultSet.getInt(1));
+				claseRol.setCodigoItem(resultSet.getString(2));
+				claseRol.setDescripcion(resultSet.getString(3));
+				arrayListRol.add(claseRol);
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return arrayListRol;
 	}//FIN METODO
 	
+	public static final Rol readPorSysPK(Connection connection, int sysPK) {
+		Rol rol = new Rol();
+		String query = "SELECT Sys_Pk, CodigoItem, Descripcion FROM roles WHERE Sys_PK = " + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while (resultados.next()) {
+				rol.setSysPk(resultados.getInt(1));
+				rol.setCodigoItem(resultados.getString(2));
+				rol.setDescripcion(resultados.getString(3));
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return rol;
+	}//FIN METODO
 	
 	//METODO PARA HACER UPDATE EN LA TABLA ROLES
-	@Override
-	public boolean modificar(Connection connection, Object rol) {
-		String query="UPDATE roles SET codigoItem= ?, descripcion= ? WHERE sysPK= ?;";
+	public static final boolean update(Connection connection, Rol rol) {
+		String query="UPDATE roles SET codigoItem= ?, descripcion= ? WHERE Sys_PK= ?;";
 		try {
-			Rol claseRol=(Rol)rol;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setString(1, claseRol.getCodigoItem());
-			preparedStatement.setString(2, claseRol.getDescripcion());	
-			preparedStatement.setInt(3, claseRol.getSysPk());
+			PreparedStatement preparedStatement =  connection.prepareStatement(query);
+			preparedStatement.setString(1, rol.getCodigoItem());
+			preparedStatement.setString(2, rol.getDescripcion());	
+			preparedStatement.setInt(3, rol.getSysPk());
 			preparedStatement.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método modificar");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
-		}		
+		}//FIN TRY-CATCH	
 	}//FIN METODO
 	
 	
 	//METODO PARA HACER DELETE EN LA TABLA ROLES
-	@Override
-	public boolean eliminar(Connection connection, Object rol) {
-		String query=" DELETE FROM roles WHERE sysPK= ?";
+	public static final boolean delete(Connection connection, Rol rol) {
+		String query="DELETE FROM roles WHERE Sys_PK= ?";
 		try {		
-			Rol claseRol=(Rol)rol;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, claseRol.getSysPk());
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, rol.getSysPk());
 			preparedStatement.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método eliminar");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
-		}	
+		}//FIN TRY-CATCH 
 	}//FIN METODO
 	
 }//FIN CLASE

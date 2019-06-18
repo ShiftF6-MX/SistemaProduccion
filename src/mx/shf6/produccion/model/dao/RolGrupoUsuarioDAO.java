@@ -6,110 +6,115 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import mx.shf6.produccion.model.RolGrupoUsuario;
-import mx.shf6.produccion.model.dao.ObjectDAO;
+import mx.shf6.produccion.utilities.Notificacion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class RolGrupoUsuarioDAO implements ObjectDAO{
+public class RolGrupoUsuarioDAO{
 	
 	//METODO PARA HACER CREATE EN LA TABLA ROLGRUPOSUSUARIO 
-	@Override
-	public boolean crear(Connection connection, Object rolgrupousuario){
-		RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
+	public static final boolean create(Connection connection, RolGrupoUsuario rolGrupoUsuario){
 		String query=" INSERT INTO rolgruposusuario (GrupoUsuarioFK, RolFK) values ( ?, ?)";
 		try {			
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario(connection).getSysPk());
-			preparedStatement.setInt(2, rolGrupoUsuario.getRol(connection).getSysPk());
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuarioFk());
+			preparedStatement.setInt(2, rolGrupoUsuario.getRolFk());
 			preparedStatement.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método crear");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
-		}		
+		}//FIN TRY-CATCH	
 	}//FIN METODO	
 	
 	//METOSO PARA HCER SELECT EN LA TABLA ROLGRUPOSUSUARIO
-	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		String query ="";
-		ArrayList<Object> listaRolGrupoUsuario = new ArrayList<Object>();
-		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query="SELECT * FROM rolgruposusuario ORDER BY Sys_PK";
-			try {
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query);
-				RolGrupoUsuario rolGrupoUsuario = null;
-				while (resultSet.next()) {	
-					rolGrupoUsuario = new RolGrupoUsuario();	
-					rolGrupoUsuario.setSysPk(resultSet.getInt(1));
-					rolGrupoUsuario.setGrupoUsuarioFk(resultSet.getInt(2));
-					rolGrupoUsuario.setRolFk(resultSet.getInt(2));
-					listaRolGrupoUsuario.add(rolGrupoUsuario);
-				}
-			}catch (SQLException e) {
-				System.out.println("Error: En método leer");
-				e.printStackTrace();
-			}
-		}else {
-			query="SELECT * FROM rolgruposusuario WHERE " + campoBusqueda + " = ?  ORDER BY Sys_PK";
-			try {
-				PreparedStatement preparedStatement = connection.prepareStatement(query);
-				preparedStatement.setString(1, valorBusqueda);
-				ResultSet resultSet=preparedStatement.executeQuery();
-				RolGrupoUsuario rolGrupoUsuario =null;
-				while (resultSet.next()) {	
-					rolGrupoUsuario = new RolGrupoUsuario();	
-					rolGrupoUsuario.setSysPk(resultSet.getInt(1));
-					rolGrupoUsuario.setGrupoUsuarioFk(resultSet.getInt(2));
-					rolGrupoUsuario.setRolFk(resultSet.getInt(2));
-					listaRolGrupoUsuario.add(rolGrupoUsuario);
-				}				
-			}catch (SQLException e) {
-				System.out.println("Error: En método leer");
-				e.printStackTrace();				
-			}			
-		}
-		return listaRolGrupoUsuario;		
+	public static final ArrayList<RolGrupoUsuario> readTodos(Connection connection){
+		ArrayList<RolGrupoUsuario> listaRolGrupoUsuario = new ArrayList<RolGrupoUsuario>();
+		String query = "SELECT Sys_PK, GrupoUsuarioFK, RolFK FROM rolgruposusuario";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while (resultados.next()) {
+				RolGrupoUsuario rolGrupo = new RolGrupoUsuario();
+				rolGrupo.setSysPk(resultados.getInt(1));
+				rolGrupo.setGrupoUsuarioFk(resultados.getInt(2));
+				rolGrupo.setRolFk(resultados.getInt(3));
+				listaRolGrupoUsuario.add(rolGrupo);
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return listaRolGrupoUsuario;
 	}//FIN METODO
 	
+	public static final RolGrupoUsuario readPorSysPK (Connection connection, int sysPK) {
+		RolGrupoUsuario rolGrupo = new RolGrupoUsuario();
+		String query = "SELECT Sys_PK, GrupoUsuarioFK, RolFK FROM rolgruposusuarios WHERE Sys_PK = " + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while (resultados.next()) {
+				rolGrupo.setSysPk(resultados.getInt(1));
+				rolGrupo.setGrupoUsuarioFk(resultados.getInt(2));
+				rolGrupo.setRolFk(resultados.getInt(3));
+			}//FIN METODO
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return rolGrupo;
+	}//FIN METODO
+	
+	//METODO PARA HACER SELECT EN LA TABLA ROLGRUPOSUSUARIO
+	public static ArrayList<RolGrupoUsuario> readPorGrupoUsuario(Connection connection, int grupoUsuarioFK){
+		ArrayList<RolGrupoUsuario> arrayRolGrupoUsuario = new ArrayList<RolGrupoUsuario>();
+		String consulta = "SELECT Sys_PK, GrupoUsuarioFK, RolFK FROM rolgruposusuario WHERE GrupoUsuarioFK = " + grupoUsuarioFK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			RolGrupoUsuario rolGrupoUsuario = null;
+			while (resultados.next()) {	
+				rolGrupoUsuario = new RolGrupoUsuario();	
+				rolGrupoUsuario.setSysPk(resultados.getInt(1));
+				rolGrupoUsuario.setGrupoUsuarioFk(resultados.getInt(2));
+				rolGrupoUsuario.setRolFk(resultados.getInt(3));
+				arrayRolGrupoUsuario.add(rolGrupoUsuario);			
+			}//FIN WHILE			
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayRolGrupoUsuario;
+	}//FIN METODO
+			
 
 	//METODO PARA HACER UPDATE EN LA TABLA ROLGRUPOSUSUARIO
-	@Override
-	public boolean modificar(Connection connection, Object rolgrupousuario){
-		String query="UPDATE rolgruposusuario SET GrupoUsuarioFK = ?, RolFK = ? WHERE Sys_PK= ?;";
+	public boolean update(Connection connection, RolGrupoUsuario rolGrupoUsuario){
+		String query = "UPDATE rolgruposusuario SET GrupoUsuarioFK = ?, RolFK = ? WHERE Sys_PK= ?;";
 		try {
-			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);			
-			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario(connection).getSysPk());
-			preparedStatement.setInt(2, rolGrupoUsuario.getRol(connection).getSysPk());
+			PreparedStatement preparedStatement = connection.prepareStatement(query);			
+			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuarioFk());
+			preparedStatement.setInt(2, rolGrupoUsuario.getRolFk());
 			preparedStatement.setInt(3, rolGrupoUsuario.getSysPk());
 			preparedStatement.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método modificar");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;			
-		}
+		}//FIN TRY-CATCH
 	}//FIN METODO
 	
 
 	//METODO PARA HACER DELETE EN LA TABLA ROLGRUPOSUSUARIO
-	@Override
-	public boolean eliminar(Connection connection, Object rolgrupousuario) {
+	public static final  boolean delete(Connection connection, RolGrupoUsuario rolGrupoUsuario) {
 		String query=" DELETE FROM rolgruposusuario WHERE Sys_PK= ?";
 		try {		
-			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
-			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
+			PreparedStatement preparedStmt = connection.prepareStatement(query);
 			preparedStmt.setInt(1, rolGrupoUsuario.getSysPk());
 			preparedStmt.execute();
 			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: En método eliminar");
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
 			return false;
-		}			
+		}//FIN TRY-CATCH	
 	}//FIN METODO	
 }//FIN CLASE

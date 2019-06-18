@@ -64,9 +64,7 @@ public class RolGrupoUsuario {
 	}//FIN METODO
 	
 	public Rol getRol(Connection connection) {
-		RolDAO rolDAO = new RolDAO();
-		Rol rol = (Rol) rolDAO.leer(connection, "SysPK", "" + this.getGrupoUsuarioFk()).get(0);
-		return rol;
+		return RolDAO.readPorSysPK(connection, this.getRolFk());
 	}//FIN METODO
 	//FIN METODOS
 	

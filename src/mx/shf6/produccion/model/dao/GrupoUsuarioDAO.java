@@ -30,7 +30,7 @@ public class GrupoUsuarioDAO {
 	
 	//METODO PARA OBTENER REGISTROS DE LA TABLA GRUPOUSUARIO
 	public static final ArrayList<GrupoUsuario> readTodos(Connection connection){
-		String query="SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario ORDER BY sysPK";
+		String query="SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario ORDER BY Sys_PK";
 		ArrayList<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
 		try {
 			Statement statement = connection.createStatement();
@@ -70,7 +70,7 @@ public class GrupoUsuarioDAO {
 	//METODO PARA OBTENER REGISTROS SEGUN SU NOMBRE O DESCRIPCION
 	public static final ArrayList<GrupoUsuario> readPorNombreDescripcionLike(Connection connection, String like){
 		ArrayList<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
-		String query = "SELECT Sys_PK, Nombre, Descripcion FROM grupousuario WHERE Nombre LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
+		String query = "SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario WHERE Nombre LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(query);
@@ -89,7 +89,7 @@ public class GrupoUsuarioDAO {
 	
 	//METODO PARA HACER UPDATE EN LA TABLA GRUPOSUSUARIO
 	public static final boolean update(Connection connection, GrupoUsuario grupoUsuario) {
-		String query="UPDATE gruposusuario SET nombreGrupo= ?, descripcion= ? WHERE sysPK= ?;";
+		String query="UPDATE gruposusuario SET nombreGrupo= ?, descripcion= ? WHERE Sys_PK= ?;";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, grupoUsuario.getNombre());
@@ -105,7 +105,7 @@ public class GrupoUsuarioDAO {
 	
 	//METODO PARA HACER DELETE EN LA TABLA GRUPOSUSUARIO
 	public static final boolean delete(Connection connection, GrupoUsuario grupoUsuario) {
-		String query=" DELETE FROM gruposusuario WHERE sysPK= ?";
+		String query=" DELETE FROM gruposusuario WHERE Sys_PK= ?";
 		try {			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, grupoUsuario.getSysPk());

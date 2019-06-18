@@ -71,7 +71,7 @@ public class UsuarioDAO {
 	//METODO PARA OBTENER REGISTROS SEGUN SU USUARIO O CORREO
 	public static final ArrayList<Usuario> readPorUsuarioCorreoLike (Connection connection, String like){
 		ArrayList<Usuario> arrayListUsuario = new ArrayList<Usuario>();
-		String query= "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK FROM Usuarios WHERE usuario LIKE '%" + like + "%' OR CorreoElectronico LIKE '%" + like + "%'";
+		String query= "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK FROM usuarios WHERE Usuario LIKE '%" + like + "%' OR CorreoElectronico LIKE '%" + like + "%'";
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);

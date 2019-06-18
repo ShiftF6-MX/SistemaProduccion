@@ -200,9 +200,7 @@ public class Usuario {
 	}//FIN METODO
 	
 	public GrupoUsuario getGrupoUsuario(Connection connection) {
-		GrupoUsuarioDAO grupoUsuarioDAO = new GrupoUsuarioDAO();
-		GrupoUsuario grupoUsuario = (GrupoUsuario) grupoUsuarioDAO.leer(connection, "SysPk", "" + this.getGrupoUsuarioFk()).get(0);
-		return grupoUsuario;
+		return GrupoUsuarioDAO.readPorSysPK(connection, getGrupoUsuarioFk());
 	}//FIN METODO
 	//FIN METODOS "GRUPO USUARIO"
 	
