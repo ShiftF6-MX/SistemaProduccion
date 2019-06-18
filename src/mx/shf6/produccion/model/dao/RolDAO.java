@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Rol;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -96,4 +98,11 @@ public class RolDAO {
 		}//FIN TRY-CATCH 
 	}//FIN METODO
 	
+	public static ObservableList<Rol> toObservableList(ArrayList<Rol> arrayList) {
+		ObservableList<Rol> listaObservableRol = FXCollections.observableArrayList();
+		for (Rol permiso : arrayList) {
+			listaObservableRol.add(permiso);
+		}
+		return listaObservableRol;
+	}
 }//FIN CLASE
