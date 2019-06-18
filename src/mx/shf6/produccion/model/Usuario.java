@@ -31,7 +31,7 @@ public class Usuario {
 	
 	//CONSTRUCTOR SIN PARAMETROS	
 	public Usuario() {
-		this(0,"","","",null,null,0,0,null, "");
+		this(0,"","","",new Date(System.currentTimeMillis()),new Date(System.currentTimeMillis()),0,0,null, "");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS

@@ -194,7 +194,8 @@ public class PantallaUsuario {
 	}//FIN METODO
 	
 	private void modificarUsuario(Usuario usuario) {
-		this.mainApp.iniciarDialogoUsuario(usuario, DialogoUsuario.MODIFICAR);
+		this.mainApp.iniciarDialogoUsuario(usuario, DialogoUsuario.EDITAR);
+		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void eliminarUsuario(Usuario usuario) {
