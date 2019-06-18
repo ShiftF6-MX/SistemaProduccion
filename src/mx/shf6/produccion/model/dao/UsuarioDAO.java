@@ -46,7 +46,7 @@ public class UsuarioDAO {
 	//METODO PARA LEER REGISTROS EN LA TABLA USUARIOS. EMMANUEL OSTRIA
 	public static final ArrayList<Usuario> readTodos(Connection connection){
 		ArrayList<Usuario> arrayListUsuario = new ArrayList<Usuario>();
-		String query = "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK FROM usuarios ORDER BY Sys_PK";
+		String query = "SELECT usuarios.Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK, gruposusuario.Nombre FROM usuarios INNER JOIN gruposusuario ON usuarios.GrupoUsuarioFK = gruposusuario.Sys_PK ORDER BY usuarios.Sys_PK";
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
@@ -60,6 +60,7 @@ public class UsuarioDAO {
 				usuario.setFechaBloqueo(resultSet.getDate(6));
 				usuario.setStatus(resultSet.getInt(7));
 		    	usuario.setGrupoUsuarioFk(resultSet.getInt(8));
+		    	usuario.setNombreGrupoUsuario(resultSet.getString(9));
 				arrayListUsuario.add(usuario);
 			}//FIN WHILE
 		} catch (SQLException ex) {

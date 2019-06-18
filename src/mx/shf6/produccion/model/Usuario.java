@@ -22,6 +22,7 @@ public class Usuario {
 	private ObjectProperty<Integer> status;
 	private ObjectProperty<Integer> grupoUsuarioFk;
 	private ObjectProperty<Image> imagenPerfil;
+	private StringProperty nombreGrupoUsuario;
 	
 	//CONSTANTES
 	public static final int BLOQUEADO = 0;
@@ -30,12 +31,12 @@ public class Usuario {
 	
 	//CONSTRUCTOR SIN PARAMETROS	
 	public Usuario() {
-		this(0,"","","",null,null,0,0,null);
+		this(0,"","","",null,null,0,0,null, "");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
 	public Usuario(Integer sysPk, String usuario, String contrasena, String correoElectronico, Date fechaRegistro, Date fechaBloqueo,
-			Integer status, Integer grupoUsuarioFk, Image imagenPerfil) {
+			Integer status, Integer grupoUsuarioFk, Image imagenPerfil, String nombreGrupoUsuario) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
 		this.usuario = new SimpleStringProperty(usuario);
 		this.contrasena = new SimpleStringProperty(contrasena);
@@ -45,6 +46,7 @@ public class Usuario {
 		this.status = new SimpleObjectProperty<Integer>(status);
 		this.grupoUsuarioFk = new SimpleObjectProperty<Integer>(grupoUsuarioFk);
 		this.imagenPerfil = new SimpleObjectProperty<Image>(imagenPerfil);
+		this.nombreGrupoUsuario = new SimpleStringProperty(nombreGrupoUsuario);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -229,4 +231,16 @@ public class Usuario {
 		return informacionUsuario;
 	}//FIN METODO
 
+	//METODO PARA ACCEDER A NOMBREGRUPOUSUARIO
+	public void setNombreGrupoUsuario (String nombreGrupo) {
+		this.nombreGrupoUsuario.set(nombreGrupo);
+	}//FIN METODO
+	
+	public String getNombreGrupoUsuario() {
+		return this.nombreGrupoUsuario.get();
+	}//FIN METODO
+	
+	public StringProperty nombreGrupoUsuarioProperty() {
+		return this.nombreGrupoUsuario;
+	}//FIN METODO
 }//FIN CLASE
