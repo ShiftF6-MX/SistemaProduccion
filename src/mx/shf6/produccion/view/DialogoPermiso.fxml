@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import mx.shf6.produccion.utilities.PTableColumn?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoPermiso">
+<AnchorPane prefHeight="500.0" prefWidth="850.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoPermiso">
    <children>
       <VBox prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,12 +21,59 @@
                         <Image url="@images/1x/StartButton.png" />
                      </image>
                   </ImageView>
-                  <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                  <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField fx:id="campoDescripcion" promptText="Nombre" styleClass="textFieldTitulos" text="PERMISOS" />
-                        <TextField fx:id="campoDetalle" styleClass="textFieldSubTitulos" text="Gestión de los permisos para la seguridad y control de acceso" />
+                        <Label styleClass="labelRobotoMedium16" text="PERMISOS" textFill="WHITE" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestión de los permisos para la seguridad y control de acceso" textFill="WHITE" />
                      </children>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </VBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="50.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="campoBuscar" prefHeight="30.0" prefWidth="200.0" promptText="Buscar" styleClass="campoBuscador" />
+                        <HBox alignment="CENTER" fillHeight="false" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
+                           <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#manejadorBotonBuscar" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/1x/BuscarIcon.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                           </children>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/1x/ActualizarBoton.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCrear" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/1x/AgregarBoton.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="3.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="3.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@images/1x/CerrarBoton.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
                   <Insets left="15.0" right="15.0" top="15.0" />
@@ -40,29 +87,14 @@
                <children>
                   <TableView fx:id="tablaPermisos" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                     <columns>
-                      <PTableColumn fx:id="codigoItemColumna" minWidth="-1.0" percentageWidth="0.4" prefWidth="75.0" text="Código de item" />
+                      <PTableColumn fx:id="codigoItemColumna" minWidth="-1.0" percentageWidth="0.2" prefWidth="75.0" text="Código " />
                       <PTableColumn fx:id="descripcionColumna" minWidth="-1.0" percentageWidth="0.6" prefWidth="75.0" text="Descripción" />
+                        <PTableColumn fx:id="acciones" maxWidth="1.7976931348623157E308" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Acciones" />
                     </columns>
-                     <contextMenu>
-                        <ContextMenu>
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#manejadorAgregarPermiso" text="Agregar" />
-                              <MenuItem mnemonicParsing="false" onAction="#manejadorModificarPermiso" text="Editar" />
-                              <MenuItem mnemonicParsing="false" onAction="#manejadorEliminarPermiso" text="Eliminar" />
-                          </items>
-                        </ContextMenu>
-                     </contextMenu>
                   </TableView>
                </children>
             </VBox>
          </children>
       </AnchorPane>
-      <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <image>
-            <Image url="@images/1x/CloseButton.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></ImageView>
    </children>
 </AnchorPane>
