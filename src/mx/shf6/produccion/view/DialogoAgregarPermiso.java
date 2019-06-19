@@ -5,6 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Rol;
+import mx.shf6.produccion.model.dao.RolDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
@@ -12,8 +13,9 @@ public class DialogoAgregarPermiso {
 	//VARIABLES
 	
 	//CONSTANTES
-	public static int CREAR = 1;
-	public static int EDITAR = 2;
+	public static int VER = 1;
+	public static int CREAR = 2;
+	public static int EDITAR = 3;
 	
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -48,10 +50,14 @@ public class DialogoAgregarPermiso {
 			this.campoDescripcion.setDisable(false);
 		} else if (this.opcion == EDITAR) {
 			this.campoCodigo.setText(this.permiso.getCodigoItem());
-			System.out.println(this.permiso.getCodigoItem());
 			this.campoCodigo.setDisable(false);
 			this.campoDescripcion.setText(this.permiso.getDescripcion());
 			this.campoDescripcion.setDisable(false);
+		} else if (this.opcion == VER) {
+			this.campoCodigo.setText(this.permiso.getCodigoItem());
+			this.campoCodigo.setDisable(true);
+			this.campoDescripcion.setText(this.permiso.getDescripcion());
+			this.campoDescripcion.setDisable(true);
 		}//FIN METODO
 	}//FIN METODO
 	
@@ -73,23 +79,30 @@ public class DialogoAgregarPermiso {
 				this.permiso.setCodigoItem(this.campoCodigo.getText());
 				this.permiso.setDescripcion(this.campoDescripcion.getText());
 				
-				this.mainApp.getEscenarioDialogosAlterno().close();
+				if (RolDAO.create(this.mainApp.getConnection(), permiso)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se agrego exitosamente");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro no se pudo agregar, revise que la información sea correcta");
+				}
 			} else if (this.opcion == EDITAR) {
 				this.permiso.setCodigoItem(this.campoCodigo.getText());
 				this.permiso.setDescripcion(this.campoDescripcion.getText());
 				
+				if (RolDAO.update(this.mainApp.getConnection(), permiso)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo exitosamente");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro no se pudo actualizar, revise que la información sea correcta");
+				}
+			} else if (this.opcion == VER) {
 				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN IF ELSE
 		}//FIN METODO
 	}//FIN METODO
 	
-	//RETORNAR EL OBJETO
-	public Rol getPermiso() {
-		return this.permiso;
-	}
 	
 	@FXML private void manejadorBotonCerrar() {
-		this.permiso = null;
 		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 	
