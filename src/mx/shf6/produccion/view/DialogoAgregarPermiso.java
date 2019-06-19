@@ -73,12 +73,12 @@ public class DialogoAgregarPermiso {
 				this.permiso.setCodigoItem(this.campoCodigo.getText());
 				this.permiso.setDescripcion(this.campoDescripcion.getText());
 				
-				manejadorBotonCerrar();
+				this.mainApp.getEscenarioDialogosAlterno().close();
 			} else if (this.opcion == EDITAR) {
 				this.permiso.setCodigoItem(this.campoCodigo.getText());
 				this.permiso.setDescripcion(this.campoDescripcion.getText());
 				
-				manejadorBotonCerrar();
+				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN IF ELSE
 		}//FIN METODO
 	}//FIN METODO
