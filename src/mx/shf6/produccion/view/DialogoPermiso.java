@@ -75,7 +75,6 @@ public class DialogoPermiso {
 	//MODIFICAR PERMISO
 	private void modificarDetalle() {
 		Rol permiso = this.tablaPermisos.getSelectionModel().getSelectedItem();
-		System.out.println(this.permiso.getCodigoItem());
 		permiso = this.mainApp.iniciarDialogoAgregarPermiso(permiso, DialogoAgregarPermiso.EDITAR);
 		if (permiso != null) {
 			RolDAO.update(this.mainApp.getConnection(), permiso);
