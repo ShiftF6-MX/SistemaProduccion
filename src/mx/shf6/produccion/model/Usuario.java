@@ -112,7 +112,7 @@ public class Usuario {
 	
 	public Date getFechaRegistro() {
 		if (this.fechaRegistro.get() == null)
-			return Date.valueOf("1999-01-01");
+			return new Date(System.currentTimeMillis());
 		else
 			return this.fechaRegistro.get();
 	}//FIN METODO
@@ -129,7 +129,7 @@ public class Usuario {
 	
 	public Date getFechaBloqueo() {
 		if (this.fechaBloqueo.get() == null)
-			return Date.valueOf("1999-01-01");
+			return new Date(System.currentTimeMillis());
 		else
 			return this.fechaBloqueo.get();
 	}//FIN METODO

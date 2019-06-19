@@ -29,7 +29,6 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.model.dao.Seguridad;
-import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
 import mx.shf6.produccion.model.dao.UsuarioDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;

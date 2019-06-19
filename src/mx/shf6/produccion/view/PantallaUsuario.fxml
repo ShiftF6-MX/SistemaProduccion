@@ -19,14 +19,14 @@
                   <VBox alignment="CENTER_LEFT">
                      <children>
                         <Label styleClass="labelRobotoMedium16" text="Usuarios" />
-                        <Label styleClass="labelRobotoMedium14" text="Gestión de usuarios" />
+                        <Label styleClass="labelRobotoMedium14" text="Gestión de las cuentas de usuario registradas en el sistema" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <TextField fx:id="campoBuscar" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
+                  <TextField fx:id="campoBuscar" prefHeight="30.0" prefWidth="150.0" promptText="Buscar" styleClass="campoBuscador">
                      <font>
                         <Font name="Roboto" size="12.0" />
                      </font>
@@ -65,28 +65,44 @@
                         <Insets left="3.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="422.0" layoutY="23.0" onMouseClicked="#manejadorBotonPermisos" pickOnBounds="true" preserveRatio="true">
+                  <MenuButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="LEFT" prefHeight="24.0" prefWidth="24.0" styleClass="botonMenuPantalla" text="Ajustes" textAlignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                     <image>
-                        <Image url="@images/1x/OpcionesBoton.png" />
-                     </image>
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../LavinecProject/src/mx/shf6/lavinec/view/images/1x/OpcionesBoton.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D height="24.0" width="24.0" />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#manejadorBotonGrupoUsuario" styleClass="itemMenu" text="Grupo Usuarios">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../LavinecProject/src/mx/shf6/lavinec/view/images/1x/ProductosIcono.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#manejadorBotonPermisos" styleClass="itemMenu" text="Permisos">
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../../../LavinecProject/src/mx/shf6/lavinec/view/images/1x/ProductosIcono.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                     </items>
                      <HBox.margin>
                         <Insets left="3.0" />
                      </HBox.margin>
-                  </ImageView>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="446.0" layoutY="23.0" onMouseClicked="#manejadorBotonGrupoUsuario" pickOnBounds="true" preserveRatio="true">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <image>
-                        <Image url="@images/1x/CustomerDosIcon.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="3.0" />
-                     </HBox.margin>
-                  </ImageView>
+                  </MenuButton>
                </children>
             </HBox>
             <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
@@ -96,11 +112,11 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                      <columns>
-                        <PTableColumn fx:id="columnaUsuario" minWidth="-1.0" percentageWidth="0.15" prefWidth="-1.0" text="Usuario" />
-                        <PTableColumn fx:id="columnaCorreo" minWidth="-1.0" percentageWidth="0.5" prefWidth="-1.0" text="Correo Electrónico" />
-                        <PTableColumn fx:id="columnaFechaRegistro" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="FechaRegistro" />
-                        <PTableColumn fx:id="columnaFechaBloqueo" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="FechaBloqueo" />
-                        <PTableColumn fx:id="columnaStatus" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="Status" />
+                        <PTableColumn fx:id="columnaUsuario" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Usuario" />
+                        <PTableColumn fx:id="columnaCorreo" minWidth="-1.0" percentageWidth="0.3" prefWidth="-1.0" text="Correo Electrónico" />
+                        <PTableColumn fx:id="columnaFechaRegistro" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="FechaRegistro" />
+                        <PTableColumn fx:id="columnaFechaBloqueo" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="FechaBloqueo" />
+                        <PTableColumn fx:id="columnaStatus" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Status" />
                         <PTableColumn fx:id="acciones" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Acciones" />
                      </columns>
                   </TableView>
