@@ -15,7 +15,7 @@ public class GrupoUsuarioDAO {
 	
 	//METODO PARA HACER CREATE EN TABLA GRUPOUSUARIO
 	public static final boolean create(Connection connection, GrupoUsuario grupoUsuario) {
-		String query=" INSERT INTO gruposusuario (nombre, descripcion) values ( ?, ?)";
+		String query=" INSERT INTO gruposusuario (Nombre, Descripcion) values ( ?, ?)";
 		try {		
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, grupoUsuario.getNombre());
@@ -89,7 +89,7 @@ public class GrupoUsuarioDAO {
 	
 	//METODO PARA HACER UPDATE EN LA TABLA GRUPOSUSUARIO
 	public static final boolean update(Connection connection, GrupoUsuario grupoUsuario) {
-		String query="UPDATE gruposusuario SET nombreGrupo= ?, descripcion= ? WHERE Sys_PK= ?;";
+		String query="UPDATE gruposusuario SET Nombre = ?, descripcion= ? WHERE Sys_PK= ?;";
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, grupoUsuario.getNombre());

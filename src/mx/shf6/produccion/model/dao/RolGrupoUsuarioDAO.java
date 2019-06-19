@@ -106,10 +106,11 @@ public class RolGrupoUsuarioDAO{
 
 	//METODO PARA HACER DELETE EN LA TABLA ROLGRUPOSUSUARIO
 	public static final  boolean delete(Connection connection, RolGrupoUsuario rolGrupoUsuario) {
-		String query=" DELETE FROM rolgruposusuario WHERE Sys_PK= ?";
+		String query=" DELETE FROM rolgruposusuario WHERE GrupoUsuarioFK = ? AND RolFK = ?";
 		try {		
 			PreparedStatement preparedStmt = connection.prepareStatement(query);
-			preparedStmt.setInt(1, rolGrupoUsuario.getSysPk());
+			preparedStmt.setInt(1, rolGrupoUsuario.getGrupoUsuarioFk());
+			preparedStmt.setInt(2, rolGrupoUsuario.getRolFk());
 			preparedStmt.execute();
 			return true;
 		} catch (SQLException ex) {

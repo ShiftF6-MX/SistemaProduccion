@@ -110,12 +110,12 @@ public class DialogoEsquemaSeguridad {
 		this.rolGrupoUsuario.setGrupoUsuarioFk(this.grupoUsuario.getSysPk());
 		this.rolGrupoUsuario.setRolFk(rol.getSysPk());
 		if (rol.getSeleccionado() == true) {
-			if (RolGrupoUsuarioDAO.create(this.connection, this.rolGrupoUsuario))
+			if (RolGrupoUsuarioDAO.create(this.connection, this.rolGrupoUsuario)) 
 				return true;
 			else
 				return false;
 		}else {
-			if (RolGrupoUsuarioDAO.delete(this.connection, this.rolGrupoUsuario))
+			if (RolGrupoUsuarioDAO.delete(this.connection, this.rolGrupoUsuario)) 
 				return true;
 			else
 				return false;
