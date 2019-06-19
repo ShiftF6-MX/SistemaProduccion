@@ -424,9 +424,19 @@ public class MainApp extends Application {
 			this.pantallaBase.setCenter(this.pantallaEspera);
 
 			//MODIFICA EL ESCENARIO PRINCIPAL
-			this.escenarioPrincipal.setResizable(false);
+			this.escenarioPrincipal.setResizable(true);
 			this.escenarioPrincipal.setMaximized(true);
-			this.escenarioPrincipal.setAlwaysOnTop(false);			
+			this.escenarioPrincipal.setAlwaysOnTop(false);
+			
+			Rectangle2D limitesPantalla = Screen.getPrimary().getVisualBounds();
+			this.escenarioPrincipal.setX(limitesPantalla.getMinX());
+			this.escenarioPrincipal.setY(limitesPantalla.getMinY());
+
+			this.escenarioPrincipal.setMaxWidth(limitesPantalla.getWidth());
+			this.escenarioPrincipal.setMinWidth(limitesPantalla.getWidth());
+
+			this.escenarioPrincipal.setMaxHeight(limitesPantalla.getHeight());
+			
 		} catch (IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH		
