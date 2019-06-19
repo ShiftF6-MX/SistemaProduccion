@@ -89,6 +89,7 @@ public class DialogoAgregarPermiso {
 	}
 	
 	@FXML private void manejadorBotonCerrar() {
+		this.permiso = null;
 		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 	
