@@ -83,6 +83,25 @@ public class RolDAO {
 		}//FIN TRY-CATCH	
 	}//FIN METODO
 	
+	//METODO PARA OBTENER REGISTROS SEGUN SU CODIGO
+	public static final ArrayList<Rol> readCodigoLike(Connection connection, String like) {
+		ArrayList<Rol> listaPermisos = new ArrayList<Rol>();
+		String query = "SELECT Sys_Pk, CodigoItem, Descripcion FROM roles WHERE CodigoItem LIKE '%" + like +"%'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados= sentencia.executeQuery(query);
+			while (resultados.next()) {
+				Rol permisos = new Rol();
+				permisos.setSysPk(resultados.getInt(1));
+				permisos.setCodigoItem(resultados.getString(2));
+				permisos.setDescripcion(resultados.getString(3));
+				listaPermisos.add(permisos);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY CATCH
+		return listaPermisos;
+	}//FIN METODO
 	
 	//METODO PARA HACER DELETE EN LA TABLA ROLES
 	public static final boolean delete(Connection connection, Rol rol) {
