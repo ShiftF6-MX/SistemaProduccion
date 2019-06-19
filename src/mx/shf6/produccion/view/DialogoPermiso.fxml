@@ -24,7 +24,7 @@
                   <VBox spacing="3.0" HBox.hgrow="ALWAYS">
                      <children>
                         <TextField fx:id="campoDescripcion" promptText="Nombre" styleClass="textFieldTitulos" text="PERMISOS" />
-                        <TextField fx:id="campoDetalle" styleClass="textFieldSubTitulos" text="Gestión de los permisos del grupo de usuario" />
+                        <TextField fx:id="campoDetalle" styleClass="textFieldSubTitulos" text="Gestión de los permisos para la seguridad y control de acceso" />
                      </children>
                   </VBox>
                </children>
