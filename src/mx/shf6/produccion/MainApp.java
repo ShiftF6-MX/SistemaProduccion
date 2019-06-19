@@ -41,6 +41,7 @@ import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.Puesto;
+import mx.shf6.produccion.model.Rol;
 import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.TipoMiscelaneo;
 import mx.shf6.produccion.model.Tratamiento;
@@ -52,6 +53,7 @@ import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
 import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
 import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
 import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
+import mx.shf6.produccion.view.DialogoAgregarPermiso;
 import mx.shf6.produccion.view.DialogoAlmacen;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
 import mx.shf6.produccion.view.DialogoArchivos;
@@ -69,6 +71,7 @@ import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoGrupoUsuario;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
+import mx.shf6.produccion.view.DialogoPermiso;
 import mx.shf6.produccion.view.DialogoProceso;
 import mx.shf6.produccion.view.DialogoProyectos;
 import mx.shf6.produccion.view.DialogoProyectosCliente;
@@ -169,6 +172,8 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAgregarGrupoUsuario;
 	private AnchorPane dialogoEsquemaSeguridad;
 	private AnchorPane dialogoUsuario;
+	private AnchorPane dialogoPermiso;
+	private AnchorPane dialogoAgregarPermiso;
 	
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
@@ -1244,6 +1249,44 @@ public class MainApp extends Application {
             
             DialogoUsuario dialogoUsuario = fxmlLoader.getController();
             dialogoUsuario.setMainApp(this, usuario, opcion);
+            
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public Rol iniciarDialogoAgregarPermiso(Rol rol, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarPermiso.fxml"));
+            this.dialogoAgregarPermiso = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoAgregarPermiso = this.iniciarEscenarioDialogos(this.dialogoAgregarPermiso);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarPermiso);
+            
+            DialogoAgregarPermiso dialogoAgregarPermiso = fxmlLoader.getController();
+            dialogoAgregarPermiso.setMainApp(this, rol, opcion);
+            
+            this.escenarioDialogosAlterno.showAndWait();
+            return dialogoAgregarPermiso.getPermiso();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+            return null;
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoPermiso() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoPermiso.fxml"));
+            this.dialogoPermiso = (AnchorPane) fxmlLoader.load();
+           
+            Scene escenaDialogoPermiso = this.iniciarEscenarioDialogos(this.dialogoPermiso);
+            this.escenarioDialogos.setScene(escenaDialogoPermiso);
+            
+            DialogoPermiso dialogoPermiso = fxmlLoader.getController();
+            dialogoPermiso.setMainApp(this);
             
             this.escenarioDialogos.showAndWait();
         } catch(IOException | IllegalStateException ex) {
