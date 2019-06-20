@@ -72,7 +72,7 @@
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../LavinecProject/src/mx/shf6/lavinec/view/images/1x/OpcionesBoton.png" />
+                              <Image url="@images/1x/OpcionesBoton.png" />
                            </image>
                            <viewport>
                               <Rectangle2D height="24.0" width="24.0" />
