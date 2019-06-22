@@ -23,7 +23,7 @@
                   </ImageView>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="labelRobotoMedium16" text="PERMISOS" textFill="WHITE" />
+                        <Label styleClass="labelRobotoMedium16" text="Permisos de Sistema" textFill="WHITE" />
                         <Label styleClass="labelRobotoMedium14" text="Gestión de los permisos para la seguridad y control de acceso" textFill="WHITE" />
                      </children>
                      <HBox.margin>
@@ -55,6 +55,9 @@
                            <image>
                               <Image url="@images/1x/ActualizarBoton.png" />
                            </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </ImageView>
                         <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCrear" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -63,6 +66,9 @@
                            <HBox.margin>
                               <Insets left="3.0" />
                            </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </ImageView>
                         <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCerrar" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
@@ -71,6 +77,9 @@
                            <image>
                               <Image url="@images/1x/CerrarBoton.png" />
                            </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </ImageView>
                      </children>
                   </HBox>
