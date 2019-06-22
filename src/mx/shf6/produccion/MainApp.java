@@ -1266,7 +1266,7 @@ public class MainApp extends Application {
         }//FIN TRY/CATCH
     }//FIN METODO
 	
-	public Rol iniciarDialogoAgregarPermiso(Rol rol, int opcion) {
+	public void iniciarDialogoAgregarPermiso(Rol rol, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarPermiso.fxml"));
@@ -1279,10 +1279,8 @@ public class MainApp extends Application {
             dialogoAgregarPermiso.setMainApp(this, rol, opcion);
             
             this.escenarioDialogosAlterno.showAndWait();
-            return dialogoAgregarPermiso.getPermiso();
         } catch(IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
-            return null;
         }//FIN TRY/CATCH
     }//FIN METODO
 	
