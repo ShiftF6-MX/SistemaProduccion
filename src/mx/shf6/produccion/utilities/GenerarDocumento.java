@@ -1,13 +1,16 @@
 package mx.shf6.produccion.utilities;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mx.shf6.produccion.model.Cotizacion;
+import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
+import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -20,10 +23,10 @@ import net.sf.jasperreports.view.JasperViewer;
 public class GenerarDocumento {
 	//PROPIEDADES
 	private static List<DetalleCotizacion> datosTabla;
-	
+
 	public static void generaCotizacion(Connection connection, Cotizacion cotizacion) {
 		try {
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/COTIZACION.jasper");	
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/COTIZACION.jasper");
 			datosTabla = DetalleCotizacionDAO.toList(DetalleCotizacionDAO.readCotizacionDetalle(connection, cotizacion.getSysPK()));
 			JRBeanCollectionDataSource itemsTabla = new JRBeanCollectionDataSource(datosTabla);
 			Map<String,Object> parameters = new HashMap<String,Object>();
@@ -48,7 +51,7 @@ public class GenerarDocumento {
 			parameters.put("TipoCambio", cotizacion.getTipoCambio());
 			parameters.put("Observaciones", cotizacion.getObservaciones());
 			parameters.put("Vigencia", cotizacion.getVigencia());
-			parameters.put("JefePlaneacion", "OMAR GARRIDO ISLAS");			
+			parameters.put("JefePlaneacion", "OMAR GARRIDO ISLAS");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
@@ -58,5 +61,35 @@ public class GenerarDocumento {
 			System.out.println(jre);
 		}//TRY/CATH
 	}//END METHOD
+
+
+	public static void generaValeMovimientoInventario(Connection connection, ArrayList <DetalleCardex> listaDetalleCardex, int tipoMovimiento) {
+		String titulo = "";
+		String referencia = "";
+		try {
+			if(tipoMovimiento == DialogoMovimientoInventario.ENTRADA)
+				titulo = "VALE ENTRADA";
+			else if(tipoMovimiento == DialogoMovimientoInventario.SALIDA )
+				titulo = "VALE SALIDA";
+
+			for(DetalleCardex detalleCardex : listaDetalleCardex ){
+				referencia = detalleCardex.getCardex(connection).getReferencia();
+			}
+
+			Map<String,Object> parameters = new HashMap<String,Object>();
+			parameters.put("TipoMovimiento", tipoMovimiento );
+			parameters.put("Titulo", titulo);
+			parameters.put("Referencia", referencia);
+
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/ValeMovimientoInventario.jasper");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(listaDetalleCardex));
+			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
+			jasperView.setVisible(true);
+		} catch (JRException jre) {
+			Notificacion.dialogoException(jre);
+			System.out.println(jre);
+		}//TRY/CATH
+	}//END METHOD
+
 
 }

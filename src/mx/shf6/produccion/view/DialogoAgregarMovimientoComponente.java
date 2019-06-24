@@ -12,6 +12,7 @@ import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.dao.AlmacenDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.ExistenciaDAO;
+import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
 
 
@@ -57,6 +58,7 @@ public class DialogoAgregarMovimientoComponente {
 			this.observableListaComponentes = ExistenciaDAO.readNumeroParteComponente(conexion, almacenOrigen);
 
 		this.comboBoxComponentes.setItems(observableListaComponentes);
+		new AutoCompleteComboBoxListener(comboBoxComponentes);
 	}// FIN METODO
 
 	public boolean validacion() {
@@ -90,8 +92,8 @@ public class DialogoAgregarMovimientoComponente {
 					detalleCardex.setEntrada(Double.parseDouble(this.campoTextoCantidad.getText()));
 				else
 					detalleCardex.setSalida(Double.parseDouble(this.campoTextoCantidad.getText()));
+				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN IF
-			this.mainApp.getEscenarioDialogosAlterno().close();
 		}//FIIN IF
 	}// FIN METODO
 
