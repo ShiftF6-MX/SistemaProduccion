@@ -131,7 +131,7 @@ public class PantallaAlmacen {
 
 						botonEliminar.setOnAction(event -> {
 							almacen = getTableView().getItems().get(getIndex());
-							if (Notificacion.dialogoPreguntar("", "¿Deseaseliminar el registro?"))
+							if (Notificacion.dialogoPreguntar("", "¿Deseas eliminar el registro?"))
 								eliminarAlmacen(almacen);
 						});// FIN LISTENER
 						setGraphic(acciones);
