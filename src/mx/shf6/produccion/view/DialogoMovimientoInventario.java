@@ -26,6 +26,7 @@ import mx.shf6.produccion.model.dao.CategoriaDAO;
 import mx.shf6.produccion.model.dao.DetalleCardexDAO;
 import mx.shf6.produccion.model.dao.ExistenciaDAO;
 import mx.shf6.produccion.model.dao.FolioDAO;
+import mx.shf6.produccion.utilities.GenerarDocumento;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 import mx.shf6.produccion.utilities.TransaccionSQL;
@@ -206,18 +207,25 @@ public class DialogoMovimientoInventario {
 	}//FIN METODO
 
 	private void accionarBotonAceptar() {
-		TransaccionSQL.setStatusTransaccion(this.mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
-		if (generarCardex()) {
-			if (generarMovimiento(listaDetalleCardex)) {
-				TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
-				Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡El registro se guardó de forma correcta!");
+		if(listaDetalleCardex.size() == 0){
+			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el registro, ¡revisa que la información sea correcta!");
+		}else {
+			TransaccionSQL.setStatusTransaccion(this.mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
+			if (generarCardex()) {
+				if (generarMovimiento(listaDetalleCardex)) {
+					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
+					Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡El registro se guardó de forma correcta!");
+					this.mainApp.getEscenarioDialogos().close();
+					if(tipoMovimiento != TRASPASO)
+						GenerarDocumento.generaValeMovimientoInventario(conexion, listaDetalleCardex, tipoMovimiento);
+				} else {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el registro, ¡revisa que la información sea correcta!");
+					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+				}//FIN IF ELSE
 			} else {
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el registro, ¡revisa que la información sea correcta!");
 				TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
 			}//FIN IF ELSE
-		} else {
-			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el registro, ¡revisa que la información sea correcta!");
-			TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
 		}//FIN IF ELSE
 	}// FIN METODO
 
@@ -227,13 +235,13 @@ public class DialogoMovimientoInventario {
 			this.detalleCardex = new DetalleCardex();
 			this.detalleCardex = this.mainApp.iniciarDialogoAgregarMovimientoComponente(comboBoxAlmacenOrigen.getValue(), this.tipoMovimiento);
 
-			if (this.listaDetalleCardex.isEmpty() && this.detalleCardex.getComponenteFK() != 0)
+			if (this.listaDetalleCardex.isEmpty() && !this.detalleCardex.getDescripcionComponente().isEmpty())
 				this.listaDetalleCardex.add(this.detalleCardex);
-			else if (!this.listaDetalleCardex.isEmpty() && this.detalleCardex.getComponenteFK() != 0){
+			else if (!this.listaDetalleCardex.isEmpty() && !this.detalleCardex.getDescripcionComponente().isEmpty()){
 				for (DetalleCardex detalleCardex1 : this.listaDetalleCardex) {
 					if ((detalleCardex1.getDescripcionAlmacen().equals(this.detalleCardex.getDescripcionAlmacen())) && (detalleCardex1.getDescripcionComponente().equals(this.detalleCardex.getDescripcionComponente()))) {
-						detalleCardex1.setSalida(this.detalleCardex.getSalida());
-						detalleCardex1.setEntrada(this.detalleCardex.getEntrada());
+						detalleCardex1.setSalida(this.detalleCardex.getSalida() + detalleCardex1.getSalida());
+						detalleCardex1.setEntrada(this.detalleCardex.getEntrada() + detalleCardex1.getEntrada());
 						detalleCardexExistente = true;
 						break;
 					}else{
@@ -268,7 +276,6 @@ public class DialogoMovimientoInventario {
 	@FXML
 	private void manejadorBotonAceptar() {
 		this.accionarBotonAceptar();
-		this.mainApp.getEscenarioDialogos().close();
 	}// FIN METODO
 
 	@FXML

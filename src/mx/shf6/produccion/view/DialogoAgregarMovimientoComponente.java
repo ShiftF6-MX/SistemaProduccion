@@ -12,7 +12,9 @@ import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.dao.AlmacenDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.ExistenciaDAO;
+import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 
 public class DialogoAgregarMovimientoComponente {
@@ -37,6 +39,7 @@ public class DialogoAgregarMovimientoComponente {
 	// METODOS
 	@FXML
 	private void initialize() {
+
 	}// FIN METODO
 
 	public void setMainApp(MainApp mainApp, String almacenOrigen, int tipoMovimiento) {
@@ -51,12 +54,15 @@ public class DialogoAgregarMovimientoComponente {
 	}// FIN METODO
 
 	public void mostrarDatosInterfaz() {
+		RestriccionTextField.limitarPuntoDecimal(campoTextoCantidad);
+
 		if (this.tipoMovimiento == DialogoMovimientoInventario.ENTRADA)
 			this.observableListaComponentes = ComponenteDAO.listaNumerosParte(conexion);
 		else
 			this.observableListaComponentes = ExistenciaDAO.readNumeroParteComponente(conexion, almacenOrigen);
 
 		this.comboBoxComponentes.setItems(observableListaComponentes);
+		new AutoCompleteComboBoxListener(comboBoxComponentes);
 	}// FIN METODO
 
 	public boolean validacion() {
@@ -90,8 +96,8 @@ public class DialogoAgregarMovimientoComponente {
 					detalleCardex.setEntrada(Double.parseDouble(this.campoTextoCantidad.getText()));
 				else
 					detalleCardex.setSalida(Double.parseDouble(this.campoTextoCantidad.getText()));
+				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN IF
-			this.mainApp.getEscenarioDialogosAlterno().close();
 		}//FIIN IF
 	}// FIN METODO
 
