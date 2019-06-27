@@ -117,6 +117,29 @@ public class DetalleCotizacionDAO {
 		return arrayListDetalleCotizacion;
 	}//FIN METODO
 	
+	public static DetalleCotizacion readCotizacionFK(Connection connection, int cotizacionFK) {
+		DetalleCotizacion detalleCotizacion = new DetalleCotizacion();
+		String consulta = "SELECT detallecotizaciones.Sys_PK, detallecotizaciones.Cantidad, detallecotizaciones.Precio, detallecotizaciones.Costo, detallecotizaciones.FechaEntrega, detallecotizaciones.Observaciones, detallecotizaciones.ProyectoFK, detallecotizaciones.CotizacionFK, proyectos.Codigo, proyectos.Descripcion FROM detallecotizaciones INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK WHERE CotizacionFK = " + cotizacionFK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				detalleCotizacion.setSysPK(resultados.getInt(1));
+				detalleCotizacion.setSysPK(resultados.getInt(1));
+				detalleCotizacion.setCantidad(resultados.getDouble(2));
+				detalleCotizacion.setPrecio(resultados.getDouble(3));
+				detalleCotizacion.setCosto(resultados.getDouble(4));
+				detalleCotizacion.setFechaEntrega(resultados.getDate(5));
+				detalleCotizacion.setObservaciones(resultados.getString(6));
+				detalleCotizacion.setProyectoFK(resultados.getInt(7));
+				detalleCotizacion.setCotizacionFK(resultados.getInt(8));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}
+		return detalleCotizacion;
+	}
+	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateDetalleCotizacion(Connection connection, DetalleCotizacion detalleCotizacion) {
 		String consulta = "UPDATE detallecotizaciones "
