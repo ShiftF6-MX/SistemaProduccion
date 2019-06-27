@@ -178,7 +178,7 @@ public class PantallaCotizaciones {
 					botonOrdenProduccion.setStyle("-fx-background-color: transparent");
 					botonOrdenProduccion.setCursor(Cursor.HAND);
 					botonOrdenProduccion.setTooltip(new Tooltip("Generar Orden de trabajo"));
-					botonOrdenProduccion.setDisable(true);
+					
 		        	acciones.setSpacing(2);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
