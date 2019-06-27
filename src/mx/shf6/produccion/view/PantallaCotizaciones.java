@@ -274,9 +274,9 @@ public class PantallaCotizaciones {
 			            					DetalleOrdenProduccion detalleOrden = new DetalleOrdenProduccion();
 			            					detalleOrden.setNumeroSerie(generarNumeroSerie());
 			            					detalleOrden.setOrdenProduccionFK(syspk);
-			            					if (DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden))
-			            						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");				            				
+			            					DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden);
 			            				}//FIN FOR
+			            				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");				            				
 			            			}//FIN IF
 			            			actualizarTabla();
 			            		}//FIN IF		            			
