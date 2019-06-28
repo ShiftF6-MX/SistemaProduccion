@@ -47,6 +47,7 @@ import mx.shf6.produccion.model.TipoMiscelaneo;
 import mx.shf6.produccion.model.Tratamiento;
 import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
+import mx.shf6.produccion.utilities.LeerArchivo;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
@@ -176,7 +177,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAgregarPermiso;
 	
 	//CONSTANTES
-	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.216\\Ingeniería y Planeación\\PruebasFicherosMFG\\";
+	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
 	
 	//VARIABLES
 	private double xOffset = 0.0;
@@ -209,7 +210,9 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	private void configurarBaseDatos() {
-		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+		LeerArchivo.leerArchivo();
+		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
+		//this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		this.conexionBD.start();
@@ -1266,7 +1269,7 @@ public class MainApp extends Application {
         }//FIN TRY/CATCH
     }//FIN METODO
 	
-	public Rol iniciarDialogoAgregarPermiso(Rol rol, int opcion) {
+	public void iniciarDialogoAgregarPermiso(Rol rol, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarPermiso.fxml"));
@@ -1279,10 +1282,8 @@ public class MainApp extends Application {
             dialogoAgregarPermiso.setMainApp(this, rol, opcion);
             
             this.escenarioDialogosAlterno.showAndWait();
-            return dialogoAgregarPermiso.getPermiso();
         } catch(IOException | IllegalStateException ex) {
             Notificacion.dialogoException(ex);
-            return null;
         }//FIN TRY/CATCH
     }//FIN METODO
 	
