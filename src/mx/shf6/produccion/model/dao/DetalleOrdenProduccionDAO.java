@@ -18,7 +18,6 @@ public class DetalleOrdenProduccionDAO {
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, detalleOrdenProduccion.getNumeroSerie());
-			//sentenciaPreparada.setInt(2, detalleOrdenProduccion.getStatus());
 			sentenciaPreparada.setInt(2, detalleOrdenProduccion.getOrdenProduccionFK());
 			sentenciaPreparada.execute();
 			return true;
@@ -30,7 +29,7 @@ public class DetalleOrdenProduccionDAO {
 	
 	public static ArrayList<DetalleOrdenProduccion> readDetalleLoteProduccion(Connection connection) {
 		ArrayList<DetalleOrdenProduccion> listaDetalleLoteProduccion = new ArrayList<DetalleOrdenProduccion>();
-		String consulta = "";
+		String consulta = "SELECT Sys_PK, NumeroSerie, Status, OrdenProduccionFK FROM detalleordenesproduccion";
 		try {
 			Statement sentencia =connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
