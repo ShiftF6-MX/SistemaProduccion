@@ -14,19 +14,32 @@ public class OrdenProduccion {
 	private StringProperty lote;
 	private ObjectProperty<Integer> status;
 	private ObjectProperty<Integer> detalleCotizacionFK;
+	private StringProperty cliente;
+	private StringProperty cotizacion;
+	private StringProperty proyecto;
+	private StringProperty componente;
+	
+	//CONSTANTES
+	public static final int PENDIENTE = 0;
+	public static final int EN_PROCESO = 1;
+	public static final int TERMINADO = 2;
 	
 	//CONSTRUCTOR VACIO
 	public OrdenProduccion() {
-		this(0, new Date(System.currentTimeMillis()), "",0,0);
+		this(0, new Date(System.currentTimeMillis()), "",0,0,"","","","");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK) {
+	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, String proyecto, String componente) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.lote = new SimpleStringProperty(lote);
 		this.status = new SimpleObjectProperty<Integer>(status);
 		this.detalleCotizacionFK = new SimpleObjectProperty<Integer>(detalleCotizacionFK);
+		this.cliente = new SimpleStringProperty(cliente);
+		this.cotizacion = new SimpleStringProperty(cotizacion);
+		this.proyecto = new SimpleStringProperty(proyecto);
+		this.componente =  new SimpleStringProperty(componente);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A SYSPK
@@ -98,4 +111,60 @@ public class OrdenProduccion {
 		return detalleCotizacionFK;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A DETALLECOTIZACIONFK
+	
+	//METODOS DE ACCESO A CLIENTE
+	public void setCliente(String cliente) {
+		this.cliente.set(cliente);
+	}//FIN METODO
+	
+	public String getCliente() {
+		return cliente.get();
+	}//FIN METODO
+	
+	public StringProperty clienteProperty() {
+		return cliente;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A CLIENTE
+	
+	//METODOS DE ACCESO A COTIZACION
+	public void setCotizacion(String cotizacion) {
+		this.cotizacion.set(cotizacion);
+	}//FIN METODO
+	
+	public String getCotizacion() {
+		return cotizacion.get();
+	}//FIN METODO
+	
+	public StringProperty cotizacionProperty() {
+		return cotizacion;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A COTIZACION
+	
+	//METODOS DE ACCESO A PROYECTO
+	public void setProyecto(String proyecto) {
+		this.proyecto.set(proyecto);
+	}//FIN METODO
+	
+	public String getProyecto() {
+		return this.proyecto.get();
+	}//FIN METODO
+	
+	public StringProperty proyectoProperty() {
+		return proyecto;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A PROYECTO
+	
+	//METODOS DE ACCESO A COMPONENTE
+	public void setComponente(String componente) {
+		this.componente.set(componente);
+	}//FIN METODO
+	
+	public String getComponente() {
+		return this.componente.get();
+	}//FIN METODO
+	
+	public StringProperty componenteProperty() {
+		return componente;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A COMPONENTE
 }//FIN CLASE
