@@ -32,7 +32,7 @@ public class OrdenProduccionDAO {
 	//METODO PARA OBTENER UN REGISTRO PARA GRAFICAS
 	public static ArrayList<OrdenProduccion> readLoteProduccion(Connection connection) {
 		ArrayList<OrdenProduccion> arrayListaOrdenProduccion = new ArrayList<OrdenProduccion>();
-		String consulta = "SELECT Sys_PK, Fecha, Lote, Status, DetalleCotizacionFK FROM ordenesproduccion WHERE Status != 2 AND Status != 4";
+		String consulta = "SELECT Sys_PK, Fecha, Lote, Status, DetalleCotizacionFK FROM ordenesproduccion WHERE Status != 3 AND Status != 4";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
