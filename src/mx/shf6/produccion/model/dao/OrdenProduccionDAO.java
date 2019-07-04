@@ -219,7 +219,7 @@ public class OrdenProduccionDAO {
 	}//FIN METODO
 	
 	public static final int sysPKOrdenProduccion(Connection connection, String lote) {
-		String query = "SELECT Sys_PK FROM ordenesproduccion WHERE Lote = " + lote + " AND Status != 3 AND Status != 4";
+		String query = "SELECT Sys_PK FROM ordenesproduccion WHERE Lote = '" + lote + "' AND Status != 3 AND Status != 4";
 		int sysPK = 0;
 		try {
 			Statement statement = connection.createStatement();
