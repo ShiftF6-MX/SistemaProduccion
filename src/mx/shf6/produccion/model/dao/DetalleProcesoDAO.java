@@ -125,36 +125,6 @@ public class DetalleProcesoDAO {
 			return arrayListDetalleProceso;
 		}//FIN METODO
 
-		/*//METODO PARA OBTENER UN REGISTRO
-		public static ArrayList<DetalleProceso> readDetalleProceso(Connection connection, String like) {
-			ArrayList<DetalleProceso> arrayListDetalleProceso = new ArrayList<DetalleProceso>();
-			String consulta = "SELECT Sys_PK, Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK FROM detalleProcesos INNER JOIN  WHERE Fecha LIKE';";
-			try {
-				Statement sentencia = connection.createStatement();
-				ResultSet resultados = sentencia.executeQuery(consulta);
-				while(resultados.next()) {
-					DetalleProceso detalleProceso = new DetalleProceso();
-					detalleProceso.setSysPK(resultados.getInt(1));
-					detalleProceso.setOperacion(resultados.getInt(2));
-					detalleProceso.setDescripcion(resultados.getString(3));
-					detalleProceso.setTiempoPreparacion(resultados.getInt(4));
-					detalleProceso.setTiempoOperacion(resultados.getInt(5));
-					detalleProceso.setCentroTrabajoFK(resultados.getInt(6));
-					detalleProceso.setNombreCentroTrabajo(resultados.getString(7));
-					detalleProceso.setGrupoTrabajoFK(resultados.getInt(8));
-					detalleProceso.setNombreGrupoTrabajo(resultados.getString(9));
-					detalleProceso.setProcesoFK(resultados.getInt(10));
-					detalleProceso.setComponenteFK(resultados.getInt(11));
-					detalleProceso.setNombreComponenteFK(resultados.getString(12));
-					detalleProceso.setCantidad(resultados.getInt(13));
-					arrayListDetalleProceso.add(detalleProceso);
-				}//FIN WHILE
-			} catch(SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-			return arrayListDetalleProceso;
-		}//FIN METODO*/
-
 		//METODO PARA ACTUALIZAR UN REGISTRO
 		public static boolean updateDetalleProceso(Connection connection, DetalleProceso detalleProceso) {
 			String consulta = "UPDATE detalleProcesos SET Operacion = ?, Descripcion = ?, TiempoPreparacion = ?, TiempoOperacion = ?, CentroTrabajoFK = ?, GrupoTrabajoFK = ?, ProcesoFK = ?, ComponenteFK = ?, Cantidad = ? WHERE Sys_PK = ?";
