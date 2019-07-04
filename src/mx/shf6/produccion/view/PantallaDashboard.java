@@ -2,8 +2,6 @@ package mx.shf6.produccion.view;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -20,8 +18,9 @@ import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
+import mx.shf6.produccion.utilities.Notificacion;
 
-public class PantallaDashboard{
+public class PantallaDashboard extends Thread{
 	
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -31,7 +30,6 @@ public class PantallaDashboard{
 	private ArrayList<String> listaComboLotes;
 	private ArrayList<String> listaStatusLote;
 	private ArrayList<String> listaStatusSerie;
-	private Timer timer;
 	
 	//VARIABLES
 	
@@ -53,14 +51,12 @@ public class PantallaDashboard{
 		this.listaComboLotes = new ArrayList<String>();
 		this.listaStatusLote = new ArrayList<String>();
 		this.listaStatusSerie = new ArrayList<String>();
-		this.timer = new Timer();
 		this.inicializarComponentes();
 	}//FIN METODO
 	
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 		this.connection = this.mainApp.getConnection();
-		this.grafica();
 	}//FIN METODO
 	
 	private void inicializarComponentes() {
@@ -81,21 +77,24 @@ public class PantallaDashboard{
 		
 	}//FIN METODO
 	
-	private void grafica() {
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
+	@Override
+	public void run() {
+		try {
+			while(true) {
 				Platform.runLater(() -> {
 					inicializarCombo();
 					graficaPorLotes();
 					graficaPorSeries();
 				});//FIN SENTENCIA
-			}//FIN METODO
-		};//FIN SENTENCIA
-		this.timer.schedule(task, 10,1500);
-	}//FIN METODO	
-	
+				Thread.sleep(1000);
+			}//FIN WHILE
+		}catch(InterruptedException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+	}//FIN METODO
+		
 	private void inicializarCombo() {
+		this.listaComboLotes.clear();
 		this.listaComboLotes.add("Todos");
 		for (OrdenProduccion orden : OrdenProduccionDAO.readLoteProduccion(this.connection)) 
 			this.listaComboLotes.add(orden.getLote());
