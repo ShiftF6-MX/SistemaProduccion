@@ -88,6 +88,7 @@ import mx.shf6.produccion.view.PantallaCentroTrabajo;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaCotizaciones;
+import mx.shf6.produccion.view.PantallaDashboard;
 import mx.shf6.produccion.view.PantallaDetalleCotizacion;
 import mx.shf6.produccion.view.PantallaEmpleado;
 import mx.shf6.produccion.view.PantallaExistencia;
@@ -141,6 +142,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaExistencia;
 	private AnchorPane pantallaAlmacen;
 	private AnchorPane pantallaUsuario;
+	private AnchorPane pantallaDashboard;
 	
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -716,6 +718,20 @@ public class MainApp extends Application {
 			
 			PantallaUsuario pantallaUsuario = fxmlLoader.getController();
 			pantallaUsuario.setMainApp(this);
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaDashboard() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaDashboard.fxml"));
+			this.pantallaDashboard = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaDashboard);
+			
+			PantallaDashboard pantallaDashboard = fxmlLoader.getController();
+			pantallaDashboard.setMainApp(this);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
