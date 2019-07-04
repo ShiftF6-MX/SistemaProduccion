@@ -28,7 +28,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
                      <children>
-                        <ComboBox prefWidth="100.0" promptText="Status" styleClass="campoBuscador">
+                        <ComboBox fx:id="comboStatus" prefWidth="100.0" promptText="Status" styleClass="campoBuscador">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -43,11 +43,11 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="320.0">
                      <children>
-                        <DatePicker prefWidth="150.0" styleClass="campoBuscador">
+                        <DatePicker fx:id="fechaInicial" prefWidth="150.0" styleClass="campoBuscador">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></DatePicker>
-                        <DatePicker prefWidth="150.0" styleClass="campoBuscador" />
+                        <DatePicker fx:id="fechaFinal" prefWidth="150.0" styleClass="campoBuscador" />
                      </children>
                      <HBox.margin>
                         <Insets right="5.0" />
@@ -83,10 +83,11 @@
                     <columns>
                       <PTableColumn fx:id="columnaFecha" percentageWidth="0.1" prefWidth="75.0" text="Fecha" />
                       <PTableColumn fx:id="columnaLote" percentageWidth="0.1" prefWidth="75.0" text="Lote" />
-                        <PTableColumn fx:id="columnaCliente" percentageWidth="0.3" prefWidth="75.0" text="Cliente" />
+                        <PTableColumn fx:id="columnaCliente" percentageWidth="0.2" prefWidth="75.0" text="Cliente" />
                         <PTableColumn fx:id="columnaCotizacion" percentageWidth="0.1" prefWidth="75.0" text="Cotización" />
                         <PTableColumn fx:id="columnaProyecto" percentageWidth="0.1" prefWidth="75.0" text="Proyecto" />
                         <PTableColumn fx:id="columnaComponente" percentageWidth="0.1" prefWidth="75.0" text="Componente" />
+                        <PTableColumn fx:id="columnaStatus" percentageWidth="0.1" prefWidth="75.0" text="Status" />
                         <PTableColumn fx:id="columnaAcciones" percentageWidth="0.2" prefWidth="75.0" text="Acciones" />
                     </columns>
                   </TableView>
