@@ -213,10 +213,25 @@ public class OrdenProduccionDAO {
 				ultimoSyspk = resultSet.getInt(1);
 			}//FIN WHILE
 		} catch (SQLException ex) {
-			System.out.println("No hay syspk " + ex);
+			Notificacion.dialogoException(ex);
 		}//FIN TRY CATCH
 		return ultimoSyspk;
 	}//FIN METODO
+	
+	public static final int sysPKOrdenProduccion(Connection connection, int lote) {
+		String query = "SELECT Sys_PK FROM ordenesproduccion WHERE Lote = " + lote + " AND Status != 3 AND Status != 4";
+		int sysPK = 0;
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resulset = statement.executeQuery(query);
+			while (resulset.next()) {
+				sysPK = resulset.getInt(1);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY CATCH
+		return sysPK;
+	} //FIN METODO
 	
 	public static ObservableList<OrdenProduccion> toObservableList(ArrayList<OrdenProduccion> arrayList) {
 		ObservableList<OrdenProduccion> listaObservableOrdenProduccion = FXCollections.observableArrayList();
