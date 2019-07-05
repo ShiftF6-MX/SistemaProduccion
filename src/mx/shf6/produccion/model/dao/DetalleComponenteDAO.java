@@ -13,7 +13,7 @@ import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.utilities.Notificacion;
 
 public class DetalleComponenteDAO {
-	
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createDetalleComponente(Connection connection, DetalleComponente detalleComponente) {
 		String consulta = "INSERT INTO detallecomponentes (ComponenteSuperiorFK, ComponenteInferiorFK, Cantidad, Notas) VALUES (?, ?, ?, ?)";
@@ -30,7 +30,7 @@ public class DetalleComponenteDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<DetalleComponente> readDetalleComponente(Connection connection) {
 		ArrayList<DetalleComponente> arrayListDetalleComponente = new ArrayList<DetalleComponente>();
@@ -52,7 +52,7 @@ public class DetalleComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListDetalleComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static DetalleComponente readDetalleComponente(Connection connection, int sysPK) {
 		DetalleComponente detalleComponente = new DetalleComponente();
@@ -72,11 +72,11 @@ public class DetalleComponenteDAO {
 		}//FIN TRY/CATCH
 		return detalleComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<DetalleComponente> readDetalleComponenteSuperiorFK(Connection connection, int componenteSuperiorFK) {
 		ArrayList<DetalleComponente> arrayListDetalleComponente = new ArrayList<DetalleComponente>();
-		String consulta = "SELECT Sys_PK, ComponenteSuperiorFK, ComponenteInferiorFK, Cantidad, Notas FROM detallecomponentes WHERE ComponenteSuperiorFK = " + componenteSuperiorFK;
+		String consulta = "SELECT detallecomponentes.Sys_PK, detallecomponentes.ComponenteSuperiorFK, detallecomponentes.ComponenteInferiorFK, detallecomponentes.Cantidad, detallecomponentes.Notas, componentes.Descripcion, componentes.NumeroParte  FROM detallecomponentes INNER JOIN componentes ON componentes.Sys_PK = detallecomponentes.ComponenteInferiorFK WHERE ComponenteSuperiorFK = " + componenteSuperiorFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -87,6 +87,9 @@ public class DetalleComponenteDAO {
 				detalleComponente.setComponenteInferiorFK(resultados.getInt(3));
 				detalleComponente.setCantidad(resultados.getDouble(4));
 				detalleComponente.setNotas(resultados.getString(5));
+				detalleComponente.setDescripcionComponenteInferior(resultados.getString(6));
+				detalleComponente.setNumeroParteComponenteInferior(resultados.getString(7));
+				detalleComponente.setNumeroDescripcionComponenteIferior();
 				arrayListDetalleComponente.add(detalleComponente);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -94,7 +97,7 @@ public class DetalleComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListDetalleComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateDetalleComponente(Connection connection, DetalleComponente detalleComponente) {
 		String consulta = "UPDATE detallecomponentes SET ComponenteSuperiorFK = ?, ComponenteInferiorFK = ?, Cantidad = ?, Notas = ? WHERE Sys_PK = ?";
@@ -111,7 +114,7 @@ public class DetalleComponenteDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean deleteDetalleComponente(Connection connection, DetalleComponente detalleComponente) {
 		String consulta = "DELETE FROM detallecomponentes WHERE Sys_PK = ?";
@@ -125,13 +128,13 @@ public class DetalleComponenteDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
 	public static ObservableList<DetalleComponente> toObservableList(ArrayList<DetalleComponente> arrayList) {
 		ObservableList<DetalleComponente> listaObservableDetalleComponente = FXCollections.observableArrayList();
-		for (DetalleComponente detalleComponente : arrayList) 
+		for (DetalleComponente detalleComponente : arrayList)
 			listaObservableDetalleComponente.add(detalleComponente);
 		return listaObservableDetalleComponente;
 	}//FIN METODO
-	
+
 }//FIN CLASE
