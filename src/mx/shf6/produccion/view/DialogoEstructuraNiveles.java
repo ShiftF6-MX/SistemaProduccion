@@ -89,7 +89,6 @@ public class DialogoEstructuraNiveles {
 
 	private void obtenerArbol(int componenteFK, TreeItem<DetalleComponente> treeItem){
 		i++;
-		System.out.println(i);
 		componenteRaiz = ComponenteDAO.readComponente(conexion, componenteFK);
 
 		TreeItem<DetalleComponente> root = new TreeItem<>();
@@ -103,12 +102,6 @@ public class DialogoEstructuraNiveles {
 			ttv.setRoot(root);
 		}//FIN IF
 
-		System.out.println(componenteRaiz.getSysPK());
-		System.out.println(componenteRaiz.getNumeroParte());
-		System.out.println(componenteRaiz.getDescripcion());
-		System.out.println(componenteRaiz.getTipoComponente());
-
-
 		ArrayList<DetalleComponente> listaDetalleComponente = new ArrayList<DetalleComponente>();
 		if(componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.PARTE_PRIMARIA)){
 			listaDetalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(conexion, componenteFK);
@@ -121,7 +114,6 @@ public class DialogoEstructuraNiveles {
 			}else{
 			for(DetalleComponente detalleComponente : listaDetalleComponente){
 				TreeItem<DetalleComponente> nodo = new TreeItem<>(detalleComponente);
-				System.out.println(detalleComponente.getSysPK() +" "+detalleComponente.getComponenteSuperiorFK() + " " + detalleComponente.getComponenteInferiorFK() +" "+ detalleComponente.getCantidad());
 				treeItem.getChildren().add(nodo);
 				obtenerArbol(detalleComponente.getComponenteInferiorFK(), nodo);
 				}//FIN FOR
