@@ -13,6 +13,7 @@ import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import mx.shf6.produccion.MainApp;
+import mx.shf6.produccion.model.ControlOperacion;
 import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
@@ -27,9 +28,12 @@ public class PantallaDashboard extends Thread{
 	private Connection connection;
 	private ArrayList<OrdenProduccion> listaLotes;
 	private ArrayList<DetalleOrdenProduccion> listaSeries;
+	private ArrayList<ControlOperacion> listaControlOperaciones;
 	private ArrayList<String> listaComboLotes;
 	private ArrayList<String> listaStatusLote;
 	private ArrayList<String> listaStatusSerie;
+	private ArrayList<String> listaDescripcionCentros;
+	private ArrayList<String> listaDescripcionGrupos;
 	
 	//VARIABLES
 	
@@ -39,18 +43,27 @@ public class PantallaDashboard extends Thread{
 	@FXML private ComboBox<String> comboLotes;
 	@FXML private BarChart<String, Integer> graficaPorLotes;
 	@FXML private StackedBarChart<String, Integer> graficaPorSeries;
+	@FXML private BarChart<String, Integer> graficaCentrosTrabajo;
+	@FXML private BarChart<String, Integer> graficaGruposTrabajo;
 	@FXML private CategoryAxis xAxisLote;
 	@FXML private NumberAxis yAxisLote;
 	@FXML private CategoryAxis xAxisSerie;
 	@FXML private NumberAxis yAxisSerie;	
+	@FXML private CategoryAxis xAxisCentro;
+	@FXML private NumberAxis yAxisCentro;
+	@FXML private CategoryAxis xAxisGrupo;
+	@FXML private NumberAxis yAxisGrupo;
 		
 	//METODOS
 	@FXML private void initialize() {
 		this.listaLotes = new ArrayList<OrdenProduccion>();
 		this.listaSeries = new ArrayList<DetalleOrdenProduccion>();
+		this.listaControlOperaciones = new ArrayList<ControlOperacion>();
 		this.listaComboLotes = new ArrayList<String>();
 		this.listaStatusLote = new ArrayList<String>();
 		this.listaStatusSerie = new ArrayList<String>();
+		this.listaDescripcionCentros = new ArrayList<String>();
+		this.listaDescripcionGrupos = new ArrayList<String>();
 		this.inicializarComponentes();
 	}//FIN METODO
 	
@@ -60,15 +73,17 @@ public class PantallaDashboard extends Thread{
 	}//FIN METODO
 	
 	private void inicializarComponentes() {
+		
 		//GRAFICA POR LOTES
 		this.listaStatusLote.add("Pendiente");
 		this.listaStatusLote.add("En Proceso");
 		this.listaStatusLote.add("Paro");
 		this.xAxisLote.setCategories(FXCollections.observableArrayList(this.listaStatusLote));
-		this.graficaPorLotes.setTitle("Lotes");
+		this.xAxisLote.setLabel("Lotes");
 		this.yAxisLote.setLabel("Cantidad");
+		this.yAxisLote.setTickUnit(1);
 		
-		//GRAFICA POR SERIES %
+		//GRAFICA POR SERIES 
 		this.listaStatusSerie.add("PE");
 		this.listaStatusSerie.add("PR");
 		this.listaStatusSerie.add("PA");
@@ -85,6 +100,8 @@ public class PantallaDashboard extends Thread{
 					inicializarCombo();
 					graficaPorLotes();
 					graficaPorSeries();
+					graficaPorCentro();
+					graficaPorGrupo();
 				});//FIN SENTENCIA
 				Thread.sleep(1000);
 			}//FIN WHILE
@@ -149,6 +166,14 @@ public class PantallaDashboard extends Thread{
 			serie2.getData().add(new XYChart.Data<>(this.listaStatusSerie.get(i), 100-((contadorStatus[i] *100)/ cantidadTotal)));
 		}//FIN FOR
 		this.graficaPorSeries.getData().addAll(serie1, serie2);
+	}//FIN METODO
+	
+	private void graficaPorCentro() {
+		
+	}//FIN METODO
+	
+	private void graficaPorGrupo() {
+		
 	}//FIN METODO
 	//MANEJADORES 
 }//FIN METODO

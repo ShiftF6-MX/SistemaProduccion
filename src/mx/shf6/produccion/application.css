@@ -402,3 +402,21 @@
 	-fx-font-size: 12px;
 	-fx-text-fill: #666666;
 }
+
+/*CSS PARA GRAFICAS*/
+.grafica>.bar-chart {
+    -fx-bar-gap: 6;
+    -fx-category-gap: 10;
+}
+
+.chart-bar.default-color0 {
+    -fx-bar-fill: #151940;
+}
+
+.chart-bar.default-color1 {
+    -fx-bar-fill: red;
+}
+
+.chart-bar.default-color2 {
+    -fx-bar-fill: green;
+}
