@@ -12,18 +12,25 @@ public class DetalleOrdenProduccion {
 	private StringProperty numeroSerie;
 	private ObjectProperty<Integer> status; 
 	private ObjectProperty<Integer> ordenProduccionFK;
+	private StringProperty loteOrdenProduccionFK;
+	
+	//CONSTANTES
+	public static final int PENDIENTE = 0;
+	public static final int EN_PROCESO = 1;
+	public static final int TERMINADO = 2;
 	
 	//CONSTRUCTOR VACIO
 	public DetalleOrdenProduccion() {
-		this(0,"",0,0);
+		this(0,"",0,0,"");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public DetalleOrdenProduccion(Integer sysPK, String numeroSerie, Integer status, Integer ordenProduccionFK) {
+	public DetalleOrdenProduccion(Integer sysPK, String numeroSerie, Integer status, Integer ordenProduccionFK, String loteOrdenProduccionFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.numeroSerie = new SimpleStringProperty(numeroSerie);
 		this.status = new SimpleObjectProperty<Integer>(status);
 		this.ordenProduccionFK = new SimpleObjectProperty<Integer>(ordenProduccionFK);
+		this.loteOrdenProduccionFK =  new SimpleStringProperty(loteOrdenProduccionFK);
 	}//FIN CONSTRUCTO
 	
 	//METODOS DE ACCESO A SYSPK
@@ -66,9 +73,21 @@ public class DetalleOrdenProduccion {
 	public ObjectProperty<Integer> statusProperty() {
 		return status;
 	}//FIN METODO
+	
+	public StringProperty detalleStatusProperty() {
+		switch(this.getStatus()) {
+			case 0:
+				return new SimpleStringProperty("Pendiente");
+			case 1:
+				return new SimpleStringProperty("En proceso");
+			case 2: 
+				return new SimpleStringProperty("Terminado");
+		}//FIN SWITCH
+		return new SimpleStringProperty();
+	}//FIN METODO
 	//FIN METODOS DE ACCESO A STATUS
 	
-	//METODOS DE ACCESO A LOTEPRODUCCIONFK
+	//METODOS DE ACCESO A ORDENPRODUCCIONFK
 	public void setOrdenProduccionFK(Integer ordenProduccionFK) {
 		this.ordenProduccionFK.set(ordenProduccionFK);
 	}//FIN METODO
@@ -80,5 +99,19 @@ public class DetalleOrdenProduccion {
 	public ObjectProperty<Integer> ordenProduccionFK() {
 		return ordenProduccionFK;
 	}//FIN METODO
-	//FIN METODOS DE ACCESO A LOTEPRODUCCIONFK
+	//FIN METODOS DE ACCESO A ORDENPRODUCCIONFK
+	
+	//METODOS DE ACCESO A LOTEORDENPRODUCCIONFK 
+	public void setLoteOrdenProduccionFK(String loteOrdenProduccionFK) {
+		this.loteOrdenProduccionFK.set(loteOrdenProduccionFK);
+	}//FIN METODO
+	
+	public String getLoteOrdenProduccionFK() {
+		return loteOrdenProduccionFK.get();
+	}//FIN METODO
+	
+	public StringProperty loteOrdenProduccionFKProperty() {
+		return loteOrdenProduccionFK;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A LOTEORDENPRODUCCIONFK 
 }//FIN CLASE
