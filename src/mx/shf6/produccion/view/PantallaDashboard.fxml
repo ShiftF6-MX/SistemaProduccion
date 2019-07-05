@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDashboard">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDashboard">
    <children>
       <AnchorPane prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="26.0">
          <children>
@@ -41,7 +41,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="408.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" rotate="90.0" styleClass="dashBoardCard" AnchorPane.topAnchor="26.0">
+      <AnchorPane layoutX="408.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" rotate="90.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="26.0">
          <children>
             <Label layoutX="-89.0" layoutY="141.0" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="198.0" rotate="-90.0" styleClass="labelRobotoMedium16" text="Monitor numeros de serie" AnchorPane.leftAnchor="-87.0" />
             <Label layoutX="-48.0" layoutY="158.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="161.0" rotate="-90.0" styleClass="labelRobotoMedium14" text="Gráfica numeros de serie" AnchorPane.leftAnchor="-48.0" />
@@ -60,7 +60,7 @@
             <ComboBox fx:id="comboLotes" editable="true" layoutX="288.0" layoutY="91.0" promptText="Lotes" rotate="-90.0" styleClass="comboEditable" AnchorPane.rightAnchor="-60.0" AnchorPane.topAnchor="80.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="790.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="26.0">
+      <AnchorPane layoutX="790.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="776.0" AnchorPane.topAnchor="26.0">
          <children>
             <BarChart fx:id="graficaCentrosTrabajo" animated="false" legendVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <xAxis>
@@ -76,7 +76,7 @@
             </BarChart>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="26.0" layoutY="394.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="26.0">
+      <AnchorPane layoutX="26.0" layoutY="394.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="400.0">
          <children>
             <BarChart fx:id="graficaGruposTrabajo" animated="false" legendVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <xAxis>
