@@ -212,9 +212,9 @@ public class MainApp extends Application {
 	}//FIN METODO
 	
 	private void configurarBaseDatos() {
-		LeerArchivo.leerArchivo();
-		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
-		//this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+		//LeerArchivo.leerArchivo();
+		//this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
+		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		this.conexionBD.start();
@@ -732,6 +732,7 @@ public class MainApp extends Application {
 			
 			PantallaDashboard pantallaDashboard = fxmlLoader.getController();
 			pantallaDashboard.setMainApp(this);
+			pantallaDashboard.start();
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
