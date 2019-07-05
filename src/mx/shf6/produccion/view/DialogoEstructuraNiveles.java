@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
@@ -46,6 +47,7 @@ public class DialogoEstructuraNiveles {
 	@FXML private TreeTableColumn <DetalleComponente, Integer> columnaNivel;
 	@FXML private TreeTableColumn <DetalleComponente, Double> columnaCantidad;
 	@FXML private TreeTableColumn <DetalleComponente, String> columnaAcciones;
+	@FXML private TextField campoTextoComponente;
 
 
 	//INICIA COMPONENTES INTERFAZ USUARIO
@@ -87,7 +89,6 @@ public class DialogoEstructuraNiveles {
 
 	private void obtenerArbol(int componenteFK, TreeItem<DetalleComponente> treeItem){
 		i++;
-		System.out.println(i);
 		componenteRaiz = ComponenteDAO.readComponente(conexion, componenteFK);
 
 		TreeItem<DetalleComponente> root = new TreeItem<>();
@@ -96,15 +97,10 @@ public class DialogoEstructuraNiveles {
 			detalleComponenteRaiz.setNumeroParteComponenteInferior(componenteRaiz.getNumeroParte());
 			detalleComponenteRaiz.setDescripcionComponenteInferior(componenteRaiz.getDescripcion());
 			detalleComponenteRaiz.setNumeroDescripcionComponenteIferior();
+			this.campoTextoComponente.setText(detalleComponenteRaiz.getNumeroDescripcionComponenteIferior());
 			root.setValue(detalleComponenteRaiz);
 			ttv.setRoot(root);
 		}//FIN IF
-
-		System.out.println(componenteRaiz.getSysPK());
-		System.out.println(componenteRaiz.getNumeroParte());
-		System.out.println(componenteRaiz.getDescripcion());
-		System.out.println(componenteRaiz.getTipoComponente());
-
 
 		ArrayList<DetalleComponente> listaDetalleComponente = new ArrayList<DetalleComponente>();
 		if(componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.PARTE_PRIMARIA)){
@@ -118,7 +114,6 @@ public class DialogoEstructuraNiveles {
 			}else{
 			for(DetalleComponente detalleComponente : listaDetalleComponente){
 				TreeItem<DetalleComponente> nodo = new TreeItem<>(detalleComponente);
-				System.out.println(detalleComponente.getSysPK() +" "+detalleComponente.getComponenteSuperiorFK() + " " + detalleComponente.getComponenteInferiorFK() +" "+ detalleComponente.getCantidad());
 				treeItem.getChildren().add(nodo);
 				obtenerArbol(detalleComponente.getComponenteInferiorFK(), nodo);
 				}//FIN FOR
