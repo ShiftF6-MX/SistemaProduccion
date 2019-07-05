@@ -28,7 +28,7 @@
                         <Insets />
                      </HBox.margin>
                      <children>
-                        <TextField editable="false" focusTraversable="false" prefWidth="300.0" promptText="Nombre" styleClass="textFieldTitulos" text="Estructura de Niveles">
+                        <TextField fx:id="campoTextoComponente" editable="false" focusTraversable="false" prefWidth="300.0" promptText="Nombre" styleClass="textFieldTitulos" text="Componente">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -36,7 +36,7 @@
                               <Insets left="1.0" />
                            </padding>
                         </TextField>
-                        <TextField editable="false" focusTraversable="false" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="Niveles de Componentes">
+                        <TextField editable="false" focusTraversable="false" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="Estructura de Niveles">
                            <padding>
                               <Insets left="1.0" />
                            </padding>

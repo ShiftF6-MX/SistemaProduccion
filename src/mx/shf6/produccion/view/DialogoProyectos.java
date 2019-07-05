@@ -35,9 +35,9 @@ public class DialogoProyectos {
 	private Proyecto proyecto;
 	private ArrayList<Proyecto> listaProyecto;
 	private Cliente cliente;
-	
+
 	//VARIABLES
-	
+
 	//COMPONENTES INTERFAZ
 	@FXML private Label etiquetaCliente;
 	@FXML private TextField campoTextoBusqueda;
@@ -50,14 +50,14 @@ public class DialogoProyectos {
 	@FXML private PTableColumn<Proyecto, Double> columnaCostoIndirecto;
 	@FXML private PTableColumn<Proyecto, Double> columnaPrecio;
 	@FXML private PTableColumn<Proyecto, String> columnaAcciones;
-		
+
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
 		this.proyecto = new Proyecto();
 		this.inicializaComponentes();
 		this.inicializaTabla();
 	}//FIN METODO
-	
+
 	//ACCESO CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp, Cliente cliente) {
 		this.mainApp = mainApp;
@@ -66,7 +66,7 @@ public class DialogoProyectos {
 		this.actualizarTabla();
 		this.etiquetaCliente.setText(this.cliente.getNombre());
 	}//FIN METODO
-	
+
 	private void inicializaComponentes() {
 		this.campoTextoBusqueda.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
@@ -75,10 +75,10 @@ public class DialogoProyectos {
 				if (event.getCode().equals(KeyCode.ENTER))
 					buscarRegistroTabla();
 			}//FIN METODO
-			
+
 		});//FIN SENTENCIA
 	}//FIN METODO
-	
+
 	private void inicializaTabla() {
 		this.columnaCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
@@ -89,22 +89,22 @@ public class DialogoProyectos {
 		this.columnaPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty());
 		this.inicializarColumnaAcciones();
 	}//FIN METODO
-	
+
 	private void actualizarTabla() {
 		this.tablaProyecto.setItems(null);
 		this.listaProyecto.clear();
 		this.listaProyecto = ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), this.cliente.getSysPK());
 		this.tablaProyecto.setItems(ProyectoDAO.toObservableList(this.listaProyecto));
 	}//FIN METODO
-		
+
 	@FXML private void buscarRegistroTabla() {
 		this.tablaProyecto.setItems(null);
 		this.listaProyecto.clear();
 		this.listaProyecto = ProyectoDAO.readProyecto(this.mainApp.getConnection(), this.campoTextoBusqueda.getText(), this.cliente.getSysPK());
-		
+
 		this.tablaProyecto.setItems(ProyectoDAO.toObservableList(this.listaProyecto));
 	}//FIN METODO
-	
+
 	private void inicializarColumnaAcciones() {
 		this.columnaAcciones.setCellValueFactory(new PropertyValueFactory<>("DUM"));
 		Callback<TableColumn<Proyecto, String>, TableCell<Proyecto, String>> cellFactory = param -> {
@@ -114,8 +114,9 @@ public class DialogoProyectos {
 				final Button botonArchivo = new Button("Archivo");
 				final Button botonEliminar = new Button("Eliminar");
 				final Button botonListaComponentes = new Button("Lista Componentes");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo,botonListaComponentes);
-				
+				final Button botonEstructuraNiveles = new Button("EstructuraNiveles");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo,botonListaComponentes, botonEstructuraNiveles);
+
 				@Override
 				public void updateItem(String item, boolean empty) {
 					//INICALIZA BOTONES
@@ -126,7 +127,7 @@ public class DialogoProyectos {
 					botonVer.setStyle("-fx-background-color: transparent");
 					botonVer.setCursor(Cursor.HAND);
 					botonVer.setTooltip(new Tooltip("Ver registro"));
-					
+
 					botonEditar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ActualizarIcono.png"))));
 					botonEditar.setPrefSize(16.0, 16.0);
 					botonEditar.setPadding(Insets.EMPTY);
@@ -134,7 +135,7 @@ public class DialogoProyectos {
 					botonEditar.setStyle("-fx-background-color: transparent");
 					botonEditar.setCursor(Cursor.HAND);
 					botonEditar.setTooltip(new Tooltip("Editar registro"));
-					
+
 					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
 					botonEliminar.setPrefSize(16.0, 16.0);
 					botonEliminar.setPadding(Insets.EMPTY);
@@ -142,7 +143,7 @@ public class DialogoProyectos {
 					botonEliminar.setStyle("-fx-background-color: transparent");
 					botonEliminar.setCursor(Cursor.HAND);
 					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
-					
+
 					botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
 		        	botonArchivo.setPrefSize(16.0, 16.0);
 		        	botonArchivo.setPadding(Insets.EMPTY);
@@ -150,7 +151,7 @@ public class DialogoProyectos {
 		        	botonArchivo.setStyle("-fx-background-color: transparent;");
 		        	botonArchivo.setCursor(Cursor.HAND);
 		        	botonArchivo.setTooltip(new Tooltip("Documento registro"));
-					
+
 		        	botonListaComponentes.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
 		        	botonListaComponentes.setPrefSize(16.0, 16.0);
 		        	botonListaComponentes.setPadding(Insets.EMPTY);
@@ -158,73 +159,87 @@ public class DialogoProyectos {
 		        	botonListaComponentes.setStyle("-fx-background-color: transparent;");
 		        	botonListaComponentes.setCursor(Cursor.HAND);
 		        	botonListaComponentes.setTooltip(new Tooltip("Lista componentes"));
-															
+
+		        	botonEstructuraNiveles.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ProyectoIcono.png"))));
+		        	botonEstructuraNiveles.setPrefSize(16.0, 16.0);
+		        	botonEstructuraNiveles.setPadding(Insets.EMPTY);
+		        	botonEstructuraNiveles.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonEstructuraNiveles.setStyle("-fx-background-color: transparent;");
+		        	botonEstructuraNiveles.setCursor(Cursor.HAND);
+		        	botonEstructuraNiveles.setTooltip(new Tooltip("Estructura Niveles"));
+
+
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
 						super.setText(null);
 					} else {
-						
+
 						//MANEJADORES PARA LOS BOTONES
 						botonVer.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonVer(proyecto);
 						});//FIN MANEJADDOR
-						
+
 						botonEditar.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonEditar(proyecto);
 						});//FIN MANEJADDOR
-						
+
 						botonArchivo.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							mainApp.iniciarDialogoArchivos(proyecto , cliente);
 						});//FIN MANEJADDOR
-						
+
 						botonEliminar.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonEliminar(proyecto);
 						});//FIN MANEJADDOR
-						
+
 						botonListaComponentes.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonListaComponentes(proyecto);
 						});//FIN MANEJADDOR
-						
+
+						botonEstructuraNiveles.setOnAction(event -> {
+							proyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonEstructuraNiveles(proyecto);
+						});//FIN MANEJADDOR
+
 						cajaBotones.setSpacing(2);
 						super.setGraphic(cajaBotones);
 						super.setText(null);
 					}//FIN IF ELSE
-						
+
 				}//FIN METODO
-				
+
 			};//FIN INSTRUCCION
 			return cell;
 		};//FIN INSTRUCCION
 		columnaAcciones.setCellFactory(cellFactory);
 	}//FIN METODO
-		
+
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
-		
+
 		this.mainApp.iniciarDialogoProyectosCliente(proyecto, DialogoProyectosCliente.CREAR, cliente);
 		this.actualizarTabla();
 	}//FIN METODO
-	
+
 	@FXML private void manejadorBotonActualizar() {
 		this.actualizarTabla();
 	}//FIN METODO
-	
+
 	private void manejadorBotonVer(Proyecto proyecto) {
 		this.mainApp.iniciarDialogoProyectosCliente(proyecto, DialogoProyectosCliente.VER, cliente);
 		this.actualizarTabla();
 	}//FIN METODO
-	
+
 	private void manejadorBotonEditar(Proyecto proyecto) {
 		this.mainApp.iniciarDialogoProyectosCliente(proyecto, DialogoProyectosCliente.EDITAR, cliente);
 		this.actualizarTabla();
 	}//FIN METODO
-	
+
 	private void manejadorBotonEliminar(Proyecto proyecto) {
 		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?")) {
 			File ruta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" +this.proyecto.getCodigo());
@@ -233,14 +248,18 @@ public class DialogoProyectos {
 		}
 		this.actualizarTabla();
 	}//FIN METODO
-	
+
 	private void manejadorBotonListaComponentes(Proyecto proyecto) {
 		Notificacion.dialogoDetalleMensaje(Componente.mostrarInformacionEnsamble(this.mainApp.getConnection(), proyecto.getComponente(this.mainApp.getConnection()), 0, ""));
 	}//FIN METODO
-	
+
+	private void manejadorBotonEstructuraNiveles(Proyecto proyecto) {
+		this.mainApp.iniciarDialogoEstructuraNiveles(proyecto);
+	}//FIN METODO
+
 	@FXML private void manejadorBotonCerrar() {
 		this.mainApp.getEscenarioDialogosAlternoSecundario().close();
 	}//FIN METODO
-		
-		
+
+
 }//FIN CLASE
