@@ -732,6 +732,7 @@ public class MainApp extends Application {
 			
 			PantallaDashboard pantallaDashboard = fxmlLoader.getController();
 			pantallaDashboard.setMainApp(this);
+			pantallaDashboard.start();
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH

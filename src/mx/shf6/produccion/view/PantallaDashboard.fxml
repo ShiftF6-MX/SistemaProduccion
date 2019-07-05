@@ -9,37 +9,88 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="710.0" prefWidth="1166.0" styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDashboard">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="bodyPantallaEspera" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDashboard">
    <children>
-      <AnchorPane prefHeight="300.0" prefWidth="250.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="26.0">
+      <AnchorPane prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="26.0">
          <children>
-            <BarChart fx:id="graficaPorLotes" animated="false" legendVisible="false" prefHeight="200.0" prefWidth="240.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <xAxis>
-                <CategoryAxis tickLength="5.0" fx:id="xAxisLote" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis fx:id="yAxisLote" minorTickLength="1.0" minorTickVisible="false" side="LEFT" tickUnit="1.0">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium16" text="Monitor Lotes">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="10.0" styleClass="labelRobotoMedium16" text="Gráfica de lotes">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <BarChart fx:id="graficaPorLotes" animated="false" legendVisible="false" styleClass="grafica">
+                    <xAxis>
+                      <CategoryAxis tickLength="5.0" fx:id="xAxisLote" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="yAxisLote" minorTickLength="1.0" minorTickVisible="false" side="LEFT" tickUnit="1.0">
+                           <effect>
+                              <Glow />
+                           </effect>
+                        </NumberAxis>
+                    </yAxis>
+                  </BarChart>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="408.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" rotate="90.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="26.0">
+         <children>
+            <Label layoutX="-89.0" layoutY="141.0" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="198.0" rotate="-90.0" styleClass="labelRobotoMedium16" text="Monitor numeros de serie" AnchorPane.leftAnchor="-87.0" />
+            <Label layoutX="-48.0" layoutY="158.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="161.0" rotate="-90.0" styleClass="labelRobotoMedium14" text="Gráfica numeros de serie" AnchorPane.leftAnchor="-48.0" />
+            <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <StackedBarChart fx:id="graficaPorSeries" animated="false" legendVisible="false" styleClass="grafica" titleSide="LEFT">
+                    <xAxis>
+                      <CategoryAxis tickLabelRotation="-90.0" fx:id="xAxisSerie" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="yAxisSerie" autoRanging="false" side="LEFT" tickLabelRotation="-90.0" tickUnit="25.0" />
+                    </yAxis>
+                  </StackedBarChart>
+               </children>
+            </HBox>
+            <ComboBox fx:id="comboLotes" editable="true" layoutX="288.0" layoutY="91.0" promptText="Lotes" rotate="-90.0" styleClass="comboEditable" AnchorPane.rightAnchor="-60.0" AnchorPane.topAnchor="80.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="790.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.leftAnchor="776.0" AnchorPane.topAnchor="26.0">
+         <children>
+            <BarChart fx:id="graficaCentrosTrabajo" animated="false" legendVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <xAxis>
+                  <CategoryAxis tickLength="5.0" fx:id="xAxisCentro" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis fx:id="yAxisCentro" minorTickLength="1.0" minorTickVisible="false" side="LEFT" tickUnit="1.0">
                      <effect>
                         <Glow />
-                     </effect></NumberAxis>
-              </yAxis>
+                     </effect>
+                  </NumberAxis>
+               </yAxis>
             </BarChart>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="342.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" rotate="90.0" styleClass="dashBoardCard" AnchorPane.topAnchor="26.0">
+      <AnchorPane layoutX="26.0" layoutY="394.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="400.0">
          <children>
-            <StackedBarChart fx:id="graficaPorSeries" animated="false" legendVisible="false" titleSide="LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
-              <xAxis>
-                <CategoryAxis tickLabelRotation="-90.0" fx:id="xAxisSerie" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis fx:id="yAxisSerie" autoRanging="false" side="LEFT" tickLabelRotation="-90.0" tickUnit="25.0" />
-              </yAxis>
-            </StackedBarChart>
-            <ComboBox fx:id="comboLotes" editable="true" layoutX="288.0" layoutY="91.0" promptText="Lotes" rotate="-90.0" styleClass="comboEditable" AnchorPane.rightAnchor="-61.0" AnchorPane.topAnchor="91.0" />
+            <BarChart fx:id="graficaGruposTrabajo" animated="false" legendVisible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <xAxis>
+                  <CategoryAxis tickLength="5.0" fx:id="xAxisLote11" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis fx:id="yAxisLote11" minorTickLength="1.0" minorTickVisible="false" side="LEFT" tickUnit="1.0">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </NumberAxis>
+               </yAxis>
+            </BarChart>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="756.0" layoutY="26.0" prefHeight="350.0" prefWidth="350.0" styleClass="dashBoardCard" AnchorPane.topAnchor="26.0" />
-      <AnchorPane layoutX="26.0" layoutY="440.0" prefHeight="400.0" prefWidth="400.0" styleClass="dashBoardCard" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="450.0" />
    </children>
 </AnchorPane>
