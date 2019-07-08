@@ -103,7 +103,7 @@ public class DialogoEstructuraNiveles {
 		}//FIN IF
 
 		ArrayList<DetalleComponente> listaDetalleComponente = new ArrayList<DetalleComponente>();
-		if(componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.PARTE_PRIMARIA)){
+		if(componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE)){
 			listaDetalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(conexion, componenteFK);
 			if(i==1){
 				for(DetalleComponente detalleComponente : listaDetalleComponente){

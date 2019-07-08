@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoEstructuraNiveles">
+<AnchorPane prefHeight="560.0" prefWidth="828.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoEstructuraNiveles">
    <children>
       <VBox prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -56,10 +56,10 @@
                <children>
                   <TreeTableView fx:id="ttv" styleClass="tablaDatosDetalle">
                     <columns>
-                      <TreeTableColumn fx:id="columnaComponente" minWidth="14.0" prefWidth="220.0" text="Componente" />
+                      <TreeTableColumn fx:id="columnaComponente" minWidth="14.0" prefWidth="500.0" text="Componente" />
                       <TreeTableColumn fx:id="columnaNivel" minWidth="0.0" prefWidth="100.0" text="Nivel" />
                         <TreeTableColumn fx:id="columnaCantidad" prefWidth="100.0" text="Cantidad" />
-                        <TreeTableColumn fx:id="columnaAcciones" prefWidth="150.0" text="Acciones" />
+                        <TreeTableColumn fx:id="columnaAcciones" prefWidth="100.0" text="Acciones" />
                     </columns>
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
