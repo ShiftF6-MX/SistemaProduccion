@@ -23,7 +23,6 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.dao.MaterialDAO;
-import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class PantallaMaterial {
@@ -100,8 +99,7 @@ public class PantallaMaterial {
 			final TableCell<Material, String> cell = new TableCell<Material, String>() {
 				final Button botonVer = new Button("Ver");
 				final Button botonEditar = new Button("Editar");
-				final Button botonEliminar = new Button("Eliminar");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar);
+				final HBox cajaBotones = new HBox(botonVer, botonEditar);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -122,14 +120,6 @@ public class PantallaMaterial {
 					botonEditar.setCursor(Cursor.HAND);
 					botonEditar.setTooltip(new Tooltip("Editar registro"));
 					
-					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
-					botonEliminar.setPrefSize(16.0, 16.0);
-					botonEliminar.setPadding(Insets.EMPTY);
-					botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-					botonEliminar.setStyle("-fx-background-color: transparent");
-					botonEliminar.setCursor(Cursor.HAND);
-					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
-					
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
@@ -145,11 +135,6 @@ public class PantallaMaterial {
 						botonEditar.setOnAction(event -> {
 							material = getTableView().getItems().get(getIndex());
 							manejadorBotonEditar(material);
-						});//FIN MANEJADDOR
-						
-						botonEliminar.setOnAction(event -> {
-							material = getTableView().getItems().get(getIndex());
-							manejadorBotonEliminar(material);
 						});//FIN MANEJADDOR
 						
 						cajaBotones.setSpacing(2);
@@ -182,12 +167,6 @@ public class PantallaMaterial {
 	
 	private void manejadorBotonEditar(Material material) {
 		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.EDITAR);
-		this.actualizarTabla();
-	}//FIN METODO
-	
-	private void manejadorBotonEliminar(Material material) {
-		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
-			MaterialDAO.deleteMaterial(this.mainApp.getConnection(), material);
 		this.actualizarTabla();
 	}//FIN METODO
 		
