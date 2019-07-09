@@ -30,7 +30,7 @@ public class GrupoUsuarioDAO {
 	
 	//METODO PARA OBTENER REGISTROS DE LA TABLA GRUPOUSUARIO
 	public static final ArrayList<GrupoUsuario> readTodos(Connection connection){
-		String query="SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario ORDER BY Sys_PK";
+		String query="SELECT Sys_PK, Nombre, Descripcion FROM gruposusuario ORDER BY Nombre ASC";
 		ArrayList<GrupoUsuario> listaGrupoUsuario = new ArrayList<GrupoUsuario>();
 		try {
 			Statement statement = connection.createStatement();
