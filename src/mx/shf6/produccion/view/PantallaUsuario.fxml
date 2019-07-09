@@ -26,7 +26,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <TextField fx:id="campoBuscar" prefHeight="30.0" prefWidth="150.0" promptText="Buscar" styleClass="campoBuscador">
+                  <TextField fx:id="campoBuscar" prefHeight="30.0" prefWidth="350.0" promptText="Buscar" styleClass="campoBuscador">
                      <font>
                         <Font name="Roboto" size="12.0" />
                      </font>
