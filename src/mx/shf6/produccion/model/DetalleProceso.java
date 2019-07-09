@@ -15,8 +15,8 @@ public class DetalleProceso {
 	private ObjectProperty<Integer> sysPK;
 	private ObjectProperty<Integer> operacion;
 	private StringProperty descripcion;
-	private ObjectProperty<Integer> tiempoPreparacion;
-	private ObjectProperty<Integer> tiempoOperacion;
+	private ObjectProperty<Double> tiempoPreparacion;
+	private ObjectProperty<Double> tiempoOperacion;
 	private ObjectProperty<Integer> centroTrabajoFK;
 	private StringProperty nombreCentroTrabajo;
 	private ObjectProperty<Integer> grupoTrabajoFK;
@@ -33,16 +33,16 @@ public class DetalleProceso {
 
 	//CONSTRUCTOR VACIO
 	public DetalleProceso() {
-		this(0,0,"",0,0,0,"",0,"",0, "",0,0,"");
+		this(0,0,"",0.0,0.0,0,"",0,"",0, "",0,0,"");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Integer tiempoPreparacion, Integer tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, Integer cantidad, Integer componenteFK, String nombreComponenteFK) {
+	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, Integer cantidad, Integer componenteFK, String nombreComponenteFK) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.operacion = new SimpleObjectProperty<Integer>(operacion);
 		this.descripcion = new SimpleStringProperty(descripcion);
-		this.tiempoPreparacion = new SimpleObjectProperty<Integer>(tiempoPreparacion);
-		this.tiempoOperacion = new SimpleObjectProperty<Integer>(tiempoOperacion);
+		this.tiempoPreparacion = new SimpleObjectProperty<Double>(tiempoPreparacion);
+		this.tiempoOperacion = new SimpleObjectProperty<Double>(tiempoOperacion);
 		this.centroTrabajoFK = new SimpleObjectProperty<Integer>(centroTrabajoFK);
 		this.nombreCentroTrabajo = new SimpleStringProperty(nombreCentroTrabajo);
 		this.grupoTrabajoFK = new SimpleObjectProperty<Integer>(grupoTrabajoFK);
@@ -97,29 +97,29 @@ public class DetalleProceso {
 	//FIN METODOS "DESCRIPCION"
 
 	//METODOS PARA ACCESO A "PREPARACION"
-	public void setTiempoPreparacion(Integer tiempoPreparacion) {
+	public void setTiempoPreparacion(Double tiempoPreparacion) {
 		this.tiempoPreparacion.set(tiempoPreparacion);
 	}//FIN METODO
 	
-	public Integer getTiempoPreparacion() {
+	public Double getTiempoPreparacion() {
 		return tiempoPreparacion.get();
 	}//FIN METODO
 
-	public ObjectProperty<Integer> tiempoPreparacionProperty() {
+	public ObjectProperty<Double> tiempoPreparacionProperty() {
     	return tiempoPreparacion;
     }//FIN METODO
 	//FIN METODOS "PREPARACION"
 
 	//METODOS PARA ACCESO A "TIEMPOOPERACION"
-	public void setTiempoOperacion(Integer tiempoOperacion) {
+	public void setTiempoOperacion(Double tiempoOperacion) {
 		this.tiempoOperacion.set(tiempoOperacion);
 	}//FIN METODO
 	
-	public Integer getTiempoOperacion() {
+	public Double getTiempoOperacion() {
 		return tiempoOperacion.get();
 	}//FIN METODO
 
-	public ObjectProperty<Integer> tiempoOperacionProperty() {
+	public ObjectProperty<Double> tiempoOperacionProperty() {
     	return tiempoOperacion;
     }//FIN METODO
 	//FIN METODOS "TIEMPOOPERACION"
