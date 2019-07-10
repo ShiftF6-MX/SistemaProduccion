@@ -115,7 +115,8 @@ public class DialogoProyectos {
 				final Button botonEliminar = new Button("Eliminar");
 				final Button botonListaComponentes = new Button("Lista Componentes");
 				final Button botonEstructuraNiveles = new Button("EstructuraNiveles");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo,botonListaComponentes, botonEstructuraNiveles);
+				final Button botonPartesPrimarias = new Button("PartesPrimarias");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo,botonListaComponentes, botonEstructuraNiveles, botonPartesPrimarias);
 
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -168,6 +169,14 @@ public class DialogoProyectos {
 		        	botonEstructuraNiveles.setCursor(Cursor.HAND);
 		        	botonEstructuraNiveles.setTooltip(new Tooltip("Estructura Niveles"));
 
+		        	botonPartesPrimarias.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ProyectoIcono.png"))));
+		        	botonPartesPrimarias.setPrefSize(16.0, 16.0);
+		        	botonPartesPrimarias.setPadding(Insets.EMPTY);
+		        	botonPartesPrimarias.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonPartesPrimarias.setStyle("-fx-background-color: transparent;");
+		        	botonPartesPrimarias.setCursor(Cursor.HAND);
+		        	botonPartesPrimarias.setTooltip(new Tooltip("Partes Primarias"));
+
 
 					super.updateItem(item, empty);
 					if (empty) {
@@ -205,6 +214,12 @@ public class DialogoProyectos {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonEstructuraNiveles(proyecto);
 						});//FIN MANEJADDOR
+
+						botonPartesPrimarias.setOnAction(event -> {
+							proyecto = getTableView().getItems().get(getIndex());
+							manejadorBotonPartesPrimarias(proyecto);
+						});//FIN MANEJADDOR
+
 
 						cajaBotones.setSpacing(2);
 						super.setGraphic(cajaBotones);
@@ -255,6 +270,10 @@ public class DialogoProyectos {
 
 	private void manejadorBotonEstructuraNiveles(Proyecto proyecto) {
 		this.mainApp.iniciarDialogoEstructuraNiveles(proyecto);
+	}//FIN METODO
+
+	private void manejadorBotonPartesPrimarias(Proyecto proyecto) {
+		this.mainApp.iniciarDialogoPartesPrimarias(proyecto);
 	}//FIN METODO
 
 	@FXML private void manejadorBotonCerrar() {
