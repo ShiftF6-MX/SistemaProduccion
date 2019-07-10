@@ -73,6 +73,7 @@ import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoGrupoUsuario;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
+import mx.shf6.produccion.view.DialogoPartesPrimarias;
 import mx.shf6.produccion.view.DialogoPermiso;
 import mx.shf6.produccion.view.DialogoProceso;
 import mx.shf6.produccion.view.DialogoProyectos;
@@ -179,6 +180,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoPermiso;
 	private AnchorPane dialogoAgregarPermiso;
 	private AnchorPane dialogoEstructuraNiveles;
+	private AnchorPane dialogoPartesPrimarias;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -218,6 +220,7 @@ public class MainApp extends Application {
 		LeerArchivo.leerArchivo();
 		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
 //		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+//		this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.216", "conn01", "Simons83Mx");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		this.conexionBD.start();
@@ -1336,6 +1339,24 @@ public class MainApp extends Application {
 			this.escenarioDialogos.setScene(escenadialogoEstructuraNiveles);
 			DialogoEstructuraNiveles dialogoEstructuaNiveles = fxmlLoader.getController();
 			dialogoEstructuaNiveles.setMainApp(this, proyecto);
+
+		    this.escenarioDialogos.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+
+	public void iniciarDialogoPartesPrimarias(Proyecto proyecto) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoPartesPrimarias.fxml"));
+
+			this.dialogoPartesPrimarias = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaDialogoPartesPrimarias = this.iniciarEscenarioDialogos(this.dialogoPartesPrimarias);
+			this.escenarioDialogos.setScene(escenaDialogoPartesPrimarias);
+			DialogoPartesPrimarias dialogoPartesPrimarias = fxmlLoader.getController();
+			dialogoPartesPrimarias.setMainApp(this, proyecto);
 
 		    this.escenarioDialogos.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
