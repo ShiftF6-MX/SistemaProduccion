@@ -76,7 +76,7 @@ public class DetalleComponenteDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<DetalleComponente> readDetalleComponenteSuperiorFK(Connection connection, int componenteSuperiorFK) {
 		ArrayList<DetalleComponente> arrayListDetalleComponente = new ArrayList<DetalleComponente>();
-		String consulta = "SELECT detallecomponentes.Sys_PK, detallecomponentes.ComponenteSuperiorFK, detallecomponentes.ComponenteInferiorFK, detallecomponentes.Cantidad, detallecomponentes.Notas, componentes.Descripcion, componentes.NumeroParte  FROM detallecomponentes INNER JOIN componentes ON componentes.Sys_PK = detallecomponentes.ComponenteInferiorFK WHERE ComponenteSuperiorFK = " + componenteSuperiorFK;
+		String consulta =  "SELECT detallecomponentes.Sys_PK, detallecomponentes.ComponenteSuperiorFK, detallecomponentes.ComponenteInferiorFK, detallecomponentes.Cantidad, detallecomponentes.Notas, cI.Descripcion AS DescripcionComponenteInferior, cI.NumeroParte AS NumeroParteInferior, cI.TipoComponente AS TipoComponenteInferior, cS.Descripcion AS DescripcionComponenteSuperior, cS.NumeroParte AS NumeroParteSuperior, cS.TipoComponente AS TipoComponenteSuperior FROM detallecomponentes INNER JOIN componentes AS cI ON cI.Sys_PK = detallecomponentes.ComponenteInferiorFK  INNER JOIN componentes AS cS ON cS.Sys_PK = detallecomponentes.ComponenteSuperiorFK WHERE ComponenteSuperiorFK =" + componenteSuperiorFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -90,6 +90,10 @@ public class DetalleComponenteDAO {
 				detalleComponente.setDescripcionComponenteInferior(resultados.getString(6));
 				detalleComponente.setNumeroParteComponenteInferior(resultados.getString(7));
 				detalleComponente.setNumeroDescripcionComponenteIferior();
+				detalleComponente.setTipoComponenteInferior(resultados.getString(8));
+				detalleComponente.setDescripcionComponenteSuperior(resultados.getString(9));
+				detalleComponente.setNumeroParteComponenteSuperior(resultados.getString(10));
+				detalleComponente.setTipoComponenteSuperior(resultados.getString(11));
 				arrayListDetalleComponente.add(detalleComponente);
 			}//FIN WHILE
 		} catch (SQLException ex) {
