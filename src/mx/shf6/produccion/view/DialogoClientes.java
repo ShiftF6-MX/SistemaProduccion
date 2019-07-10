@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
@@ -25,6 +24,7 @@ import mx.shf6.produccion.model.dao.DomicilioDAO;
 import mx.shf6.produccion.model.dao.FolioDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.model.dao.SepomexDAO;
+import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
@@ -76,10 +76,9 @@ public class DialogoClientes  {
 	
 	//INICIALIZA LOS COMPOMENTES QUE SE CONTROLAN EN LA INTERFAZ DE USUARIO
 	@FXML private void initialize() {
-		this.cliente = new Cliente();
 		this.domicilio = new Domicilio();
 		this.sepomexDAO = new SepomexDAO();
-		
+		this.cliente = new Cliente();
 		RestriccionTextField.limitarNumeroCaracteres(this.codigoPostalField, 8);
 		RestriccionTextField.limitarNumeroCaracteres(this.codigoField, 8);
 		RestriccionTextField.soloLetras(this.nombreField);		
@@ -107,10 +106,12 @@ public class DialogoClientes  {
 		
 		this.listaEstados = sepomexDAO.leerEstados(mainApp.getConnection()); 
 		estadoCombo.setItems(listaEstados);
+		new AutoCompleteComboBoxListener(estadoCombo);
 		estadoCombo.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
 			municipioCombo.getSelectionModel().clearSelection();
 			listaMunicipios = this.sepomexDAO.leerMunicipios(this.mainApp.getConnection(), estadoCombo.getValue()); 
 			municipioCombo.setItems(listaMunicipios);
+			new AutoCompleteComboBoxListener(municipioCombo);
 		});//FIN SENTENCIA
 		this.mostrarDatosInterfaz();
 	}//FIN METODO
@@ -395,6 +396,14 @@ public class DialogoClientes  {
 				}//FIN TRY/CATCH
 				
 			}else if(this.opcion == EDITAR) {
+				this.cliente.setCodigo(this.codigoField.getText());
+				this.cliente.setNombre(this.nombreField.getText());
+				this.cliente.setRegistroContribuyente(this.registroContribuyenteField.getText());
+				this.cliente.setTelefono(this.telefonoField.getText());
+				this.cliente.setCorreo(this.correoField.getText());
+				this.cliente.setRutaCarpeta(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
+				this.cliente.setNumeroStatus(this.statusCombo.getValue());
+				
 				this.domicilio.setCalle(this.calleField.getText());
 				this.domicilio.setNumeroExterior(this.numeroExteriorField.getText());
 				this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
@@ -411,12 +420,9 @@ public class DialogoClientes  {
 						if (ClienteDAO.updateCliente(this.mainApp.getConnection(), this.cliente)) {
 							this.mainApp.getConnection().commit();
 							this.mainApp.getConnection().setAutoCommit(true);
-							
-							
-							
+
 							this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText() ));
-							
-							
+			
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro actualizado. ");
 							this.mainApp.getEscenarioDialogos().close();
 						} else {

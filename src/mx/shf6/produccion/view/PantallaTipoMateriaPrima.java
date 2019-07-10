@@ -23,7 +23,6 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
-import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class PantallaTipoMateriaPrima {
@@ -98,8 +97,7 @@ public class PantallaTipoMateriaPrima {
 			final TableCell<TipoMateriaPrima, String> cell = new TableCell<TipoMateriaPrima, String>() {
 				final Button botonVer = new Button("Ver");
 				final Button botonEditar = new Button("Editar");
-				final Button botonEliminar = new Button("Eliminar");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar);
+				final HBox cajaBotones = new HBox(botonVer, botonEditar);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -120,14 +118,6 @@ public class PantallaTipoMateriaPrima {
 					botonEditar.setCursor(Cursor.HAND);
 					botonEditar.setTooltip(new Tooltip("Editar registro"));
 					
-					botonEliminar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EliminarIcono.png"))));
-					botonEliminar.setPrefSize(16.0, 16.0);
-					botonEliminar.setPadding(Insets.EMPTY);
-					botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-					botonEliminar.setStyle("-fx-background-color: transparent");
-					botonEliminar.setCursor(Cursor.HAND);
-					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
-					
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
@@ -143,11 +133,6 @@ public class PantallaTipoMateriaPrima {
 						botonEditar.setOnAction(event -> {
 							tipoMateriaPrima = getTableView().getItems().get(getIndex());
 							manejadorBotonEditar(tipoMateriaPrima);
-						});//FIN MANEJADDOR
-						
-						botonEliminar.setOnAction(event -> {
-							tipoMateriaPrima = getTableView().getItems().get(getIndex());
-							manejadorBotonEliminar(tipoMateriaPrima);
 						});//FIN MANEJADDOR
 						
 						cajaBotones.setSpacing(2);
@@ -180,12 +165,6 @@ public class PantallaTipoMateriaPrima {
 	
 	private void manejadorBotonEditar(TipoMateriaPrima tipoMateriaPrima) {
 		this.mainApp.iniciarDialogoTipoMateriaPrima(tipoMateriaPrima, DialogoTipoMateriaPrima.EDITAR);
-		this.actualizarTabla();
-	}//FIN METODO
-	
-	private void manejadorBotonEliminar(TipoMateriaPrima tipoMateriaPrima) {
-		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?"))
-			TipoMateriaPrimaDAO.deleteTipoMateriaPrima(this.mainApp.getConnection(), tipoMateriaPrima);
 		this.actualizarTabla();
 	}//FIN METODO
 		

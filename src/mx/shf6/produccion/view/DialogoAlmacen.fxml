@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoAlmacen">
+<AnchorPane prefWidth="250.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoAlmacen">
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label styleClass="textFieldTitulos" text="Formulario Registro">
+            <Label styleClass="textFieldTitulos" text="Formulario Registro" wrapText="true">
                <padding>
                   <Insets left="10.0" />
                </padding>
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="10.0" layoutY="10.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="55.0">
+      <VBox layoutX="10.0" layoutY="10.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
          <children>
             <VBox spacing="2.0">
                <children>
