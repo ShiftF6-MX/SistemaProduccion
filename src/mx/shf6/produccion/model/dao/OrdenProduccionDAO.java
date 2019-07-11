@@ -233,6 +233,23 @@ public class OrdenProduccionDAO {
 		return sysPK;
 	} //FIN METODO
 	
+	//METODO PARA OBTENER LA FECHA INICIAL Y FECHA DE ENTREGA DEL LOTE
+	public static final OrdenProduccion fechasPorLote(Connection connection, int sysPK){
+		OrdenProduccion orden = new OrdenProduccion();
+		String query = "SELECT ordenesproduccion.Fecha, detallecotizaciones.FechaEntrega FROM  ordenesproduccion INNER JOIN detallecotizaciones ON ordenesproduccion.DetalleCotizacionFK = detallecotizaciones.Sys_PK WHERE ordenesproduccion.Sys_PK = " + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				orden.setFecha(resultados.getDate(1));
+				orden.setFechaEntrega(resultados.getDate(2));
+			}//FIN WHILE
+		}catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return orden;
+	}//FIN METODO
+	
 	public static ObservableList<OrdenProduccion> toObservableList(ArrayList<OrdenProduccion> arrayList) {
 		ObservableList<OrdenProduccion> listaObservableOrdenProduccion = FXCollections.observableArrayList();
 		for (OrdenProduccion orden : arrayList) 

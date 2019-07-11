@@ -1,17 +1,24 @@
 package mx.shf6.produccion.view;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.ControlOperacion;
 import mx.shf6.produccion.model.DetalleOrdenProduccion;
@@ -28,42 +35,41 @@ public class PantallaDashboard extends Thread{
 	private Connection connection;
 	private ArrayList<OrdenProduccion> listaLotes;
 	private ArrayList<DetalleOrdenProduccion> listaSeries;
-	private ArrayList<ControlOperacion> listaControlOperaciones;
 	private ArrayList<String> listaComboLotes;
 	private ArrayList<String> listaStatusLote;
 	private ArrayList<String> listaStatusSerie;
-	private ArrayList<String> listaDescripcionCentros;
-	private ArrayList<String> listaDescripcionGrupos;
+	private GraphicsContext graficaLineaTiempo;
 	
 	//VARIABLES
-	
+
 	//CONSTANTES
 	
 	//COMPONENTES INTERFAZ
 	@FXML private ComboBox<String> comboLotes;
+	@FXML private ComboBox<String> comboLotes2;
 	@FXML private BarChart<String, Integer> graficaPorLotes;
 	@FXML private StackedBarChart<String, Integer> graficaPorSeries;
-	@FXML private BarChart<String, Integer> graficaCentrosTrabajo;
-	@FXML private BarChart<String, Integer> graficaGruposTrabajo;
 	@FXML private CategoryAxis xAxisLote;
 	@FXML private NumberAxis yAxisLote;
 	@FXML private CategoryAxis xAxisSerie;
 	@FXML private NumberAxis yAxisSerie;	
-	@FXML private CategoryAxis xAxisCentro;
-	@FXML private NumberAxis yAxisCentro;
-	@FXML private CategoryAxis xAxisGrupo;
-	@FXML private NumberAxis yAxisGrupo;
-		
+	@FXML private Canvas canvas;
+	@FXML private Group root;
+	@FXML private Label fechaActual;
+	@FXML private Label fechaInicio;
+	@FXML private Label fechaFinal;
+	@FXML private Label diasTranscurridos;
+	@FXML private Label diasFaltantes;
+	
 	//METODOS
 	@FXML private void initialize() {
 		this.listaLotes = new ArrayList<OrdenProduccion>();
 		this.listaSeries = new ArrayList<DetalleOrdenProduccion>();
-		this.listaControlOperaciones = new ArrayList<ControlOperacion>();
 		this.listaComboLotes = new ArrayList<String>();
 		this.listaStatusLote = new ArrayList<String>();
 		this.listaStatusSerie = new ArrayList<String>();
-		this.listaDescripcionCentros = new ArrayList<String>();
-		this.listaDescripcionGrupos = new ArrayList<String>();
+		this.fechaActual.setText(new Date(System.currentTimeMillis()).toString());
+		this.graficaLineaTiempo = this.canvas.getGraphicsContext2D();
 		this.inicializarComponentes();
 	}//FIN METODO
 	
@@ -89,19 +95,19 @@ public class PantallaDashboard extends Thread{
 		this.listaStatusSerie.add("PA");
 		this.listaStatusSerie.add("TE");
 		this.xAxisSerie.setCategories(FXCollections.observableArrayList(this.listaStatusSerie));
-		
+			
 	}//FIN METODO
 	
 	@Override
 	public void run() {
 		try {
+			
 			while(true) {
 				Platform.runLater(() -> {
 					inicializarCombo();
 					graficaPorLotes();
 					graficaPorSeries();
-					graficaPorCentro();
-					graficaPorGrupo();
+					lineaDelTiempo();
 				});//FIN SENTENCIA
 				Thread.sleep(1000);
 			}//FIN WHILE
@@ -111,12 +117,20 @@ public class PantallaDashboard extends Thread{
 	}//FIN METODO
 		
 	private void inicializarCombo() {
+		//COMBO LOTES 1
 		this.listaComboLotes.clear();
 		this.listaComboLotes.add("Todos");
 		for (OrdenProduccion orden : OrdenProduccionDAO.readLoteProduccion(this.connection)) 
 			this.listaComboLotes.add(orden.getLote());
 		this.comboLotes.setItems(FXCollections.observableArrayList(this.listaComboLotes));
 		new AutoCompleteComboBoxListener(this.comboLotes);
+		
+		//COMBO LOTES 2
+		this.listaComboLotes.clear();
+		for (OrdenProduccion orden : OrdenProduccionDAO.readLoteProduccion(this.connection)) 
+			this.listaComboLotes.add(orden.getLote());
+		this.comboLotes2.setItems(FXCollections.observableArrayList(this.listaComboLotes));
+		new AutoCompleteComboBoxListener(this.comboLotes2);
 	}//FIN METODO
 	
 	private void graficaPorLotes() {
@@ -168,12 +182,46 @@ public class PantallaDashboard extends Thread{
 		this.graficaPorSeries.getData().addAll(serie1, serie2);
 	}//FIN METODO
 	
-	private void graficaPorCentro() {
-		
-	}//FIN METODO
-	
-	private void graficaPorGrupo() {
-		
+	private void lineaDelTiempo() {
+		Date fechaActual = new Date(System.currentTimeMillis());
+		OrdenProduccion orden = new OrdenProduccion();
+		int sysPKLote = OrdenProduccionDAO.sysPKOrdenProduccion(this.connection, this.comboLotes2.getValue());
+		int diasFaltantes = 0;
+		int diasTranscurridos = 0;
+    	orden = OrdenProduccionDAO.fechasPorLote(this.connection, sysPKLote);
+        
+        //FECHA INICIAL Y FINAL
+        if (this.comboLotes2.getSelectionModel().isEmpty()) {
+        	this.fechaInicio.setText("");
+            this.fechaFinal.setText("");
+            this.diasFaltantes.setText("");
+            this.diasTranscurridos.setText("");
+        }else {        	
+        	diasTranscurridos = (int) ((fechaActual.getTime() - orden.getFecha().getTime())/86400000);
+    		diasFaltantes = (int) ((orden.getFechaEntrega().getTime() - fechaActual.getTime())/86400000);
+            this.fechaInicio.setText(orden.getFecha().toString());
+            this.fechaFinal.setText(orden.getFechaEntrega().toString());
+            this.diasTranscurridos.setText(Integer.toString(diasTranscurridos));
+            if (diasFaltantes < 0 )
+            	this.diasFaltantes.setText("0");
+            else
+            	this.diasFaltantes.setText(Integer.toString(diasFaltantes));
+        }//FIN IF-ELSE
+        
+        //LINEA DEL TIEMPO	
+        if (diasFaltantes > 3)
+        	this.graficaLineaTiempo.setFill(Color.GREEN);
+        else if (diasFaltantes ==3)
+        	this.graficaLineaTiempo.setFill(Color.YELLOW);
+        else if (diasFaltantes <= 0)
+        	this.graficaLineaTiempo.setFill(Color.RED);
+        //FIN IF-ELSE
+        this.graficaLineaTiempo.fillRect(100, 100, 500, 100);
+        this.graficaLineaTiempo.setFill(Color.BLACK);
+        this.graficaLineaTiempo.setLineWidth(5);
+        this.graficaLineaTiempo.strokeLine(100, 88, 100, 212);
+        this.graficaLineaTiempo.strokeLine(600, 88, 600, 212);
+       
 	}//FIN METODO
 	//MANEJADORES 
 }//FIN METODO

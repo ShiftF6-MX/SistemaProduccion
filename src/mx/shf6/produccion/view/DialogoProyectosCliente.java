@@ -184,7 +184,7 @@ public class DialogoProyectosCliente {
 			    this.proyecto.setCostoIndirecto(Double.valueOf(this.campoCostoIndirecto.getText()));
 			    this.proyecto.setPrecio(Double.valueOf(this.campoPrecio.getText()));
 			    this.proyecto.setClienteFK(this.cliente.getSysPK());
-			    //this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());			
+			    this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getValue()).getSysPK());			
 				if (ProyectoDAO.createProyecto(this.mainApp.getConnection(), this.proyecto)) {
 					File ruta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" +this.proyecto.getCodigo());
 					ruta.mkdirs();
@@ -201,7 +201,7 @@ public class DialogoProyectosCliente {
 				this.proyecto.setCostoDirecto(Double.parseDouble(this.campoCostoDirecto.getText()));	
 			    this.proyecto.setCostoIndirecto(Double.valueOf(this.campoCostoIndirecto.getText()));
 			    this.proyecto.setPrecio(Double.valueOf(this.campoPrecio.getText()));
-			  //  this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getSelectionModel().getSelectedItem()).get(0).getSysPK());				    				
+			    this.proyecto.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getValue()).getSysPK());				    				
 				
 				if (ProyectoDAO.updateProyecto(this.mainApp.getConnection(), this.proyecto)) {
 					this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\" + this.campoTextoCodigo.getText()));

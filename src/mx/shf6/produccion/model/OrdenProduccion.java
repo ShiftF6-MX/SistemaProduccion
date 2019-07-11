@@ -18,6 +18,7 @@ public class OrdenProduccion {
 	private StringProperty cotizacion;
 	private StringProperty proyecto;
 	private StringProperty componente;
+	private ObjectProperty<Date> fechaEntrega;
 	
 	//CONSTANTES
 	public static final int PENDIENTE = 0;
@@ -26,11 +27,11 @@ public class OrdenProduccion {
 	
 	//CONSTRUCTOR VACIO
 	public OrdenProduccion() {
-		this(0, new Date(System.currentTimeMillis()), "",0,0,"","","","");
+		this(0, new Date(System.currentTimeMillis()), "",0,0,"","","","", new Date(System.currentTimeMillis()));
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, String proyecto, String componente) {
+	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, String proyecto, String componente, Date fechaEntrega) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.lote = new SimpleStringProperty(lote);
@@ -40,6 +41,7 @@ public class OrdenProduccion {
 		this.cotizacion = new SimpleStringProperty(cotizacion);
 		this.proyecto = new SimpleStringProperty(proyecto);
 		this.componente =  new SimpleStringProperty(componente);
+		this.fechaEntrega = new SimpleObjectProperty<Date>(fechaEntrega);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A SYSPK
@@ -167,4 +169,17 @@ public class OrdenProduccion {
 		return componente;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A COMPONENTE
+	
+	//METODOS PARA ACCESO A FECHA ENTREGA
+	public void setFechaEntrega(Date fechaEntrega) {
+		this.fechaEntrega.set(fechaEntrega);
+	}//FIN METODO
+	
+	public Date getFechaEntrega() {
+		return this.fechaEntrega.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Date> fechaEntregaProperty(){
+		return this.fechaEntrega;
+	}//FIN METODO
 }//FIN CLASE

@@ -17,8 +17,7 @@ public class ProyectoDAO{
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createProyecto(Connection connection, Proyecto proyecto) {
-		String consulta = "INSERT INTO proyectos (Codigo, Descripcion, Carpeta, EspecificacionTecnica,CostoDirecto, CostoIndirecto, Precio, ClienteFK, ComponenteFK) "
-				+ "VALUES (?, ?, ?, ?,?,?,?,?,?)";
+		String consulta = "INSERT INTO proyectos (Codigo, Descripcion, Carpeta, EspecificacionTecnica,CostoDirecto, CostoIndirecto, Precio, ClienteFK, ComponenteFK) VALUES (?, ?, ?, ?,?,?,?,?,?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, proyecto.getCodigo());
