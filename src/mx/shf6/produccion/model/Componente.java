@@ -93,7 +93,7 @@ public class Componente {
 	public String doNumeroParte(Connection connection) {
 		DecimalFormat decimalFormat = new DecimalFormat("000");
 		if (this.getTipoComponente() == TipoComponente.SUB_ENSAMBLE || this.getTipoComponente() == TipoComponente.PARTE_PRIMARIA)
-			 this.numeroParte.set(this.getCliente(connection).getCodigo().substring(6, 7) + this.getMaterial(connection).getCodigo() + decimalFormat.format(this.getConsecutivo()) + this.getTipoComponenteChar());
+			 this.numeroParte.set(this.getCliente(connection).getCodigo().substring(5, 7) + this.getMaterial(connection).getCodigo() + decimalFormat.format(this.getConsecutivo()) + this.getTipoComponenteChar());
 		else if (this.getTipoComponente() == TipoComponente.MATERIA_PRIMA)
 			this.numeroParte.set(this.getTipoMateriaPrima(connection).getCodigo() + this.getMaterial(connection).getCodigo() + this.getAcabado(connection).getCodigo() + decimalFormat.format(this.getConsecutivo()) +  this.getTipoComponenteChar());
 		else if (this.getTipoComponente() == TipoComponente.COMPRADO)
