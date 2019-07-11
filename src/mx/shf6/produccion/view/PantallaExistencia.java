@@ -58,7 +58,9 @@ public class PantallaExistencia {
 		this.observableListAlmacen.add("Todos");
 		comboBoxAlmacen.setItems(observableListAlmacen);
 		comboBoxAlmacen.setValue("Todos");
-
+		this.comboBoxAlmacen.valueProperty().addListener((ov, oldvalue, newvalue) -> {
+			buscarAlmacen();
+		});
 		this.actualizarTabla();
 
 	}// FIN METODO
