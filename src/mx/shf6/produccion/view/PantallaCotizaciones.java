@@ -1,13 +1,7 @@
 package mx.shf6.produccion.view;
 
-import java.security.SecureRandom;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.stream.Collectors;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.TextStyle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -32,12 +26,6 @@ import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.dao.CotizacionDAO;
-import mx.shf6.produccion.model.DetalleCotizacion;
-import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
-import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
-import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
-import mx.shf6.produccion.model.OrdenProduccion;
-import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.dao.Seguridad;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -117,8 +105,7 @@ public class PantallaCotizaciones {
         		final Button botonAgregar = new Button("A");
         		final Button botonAprobar = new Button ("Aprobar");
         		final Button botonCancelar= new Button ("C");
-        		final Button botonOrdenProduccion = new Button ("Orden de producción");
-        		final HBox acciones = new HBox(botonVer, botonEditar, botonEliminar, botonAgregar, botonAprobar, botonCancelar, botonOrdenProduccion);
+        		final HBox acciones = new HBox(botonVer, botonEditar, botonEliminar, botonAgregar, botonAprobar, botonCancelar);
         		
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
 		        @Override
@@ -170,14 +157,6 @@ public class PantallaCotizaciones {
 					botonCancelar.setStyle("-fx-background-color: transparent");
 					botonCancelar.setCursor(Cursor.HAND);
 					botonCancelar.setTooltip(new Tooltip("Cancelar Cotización"));
-					
-					botonOrdenProduccion.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AprobarIcono.png"))));
-					botonOrdenProduccion.setPrefSize(16.0, 16.0);
-					botonOrdenProduccion.setPadding(Insets.EMPTY);
-					botonOrdenProduccion.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-					botonOrdenProduccion.setStyle("-fx-background-color: transparent");
-					botonOrdenProduccion.setCursor(Cursor.HAND);
-					botonOrdenProduccion.setTooltip(new Tooltip("Generar Orden de trabajo"));
 					
 		        	acciones.setSpacing(2);
 		        	acciones.setPrefWidth(80.0);
@@ -256,64 +235,17 @@ public class PantallaCotizaciones {
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
 		                });//FIN LISTENER
-		            	
-		            	//ACEPTA LA COTIZACION
-		            	botonOrdenProduccion.setOnAction(event -> {
-		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
-		            			if (Notificacion.dialogoPreguntar("Confirmación para generar una orden de trabajo", "¿Desea generar una orden de trabajo?")){
-		            				cotizacion = getTableView().getItems().get(getIndex());
-		            				OrdenProduccion orden = new OrdenProduccion();
-		            				orden.setLote(generarLote());
-		            				DetalleCotizacion det = DetalleCotizacionDAO.readCotizacionFK(mainApp.getConnection(), cotizacion.getSysPK());
-		            				orden.setDetalleCotizacionFK(det.getSysPK());
-		            				System.out.println(orden.getLote()+" "+ det.getSysPK());
-		            				
-			            			if (OrdenProduccionDAO.createOrdenProduccion(mainApp.getConnection(), orden)) {
-			            				for (int i = 0; i < det.getCantidad(); i++) {
-			            					int syspk = OrdenProduccionDAO.ultimoSysPK(mainApp.getConnection());
-			            					DetalleOrdenProduccion detalleOrden = new DetalleOrdenProduccion();
-			            					detalleOrden.setNumeroSerie(generarNumeroSerie());
-			            					detalleOrden.setOrdenProduccionFK(syspk);
-			            					DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden);
-			            				}//FIN FOR
-			            				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");				            				
-			            			}//FIN IF
-			            			actualizarTabla();
-			            		}//FIN IF		            			
-		            		} else
-		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");		        					                	
-		                });//FIN LISTENER
 		            	setGraphic(acciones);		                
 		                setText(null);
 		            }//FIN IF/ELSE
 		        }//FIN METODO
 		    };//FIN METODO		    
 		    return cell;
-		};//FIN METODO
-		
-		
-		
+		};//FIN METODO	
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
 	
-	public String generarLote() {
-		int syspk = (OrdenProduccionDAO.ultimoSysPK(this.mainApp.getConnection()) + 1);
-		Month mes = LocalDate.now().getMonth();
-        String nombre = mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
-        char[] l = nombre.toUpperCase().toCharArray();
-        String m = String.valueOf(l[0])+String.valueOf(l[1])+String.valueOf(l[2]);
-        String fechaSys = String.valueOf(LocalDate.now().getDayOfMonth()) + m + String.valueOf(LocalDate.now().getYear() + String.valueOf(syspk));
-        
-        return fechaSys;
-	}
 	
-	public String generarNumeroSerie() {
-		String result = new SecureRandom().ints(0,36)
-	            .mapToObj(i -> Integer.toString(i, 36))
-	            .map(String::toUpperCase).distinct().limit(8).collect(Collectors.joining());
-		
-		return result;
-	}
 	
 	@FXML private void manejadorBotonNuevo() {
 		this.cotizacion = new Cotizacion();
