@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import mx.shf6.produccion.utilities.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
@@ -9,6 +10,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import mx.shf6.produccion.utilities.PTableColumn?>
 
 <AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDetalleCotizacion">
    <children>
@@ -54,15 +56,13 @@
                <children>
                   <TableView fx:id="tablaDetalleCotizacion" editable="true" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="columnaNumeroDibujo" minWidth="-1.0" prefWidth="96.0" text="# Parte" />
-                        <TableColumn fx:id="columnaDescripcion" minWidth="-1.0" prefWidth="33.0" text="Descripcion" />
-                        <TableColumn fx:id="columnaCantidad" minWidth="-1.0" prefWidth="-1.0" text="Cantidad" />
-                        <TableColumn fx:id="columaPrecioUnitario" minWidth="-1.0" prefWidth="-1.0" text="Costo Unitario" />
-                        <TableColumn fx:id="columnaObservaciones" minWidth="-1.0" prefWidth="-1.0" text="Observaciones" />
+                        <PTableColumn fx:id="columnaNumeroDibujo" minWidth="-1.0" percentageWidth="0.1" prefWidth="96.0" text="# Parte" />
+                        <PTableColumn fx:id="columnaDescripcion" minWidth="-1.0" percentageWidth="0.3" prefWidth="33.0" text="Descripcion" />
+                        <PTableColumn fx:id="columnaCantidad" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Cantidad" />
+                        <PTableColumn fx:id="columaPrecioUnitario" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Costo Unitario" />
+                        <PTableColumn fx:id="columnaObservaciones" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Observaciones" />
+                        <PTableColumn fx:id="columnaAcciones" percentageWidth="0.2" prefWidth="75.0" text="Acciones" />
                      </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
                      <contextMenu>
                         <ContextMenu>
                           <items>
