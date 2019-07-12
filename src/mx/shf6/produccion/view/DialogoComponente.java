@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Status;
@@ -63,6 +64,7 @@ public class DialogoComponente {
 	@FXML private ComboBox<String> comboBoxTipoMiscelaneo;
 	@FXML private ComboBox<String> comboBoxAcabado;
 	@FXML private ComboBox<String> comboBoxTratamiento;
+	@FXML private CheckBox checkHabilitar;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -160,6 +162,7 @@ public class DialogoComponente {
 					campoTextoGradoMaterial.setDisable(true);
 					campoTextoEspesorMaterial.setText("");
 					campoTextoEspesorMaterial.setDisable(true);
+					
 				} else if (newValue == TipoComponente.ENSAMBLE) {
 					comboBoxCliente.getSelectionModel().select("");
 					comboBoxCliente.setDisable(false);
@@ -184,6 +187,7 @@ public class DialogoComponente {
 					campoTextoGradoMaterial.setDisable(true);
 					campoTextoEspesorMaterial.setText("");
 					campoTextoEspesorMaterial.setDisable(true);
+					checkHabilitar.setDisable(true);
 				}//FIN IF/ELSE
 			} //FIN METODO
 			
@@ -248,6 +252,7 @@ public class DialogoComponente {
 			this.campoTextoGradoMaterial.setDisable(true);
 			this.campoTextoEspesorMaterial.setText("");
 			this.campoTextoEspesorMaterial.setDisable(true);
+			
 		} else if (this.opcion == VER) {
 			this.campoTextoNumeroParte.setText(this.componente.getNumeroParte());
 			this.campoTextoNumeroParte.setDisable(true);
@@ -340,6 +345,11 @@ public class DialogoComponente {
 			this.campoTextoEspesorMaterial.setText(this.componente.getEspesorMaterial());
 			this.campoTextoEspesorMaterial.setDisable(false);
 		}//FIN METODO
+		
+		checkHabilitar.selectedProperty().addListener((ov, oldValue, newValue) -> {
+			this.campoTextoNumeroParte.setDisable(false);
+		});
+			
 	}//FIN METODO
 	
 	//VALIDAR DATOS
@@ -409,21 +419,28 @@ public class DialogoComponente {
 				if (this.comboBoxTratamiento.getSelectionModel().getSelectedItem().isEmpty() == false)
 					this.componente.setTratamientoFK(TratamientoDAO.readTratamiento(this.mainApp.getConnection(), this.comboBoxTratamiento.getSelectionModel().getSelectedItem()).get(0).getSysPK());
 				
-				if (this.componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE || this.componente.getTipoComponente() == TipoComponente.PARTE_PRIMARIA)
-					this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoCliente(this.mainApp.getConnection(), this.componente.getclienteFK(), this.componente.getTipoComponenteChar()));
-				else if (this.componente.getTipoComponente() == TipoComponente.MATERIA_PRIMA)
-					this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMateriaPrima(this.mainApp.getConnection(), this.componente.getTipoMateriaPrimaFK()));
-				else if (this.componente.getTipoComponente() == TipoComponente.COMPRADO)
-					this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMiscelaneo(this.mainApp.getConnection(), this.componente.getTipoMiscelaneoFK()));
-				else if (this.componente.getTipoComponente() == TipoComponente.ENSAMBLE)
-					this.componente.setConsecutivo(0);
-				
-				if (this.componente.getTipoComponente() == TipoComponente.ENSAMBLE)
+				if(checkHabilitar.isSelected()) {
+					this.componente.setEsInterno(0);
 					this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
-				else
-					this.componente.setNumeroParte(this.componente.doNumeroParte(this.mainApp.getConnection()));
-				this.componente.setDescripcion(this.campoTextoDescripcion.getText());
+				} else {
+					if (this.componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE || this.componente.getTipoComponente() == TipoComponente.PARTE_PRIMARIA)
+						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoCliente(this.mainApp.getConnection(), this.componente.getclienteFK(), this.componente.getTipoComponenteChar()));
+					else if (this.componente.getTipoComponente() == TipoComponente.MATERIA_PRIMA)
+						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMateriaPrima(this.mainApp.getConnection(), this.componente.getTipoMateriaPrimaFK()));
+					else if (this.componente.getTipoComponente() == TipoComponente.COMPRADO)
+						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMiscelaneo(this.mainApp.getConnection(), this.componente.getTipoMiscelaneoFK()));
+					else if (this.componente.getTipoComponente() == TipoComponente.ENSAMBLE)
+						this.componente.setConsecutivo(0);
 				
+					if (this.componente.getTipoComponente() == TipoComponente.ENSAMBLE)
+						this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
+					else
+						this.componente.setNumeroParte(this.componente.doNumeroParte(this.mainApp.getConnection()));
+					this.componente.setEsInterno(1);
+				}
+				
+				this.componente.setDescripcion(this.campoTextoDescripcion.getText());
+					
 				Dimensiones dimensiones = new Dimensiones();
 				dimensiones.setLargo(Double.parseDouble(this.campoTextoLargo.getText()));
 				dimensiones.setAncho(Double.parseDouble(this.campoTextoAncho.getText()));
