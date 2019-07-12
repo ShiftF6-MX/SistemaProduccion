@@ -2,6 +2,7 @@ package mx.shf6.produccion.view;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -24,13 +25,15 @@ public class DialogoPartesPrimarias {
 	private Proyecto proyecto;
 	private Componente componenteRaiz;
 	private DetalleComponente detalleComponenteRaiz;
+	private DetalleComponente detalleComponenteSubEnsamble;
 	private ArrayList<DetalleComponente> listaPartePrimaria;
-
+	private ArrayList<DetalleComponente> listaSubEnsambles;
+	private ArrayList<DetalleComponente> listaEnsambles;
+	private HashSet<DetalleComponente> hs;
 
 	//VARIABLES
 	Double cantidad = 0.0;
 	int i = 0;
-	int componentePrincipal = 0;
 
 	//CONSTANTES
 
@@ -57,11 +60,12 @@ public class DialogoPartesPrimarias {
 		this.conexion = this.mainApp.getConnection();
 		this.proyecto = proyecto;
 		this.listaPartePrimaria = new ArrayList<DetalleComponente>();
+		this.listaSubEnsambles = new ArrayList<DetalleComponente>();
+		this.listaEnsambles = new ArrayList<DetalleComponente>();
 		this.componenteRaiz = new Componente();
-		this.detalleComponenteRaiz = new DetalleComponente();
-		this.componentePrincipal = proyecto.getComponenteFK();
+		this.hs = new HashSet<DetalleComponente>();
 
-		obtenerArbol(proyecto.getComponenteFK());
+		obtenerListaMateriales();
 		actualizarTabla();
 	}//FIN METODO
 
@@ -78,11 +82,27 @@ public class DialogoPartesPrimarias {
 		this.tablaPartesPrimarias.setItems(FXCollections.observableArrayList(this.listaPartePrimaria));
 	}//FIN METODO
 
-	private void obtenerArbol(int componenteFK){
+	private void obtenerPartesPrimarias(int componenteFK){
 		i++;
 		componenteRaiz = ComponenteDAO.readComponente(conexion, componenteFK);
 		if(i==1)
 			this.campoTextoComponente.setText(componenteRaiz.getDescripcion());
+
+		if (componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE)){
+			detalleComponenteSubEnsamble = new DetalleComponente();
+			detalleComponenteSubEnsamble.setNumeroParteComponenteSuperior(componenteRaiz.getNumeroParte());
+			detalleComponenteSubEnsamble.setCantidad(detalleComponenteRaiz.getCantidad());
+			detalleComponenteSubEnsamble.setDescripcionComponenteSuperior(componenteRaiz.getDescripcion());
+			detalleComponenteSubEnsamble.setDescripcionComponenteInferior(componenteRaiz.getMaterialDescripcion());
+			listaSubEnsambles.add(detalleComponenteSubEnsamble);
+		}//FIN IF
+
+		if (componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE)){
+			detalleComponenteSubEnsamble = new DetalleComponente();
+			detalleComponenteSubEnsamble.setNumeroParteComponenteSuperior(componenteRaiz.getNumeroParte());
+			detalleComponenteSubEnsamble.setDescripcionComponenteSuperior(componenteRaiz.getDescripcion());
+			listaEnsambles.add(detalleComponenteSubEnsamble);
+		}//FIN IF
 
 		ArrayList<DetalleComponente> listaDetalleComponente = new ArrayList<DetalleComponente>();
 		if(componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.PARTE_PRIMARIA) || componenteRaiz.getTipoComponente().equals(TipoComponente.COMPRADO)){
@@ -110,9 +130,22 @@ public class DialogoPartesPrimarias {
 					detalleComponenteRaiz.setDescripcionComponenteSuperior(detalleComponente.getDescripcionComponenteSuperior());
 					detalleComponenteRaiz.setNumeroParteComponenteInferior(detalleComponente.getNumeroParteComponenteInferior());
 					detalleComponenteRaiz.setNumeroParteComponenteSuperior(detalleComponente.getNumeroParteComponenteSuperior());
-					obtenerArbol(detalleComponente.getComponenteInferiorFK());
+					obtenerPartesPrimarias(detalleComponente.getComponenteInferiorFK());
 				}//FIN FOR
 		}//FIN IF
+
+
+	}//FIN METODO
+
+	private void obtenerListaMateriales(){
+		obtenerPartesPrimarias(proyecto.getComponenteFK());
+		hs.addAll(listaSubEnsambles);
+		listaSubEnsambles.clear();
+		listaSubEnsambles.addAll(hs);
+		hs.clear();
+		hs.addAll(listaEnsambles);
+		listaSubEnsambles.addAll(hs);
+		listaPartePrimaria.addAll(listaSubEnsambles);
 	}//FIN METODO
 
 	//MANEJADORES COMPONENTES
