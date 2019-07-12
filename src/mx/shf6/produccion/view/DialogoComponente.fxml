@@ -79,7 +79,11 @@
                   <Label styleClass="labelRobotoMedium12" text="Número de parte" />
                   <HBox maxWidth="1.7976931348623157E308">
                      <children>
-                        <TextField fx:id="campoTextoNumeroParte" styleClass="campoBuscador" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="campoTextoNumeroParte" maxWidth="180.0" styleClass="campoBuscador" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin></TextField>
+                        <CheckBox fx:id="checkHabilitar" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Editar" />
                      </children>
                   </HBox>
                </children>
