@@ -41,14 +41,15 @@ public class Componente {
 	private ObjectProperty<Integer> consecutivo;
 	private ObjectProperty<Integer> clienteFK;
 	private StringProperty materialDescripcion;
+	private ObjectProperty<Integer> esInterno;
 
 	//CONSTRUCTOR VACIO
 	public Componente() {
-		this(0, "", "", new Dimensiones(), "", "", "", 0.0, 0.0, 0.0, "", 0, 0, 0, 0, 0, "", "", 0, 0, "");
+		this(0, "", "", new Dimensiones(), "", "", "", 0.0, 0.0, 0.0, "", 0, 0, 0, 0, 0, "", "", 0, 0, "", 0);
 	}//FIN CONSTRUCTOR
 
 	public Componente(int sysPK, String numeroParte, String descripcion, Dimensiones dimensiones, String gradoMaterial, String espesorMaterial, String tipoComponente, Double costo, Double costoDirecto, Double costoIndirecto, String unidad, int materialFK, int tipoMiscelaneoFK,
-			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK, String materialDescripcion) {
+			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK, String materialDescripcion, int esInterno) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.numeroParte = new SimpleStringProperty(numeroParte);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -70,6 +71,7 @@ public class Componente {
 		this.consecutivo = new SimpleObjectProperty<Integer>(consecutivo);
 		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 		this.materialDescripcion = new SimpleStringProperty(materialDescripcion);
+		this.esInterno = new SimpleObjectProperty<Integer>(esInterno);
 	}//FIN CONSTRUCTOR
 
 	public void setSysPK(int sysPK) {
@@ -385,4 +387,18 @@ public class Componente {
 		}
 		return lista;
 	}//FIN METODO
+	
+
+	public void setEsInterno(Integer esInterno) {
+		this.esInterno.set(esInterno);
+	}//FIN METODO
+ 
+	public Integer getEsInterno() {
+		return this.esInterno.get();
+	}//FIN METODO
+
+	public ObjectProperty<Integer> esInternoProperty() {
+		return this.esInterno;
+	}//FIN METODO
+	
 }//FIN CLASE
