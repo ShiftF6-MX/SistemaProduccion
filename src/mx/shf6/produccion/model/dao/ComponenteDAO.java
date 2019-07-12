@@ -56,7 +56,7 @@ public class ComponenteDAO {
 			sentenciaPreparada.setString(18, componente.getNotas());
 			sentenciaPreparada.setInt(19, componente.getStatusFK());
 			sentenciaPreparada.setInt(20, componente.getConsecutivo());
-			if (componente.getclienteFK() > 0) 
+			if (componente.getclienteFK() > 0)
 				sentenciaPreparada.setInt(21, componente.getclienteFK());
 			else
 				sentenciaPreparada.setNull(21, Types.INTEGER);
@@ -67,7 +67,7 @@ public class ComponenteDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Componente> readComponente(Connection connection) {
 		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
@@ -108,11 +108,11 @@ public class ComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static Componente readComponente(Connection connection, int sysPK) {
 		Componente componente = new Componente();
-		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, Grado, EspesorPulgadas, TipoComponente, Costo, CostoDirecto, CostoIndirecto, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK FROM componentes WHERE Sys_PK = " + sysPK;
+		String consulta = "SELECT componentes.Sys_PK, componentes.NumeroParte, componentes.Descripcion, componentes.Largo, componentes.Ancho, componentes.AltoEspesor, componentes.Grado, componentes.EspesorPulgadas, componentes.TipoComponente, componentes.Costo, componentes.CostoDirecto, componentes.CostoIndirecto, componentes.Unidad, componentes.MaterialFK, componentes.TipoMiscelaneoFK, componentes.TipoMateriaPrimaFK, componentes.AcabadoFK, componentes.TratamientoFK, componentes.Notas, componentes.Status, componentes.Consecutivo, componentes.ClienteFK, materiales.Descripcion FROM componentes  INNER JOIN materiales ON componentes.MaterialFK = materiales.Sys_PK WHERE componentes.Sys_PK =  " + sysPK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -141,13 +141,14 @@ public class ComponenteDAO {
 				componente.setStatus(resultados.getInt(20));
 				componente.setConsecutivo(resultados.getInt(21));
 				componente.setClienteFK(resultados.getInt(22));
+				componente.setMaterialDescripcion(resultados.getString(23));
 			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 		return componente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Componente> readComponente(Connection connection, String like) {
 		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
@@ -188,7 +189,7 @@ public class ComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER UN REGISTRO
 	public static Componente readComponenteNumeroParte(Connection connection, String numeroParte) {
 		Componente componente = new Componente();
@@ -227,7 +228,7 @@ public class ComponenteDAO {
 		}//FIN TRY/CATCH
 		return componente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER TODOS LOS COMPONENTES DE UN TIPOP EN ESPECIFICO
 	public static ArrayList<Componente> readComponenteTipoComponente(Connection connection, String tipoComponenteChar) {
 		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
@@ -268,7 +269,7 @@ public class ComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER TODOS LOS NUMEROS DE PARTE
 	public static ObservableList<String> listaNumerosParte(Connection connection) {
 		ObservableList<String> arrayListNumeroParteComponente = FXCollections.observableArrayList();
@@ -285,7 +286,7 @@ public class ComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListNumeroParteComponente;
 	}//FIN METODO
-	
+
 	//METODO PARA OBTENER TODOS LOS NUMEROS DE PARTE
 	public static ArrayList<Componente> readComponentesEnsambleCliente(Connection connection, int clienteFK) {
 		ArrayList<Componente> arrayListComponentesEnsambleCliente = new ArrayList<Componente>();
@@ -326,7 +327,7 @@ public class ComponenteDAO {
 		}//FIN TRY/CATCH
 		return arrayListComponentesEnsambleCliente;
 	}//FIN METODO
-	
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateComponente(Connection connection, Componente componente) {
 		String consulta = "UPDATE componentes SET NumeroParte = ?, Descripcion = ?, Largo = ?, Ancho = ?, AltoEspesor = ?, Grado = ?, EspesorPulgadas = ?, TipoComponente = ?, Costo = ?, CostoDirecto = ?, CostoIndirecto = ?, Unidad = ?, MaterialFK = ?, TipoMiscelaneoFK = ?, TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ? WHERE Sys_PK = ?";
@@ -367,7 +368,7 @@ public class ComponenteDAO {
 			sentenciaPreparada.setString(18, componente.getNotas());
 			sentenciaPreparada.setInt(19, componente.getStatusFK());
 			sentenciaPreparada.setInt(20, componente.getConsecutivo());
-			if (componente.getclienteFK() > 0) 
+			if (componente.getclienteFK() > 0)
 				sentenciaPreparada.setInt(21, componente.getclienteFK());
 			else
 				sentenciaPreparada.setNull(21, Types.INTEGER);
@@ -379,7 +380,7 @@ public class ComponenteDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean deleteComponente(Connection connection, Componente componente) {
 		String consulta = "DELETE FROM componentes WHERE Sys_PK = ?";
@@ -393,13 +394,13 @@ public class ComponenteDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	//METODO PARA CONVERTIR ARRAYLIST EN OBSERVABLELIST
 	public static ObservableList<Componente> toObservableList(ArrayList<Componente> arrayList) {
 		ObservableList<Componente> listaObservableComponente = FXCollections.observableArrayList();
-		for (Componente componente : arrayList) 
+		for (Componente componente : arrayList)
 			listaObservableComponente.add(componente);
 		return listaObservableComponente;
 	}//FIN METODO
-			
+
 }//FIN CLASE
