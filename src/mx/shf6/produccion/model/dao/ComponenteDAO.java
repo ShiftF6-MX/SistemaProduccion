@@ -18,7 +18,7 @@ public class ComponenteDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createComponente(Connection connection, Componente componente) {
-		String consulta = "INSERT INTO componentes (NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, Grado, EspesorPulgadas, TipoComponente, Costo, CostoDirecto, CostoIndirecto, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String consulta = "INSERT INTO componentes (NumeroParte, Descripcion, Largo, Ancho, AltoEspesor, Grado, EspesorPulgadas, TipoComponente, Costo, CostoDirecto, CostoIndirecto, Unidad, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, componente.getNumeroParte());
@@ -60,6 +60,7 @@ public class ComponenteDAO {
 				sentenciaPreparada.setInt(21, componente.getclienteFK());
 			else
 				sentenciaPreparada.setNull(21, Types.INTEGER);
+			sentenciaPreparada.setInt(22, componente.getEsInterno());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
