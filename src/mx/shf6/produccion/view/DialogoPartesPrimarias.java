@@ -15,6 +15,7 @@ import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.TipoComponente;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
+import mx.shf6.produccion.utilities.GenerarDocumento;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class DialogoPartesPrimarias {
@@ -34,6 +35,7 @@ public class DialogoPartesPrimarias {
 	//VARIABLES
 	Double cantidad = 0.0;
 	int i = 0;
+	int tamañoArrayPartesPrimarias = 0;
 
 	//CONSTANTES
 
@@ -67,6 +69,7 @@ public class DialogoPartesPrimarias {
 
 		obtenerListaMateriales();
 		actualizarTabla();
+
 	}//FIN METODO
 
 	private void inicializarTabla(){
@@ -144,8 +147,12 @@ public class DialogoPartesPrimarias {
 		listaSubEnsambles.addAll(hs);
 		hs.clear();
 		hs.addAll(listaEnsambles);
-		listaSubEnsambles.addAll(hs);
+		listaEnsambles.clear();
+		listaEnsambles.addAll(hs);
+		tamañoArrayPartesPrimarias = listaPartePrimaria.size();
 		listaPartePrimaria.addAll(listaSubEnsambles);
+		listaPartePrimaria.addAll(listaEnsambles);
+
 	}//FIN METODO
 
 	//MANEJADORES COMPONENTES
@@ -155,4 +162,9 @@ public class DialogoPartesPrimarias {
 	@FXML private void manejadorBotonCerrar() {
 		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO
+
+	@FXML private void manejadorBotonImprimir() {
+		GenerarDocumento.generaListaMateriales(conexion, listaSubEnsambles, listaEnsambles, listaPartePrimaria, tamañoArrayPartesPrimarias);
+	}//FIN METODO
+
 }//FIN CLASE
