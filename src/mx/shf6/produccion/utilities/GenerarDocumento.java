@@ -8,6 +8,7 @@ import java.util.Map;
 
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
+import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
@@ -83,6 +84,33 @@ public class GenerarDocumento {
 
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/ValeMovimientoInventario.jasper");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(listaDetalleCardex));
+			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
+			jasperView.setVisible(true);
+		} catch (JRException jre) {
+			Notificacion.dialogoException(jre);
+			System.out.println(jre);
+		}//TRY/CATH
+	}//END METHOD
+
+	public static void generaListaMateriales(Connection connection, ArrayList <DetalleComponente> listaSubEnsambles, ArrayList <DetalleComponente> listaEnsambles, ArrayList <DetalleComponente> listaPartePrimaria, int tamañoArrayPartesPrimarias) {
+		int i= 0;
+		ArrayList<DetalleComponente> listaPartesPrimarias = new ArrayList<DetalleComponente>();
+		for(DetalleComponente detalleComponente : listaPartePrimaria ){
+			i++;
+			if(i<= tamañoArrayPartesPrimarias)
+				listaPartesPrimarias.add(detalleComponente);
+		}//FIN FOR
+		JRBeanCollectionDataSource itemsTablaSubEnsambles = new JRBeanCollectionDataSource(listaSubEnsambles);
+		JRBeanCollectionDataSource itemsTablaEnsambles = new JRBeanCollectionDataSource(listaEnsambles);
+		try {
+
+			Map<String,Object> parameters = new HashMap<String,Object>();
+			parameters.put("CantidadPartesPrimarias", tamañoArrayPartesPrimarias);
+			parameters.put("DatosTablaSubEnsambles", itemsTablaSubEnsambles );
+			parameters.put("DatosTablaEnsambles", itemsTablaEnsambles );
+
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/ListaMateriales.jasper");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(listaPartesPrimarias));
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
 		} catch (JRException jre) {
