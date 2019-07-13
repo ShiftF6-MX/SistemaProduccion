@@ -2,12 +2,13 @@ package mx.shf6.produccion.view;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import javafx.scene.input.MouseEvent;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,8 +20,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import mx.shf6.produccion.MainApp;
-import mx.shf6.produccion.model.ControlOperacion;
 import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
@@ -60,6 +61,7 @@ public class PantallaDashboard extends Thread{
 	@FXML private Label fechaFinal;
 	@FXML private Label diasTranscurridos;
 	@FXML private Label diasFaltantes;
+	@FXML private Circle shape;
 	
 	//METODOS
 	@FXML private void initialize() {
@@ -87,7 +89,6 @@ public class PantallaDashboard extends Thread{
 		this.xAxisLote.setCategories(FXCollections.observableArrayList(this.listaStatusLote));
 		this.xAxisLote.setLabel("Lotes");
 		this.yAxisLote.setLabel("Cantidad");
-		this.yAxisLote.setTickUnit(1);
 		
 		//GRAFICA POR SERIES 
 		this.listaStatusSerie.add("PE");
@@ -100,8 +101,7 @@ public class PantallaDashboard extends Thread{
 	
 	@Override
 	public void run() {
-		try {
-			
+		try {			
 			while(true) {
 				Platform.runLater(() -> {
 					inicializarCombo();
@@ -109,7 +109,7 @@ public class PantallaDashboard extends Thread{
 					graficaPorSeries();
 					lineaDelTiempo();
 				});//FIN SENTENCIA
-				Thread.sleep(1000);
+				Thread.sleep(1500);
 			}//FIN WHILE
 		}catch(InterruptedException ex) {
 			Notificacion.dialogoException(ex);
@@ -189,6 +189,7 @@ public class PantallaDashboard extends Thread{
 		int diasFaltantes = 0;
 		int diasTranscurridos = 0;
     	orden = OrdenProduccionDAO.fechasPorLote(this.connection, sysPKLote);
+    	this.root.getChildren().clear();
         
         //FECHA INICIAL Y FINAL
         if (this.comboLotes2.getSelectionModel().isEmpty()) {
@@ -206,6 +207,8 @@ public class PantallaDashboard extends Thread{
             	this.diasFaltantes.setText("0");
             else
             	this.diasFaltantes.setText(Integer.toString(diasFaltantes));
+            //FIN IF-ELSE
+            this.lasSeries();
         }//FIN IF-ELSE
         
         //LINEA DEL TIEMPO	
@@ -221,7 +224,43 @@ public class PantallaDashboard extends Thread{
         this.graficaLineaTiempo.setLineWidth(5);
         this.graficaLineaTiempo.strokeLine(100, 88, 100, 212);
         this.graficaLineaTiempo.strokeLine(600, 88, 600, 212);
+        
+        
        
 	}//FIN METODO
+	
+	private void lasSeries() {
+		this.root.getChildren().add(this.canvas);
+		int sysPK = 0;
+		int x = 100;
+		int y = 90;
+		sysPK = OrdenProduccionDAO.sysPKOrdenProduccion(this.connection, this.comboLotes2.getValue());
+		for (DetalleOrdenProduccion orden : DetalleOrdenProduccionDAO.readDetalleLoteProduccion(this.connection, sysPK)) {
+			Label n = new Label();
+			Circle c = new Circle();
+			c.setRadius(3.5);
+			c.setFill(Color.BLUEVIOLET);
+			c.setStroke(Color.BLACK);
+			n.setGraphic(c);
+			n.setCursor(Cursor.HAND);
+			n.setLayoutX(x);
+			n.setLayoutY(y);
+			if (y == 190) {
+				x = x + 8;
+				y= 100;
+			}else {
+				y = y + 8;
+			}//FIN IF-ELSE
+			n.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					Notificacion.dialogoDetalleMensaje(orden.getNumeroSerie());
+				}//FIN METODO
+			});//FIN LISTENER
+			this.root.getChildren().add(n);
+		}//FIN FOR
+	}//FIN METODO
+	
 	//MANEJADORES 
+	
 }//FIN METODO

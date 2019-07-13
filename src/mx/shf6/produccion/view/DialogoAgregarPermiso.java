@@ -28,7 +28,7 @@ public class DialogoAgregarPermiso {
 	
 	//INICIALIZAR 
 	@FXML private void initialize() {
-		RestriccionTextField.limitarNumeroCaracteres(campoCodigo, 16);
+		RestriccionTextField.limitarNumeroCaracteres(campoCodigo, 32);
 		RestriccionTextField.limitarNumeroCaracteres(campoDescripcion, 32);
 	}//FIN METODO
 	
