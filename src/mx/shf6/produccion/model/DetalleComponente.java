@@ -173,7 +173,7 @@ public class DetalleComponente {
 	}//FIN METODO
 
 	public void setTipoComponenteInferior(String tipoComponenteInferior) {
-		this.tipoComponenteInferior.set(tipoComponenteInferior);
+		this.tipoComponenteInferior.set(TipoComponente.toString(tipoComponenteInferior));
 	}//FIN METODO
 
 	public String getTipoComponenteInferior() {
@@ -185,7 +185,7 @@ public class DetalleComponente {
 	}//FIN METODO
 
 	public void setTipoComponenteSuperior(String tipoComponenteSuperior) {
-		this.tipoComponenteSuperior.set(tipoComponenteSuperior);
+		this.tipoComponenteSuperior.set(TipoComponente.toString(tipoComponenteSuperior));
 	}//FIN METODO
 
 	public String getTipoComponenteSuperior() {
