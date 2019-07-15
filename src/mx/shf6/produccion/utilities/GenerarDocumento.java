@@ -92,25 +92,12 @@ public class GenerarDocumento {
 		}//TRY/CATH
 	}//END METHOD
 
-	public static void generaListaMateriales(Connection connection, ArrayList <DetalleComponente> listaSubEnsambles, ArrayList <DetalleComponente> listaEnsambles, ArrayList <DetalleComponente> listaPartePrimaria, int tamañoArrayPartesPrimarias) {
-		int i= 0;
-		ArrayList<DetalleComponente> listaPartesPrimarias = new ArrayList<DetalleComponente>();
-		for(DetalleComponente detalleComponente : listaPartePrimaria ){
-			i++;
-			if(i<= tamañoArrayPartesPrimarias)
-				listaPartesPrimarias.add(detalleComponente);
-		}//FIN FOR
-		JRBeanCollectionDataSource itemsTablaSubEnsambles = new JRBeanCollectionDataSource(listaSubEnsambles);
-		JRBeanCollectionDataSource itemsTablaEnsambles = new JRBeanCollectionDataSource(listaEnsambles);
+	public static void generaListaMateriales(Connection connection, ArrayList <DetalleComponente> listaPartePrimaria, String titulo) {
 		try {
-
 			Map<String,Object> parameters = new HashMap<String,Object>();
-			parameters.put("CantidadPartesPrimarias", tamañoArrayPartesPrimarias);
-			parameters.put("DatosTablaSubEnsambles", itemsTablaSubEnsambles );
-			parameters.put("DatosTablaEnsambles", itemsTablaEnsambles );
-
+			parameters.put("Titulo", titulo);
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/ListaMateriales.jasper");
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(listaPartesPrimarias));
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRBeanCollectionDataSource(listaPartePrimaria));
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
 		} catch (JRException jre) {
