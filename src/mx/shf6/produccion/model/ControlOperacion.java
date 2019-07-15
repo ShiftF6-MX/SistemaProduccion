@@ -3,6 +3,8 @@ package mx.shf6.produccion.model;
 import java.sql.Date;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class ControlOperacion {
 	//PROPIEDADES
@@ -15,14 +17,16 @@ public class ControlOperacion {
 	private ObjectProperty<Integer> componenteFK;
 	private ObjectProperty<Integer> detalleProcesoFK;
 	private ObjectProperty<Integer> detalleOrdenProduccionFK;
+	private StringProperty numeroSerie;
+	private StringProperty numeroLote;
 	
 	//CONSTRUCTOR VACIO
 	public ControlOperacion() {
-		this(0, 0, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 0, 0, 0, 0, 0);
+		this(0, 0, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 0, 0, 0, 0, 0, "", "");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public ControlOperacion(Integer sysPK, Integer cantidad, Date horaFechaInicio, Date horaFechaFinal, Integer centroTrabajoFK,Integer codigoParoFK, Integer componenteFK, Integer detalleProcesoFK, Integer detalleOrdenProduccionFK) {
+	public ControlOperacion(Integer sysPK, Integer cantidad, Date horaFechaInicio, Date horaFechaFinal, Integer centroTrabajoFK,Integer codigoParoFK, Integer componenteFK, Integer detalleProcesoFK, Integer detalleOrdenProduccionFK, String numeroSerie, String numeroLote) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
 		this.horaFechaInicio = new SimpleObjectProperty<Date>(horaFechaInicio);
@@ -32,6 +36,8 @@ public class ControlOperacion {
 		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
 		this.detalleProcesoFK = new SimpleObjectProperty<Integer>(detalleProcesoFK);
 		this.detalleOrdenProduccionFK = new SimpleObjectProperty<Integer>(detalleOrdenProduccionFK);
+		this.numeroSerie = new SimpleStringProperty(numeroSerie);
+		this.numeroLote = new SimpleStringProperty(numeroLote);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A SYSPK
@@ -159,4 +165,33 @@ public class ControlOperacion {
 		return detalleOrdenProduccionFK;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A DETALLELOTEPRODUCCIONFK
+	
+	//METODOS DE ACCESO A NUMEROSERIE
+	public void setNumeroSerie(String numeroSerie) {
+		this.numeroSerie.set(numeroSerie);
+	}//FIN METODO
+	
+	public String getNumeroSerie() {
+		return numeroSerie.get();
+	}//FIN METODO
+	
+	public StringProperty numeroSerieProperty() {
+		return numeroSerie;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A NUMEROSERIE
+	
+	//METODOS DE ACCESO A NUMEROLOTE
+	public void setNumeroLote(String numeroLote) {
+		this.numeroLote.set(numeroLote);
+	}//FIN METODO
+	
+	public String getNumeroLote() {
+		return numeroLote.get();
+	}//FIN METODO
+	
+	public StringProperty numeroLoteProperty() {
+		return numeroLote;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A NUMEROLOTE
+	
 }//FIN CLASE
