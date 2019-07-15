@@ -58,4 +58,36 @@ public class ControlOperacionesDAO {
 		return listaControlOperaciones;
 	}//FIN METODO
 	
+	public static ArrayList<ControlOperacion> readLote(Connection connection, String lote) {
+		ArrayList<ControlOperacion> listaControlOperacionesLote = new ArrayList<ControlOperacion>();
+		String consulta = "SELECT controloperaciones.Sys_PK, controloperaciones.Cantidad, MAX(HoraFechaInicio), controloperaciones.HoraFechaFinal,\r\n" + 
+				"controloperaciones.CentroTrabajoFK, controloperaciones.CodigoParoFK, controloperaciones.ComponenteFK, controloperaciones.DetalleProcesoFK,\r\n" + 
+				"controloperaciones.DetalleOrdenProduccionFK, detalleordenesproduccion.NumeroSerie, ordenesproduccion.Lote FROM controloperaciones \r\n" + 
+				"RIGHT JOIN detalleordenesproduccion ON controloperaciones.DetalleOrdenProduccionFK = detalleordenesproduccion.Sys_PK\r\n" + 
+				"INNER JOIN ordenesproduccion ON detalleordenesproduccion.OrdenProduccionFK = ordenesproduccion.Sys_PK\r\n" + 
+				"HAVING ordenesproduccion.Lote = " + lote;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				ControlOperacion operacion = new ControlOperacion();
+				operacion.setSysPK(resultados.getInt(1));
+				operacion.setCantidad(resultados.getInt(2));
+				operacion.setHoraFechaInicio(resultados.getDate(3));
+				operacion.setHoraFechaFinal(resultados.getDate(4));
+				operacion.setCentroTrabajoFK(resultados.getInt(5));
+				operacion.setCodigoParo(resultados.getInt(6));
+				operacion.setComponenteFK(resultados.getInt(7));
+				operacion.setDetalleProcesoFK(resultados.getInt(8));
+				operacion.setDetalleOrdenProduccionFK(resultados.getInt(9));
+				operacion.setNumeroSerie(resultados.getString(10));
+				operacion.setNumeroLote(resultados.getString(11));
+				listaControlOperacionesLote.add(operacion);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY CATCH
+		return listaControlOperacionesLote;
+	}//FIN METODO
+	
 }//FIN CLASE
