@@ -36,6 +36,7 @@ public class DialogoPartesPrimarias {
 	Double cantidad = 0.0;
 	int i = 0;
 	int tamañoArrayPartesPrimarias = 0;
+	String nombreNumeroComponente;
 
 	//CONSTANTES
 
@@ -88,8 +89,10 @@ public class DialogoPartesPrimarias {
 	private void obtenerPartesPrimarias(int componenteFK){
 		i++;
 		componenteRaiz = ComponenteDAO.readComponente(conexion, componenteFK);
-		if(i==1)
+		if(i==1){
 			this.campoTextoComponente.setText(componenteRaiz.getDescripcion());
+			this.nombreNumeroComponente = componenteRaiz.getDescripcion().toUpperCase() + " " + componenteRaiz.getNumeroParte();
+		}
 
 		if (componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE)){
 			detalleComponenteSubEnsamble = new DetalleComponente();
@@ -97,6 +100,7 @@ public class DialogoPartesPrimarias {
 			detalleComponenteSubEnsamble.setCantidad(detalleComponenteRaiz.getCantidad());
 			detalleComponenteSubEnsamble.setDescripcionComponenteSuperior(componenteRaiz.getDescripcion());
 			detalleComponenteSubEnsamble.setDescripcionComponenteInferior(componenteRaiz.getMaterialDescripcion());
+			detalleComponenteSubEnsamble.setTipoComponenteSuperior(componenteRaiz.getTipoComponenteChar());
 			listaSubEnsambles.add(detalleComponenteSubEnsamble);
 		}//FIN IF
 
@@ -104,13 +108,13 @@ public class DialogoPartesPrimarias {
 			detalleComponenteSubEnsamble = new DetalleComponente();
 			detalleComponenteSubEnsamble.setNumeroParteComponenteSuperior(componenteRaiz.getNumeroParte());
 			detalleComponenteSubEnsamble.setDescripcionComponenteSuperior(componenteRaiz.getDescripcion());
+			detalleComponenteSubEnsamble.setTipoComponenteSuperior(componenteRaiz.getTipoComponenteChar());
 			listaEnsambles.add(detalleComponenteSubEnsamble);
 		}//FIN IF
 
 		ArrayList<DetalleComponente> listaDetalleComponente = new ArrayList<DetalleComponente>();
 		if(componenteRaiz.getTipoComponente().equals(TipoComponente.ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE) || componenteRaiz.getTipoComponente().equals(TipoComponente.PARTE_PRIMARIA) || componenteRaiz.getTipoComponente().equals(TipoComponente.COMPRADO)){
 			listaDetalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(conexion, componenteFK);
-
 				for(DetalleComponente detalleComponente : listaDetalleComponente){
 					if(componenteRaiz.getTipoComponente().equals(TipoComponente.PARTE_PRIMARIA)){
 						detalleComponente.setCantidad(cantidad);
@@ -120,6 +124,7 @@ public class DialogoPartesPrimarias {
 							detalleComponenteRaiz.setDescripcionComponenteSuperior("");
 							detalleComponenteRaiz.setNumeroParteComponenteSuperior(detalleComponenteRaiz.getNumeroParteComponenteInferior());
 							detalleComponenteRaiz.setNumeroParteComponenteInferior("");
+							detalleComponenteRaiz.setTipoComponenteSuperior("C");
 							listaPartePrimaria.add(detalleComponenteRaiz);
 						}//FIN IF
 					}//FIN IF ELSE
@@ -128,7 +133,7 @@ public class DialogoPartesPrimarias {
 					detalleComponenteRaiz.setComponenteSuperiorFK(detalleComponente.getComponenteSuperiorFK());
 					detalleComponenteRaiz.setComponenteInferiorFK(detalleComponente.getComponenteInferiorFK());
 					detalleComponenteRaiz.setCantidad(detalleComponente.getCantidad());
-					detalleComponenteRaiz.setTipoComponenteSuperior(componenteRaiz.getTipoComponente());
+					detalleComponenteRaiz.setTipoComponenteSuperior(componenteRaiz.getTipoComponenteChar());
 					detalleComponenteRaiz.setDescripcionComponenteInferior(detalleComponente.getDescripcionComponenteInferior());
 					detalleComponenteRaiz.setDescripcionComponenteSuperior(detalleComponente.getDescripcionComponenteSuperior());
 					detalleComponenteRaiz.setNumeroParteComponenteInferior(detalleComponente.getNumeroParteComponenteInferior());
@@ -136,8 +141,6 @@ public class DialogoPartesPrimarias {
 					obtenerPartesPrimarias(detalleComponente.getComponenteInferiorFK());
 				}//FIN FOR
 		}//FIN IF
-
-
 	}//FIN METODO
 
 	private void obtenerListaMateriales(){
@@ -147,12 +150,8 @@ public class DialogoPartesPrimarias {
 		listaSubEnsambles.addAll(hs);
 		hs.clear();
 		hs.addAll(listaEnsambles);
-		listaEnsambles.clear();
-		listaEnsambles.addAll(hs);
-		tamañoArrayPartesPrimarias = listaPartePrimaria.size();
+		listaSubEnsambles.addAll(hs);
 		listaPartePrimaria.addAll(listaSubEnsambles);
-		listaPartePrimaria.addAll(listaEnsambles);
-
 	}//FIN METODO
 
 	//MANEJADORES COMPONENTES
@@ -164,7 +163,7 @@ public class DialogoPartesPrimarias {
 	}//FIN METODO
 
 	@FXML private void manejadorBotonImprimir() {
-		GenerarDocumento.generaListaMateriales(conexion, listaSubEnsambles, listaEnsambles, listaPartePrimaria, tamañoArrayPartesPrimarias);
+		GenerarDocumento.generaListaMateriales(conexion, listaPartePrimaria, this.nombreNumeroComponente);
 	}//FIN METODO
 
 }//FIN CLASE

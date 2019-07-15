@@ -36,13 +36,16 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <image>
-                              <Image url="@images/1x/CerrarBoton.png" />
+                              <Image url="@images/1x/OpcionesBoton.png" />
                            </image>
                            <HBox.margin>
-                              <Insets left="550.0" />
+                              <Insets left="500.0" />
                            </HBox.margin>
                         </ImageView>
                      </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </HBox>
                </children>
                <VBox.margin>
