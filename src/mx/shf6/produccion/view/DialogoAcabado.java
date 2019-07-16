@@ -25,7 +25,7 @@ import mx.shf6.produccion.model.Acabado;
 import mx.shf6.produccion.model.dao.AcabadoDAO;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaAcabado {
+public class DialogoAcabado {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -150,7 +150,7 @@ public class PantallaAcabado {
 	
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
-		this.mainApp.iniciarDialogoAcabado(acabado, DialogoAcabado.CREAR);
+		this.mainApp.iniciarDialogoAgregarAcabado(acabado, DialogoAgregarAcabado.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -159,13 +159,17 @@ public class PantallaAcabado {
 	}//FIN METODO
 	
 	private void manejadorBotonVer(Acabado acabado) {
-		this.mainApp.iniciarDialogoAcabado(acabado, DialogoAcabado.VER);
+		this.mainApp.iniciarDialogoAgregarAcabado(acabado, DialogoAgregarAcabado.VER);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(Acabado acabado) {
-		this.mainApp.iniciarDialogoAcabado(acabado, DialogoAcabado.EDITAR);
+		this.mainApp.iniciarDialogoAgregarAcabado(acabado, DialogoAgregarAcabado.EDITAR);
 		this.actualizarTabla();
+	}//FIN METODO
+	
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
 	}//FIN METODO
 		
 }//FIN CLASE
