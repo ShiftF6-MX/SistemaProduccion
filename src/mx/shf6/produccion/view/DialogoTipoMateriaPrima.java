@@ -25,7 +25,7 @@ import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaTipoMateriaPrima {
+public class DialogoTipoMateriaPrima {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -150,7 +150,7 @@ public class PantallaTipoMateriaPrima {
 	
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
-		this.mainApp.iniciarDialogoTipoMateriaPrima(tipoMateriaPrima, DialogoTipoMateriaPrima.CREAR);
+		this.mainApp.iniciarDialogoAgregarTipoMateriaPrima(tipoMateriaPrima, DialogoAgregarTipoMateriaPrima.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -158,13 +158,17 @@ public class PantallaTipoMateriaPrima {
 		this.actualizarTabla();
 	}//FIN METODO
 	
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
+	}
+	
 	private void manejadorBotonVer(TipoMateriaPrima tipoMateriaPrima) {
-		this.mainApp.iniciarDialogoTipoMateriaPrima(tipoMateriaPrima, DialogoTipoMateriaPrima.VER);
+		this.mainApp.iniciarDialogoAgregarTipoMateriaPrima(tipoMateriaPrima, DialogoAgregarTipoMateriaPrima.VER);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(TipoMateriaPrima tipoMateriaPrima) {
-		this.mainApp.iniciarDialogoTipoMateriaPrima(tipoMateriaPrima, DialogoTipoMateriaPrima.EDITAR);
+		this.mainApp.iniciarDialogoAgregarTipoMateriaPrima(tipoMateriaPrima, DialogoAgregarTipoMateriaPrima.EDITAR);
 		this.actualizarTabla();
 	}//FIN METODO
 		
