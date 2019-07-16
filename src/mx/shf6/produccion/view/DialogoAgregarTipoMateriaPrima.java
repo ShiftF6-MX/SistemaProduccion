@@ -12,7 +12,7 @@ import mx.shf6.produccion.model.TipoMateriaPrima;
 import mx.shf6.produccion.model.dao.TipoMateriaPrimaDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 
-public class DialogoTipoMateriaPrima {
+public class DialogoAgregarTipoMateriaPrima {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -74,10 +74,10 @@ public class DialogoTipoMateriaPrima {
 	
 	//VALIDAR DATOS
 	private boolean validarDatos() {
-		if (this.campoTextoCodigo.getText().isEmpty()) {
+		if (this.campoTextoCodigo.getText().isEmpty() || String.valueOf(this.campoTextoCodigo.getText().charAt(0)).equals(" ")) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Código\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoDescripcion.getText().isEmpty()) {
+		} else if (this.campoTextoDescripcion.getText().isEmpty() || String.valueOf(this.campoTextoCodigo.getText().charAt(0)).equals(" ")) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
 			return false;
 		} else if (this.comboBoxStatus.getSelectionModel().getSelectedItem().isEmpty()) {
@@ -89,30 +89,32 @@ public class DialogoTipoMateriaPrima {
 	
 	//MANEJADORES COMPONENTES	
 	@FXML private void vmanejadorBotonAceptar() {
-		if (this.validarDatos() && this.opcion == CREAR) {
-			this.tipoMateriaPrima.setCodigo(this.campoTextoCodigo.getText());
-			this.tipoMateriaPrima.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tipoMateriaPrima.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TipoMateriaPrimaDAO.createTipoMateriaPrima(this.mainApp.getConnection(), this.tipoMateriaPrima)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == EDITAR) {
-			this.tipoMateriaPrima.setCodigo(this.campoTextoCodigo.getText());
-			this.tipoMateriaPrima.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tipoMateriaPrima.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TipoMateriaPrimaDAO.updateTipoMateriaPrima(this.mainApp.getConnection(), this.tipoMateriaPrima)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == VER)
-			this.mainApp.getEscenarioDialogos().close();			
+		if (this.validarDatos()) {
+			if (this.opcion == CREAR) {
+				this.tipoMateriaPrima.setCodigo(this.campoTextoCodigo.getText());
+				this.tipoMateriaPrima.setDescripcion(this.campoTextoDescripcion.getText());
+				this.tipoMateriaPrima.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+				if (TipoMateriaPrimaDAO.createTipoMateriaPrima(this.mainApp.getConnection(), this.tipoMateriaPrima)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
+			} else if (this.opcion == EDITAR) {
+				this.tipoMateriaPrima.setCodigo(this.campoTextoCodigo.getText());
+				this.tipoMateriaPrima.setDescripcion(this.campoTextoDescripcion.getText());
+				this.tipoMateriaPrima.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+				if (TipoMateriaPrimaDAO.updateTipoMateriaPrima(this.mainApp.getConnection(), this.tipoMateriaPrima)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
+			} else if (this.opcion == VER)
+				this.mainApp.getEscenarioDialogosAlterno().close();	
+		}//FIN IF
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
-		this.mainApp.getEscenarioDialogos().close();
+		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 	
 }//FIN CLASE
