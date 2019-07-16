@@ -158,14 +158,8 @@ public class DialogoProceso {
 		if (this.campoDateFecha.getValue() == null) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Fecha \" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoCantidad.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cantidad \" no puede estar vacio");
-			return false;
 		} else if (this.campoTextoNivel.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Nivel \" no puede estar vacio");
-			return false;
-		} else if (this.campoTextoOrdenamiento.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Orden \" no puede estar vacio");
 			return false;
 		}//FIN IF-ELSE
 		return true;
@@ -176,7 +170,10 @@ public class DialogoProceso {
 		if (this.validarDatos()) {
 			if (this.opcion == CREAR) {
 				this.proceso.setFecha(Date.valueOf(this.campoDateFecha.getValue()));
-				this.proceso.setCantidad(Integer.parseInt(this.campoTextoCantidad.getText()));
+				if (this.campoTextoCantidad.getText().isEmpty())
+					this.proceso.setCantidad(0);
+				else
+					this.proceso.setCantidad(Integer.parseInt(this.campoTextoCantidad.getText()));
 				this.proceso.setOrdenamiento(Integer.parseInt(this.campoTextoOrdenamiento.getText()));
 				this.proceso.setNivel(Integer.parseInt(this.campoTextoNivel.getText()));
 				this.proceso.setCentroTrabajoFK(listaCentrosTrabajo.get(comboBoxDestino.getSelectionModel().getSelectedIndex()).getSysPK());
