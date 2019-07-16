@@ -11,8 +11,9 @@ import mx.shf6.produccion.model.Status;
 import mx.shf6.produccion.model.TipoMiscelaneo;
 import mx.shf6.produccion.model.dao.TipoMiscelaneoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
-public class DialogoTipoMiscelaneo {
+public class DialogoAgregarTipoMiscelaneo {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -36,6 +37,7 @@ public class DialogoTipoMiscelaneo {
 		this.tipoMiscelaneo = new TipoMiscelaneo();
 		ObservableList<String> listaStatus = FXCollections.observableArrayList("No Visible", "Visible");
 		this.comboBoxStatus.setItems(listaStatus);
+		RestriccionTextField.limitarNumeroCaracteres(campoTextoCodigo, 1);
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
@@ -74,10 +76,10 @@ public class DialogoTipoMiscelaneo {
 	
 	//VALIDAR DATOS
 	private boolean validarDatos() {
-		if (this.campoTextoCodigo.getText().isEmpty()) {
+		if (this.campoTextoCodigo.getText().isEmpty() || String.valueOf(this.campoTextoCodigo.getText().charAt(0)).equals(" ")) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Código\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoDescripcion.getText().isEmpty()) {
+		} else if (this.campoTextoDescripcion.getText().isEmpty() || String.valueOf(this.campoTextoDescripcion.getText().charAt(0)).equals(" ")) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
 			return false;
 		} else if (this.comboBoxStatus.getSelectionModel().getSelectedItem().isEmpty()) {
@@ -89,30 +91,32 @@ public class DialogoTipoMiscelaneo {
 	
 	//MANEJADORES COMPONENTES	
 	@FXML private void vmanejadorBotonAceptar() {
-		if (this.validarDatos() && this.opcion == CREAR) {
-			this.tipoMiscelaneo.setCodigo(this.campoTextoCodigo.getText());
-			this.tipoMiscelaneo.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tipoMiscelaneo.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TipoMiscelaneoDAO.createTipoMiscelaneo(this.mainApp.getConnection(), this.tipoMiscelaneo)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == EDITAR) {
-			this.tipoMiscelaneo.setCodigo(this.campoTextoCodigo.getText());
-			this.tipoMiscelaneo.setDescripcion(this.campoTextoDescripcion.getText());
-			this.tipoMiscelaneo.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (TipoMiscelaneoDAO.updateTipoMiscelaneo(this.mainApp.getConnection(), this.tipoMiscelaneo)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == VER)
-			this.mainApp.getEscenarioDialogos().close();			
+		if (this.validarDatos()) {
+			if (this.opcion == CREAR) {
+				this.tipoMiscelaneo.setCodigo(this.campoTextoCodigo.getText());
+				this.tipoMiscelaneo.setDescripcion(this.campoTextoDescripcion.getText());
+				this.tipoMiscelaneo.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+				if (TipoMiscelaneoDAO.createTipoMiscelaneo(this.mainApp.getConnection(), this.tipoMiscelaneo)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
+			} else if (this.opcion == EDITAR) {
+				this.tipoMiscelaneo.setCodigo(this.campoTextoCodigo.getText());
+				this.tipoMiscelaneo.setDescripcion(this.campoTextoDescripcion.getText());
+				this.tipoMiscelaneo.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+				if (TipoMiscelaneoDAO.updateTipoMiscelaneo(this.mainApp.getConnection(), this.tipoMiscelaneo)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
+			} else if (this.opcion == VER)
+				this.mainApp.getEscenarioDialogosAlterno().close();	
+		}//FIN IF
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
-		this.mainApp.getEscenarioDialogos().close();
+		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 	
 }//FIN CLASE
