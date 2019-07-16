@@ -25,7 +25,7 @@ import mx.shf6.produccion.model.Tratamiento;
 import mx.shf6.produccion.model.dao.TratamientoDAO;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaTratamiento {
+public class DialogoTratamiento {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -150,7 +150,7 @@ public class PantallaTratamiento {
 	
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
-		this.mainApp.iniciarDialogoTratamiento(tratamiento, DialogoTipoMateriaPrima.CREAR);
+		this.mainApp.iniciarDialogoAgregarTratamiento(tratamiento, DialogoAgregarTipoMateriaPrima.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -159,13 +159,17 @@ public class PantallaTratamiento {
 	}//FIN METODO
 	
 	private void manejadorBotonVer(Tratamiento tratamiento) {
-		this.mainApp.iniciarDialogoTratamiento(tratamiento, DialogoTipoMateriaPrima.VER);
+		this.mainApp.iniciarDialogoAgregarTratamiento(tratamiento, DialogoAgregarTipoMateriaPrima.VER);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(Tratamiento tratamiento) {
-		this.mainApp.iniciarDialogoTratamiento(tratamiento, DialogoTipoMateriaPrima.EDITAR);
+		this.mainApp.iniciarDialogoAgregarTratamiento(tratamiento, DialogoAgregarTipoMateriaPrima.EDITAR);
 		this.actualizarTabla();
 	}//FIN METODO
+	
+	@FXML private void manejadoBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
+	}
 		
 }//FIN CLASE
