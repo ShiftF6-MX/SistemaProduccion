@@ -1,118 +1,173 @@
 package mx.shf6.produccion.view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
+
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
-import mx.shf6.produccion.model.Status;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.dao.MaterialDAO;
-import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.PTableColumn;
 
-public class DialogoMaterial {
+public class PantallaMaterial {
 
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Material material;
+	private ArrayList<Material> listaMaterial;
 	
 	//VARIABLES
-	private int opcion;
-	
-	//CONSTANTES
-	public static final int CREAR = 1;
-	public static final int VER = 2;
-	public static final int EDITAR = 3;
 	
 	//COMPONENTES INTERFAZ
-	@FXML private TextField campoTextoCodigo;
-	@FXML private TextField campoTextoDescripcion;
-	@FXML private ComboBox<String> comboBoxStatus;
+	@FXML private TextField campoTextoBusqueda;
+	@FXML private TableView<Material> tablaMaterial;
+	@FXML private PTableColumn<Material, Integer> columnaSysPK;
+	@FXML private PTableColumn<Material, String> columnaCodigo;
+	@FXML private PTableColumn<Material, String> columnaDescripcion;
+	@FXML private PTableColumn<Material, String> columnaGradoMaterial;
+	@FXML private PTableColumn<Material, String> columnaStatus;
+	@FXML private PTableColumn<Material, String> columnaAcciones;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
 		this.material = new Material();
-		ObservableList<String> listaStatus = FXCollections.observableArrayList("No Visible", "Visible");
-		this.comboBoxStatus.setItems(listaStatus);
+		this.inicializaComponentes();
+		this.inicializaTabla();
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
-	public void setMainApp(MainApp mainApp, Material material, int opcion) {
+	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		this.material = material;
-		this.opcion = opcion;
-		this.inicializarComponentes();
+		this.listaMaterial = MaterialDAO.readMaterial(this.mainApp.getConnection());
+		this.actualizarTabla();
 	}//FIN METODO
 	
-	//INICIALIZA COMPONENTE
-	private void inicializarComponentes() {		
-		if (this.opcion == CREAR) {
-			this.campoTextoCodigo.setText("");
-			this.campoTextoCodigo.setDisable(false);
-			this.campoTextoDescripcion.setText("");
-			this.campoTextoDescripcion.setDisable(false);
-			this.comboBoxStatus.getSelectionModel().select("");
-			this.comboBoxStatus.setDisable(false);
-		} else if (this.opcion == VER) {
-			this.campoTextoCodigo.setText(this.material.getCodigo());
-			this.campoTextoCodigo.setDisable(true);
-			this.campoTextoDescripcion.setText(this.material.getDescripcion());
-			this.campoTextoDescripcion.setDisable(true);
-			this.comboBoxStatus.getSelectionModel().select(this.material.getStatus());
-			this.comboBoxStatus.setDisable(true);
-		} else if (this.opcion == EDITAR) {
-			this.campoTextoCodigo.setText(this.material.getCodigo());
-			this.campoTextoCodigo.setDisable(false);
-			this.campoTextoDescripcion.setText(this.material.getDescripcion());
-			this.campoTextoDescripcion.setDisable(false);
-			this.comboBoxStatus.getSelectionModel().select(this.material.getStatus());
-			this.comboBoxStatus.setDisable(false);
-		}//FIN METODO
+	private void inicializaComponentes() {
+		this.campoTextoBusqueda.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER))
+					buscarRegistroTabla();
+			}//FIN METODO
+			
+		});//FIN SENTENCIA
 	}//FIN METODO
 	
-	//VALIDAR DATOS
-	private boolean validarDatos() {
-		if (this.campoTextoCodigo.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Código\" no puede estar vacio");
-			return false;
-		} else if (this.campoTextoDescripcion.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
-			return false;
-		} else if (this.comboBoxStatus.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción\" no puede estar vacio");
-			return false;
-		}//FIN IF/ESLE
-		return true;
+	private void inicializaTabla() {
+		this.columnaSysPK.setCellValueFactory(cellData -> cellData.getValue().sysPKProperty());
+		this.columnaCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoProperty());
+		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
+		this.columnaGradoMaterial.setCellValueFactory(cellData -> cellData.getValue().gradoMaterialProperty());
+		this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+		this.inicializarColumnaAcciones();
+	}//FIN METODO.
+	
+	private void actualizarTabla() {
+		this.tablaMaterial.setItems(null);
+		this.listaMaterial.clear();
+		this.listaMaterial = MaterialDAO.readMaterial(this.mainApp.getConnection());
+		this.tablaMaterial.setItems(MaterialDAO.toObservableList(this.listaMaterial));
 	}//FIN METODO
 	
-	//MANEJADORES COMPONENTES	
-	@FXML private void vmanejadorBotonAceptar() {
-		if (this.validarDatos() && this.opcion == CREAR) {
-			this.material.setCodigo(this.campoTextoCodigo.getText());
-			this.material.setDescripcion(this.campoTextoDescripcion.getText());
-			this.material.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (MaterialDAO.createMaterial(this.mainApp.getConnection(), this.material)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == EDITAR) {
-			this.material.setCodigo(this.campoTextoCodigo.getText());
-			this.material.setDescripcion(this.campoTextoDescripcion.getText());
-			this.material.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
-			if (MaterialDAO.updateMaterial(this.mainApp.getConnection(), this.material)) {
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se actualizo de forma correcta");
-				this.mainApp.getEscenarioDialogos().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
-		} else if (this.validarDatos() && this.opcion == VER)
-			this.mainApp.getEscenarioDialogos().close();			
+	@FXML private void buscarRegistroTabla() {
+		this.tablaMaterial.setItems(null);
+		this.listaMaterial.clear();
+		this.listaMaterial = MaterialDAO.readMaterial(this.mainApp.getConnection(), this.campoTextoBusqueda.getText());
+		this.tablaMaterial.setItems(MaterialDAO.toObservableList(this.listaMaterial));
 	}//FIN METODO
 	
-	@FXML private void manejadorBotonCerrar() {
-		this.mainApp.getEscenarioDialogos().close();
+	private void inicializarColumnaAcciones() {
+		this.columnaAcciones.setCellValueFactory(new PropertyValueFactory<>("DUM"));
+		Callback<TableColumn<Material, String>, TableCell<Material, String>> cellFactory = param -> {
+			final TableCell<Material, String> cell = new TableCell<Material, String>() {
+				final Button botonVer = new Button("Ver");
+				final Button botonEditar = new Button("Editar");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar);
+				
+				@Override
+				public void updateItem(String item, boolean empty) {
+					//INICALIZA BOTONES
+					botonVer.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/VerIcono.png"))));
+					botonVer.setPrefSize(16.0, 16.0);
+					botonVer.setPadding(Insets.EMPTY);
+					botonVer.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonVer.setStyle("-fx-background-color: transparent");
+					botonVer.setCursor(Cursor.HAND);
+					botonVer.setTooltip(new Tooltip("Ver registro"));
+					
+					botonEditar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ActualizarIcono.png"))));
+					botonEditar.setPrefSize(16.0, 16.0);
+					botonEditar.setPadding(Insets.EMPTY);
+					botonEditar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEditar.setStyle("-fx-background-color: transparent");
+					botonEditar.setCursor(Cursor.HAND);
+					botonEditar.setTooltip(new Tooltip("Editar registro"));
+					
+					super.updateItem(item, empty);
+					if (empty) {
+						super.setGraphic(null);
+						super.setText(null);
+					} else {
+						
+						//MANEJADORES PARA LOS BOTONES
+						botonVer.setOnAction(event -> {
+							material = getTableView().getItems().get(getIndex());
+							manejadorBotonVer(material);
+						});//FIN MANEJADDOR
+						
+						botonEditar.setOnAction(event -> {
+							material = getTableView().getItems().get(getIndex());
+							manejadorBotonEditar(material);
+						});//FIN MANEJADDOR
+						
+						cajaBotones.setSpacing(2);
+						super.setGraphic(cajaBotones);
+						super.setText(null);
+					}//FIN IF ELSE
+						
+				}//FIN METODO
+				
+			};//FIN INSTRUCCION
+			return cell;
+		};//FIN INSTRUCCION
+		columnaAcciones.setCellFactory(cellFactory);
 	}//FIN METODO
 	
+	//MANEJADORES COMPONENTES
+	@FXML private void manejadorBotonCrear() {
+		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.CREAR);
+		this.actualizarTabla();
+	}//FIN METODO
+	
+	@FXML private void manejadorBotonActualizar() {
+		this.actualizarTabla();
+	}//FIN METODO
+	
+	private void manejadorBotonVer(Material material) {
+		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.VER);
+		this.actualizarTabla();
+	}//FIN METODO
+	
+	private void manejadorBotonEditar(Material material) {
+		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.EDITAR);
+		this.actualizarTabla();
+	}//FIN METODO
+		
 }//FIN CLASE
