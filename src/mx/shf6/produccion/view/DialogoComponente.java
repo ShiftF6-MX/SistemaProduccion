@@ -347,7 +347,10 @@ public class DialogoComponente {
 		}//FIN METODO
 		
 		checkHabilitar.selectedProperty().addListener((ov, oldValue, newValue) -> {
-			this.campoTextoNumeroParte.setDisable(false);
+			if(checkHabilitar.isSelected())
+				this.campoTextoNumeroParte.setDisable(false);
+			else
+				this.campoTextoNumeroParte.setDisable(true);
 		});
 			
 	}//FIN METODO
