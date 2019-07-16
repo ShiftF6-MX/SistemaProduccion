@@ -25,7 +25,7 @@ import mx.shf6.produccion.model.TipoMiscelaneo;
 import mx.shf6.produccion.model.dao.TipoMiscelaneoDAO;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaTipoMiscelaneo {
+public class DialogoTipoMiscelaneo {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -150,7 +150,7 @@ public class PantallaTipoMiscelaneo {
 	
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
-		this.mainApp.iniciarDialogoTipoMiscelaneo(tipoMiscelaneo, DialogoTipoMiscelaneo.CREAR);
+		this.mainApp.iniciarDialogoAgregarTipoMiscelaneo(tipoMiscelaneo, DialogoAgregarTipoMiscelaneo.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -159,12 +159,16 @@ public class PantallaTipoMiscelaneo {
 	}//FIN METODO
 	
 	private void manejadorBotonVer(TipoMiscelaneo tipoMiscelaneo) {
-		this.mainApp.iniciarDialogoTipoMiscelaneo(tipoMiscelaneo, DialogoTipoMiscelaneo.VER);
+		this.mainApp.iniciarDialogoAgregarTipoMiscelaneo(tipoMiscelaneo, DialogoAgregarTipoMiscelaneo.VER);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(TipoMiscelaneo tipoMiscelaneo) {
-		this.mainApp.iniciarDialogoTipoMiscelaneo(tipoMiscelaneo, DialogoTipoMiscelaneo.EDITAR);
+		this.mainApp.iniciarDialogoAgregarTipoMiscelaneo(tipoMiscelaneo, DialogoAgregarTipoMiscelaneo.EDITAR);
 		this.actualizarTabla();
 	}//FIN METODO
+	
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
+	}
 }//FIN CLASE
