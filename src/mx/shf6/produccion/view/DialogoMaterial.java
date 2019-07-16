@@ -25,7 +25,7 @@ import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.dao.MaterialDAO;
 import mx.shf6.produccion.utilities.PTableColumn;
 
-public class PantallaMaterial {
+public class DialogoMaterial {
 
 	//PROPIEDADES
 	private MainApp mainApp;
@@ -152,7 +152,7 @@ public class PantallaMaterial {
 	
 	//MANEJADORES COMPONENTES
 	@FXML private void manejadorBotonCrear() {
-		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.CREAR);
+		this.mainApp.iniciarDialogoAgregarMaterial(material, DialogoAgregarMaterial.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO
 	
@@ -161,13 +161,17 @@ public class PantallaMaterial {
 	}//FIN METODO
 	
 	private void manejadorBotonVer(Material material) {
-		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.VER);
+		this.mainApp.iniciarDialogoAgregarMaterial(material, DialogoAgregarMaterial.VER);
 		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(Material material) {
-		this.mainApp.iniciarDialogoMaterial(material, DialogoMaterial.EDITAR);
+		this.mainApp.iniciarDialogoAgregarMaterial(material, DialogoAgregarMaterial.EDITAR);
 		this.actualizarTabla();
 	}//FIN METODO
+	
+	@FXML private void manejadorBotonCerrar() {
+		this.mainApp.getEscenarioDialogos().close();
+	}
 		
 }//FIN CLASE
