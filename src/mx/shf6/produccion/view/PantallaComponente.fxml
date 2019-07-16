@@ -26,7 +26,7 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="20.0">
                <children>
                   <MenuButton mnemonicParsing="false" styleClass="menuContext" text="Filtro">
                     <items>
@@ -79,6 +79,9 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <HBox.margin>
+                        <Insets right="4.0" />
+                     </HBox.margin>
                   </ImageView>
                   <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonCrear" pickOnBounds="true" preserveRatio="true">
                      <cursor>
@@ -93,6 +96,25 @@
                   </ImageView>
                </children>
             </HBox>
+            <MenuButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="botonMenuPantalla" text="MenuButton" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#manejadorBotonMateriasPrimas" text="Materias primas" />
+                <MenuItem mnemonicParsing="false" onAction="#manejadorBotonMiscelaneos" text="Miscelaneos" />
+                  <MenuItem mnemonicParsing="false" onAction="#manejadorBotonMaterial" text="Materiales" />
+                  <MenuItem mnemonicParsing="false" onAction="#manejadoBotonAcabados" text="Acabados" />
+                  <MenuItem mnemonicParsing="false" onAction="#manejadorBotonTratamiento" text="Tratamientos" />
+              </items>
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/OpcionesBoton.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </MenuButton>
             <VBox alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
                   <TableView fx:id="tablaComponente" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
