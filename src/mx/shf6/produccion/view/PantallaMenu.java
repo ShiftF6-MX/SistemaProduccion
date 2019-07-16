@@ -34,26 +34,6 @@ public class PantallaMenu {
 	@FXML private void manejadorMenuComponente() {
 		this.mainApp.iniciarPantallaComponente();
 	}//FIN METODO
-	
-	@FXML private void manejadorMenuTipoMateriaPrima() {
-		this.mainApp.iniciarPantallaTipoMateriaPrima();
-	}//FIN METODO
-	
-	@FXML private void manejadorTipoMiscelaneo() {
-		this.mainApp.iniciarPantallaTipoMiscelaneo();
-	}//FIN METODO
-	
-	@FXML private void manejadorMenuMaterial() {
-		this.mainApp.iniciarPantallaMaterial();
-	}//FIN METODO
-	
-	@FXML private void manejadorMenuAcabado() {
-		this.mainApp.iniciarPantallaAcabado();
-	}//FIN METODO
-	
-	@FXML private void manejadorMenuTratamiento() {
-		this.mainApp.iniciarPantallaTratamiento();
-	}//FIN METODO
 		
 	@FXML private void manejadorMenuPuesto() {
 		this.mainApp.iniciarPantallaPuesto();
@@ -90,4 +70,8 @@ public class PantallaMenu {
 	@FXML private void manejadorMenuDashboard() {
 		this.mainApp.iniciarPantallaDashboard();
 	}//FIN METODO	
+	
+	@FXML private void manejadorMenuOrdenProduccion() {
+		this.mainApp.iniciarPantallaOrdenProduccion();
+	}//FIN METODO
 }//FIN CLASE
