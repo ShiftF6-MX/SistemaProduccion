@@ -78,9 +78,6 @@ public class PantallaProceso {
 	//INICIALIZA LOS COMPONENTES DE LA TABLA DE PROCESOS
 	private void inicializaTabla() {
 		this.fechaColumna.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
-		//this.cantidadColumna.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
-		//this.ordenamientoColumna.setCellValueFactory(cellData -> cellData.getValue().ordenamientoProperty());
-		//this.nivelColumna.setCellValueFactory(cellData -> cellData.getValue().nivelProperty());
 		this.nombreCentroTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreCentroTrabajoProperty());
 		this.nombreParteComponenteColumna.setCellValueFactory(cellData -> cellData.getValue().nombreComponenteProperty());
 		this.nombreEmpleadoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreEmpleadoProperty());
