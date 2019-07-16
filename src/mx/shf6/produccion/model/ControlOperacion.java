@@ -84,7 +84,7 @@ public class ControlOperacion {
 	
 	//METODOS DE ACCESO A HORAFECHAFINAL
 	public void setHoraFechaFinal(Date horaFechaFinal) {
-		this.horaFechaInicio.set(horaFechaFinal);
+		this.horaFechaFinal.set(horaFechaFinal);
 	}//FIN METODO
 	
 	public Date getHoraFechaFinal() {
