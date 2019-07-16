@@ -292,5 +292,24 @@ public class PantallaComponente {
 	@FXML private void manejadorBotonFiltroTodos() {
 		this.actualizarTabla();
 	}//FIN METODO
+	
+	@FXML private void manejadorBotonMateriasPrimas() {
+		this.mainApp.iniciarDialogoTipoMateriaPrima();
+	}//FIN METODO
 		
+	@FXML private void manejadorBotonMaterial() {
+		this.mainApp.iniciarDialogoMaterial();
+	}//FIN METODO
+	
+	@FXML private void manejadorBotonMiscelaneos() {
+		this.mainApp.iniciarDialogoTipoMiscelaneo();
+	}//FIN METODO
+	
+	@FXML private void manejadoBotonAcabados() {
+		this.mainApp.iniciarDialogoAcabado();
+	}//FIN METODO
+	
+	@FXML private void manejadorBotonTratamiento() {
+		this.mainApp.iniciarDialogoTratamiento();
+	}//FIN METODO
 }//FIN CLASE
