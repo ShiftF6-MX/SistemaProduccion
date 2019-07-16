@@ -79,14 +79,13 @@ public class DialogoClientes  {
 		this.domicilio = new Domicilio();
 		this.sepomexDAO = new SepomexDAO();
 		this.cliente = new Cliente();
+		
 		RestriccionTextField.limitarNumeroCaracteres(this.codigoPostalField, 8);
 		RestriccionTextField.limitarNumeroCaracteres(this.codigoField, 8);
 		RestriccionTextField.soloLetras(this.nombreField);		
 		RestriccionTextField.limitarNumeroCaracteres(this.registroContribuyenteField, 16);
 		RestriccionTextField.limitarNumeroCaracteres(this.telefonoField, 16);
-		
-		
-		
+
 		ObservableList<String> listaStatus = FXCollections.observableArrayList("Bloqueado", "Activo", "Baja");
 		this.statusCombo.setItems(listaStatus);	
 		
@@ -99,9 +98,7 @@ public class DialogoClientes  {
 		this.cliente = cliente;
 		this.opcion = opcion;
 		this.domicilio = cliente.getDomicilio(this.mainApp.getConnection());
-		
-		
-		
+
 		this.renameRuta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre());
 		
 		this.listaEstados = sepomexDAO.leerEstados(mainApp.getConnection()); 
@@ -342,20 +339,19 @@ public class DialogoClientes  {
 	}//FIN METODO
 	
 	@FXML
-	private void btnGuardar()  {
-		DecimalFormat decimalFormat = new DecimalFormat("000000");
-		Folio folio = FolioDAO.readFolioByFolio(this.mainApp.getConnection(), Cliente.FOLIO);
-		String codigo = folio.getFolio() + decimalFormat.format(folio.getSerie() + 1);
-		this.cliente.setCodigo(codigo);
-		this.cliente.setNombre(this.nombreField.getText());
-		this.cliente.setRegistroContribuyente(this.registroContribuyenteField.getText());
-		this.cliente.setTelefono(this.telefonoField.getText());
-		this.cliente.setCorreo(this.correoField.getText());
-		this.cliente.setRutaCarpeta(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
-		this.cliente.setNumeroStatus(this.statusCombo.getValue());
-		
+	private void btnGuardar()  {	
 		if(this.validacion()) {
 			if(this.opcion == CREAR) {
+				DecimalFormat decimalFormat = new DecimalFormat("000000");
+				Folio folio = FolioDAO.readFolioByFolio(this.mainApp.getConnection(), Cliente.FOLIO);
+				String codigo = folio.getFolio() + decimalFormat.format(folio.getSerie() + 1);
+				this.cliente.setCodigo(codigo);
+				this.cliente.setNombre(this.nombreField.getText());
+				this.cliente.setRegistroContribuyente(this.registroContribuyenteField.getText());
+				this.cliente.setTelefono(this.telefonoField.getText());
+				this.cliente.setCorreo(this.correoField.getText());
+				this.cliente.setRutaCarpeta(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText());
+				this.cliente.setNumeroStatus(this.statusCombo.getValue());
 				
 				this.domicilio.setCalle(this.calleField.getText());
 				this.domicilio.setNumeroExterior(this.numeroExteriorField.getText());
