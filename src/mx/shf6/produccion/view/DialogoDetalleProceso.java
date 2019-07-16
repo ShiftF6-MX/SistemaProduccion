@@ -40,8 +40,8 @@ public class DialogoDetalleProceso {
 	@FXML private TableView<DetalleProceso> tablaDetalleProceso;
 	@FXML private PTableColumn<DetalleProceso, Integer> operacionColumna;
 	@FXML private PTableColumn<DetalleProceso, String> descripcionColumna;
-	@FXML private PTableColumn<DetalleProceso, Integer> tiempoPreparacionColumna;
-	@FXML private PTableColumn<DetalleProceso, Integer> tiempoOperacionColumna;
+	@FXML private PTableColumn<DetalleProceso, Double> tiempoPreparacionColumna;
+	@FXML private PTableColumn<DetalleProceso, Double> tiempoOperacionColumna;
 	@FXML private PTableColumn<DetalleProceso, String> centroTrabajoColumna;
 	@FXML private PTableColumn<DetalleProceso, String> grupoTrabajoColumna;
 	@FXML private PTableColumn<DetalleProceso, String> componenteColumna;
@@ -76,7 +76,7 @@ public class DialogoDetalleProceso {
 			this.grupoTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreGrupoTrabajoProperty());
 			this.componenteColumna.setPercentageWidth(0);
 			this.cantidadColumna.setPercentageWidth(0);
-			this.descripcionColumna.setPercentageWidth(0.75);
+			this.descripcionColumna.setPercentageWidth(0.65);
 		} else {
 			this.operacionColumna.setCellValueFactory(cellData -> cellData.getValue().operacionProperty());
 			this.descripcionColumna.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
