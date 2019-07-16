@@ -16,6 +16,7 @@ import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.TipoComponente;
 import mx.shf6.produccion.model.dao.CentroTrabajoDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
+import mx.shf6.produccion.model.dao.DetalleProcesoDAO;
 import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -81,10 +82,8 @@ public class DialogoAgregarDetalleProceso {
 	private void restricciones() {
 		RestriccionTextField.soloNumeros(this.campoOperacion);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoOperacion, 4);
-		RestriccionTextField.soloNumeros(this.campoTiempoPreparacion);
-		RestriccionTextField.limitarNumeroCaracteres(this.campoTiempoPreparacion, 4);
-		RestriccionTextField.soloNumeros(this.campoTiempoOperacion);
-		RestriccionTextField.limitarNumeroCaracteres(this.campoTiempoOperacion, 4);
+		RestriccionTextField.limitarPuntoDecimal(campoTiempoPreparacion);
+		RestriccionTextField.limitarPuntoDecimal(campoTiempoOperacion);
 		RestriccionTextField.soloNumeros(this.campoCantidad);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoCantidad, 4);
 	}//FIN METODO
@@ -114,8 +113,10 @@ public class DialogoAgregarDetalleProceso {
 	private void mostrarDatosInterfaz() {
 		if (this.componente.getTipoComponente() != TipoComponente.ENSAMBLE && this.componente.getTipoComponente() != TipoComponente.SUB_ENSAMBLE) {
 			if (this.opcion == CREAR) {
-				this.campoOperacion.setUserData("");
-				this.campoOperacion.setDisable(false);
+				this.campoOperacion.setText(String.valueOf((DetalleProcesoDAO.ultimaOperacion(this.mainApp.getConnection(), syspk))+1));
+				this.campoOperacion.setEditable(false);
+				this.campoOperacion.setDisable(true);
+				this.campoOperacion.setFocusTraversable(false);
 				this.campoDescripcion.setUserData("");
 				this.campoDescripcion.setDisable(false);
 				this.campoTiempoPreparacion.setUserData("");
@@ -142,11 +143,18 @@ public class DialogoAgregarDetalleProceso {
 				this.comboBoxCentroTrabajo.setValue(this.detalleProceso.getNombreCentroTrabajo());
 				this.comboBoxCentroTrabajo.setDisable(false);
 				this.comboBoxGrupoTrabajo.setValue(this.detalleProceso.getNombreGrupoTrabajo());
+				this.comboBoxComponentes.setVisible(false);
+				this.labelComboboxParte.setVisible(false);
+				this.labelCantidad.setVisible(false);
+				this.campoCantidad.setVisible(false);
+				
 			}//FIN IF ELSE
 		} else {
 			if (this.opcion == CREAR ) {
-				this.campoOperacion.setUserData("");
-				this.campoOperacion.setDisable(false);
+				this.campoOperacion.setText(String.valueOf((DetalleProcesoDAO.ultimaOperacion(this.mainApp.getConnection(), syspk))+1));
+				this.campoOperacion.setEditable(false);
+				this.campoOperacion.setDisable(true);
+				this.campoOperacion.setFocusTraversable(false);
 				this.campoDescripcion.setUserData("");
 				this.campoDescripcion.setDisable(false);
 				this.campoTiempoPreparacion.setUserData("");
@@ -188,10 +196,6 @@ public class DialogoAgregarDetalleProceso {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción \" no puede estar vacio");
 		} else if (this.campoDescripcion.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Operacion \" no puede estar vacio");
-		} else if (this.campoTiempoPreparacion.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tiempo de preparación \" no puede estar vacio");
-		} else if (this.campoTiempoOperacion.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tiempo de operación \" no puede estar vacio");
 		} else if (this.comboBoxCentroTrabajo.getSelectionModel().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Centro de trabajo\" no puede estar vacio");
 		} else if (this.comboBoxGrupoTrabajo.getSelectionModel().isEmpty()) {
@@ -200,8 +204,14 @@ public class DialogoAgregarDetalleProceso {
 			if (this.componente.getTipoComponente() != TipoComponente.ENSAMBLE && this.componente.getTipoComponente() != TipoComponente.SUB_ENSAMBLE) {
 				this.detalleProceso.setOperacion(Integer.parseInt(this.campoOperacion.getText()));
 				this.detalleProceso.setDescripcion(this.campoDescripcion.getText());
-				this.detalleProceso.setTiempoPreparacion(Integer.parseInt(this.campoTiempoPreparacion.getText()));
-				this.detalleProceso.setTiempoOperacion(Integer.parseInt(this.campoTiempoOperacion.getText()));
+				if (campoTiempoPreparacion.getText().isEmpty())
+					this.detalleProceso.setTiempoPreparacion(0.0);
+				else
+					this.detalleProceso.setTiempoPreparacion(Double.parseDouble(this.campoTiempoPreparacion.getText()));
+				if (campoTiempoOperacion.getText().isEmpty())
+					this.detalleProceso.setTiempoOperacion(0.0);
+				else
+					this.detalleProceso.setTiempoOperacion(Double.parseDouble(this.campoTiempoOperacion.getText()));
 				this.detalleProceso.setCentroTrabajoFK(listaCentroTrabajo.get(comboBoxCentroTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setProcesoFK(this.syspk);
@@ -212,13 +222,25 @@ public class DialogoAgregarDetalleProceso {
 			} else {
 				this.detalleProceso.setOperacion(Integer.parseInt(this.campoOperacion.getText()));
 				this.detalleProceso.setDescripcion(this.campoDescripcion.getText());
-				this.detalleProceso.setTiempoPreparacion(Integer.parseInt(this.campoTiempoPreparacion.getText()));
-				this.detalleProceso.setTiempoOperacion(Integer.parseInt(this.campoTiempoOperacion.getText()));
+				if (campoTiempoPreparacion.getText().isEmpty())
+					this.detalleProceso.setTiempoPreparacion(0.0);
+				else
+					this.detalleProceso.setTiempoPreparacion(Double.parseDouble(this.campoTiempoPreparacion.getText()));
+				if (campoTiempoOperacion.getText().isEmpty())
+					this.detalleProceso.setTiempoOperacion(0.0);
+				else
+					this.detalleProceso.setTiempoOperacion(Double.parseDouble(this.campoTiempoOperacion.getText()));
 				this.detalleProceso.setCentroTrabajoFK(listaCentroTrabajo.get(comboBoxCentroTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setProcesoFK(this.syspk);
-				this.detalleProceso.setCantidad(Integer.parseInt(this.campoCantidad.getText()));
-				this.detalleProceso.setComponenteFK(listaComponente.get(comboBoxComponentes.getSelectionModel().getSelectedIndex()).getSysPK());
+				if (campoCantidad.getText().isEmpty())
+					this.detalleProceso.setCantidad(0);
+				else
+					this.detalleProceso.setCantidad(Integer.parseInt(this.campoCantidad.getText()));
+				if (comboBoxComponentes.getSelectionModel().isEmpty())
+					this.detalleProceso.setComponenteFK(0);
+				else	
+					this.detalleProceso.setComponenteFK(listaComponente.get(comboBoxComponentes.getSelectionModel().getSelectedIndex()).getSysPK());
 				
 				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN IF ELSE
