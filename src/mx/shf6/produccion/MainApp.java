@@ -49,7 +49,7 @@ import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.LeerArchivo;
 import mx.shf6.produccion.utilities.Notificacion;
-import mx.shf6.produccion.view.DialogoAcabado;
+import mx.shf6.produccion.view.DialogoAgregarAcabado;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
 import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
 import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
@@ -71,7 +71,7 @@ import mx.shf6.produccion.view.DialogoEsquemaSeguridad;
 import mx.shf6.produccion.view.DialogoEstructuraNiveles;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoGrupoUsuario;
-import mx.shf6.produccion.view.DialogoMaterial;
+import mx.shf6.produccion.view.DialogoAgregarMaterial;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import mx.shf6.produccion.view.DialogoPartesPrimarias;
 import mx.shf6.produccion.view.DialogoPermiso;
@@ -79,11 +79,11 @@ import mx.shf6.produccion.view.DialogoProceso;
 import mx.shf6.produccion.view.DialogoProyectos;
 import mx.shf6.produccion.view.DialogoProyectosCliente;
 import mx.shf6.produccion.view.DialogoPuesto;
-import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
-import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
-import mx.shf6.produccion.view.DialogoTratamiento;
+import mx.shf6.produccion.view.DialogoAgregarTipoMateriaPrima;
+import mx.shf6.produccion.view.DialogoAgregarTipoMiscelaneo;
+import mx.shf6.produccion.view.DialogoAgregarTratamiento;
 import mx.shf6.produccion.view.DialogoUsuario;
-import mx.shf6.produccion.view.PantallaAcabado;
+import mx.shf6.produccion.view.DialogoAcabado;
 import mx.shf6.produccion.view.PantallaAlmacen;
 import mx.shf6.produccion.view.PantallaCabecera;
 import mx.shf6.produccion.view.PantallaCentroTrabajo;
@@ -96,16 +96,16 @@ import mx.shf6.produccion.view.PantallaEmpleado;
 import mx.shf6.produccion.view.PantallaExistencia;
 import mx.shf6.produccion.view.PantallaGrupoTrabajo;
 import mx.shf6.produccion.view.PantallaInicio;
-import mx.shf6.produccion.view.PantallaMaterial;
+import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
 import mx.shf6.produccion.view.PantallaProceso;
 import mx.shf6.produccion.view.PantallaPuesto;
 import mx.shf6.produccion.view.PantallaSesion;
-import mx.shf6.produccion.view.PantallaTipoMateriaPrima;
-import mx.shf6.produccion.view.PantallaTratamiento;
+import mx.shf6.produccion.view.DialogoTipoMateriaPrima;
+import mx.shf6.produccion.view.DialogoTipoMiscelaneo;
+import mx.shf6.produccion.view.DialogoTratamiento;
 import mx.shf6.produccion.view.PantallaUsuario;
-import mx.shf6.produccion.view.PantallaTipoMiscelaneo;
-
+import mx.shf6.produccion.view.PantallaOrdenProduccion;
 
 public class MainApp extends Application {
 
@@ -131,11 +131,6 @@ public class MainApp extends Application {
 	private AnchorPane pantallaCotizaciones;
 	private AnchorPane pantallaDetalleCotizacion;
 	private AnchorPane pantallaComponente;
-	private AnchorPane pantallaTipoMateriaPrima;
-	private AnchorPane pantallaTipoMiscelaneo;
-	private AnchorPane pantallaMaterial;
-	private AnchorPane pantallaAcabado;
-	private AnchorPane pantallaTratamiento;
 	private AnchorPane pantallaPuesto;
 	private AnchorPane pantallaGrupoTrabajo;
 	private AnchorPane pantallaCentroTrabajo;
@@ -153,11 +148,12 @@ public class MainApp extends Application {
 	private AnchorPane dialogoComponente;
 	private AnchorPane dialogoDetalleComponente;
 	private AnchorPane dialogoAgregarDetalleComponente;
-	private AnchorPane dialogoTipoMateriaPrima;
 	private AnchorPane dialogoTipoMiscelaneo;
 	private AnchorPane dialogoMaterial;
 	private AnchorPane dialogoAcabado;
+	private AnchorPane dialogoAgregarAcabado;
 	private AnchorPane dialogoTratamiento;
+	private AnchorPane dialogoAgregarTratamiento;
 	private AnchorPane dialogoCotizacionCliente;
 	private AnchorPane dialogoProyectos;
 	private AnchorPane dialogoProyectosCliente;
@@ -181,6 +177,10 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAgregarPermiso;
 	private AnchorPane dialogoEstructuraNiveles;
 	private AnchorPane dialogoPartesPrimarias;
+	private AnchorPane pantallaOrdenProduccion;
+	private AnchorPane dialogoTipoMateriaPrima;
+	private AnchorPane dialogoAgregarTipoMateriaPrima;
+	private AnchorPane dialogoAgregarMaterial;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -188,6 +188,7 @@ public class MainApp extends Application {
 	//VARIABLES
 	private double xOffset = 0.0;
 	private double yOffset = 0.0;
+	private AnchorPane dialogoAgregarTipoMiscelaneo;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -217,10 +218,10 @@ public class MainApp extends Application {
 	}//FIN METODO
 
 	private void configurarBaseDatos() {
-		LeerArchivo.leerArchivo();
-		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
-//		this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
-//		this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.216", "conn01", "Simons83Mx");
+		//LeerArchivo.leerArchivo();
+		//this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
+		this.conexionBD = new ConnectionDB("produccion_mfg2","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+		//this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.216", "conn01", "Simons83Mx");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		this.conexionBD.start();
@@ -539,82 +540,20 @@ public class MainApp extends Application {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
-
-
-	//INICIAR PANTALLA TIPO MATERIA PRIMA
-	public void iniciarPantallaTipoMateriaPrima() {
+	
+	public void iniciarPantallaOrdenProduccion() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaTipoMateriaPrima.fxml"));
-			this.pantallaTipoMateriaPrima = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaTipoMateriaPrima);
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaOrdenProduccion.fxml"));
+			this.pantallaOrdenProduccion = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaOrdenProduccion);
 
-			PantallaTipoMateriaPrima pantallaTipoMateriaPrima = fxmlLoader.getController();
-			pantallaTipoMateriaPrima.setMainApp(this);
-		} catch(IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
+			PantallaOrdenProduccion pantallaOrdenProduccion = fxmlLoader.getController();
+			pantallaOrdenProduccion.setMainApp(this);
+ 		} catch(IOException | IllegalStateException ex) {
+ 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-	}//FIN METODO
-
-	//INICIAR PANTALLA TIPO MATERIA PRIMA
-	public void iniciarPantallaTipoMiscelaneo() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaTipoMiscelaneo.fxml"));
-			this.pantallaTipoMiscelaneo = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaTipoMiscelaneo);
-
-			PantallaTipoMiscelaneo pantallaTipoMiscelaneo = fxmlLoader.getController();
-			pantallaTipoMiscelaneo.setMainApp(this);
-		} catch(IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-	}//FIN METODO
-
-	//INICIAR PANTALLA MATERIAL
-	public void iniciarPantallaMaterial() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaMaterial.fxml"));
-			this.pantallaMaterial = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaMaterial);
-
-			PantallaMaterial pantallaMaterial = fxmlLoader.getController();
-			pantallaMaterial.setMainApp(this);
-		} catch(IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-	}//FIN METODO
-
-	//INICIAR PANTALLA ACABADO
-	public void iniciarPantallaAcabado() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaAcabado.fxml"));
-			this.pantallaAcabado = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaAcabado);
-
-			PantallaAcabado pantallaAcabado = fxmlLoader.getController();
-			pantallaAcabado.setMainApp(this);
-		} catch(IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-	}//FIN METODO
-
-	//INICIAR PANTALLA ACABADO
-	public void iniciarPantallaTratamiento() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaTratamiento.fxml"));
-			this.pantallaTratamiento = (AnchorPane) fxmlLoader.load();
-			this.pantallaBase.setCenter(this.pantallaTratamiento);
-
-			PantallaTratamiento pantallaTratamiento = fxmlLoader.getController();
-			pantallaTratamiento.setMainApp(this);
-		} catch(IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN TRY/CATCH
-	}//FIN METODO
+ 	}//FIN METODO
 
 	//INICIAR PANTALLA PUESTO
 	public void iniciarPantallaPuesto() {
@@ -854,96 +793,6 @@ public class MainApp extends Application {
 		}//FIN METODO
 	}//FIN METODO
 
-	public void iniciarDialogoTipoMateriaPrima(TipoMateriaPrima tipoMateriaPrima, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoMateriaPrima.fxml"));
-			this.dialogoTipoMateriaPrima = (AnchorPane) fxmlLoader.load();
-
-			Scene escenaDialogoTipoMateriaPrima = this.iniciarEscenarioDialogos(this.dialogoTipoMateriaPrima);
-			this.escenarioDialogos.setScene(escenaDialogoTipoMateriaPrima);
-
-			DialogoTipoMateriaPrima dialogoTipoMateriaPrima = fxmlLoader.getController();
-			dialogoTipoMateriaPrima.setMainApp(this, tipoMateriaPrima, opcion);
-
-			this.escenarioDialogos.showAndWait();
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN METODO
-	}//FIN METODO
-
-	public void iniciarDialogoTipoMiscelaneo(TipoMiscelaneo tipoMiscelaneo, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoMiscelaneo.fxml"));
-			this.dialogoTipoMiscelaneo = (AnchorPane) fxmlLoader.load();
-
-			Scene escenaDialogoTipoMiscelaneo = this.iniciarEscenarioDialogos(this.dialogoTipoMiscelaneo);
-			this.escenarioDialogos.setScene(escenaDialogoTipoMiscelaneo);
-
-			DialogoTipoMiscelaneo dialogoTipoMiscelaneo = fxmlLoader.getController();
-			dialogoTipoMiscelaneo.setMainApp(this, tipoMiscelaneo, opcion);
-
-			this.escenarioDialogos.showAndWait();
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN METODO
-	}//FIN METODO
-
-	public void iniciarDialogoMaterial(Material material, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoMaterial.fxml"));
-			this.dialogoMaterial = (AnchorPane) fxmlLoader.load();
-
-			Scene escenaDialogoMaterial = this.iniciarEscenarioDialogos(this.dialogoMaterial);
-			this.escenarioDialogos.setScene(escenaDialogoMaterial);
-
-			DialogoMaterial dialogoMaterial = fxmlLoader.getController();
-			dialogoMaterial.setMainApp(this, material, opcion);
-
-			this.escenarioDialogos.showAndWait();
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN METODO
-	}//FIN METODO
-
-	public void iniciarDialogoAcabado(Acabado acabado, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAcabado.fxml"));
-			this.dialogoAcabado = (AnchorPane) fxmlLoader.load();
-
-			Scene escenaDialogoAcabado = this.iniciarEscenarioDialogos(this.dialogoAcabado);
-			this.escenarioDialogos.setScene(escenaDialogoAcabado);
-
-			DialogoAcabado dialogoAcabado = fxmlLoader.getController();
-			dialogoAcabado.setMainApp(this, acabado, opcion);
-
-			this.escenarioDialogos.showAndWait();
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN METODO
-	}//FIN METODO
-
-	public void iniciarDialogoTratamiento(Tratamiento tratamiento, int opcion) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTratamiento.fxml"));
-			this.dialogoTratamiento = (AnchorPane) fxmlLoader.load();
-
-			Scene escenaDialogoTratamiento = this.iniciarEscenarioDialogos(this.dialogoTratamiento);
-			this.escenarioDialogos.setScene(escenaDialogoTratamiento);
-
-			DialogoTratamiento dialogoTratamiento = fxmlLoader.getController();
-			dialogoTratamiento.setMainApp(this, tratamiento, opcion);
-
-			this.escenarioDialogos.showAndWait();
-		} catch (IOException | IllegalStateException ex) {
-			Notificacion.dialogoException(ex);
-		}//FIN METODO
-	}//FIN METODO
-
 	public void iniciarDialogoProyectosCliente(Proyecto proyecto, int opcion, Cliente cliente) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -979,6 +828,8 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN METODO
     }//FIN METODO
+	
+	
 
 	public void iniciarDialogoCotizacionCliente(Cliente cliente) {
 		try {
@@ -1200,6 +1051,186 @@ public class MainApp extends Application {
         }//FIN TRY/CATCH
     }//FIN METODO
 
+	public void iniciarDialogoTipoMateriaPrima() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoMateriaPrima.fxml"));
+            this.dialogoTipoMateriaPrima = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoTipoMateriaPrima = this.iniciarEscenarioDialogos(this.dialogoTipoMateriaPrima);
+            this.escenarioDialogos.setScene(escenaDialogoTipoMateriaPrima);
+
+            DialogoTipoMateriaPrima dialogoTipoMateriaPrima = fxmlLoader.getController();
+            dialogoTipoMateriaPrima.setMainApp(this);
+
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarTipoMateriaPrima(TipoMateriaPrima tipoMateriaPrima, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarTipoMateriaPrima.fxml"));
+            this.dialogoAgregarTipoMateriaPrima = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoAgregarTipoMateriaPrima = this.iniciarEscenarioDialogos(this.dialogoAgregarTipoMateriaPrima);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarTipoMateriaPrima);
+
+            DialogoAgregarTipoMateriaPrima dialogoAgregarTipoMateriaPrima = fxmlLoader.getController();
+            dialogoAgregarTipoMateriaPrima.setMainApp(this, tipoMateriaPrima, opcion);
+
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoMaterial() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoMaterial.fxml"));
+            this.dialogoMaterial = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoMaterial = this.iniciarEscenarioDialogos(this.dialogoMaterial);
+            this.escenarioDialogos.setScene(escenaDialogoMaterial);
+
+            DialogoMaterial dialogoMaterial = fxmlLoader.getController();
+            dialogoMaterial.setMainApp(this);
+
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarMaterial(Material material, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarMaterial.fxml"));
+            this.dialogoAgregarMaterial = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoAgregarMaterial = this.iniciarEscenarioDialogos(this.dialogoAgregarMaterial);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarMaterial);
+
+            DialogoAgregarMaterial dialogoAgregarMaterial = fxmlLoader.getController();
+            dialogoAgregarMaterial.setMainApp(this, material, opcion);
+
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoTipoMiscelaneo() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTipoMiscelaneo.fxml"));
+            this.dialogoTipoMiscelaneo = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoTipoMiscelaneo = this.iniciarEscenarioDialogos(this.dialogoTipoMiscelaneo);
+            this.escenarioDialogos.setScene(escenaDialogoTipoMiscelaneo);
+
+            DialogoTipoMiscelaneo dialogoTipoMiscelaneo = fxmlLoader.getController();
+            dialogoTipoMiscelaneo.setMainApp(this);
+
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarTipoMiscelaneo(TipoMiscelaneo tipoMiscelaneo, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarTipoMiscelaneo.fxml"));
+            this.dialogoAgregarTipoMiscelaneo = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoAgregarTipoMiscelaneo = this.iniciarEscenarioDialogos(this.dialogoAgregarTipoMiscelaneo);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarTipoMiscelaneo);
+
+            DialogoAgregarTipoMiscelaneo dialogoAgregarTipoMiscelaneo = fxmlLoader.getController();
+            dialogoAgregarTipoMiscelaneo.setMainApp(this, tipoMiscelaneo, opcion);
+
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAcabado() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAcabado.fxml"));
+            this.dialogoAcabado = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoAcabado = this.iniciarEscenarioDialogos(this.dialogoAcabado);
+            this.escenarioDialogos.setScene(escenaDialogoAcabado);
+
+            DialogoAcabado dialogoAcabado = fxmlLoader.getController();
+            dialogoAcabado.setMainApp(this);
+
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarAcabado(Acabado acabado, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarAcabado.fxml"));
+            this.dialogoAgregarAcabado = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoAgregarAcabado = this.iniciarEscenarioDialogos(this.dialogoAgregarAcabado);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarAcabado);
+
+            DialogoAgregarAcabado dialogoAgregarAcabado = fxmlLoader.getController();
+            dialogoAgregarAcabado.setMainApp(this, acabado, opcion);
+
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoTratamiento() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoTratamiento.fxml"));
+            this.dialogoTratamiento = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoTratamiento = this.iniciarEscenarioDialogos(this.dialogoTratamiento);
+            this.escenarioDialogos.setScene(escenaDialogoTratamiento);
+
+            DialogoTratamiento dialogoTratamiento = fxmlLoader.getController();
+            dialogoTratamiento.setMainApp(this);
+
+            this.escenarioDialogos.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
+	public void iniciarDialogoAgregarTratamiento(Tratamiento tratamiento, int opcion) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarTratamiento.fxml"));
+            this.dialogoAgregarTratamiento = (AnchorPane) fxmlLoader.load();
+
+            Scene escenaDialogoAgregarTratamiento = this.iniciarEscenarioDialogos(this.dialogoAgregarTratamiento);
+            this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarTratamiento);
+
+            DialogoAgregarTratamiento dialogoAgregarTratamiento = fxmlLoader.getController();
+            dialogoAgregarTratamiento.setMainApp(this, tratamiento, opcion);
+
+            this.escenarioDialogosAlterno.showAndWait();
+        } catch(IOException | IllegalStateException ex) {
+            Notificacion.dialogoException(ex);
+        }//FIN TRY/CATCH
+    }//FIN METODO
+	
 	public DetalleProceso iniciarDialogoAgregarDetalleProceso(DetalleProceso detalleProceso, int opcion, int procesoFK, Componente componente) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
