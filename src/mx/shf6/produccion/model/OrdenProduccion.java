@@ -182,4 +182,20 @@ public class OrdenProduccion {
 	public ObjectProperty<Date> fechaEntregaProperty(){
 		return this.fechaEntrega;
 	}//FIN METODO
+	
+	public StringProperty descripcionStatusProperty() {
+		switch (this.getStatus()) {
+			case 0:
+				return new SimpleStringProperty("Pendiente");
+			case 1:
+				return new SimpleStringProperty("En proceso");
+			case 2:
+				return new SimpleStringProperty("En paro");
+			case 3: 
+				return new SimpleStringProperty("Terminado");
+			case 4:
+			return new SimpleStringProperty("Entregado");
+		}//FIN SWITCH
+		return new SimpleStringProperty();
+	}//FIN METODO
 }//FIN CLASE
