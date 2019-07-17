@@ -60,12 +60,7 @@ public class ControlOperacionesDAO {
 	
 	public static ArrayList<ControlOperacion> readLote(Connection connection, String lote) {
 		ArrayList<ControlOperacion> listaControlOperacionesLote = new ArrayList<ControlOperacion>();
-		String consulta = "SELECT controloperaciones.Sys_PK, controloperaciones.Cantidad, MAX(HoraFechaInicio), controloperaciones.HoraFechaFinal,\r\n" + 
-				"controloperaciones.CentroTrabajoFK, controloperaciones.CodigoParoFK, controloperaciones.ComponenteFK, controloperaciones.DetalleProcesoFK,\r\n" + 
-				"controloperaciones.DetalleOrdenProduccionFK, detalleordenesproduccion.NumeroSerie, ordenesproduccion.Lote FROM controloperaciones \r\n" + 
-				"RIGHT JOIN detalleordenesproduccion ON controloperaciones.DetalleOrdenProduccionFK = detalleordenesproduccion.Sys_PK\r\n" + 
-				"INNER JOIN ordenesproduccion ON detalleordenesproduccion.OrdenProduccionFK = ordenesproduccion.Sys_PK\r\n" + 
-				"HAVING ordenesproduccion.Lote = " + lote;
+		String consulta = "SELECT controloperaciones.Sys_PK, controloperaciones.Cantidad, MAX(controloperaciones.HoraFechaInicio) AS fecha, controloperaciones.HoraFechaFinal, controloperaciones.CentroTrabajoFK, controloperaciones.CodigoParoFK, controloperaciones.ComponenteFK, controloperaciones.DetalleProcesoFK, controloperaciones.DetalleOrdenProduccionFK, detalleordenesproduccion.NumeroSerie, ordenesproduccion.Lote FROM controloperaciones INNER JOIN detalleordenesproduccion ON controloperaciones.DetalleOrdenProduccionFK = detalleordenesproduccion.Sys_PK INNER JOIN ordenesproduccion ON detalleordenesproduccion.OrdenProduccionFK = ordenesproduccion.Sys_PK WHERE ordenesproduccion.Lote = '" + lote + "' GROUP BY DetalleOrdenProduccionFK";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

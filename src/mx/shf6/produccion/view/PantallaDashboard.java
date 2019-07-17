@@ -22,8 +22,10 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import mx.shf6.produccion.MainApp;
+import mx.shf6.produccion.model.ControlOperacion;
 import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.OrdenProduccion;
+import mx.shf6.produccion.model.dao.ControlOperacionesDAO;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
@@ -188,6 +190,7 @@ public class PantallaDashboard extends Thread{
 		int sysPKLote = OrdenProduccionDAO.sysPKOrdenProduccion(this.connection, this.comboLotes2.getValue());
 		int diasFaltantes = 0;
 		int diasTranscurridos = 0;
+		int totalDias = 0;
     	orden = OrdenProduccionDAO.fechasPorLote(this.connection, sysPKLote);
     	this.root.getChildren().clear();
         
@@ -200,6 +203,7 @@ public class PantallaDashboard extends Thread{
         }else {        	
         	diasTranscurridos = (int) ((fechaActual.getTime() - orden.getFecha().getTime())/86400000);
     		diasFaltantes = (int) ((orden.getFechaEntrega().getTime() - fechaActual.getTime())/86400000);
+    		totalDias = (int) ((orden.getFechaEntrega().getTime() - orden.getFecha().getTime())/86400000);
             this.fechaInicio.setText(orden.getFecha().toString());
             this.fechaFinal.setText(orden.getFechaEntrega().toString());
             this.diasTranscurridos.setText(Integer.toString(diasTranscurridos));
@@ -208,13 +212,13 @@ public class PantallaDashboard extends Thread{
             else
             	this.diasFaltantes.setText(Integer.toString(diasFaltantes));
             //FIN IF-ELSE
-            this.lasSeries();
+            this.lasSeries(totalDias, diasTranscurridos);
         }//FIN IF-ELSE
         
         //LINEA DEL TIEMPO	
         if (diasFaltantes > 3)
         	this.graficaLineaTiempo.setFill(Color.GREEN);
-        else if (diasFaltantes ==3)
+        else if (diasFaltantes <= 3 && diasFaltantes > 0)
         	this.graficaLineaTiempo.setFill(Color.YELLOW);
         else if (diasFaltantes <= 0)
         	this.graficaLineaTiempo.setFill(Color.RED);
@@ -223,41 +227,52 @@ public class PantallaDashboard extends Thread{
         this.graficaLineaTiempo.setFill(Color.BLACK);
         this.graficaLineaTiempo.setLineWidth(5);
         this.graficaLineaTiempo.strokeLine(100, 88, 100, 212);
-        this.graficaLineaTiempo.strokeLine(600, 88, 600, 212);
-        
-        
-       
+        this.graficaLineaTiempo.strokeLine(600, 88, 600, 212);       
 	}//FIN METODO
 	
-	private void lasSeries() {
+	private void lasSeries(int totalDias, int diasTranscurridos) {
 		this.root.getChildren().add(this.canvas);
-		int sysPK = 0;
+		double avanza = 0.0;
 		int x = 100;
 		int y = 90;
-		sysPK = OrdenProduccionDAO.sysPKOrdenProduccion(this.connection, this.comboLotes2.getValue());
-		for (DetalleOrdenProduccion orden : DetalleOrdenProduccionDAO.readDetalleLoteProduccion(this.connection, sysPK)) {
-			Label n = new Label();
-			Circle c = new Circle();
-			c.setRadius(3.5);
-			c.setFill(Color.BLUEVIOLET);
-			c.setStroke(Color.BLACK);
-			n.setGraphic(c);
-			n.setCursor(Cursor.HAND);
-			n.setLayoutX(x);
-			n.setLayoutY(y);
+		
+		for (ControlOperacion orden : ControlOperacionesDAO.readLote(this.connection, this.comboLotes2.getValue())) {
+			Label label = new Label();
+			Circle circle = new Circle();
+			avanza = (diasTranscurridos * 100)/totalDias;
+			circle.setRadius(3.5);
+			circle.setFill(Color.BLUEVIOLET);
+			circle.setStroke(Color.BLACK);
+			label.setGraphic(circle);
+			label.setCursor(Cursor.HAND);
+			if (avanza >= 0 && avanza < 20) 
+				label.setLayoutX(x);
+			else if (avanza >= 20 && avanza < 40 ) 
+				label.setLayoutX(x + 100);
+			else if (avanza >= 40 && avanza < 60)
+				label.setLayoutX(x + 200);
+			else if (avanza >= 60 && avanza < 80) 
+				label.setLayoutX(x + 300);
+			else if (avanza >= 80 && avanza < 100) 
+				label.setLayoutX(x + 400);
+			else if (avanza == 100) 
+				label.setLayoutX(600);
+			//FIN IF-ELSE
+			
+			label.setLayoutY(y);
 			if (y == 190) {
 				x = x + 8;
 				y= 100;
 			}else {
 				y = y + 8;
 			}//FIN IF-ELSE
-			n.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					Notificacion.dialogoDetalleMensaje(orden.getNumeroSerie());
+					Notificacion.dialogoDetalleMensaje(orden.getNumeroSerie() + " - " + orden.getHoraFechaInicio());
 				}//FIN METODO
 			});//FIN LISTENER
-			this.root.getChildren().add(n);
+			this.root.getChildren().add(label);
 		}//FIN FOR
 	}//FIN METODO
 	
