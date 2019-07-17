@@ -423,7 +423,7 @@ public class DialogoComponente {
 					this.componente.setTratamientoFK(TratamientoDAO.readTratamiento(this.mainApp.getConnection(), this.comboBoxTratamiento.getSelectionModel().getSelectedItem()).get(0).getSysPK());
 				
 				if(checkHabilitar.isSelected()) {
-					this.componente.setEsInterno(0);
+					this.componente.setEsInterno(1);
 					this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
 				} else {
 					if (this.componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE || this.componente.getTipoComponente() == TipoComponente.PARTE_PRIMARIA)
@@ -439,7 +439,7 @@ public class DialogoComponente {
 						this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
 					else
 						this.componente.setNumeroParte(this.componente.doNumeroParte(this.mainApp.getConnection()));
-					this.componente.setEsInterno(1);
+					this.componente.setEsInterno(0);
 				}
 				
 				this.componente.setDescripcion(this.campoTextoDescripcion.getText());
