@@ -90,8 +90,8 @@ public class DialogoPartesPrimarias {
 		i++;
 		componenteRaiz = ComponenteDAO.readComponente(conexion, componenteFK);
 		if(i==1){
-			this.campoTextoComponente.setText(componenteRaiz.getDescripcion());
 			this.nombreNumeroComponente = componenteRaiz.getDescripcion().toUpperCase() + " " + componenteRaiz.getNumeroParte();
+			this.campoTextoComponente.setText(this.nombreNumeroComponente);
 		}
 
 		if (componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE)){
