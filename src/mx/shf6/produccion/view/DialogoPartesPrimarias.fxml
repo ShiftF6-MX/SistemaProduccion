@@ -36,7 +36,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <image>
-                              <Image url="@images/1x/OpcionesBoton.png" />
+                              <Image url="@images/1x/ImprimirBoton.png" />
                            </image>
                            <HBox.margin>
                               <Insets />
