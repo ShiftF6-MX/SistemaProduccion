@@ -3,7 +3,8 @@ package mx.shf6.produccion.view;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -99,12 +100,26 @@ public class DialogoCotizacion {
 			this.listaLetraFolio.add(folio.getFolio());
 		this.comboBoxClientes.setItems(listaNombreClientes);
 		this.comboBoxFolio.setItems(listaLetraFolio);
+		this.comboBoxMonedas.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue == "MXN") {
+					campoTextoTipoCambio.setText("1");
+					campoTextoTipoCambio.setDisable(true);
+				}else {
+					campoTextoTipoCambio.setText("");
+					campoTextoTipoCambio.setDisable(false);
+				}//FIN IF
+			}//FIN METODO
+		});//FIN LISTENER
 		this.mostrarDatosInterfaz();
 	}//FIN METODO	
 		
 	//MUESTRA DATOS DEL LA SOLICITUD
 	private void mostrarDatosInterfaz() {
 		if (this.opcion == CREAR) {
+			this.comboBoxFolio.getSelectionModel().select(0);
+			this.comboBoxFolio.setDisable(true);
 			if(this.cliente != null) {
 				this.comboBoxClientes.getSelectionModel().select(this.cliente.getNombre());
 				this.comboBoxClientes.setDisable(true);
@@ -130,8 +145,6 @@ public class DialogoCotizacion {
 			this.campoTextoCondicionPago.setDisable(false);
 			this.comboBoxMonedas.getSelectionModel().select("");
 			this.comboBoxMonedas.setDisable(false);
-			this.campoTextoTipoCambio.setText("");
-			this.campoTextoTipoCambio.setDisable(false);
 			this.campoTextoObservaciones.setText("");
 			this.campoTextoObservaciones.setDisable(false);
 			this.campoTextoVigencia.setText("");

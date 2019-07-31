@@ -157,11 +157,11 @@ public class DialogoClientes  {
 			this.localidadField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getLocalidad());
 			this.localidadField.setDisable(true);
 			
-			this.municipioCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getMunicipio());
-			this.municipioCombo.setDisable(true);
-			
 			this.estadoCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getEstado());
 			this.estadoCombo.setDisable(true);
+			
+			this.municipioCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getMunicipio());
+			this.municipioCombo.setDisable(true);
 			
 			this.codigoPostalField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getCodigoPostal());
 			this.codigoPostalField.setDisable(true);
@@ -262,11 +262,11 @@ public class DialogoClientes  {
 			this.localidadField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getLocalidad());
 			this.localidadField.setDisable(false);
 			
-			this.municipioCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getMunicipio());
-			this.municipioCombo.setDisable(false);
-			
 			this.estadoCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getEstado());
 			this.estadoCombo.setDisable(false);
+			
+			this.municipioCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getMunicipio());
+			this.municipioCombo.setDisable(false);
 			
 			this.codigoPostalField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getCodigoPostal());
 			this.codigoPostalField.setDisable(false);
@@ -298,7 +298,7 @@ public class DialogoClientes  {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Correo\" no puede estar vacio");
 			return false;
 		} else if (this.statusCombo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Status\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Estado Cliente\" no puede estar vacio");
 			return false;
 		}else if (this.calleField.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Calle\" no puede estar vacio");
@@ -321,7 +321,10 @@ public class DialogoClientes  {
 		}else if (this.codigoPostalField.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Codigo Postal\" no puede estar vacio");
 			return false;
-		}//FIN IF/ESLE
+		}else if (RestriccionTextField.validarEmail(this.correoField.getText()) == false) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El correo no es valido.");
+			return false;
+		}//FIN IF-ELSE
 		return true;		
 	}//FIN METODO
 	
@@ -369,8 +372,7 @@ public class DialogoClientes  {
 						
 						if (ClienteDAO.createCliente(this.mainApp.getConnection(), this.cliente)) {
 							this.mainApp.getConnection().commit();
-							this.mainApp.getConnection().setAutoCommit(true);
-							
+														
 							File ruta = new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText() + "\\Proyectos");
 							ruta.mkdirs();
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
@@ -378,12 +380,10 @@ public class DialogoClientes  {
 							this.mainApp.getEscenarioDialogos().close();
 						} else {
 							this.mainApp.getConnection().rollback();
-							this.mainApp.getConnection().setAutoCommit(true);
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
 						}
 					}else {
 						this.mainApp.getConnection().rollback();
-						this.mainApp.getConnection().setAutoCommit(true);
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
 					}	//FIN IF
 				} catch (SQLException e) {
@@ -451,7 +451,7 @@ public class DialogoClientes  {
 	
 	private int proyectosRealizados(int clienteFK) {
 		int contador = 0;
-		for(Proyecto proyecto : ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), clienteFK)) {
+		for(@SuppressWarnings("unused") Proyecto proyecto : ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), clienteFK)) {
 			contador = contador + 1;
 		}
 		return contador;

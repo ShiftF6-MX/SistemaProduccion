@@ -77,9 +77,7 @@ public class ArchivoProyectoDAO {
 		ArrayList<ArchivoProyecto> arrayListArchivoProyecto = new ArrayList<ArchivoProyecto>();
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion,ProyectoFK "
 				+ "FROM archivoproyectos "
-				+ "WHERE Codigo LIKE '%" + like + "%'"
-				+ " OR Descripcion LIKE '%" + like + "%'"
-				+ " AND ProyectoFK=" + proyectoFK;
+				+ "WHERE (Codigo LIKE '%" + like + "%' OR Descripcion LIKE '%" + like + "%') AND ProyectoFK = " + proyectoFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

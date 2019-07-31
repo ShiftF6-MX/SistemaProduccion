@@ -1,7 +1,11 @@
 package mx.shf6.produccion.utilities;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+
 
 public class RestriccionTextField {
 	
@@ -33,6 +37,15 @@ public class RestriccionTextField {
 	            event.consume();
 	        }//FIN IF
 	    });//FIN METODO
+	}//FIN METODO
+	
+	public static final boolean validarEmail(String mail) {
+		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        
+		Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(mail);
+       
+        return matcher.matches();
 	}//FIN METODO
 
 }//FIN CLASE
