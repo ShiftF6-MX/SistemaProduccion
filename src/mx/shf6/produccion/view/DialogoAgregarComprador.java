@@ -33,13 +33,13 @@ public class DialogoAgregarComprador {
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
-		this.comprador = new Comprador();
 	}//FIN METODO
 	
-	public void setMainApp(MainApp mainApp, Cliente cliente, int opcion) {
+	public void setMainApp(MainApp mainApp, Comprador comprador, Cliente cliente, int opcion) {
 		this.mainApp = mainApp;
 		this.cliente = cliente;
 		this.opcion = opcion;
+		this.comprador = comprador;
 		this.inicializarComponentes();
 	}
 	
@@ -102,6 +102,7 @@ public class DialogoAgregarComprador {
 	@FXML private void manejadorBotonAceptar() {
 		if (this.validarDatos()) {
 			if (this.opcion == CREAR) {
+				this.comprador = new Comprador();
 				this.comprador.setNombre(this.campoNombre.getText());
 				this.comprador.setCorreo(this.campoCorreo.getText());
 				this.comprador.setTelefono(this.campoTelefono.getText());
