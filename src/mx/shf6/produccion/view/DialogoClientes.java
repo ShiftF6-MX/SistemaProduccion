@@ -312,10 +312,10 @@ public class DialogoClientes  {
 		}else if (this.localidadField.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Localidad\" no puede estar vacio");
 			return false;
-		}else if (this.estadoCombo.getSelectionModel().getSelectedItem().isEmpty()) {
+		}else if (this.estadoCombo.getEditor().getText().equals("") || this.estadoCombo.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Estado\" no puede estar vacio");
 			return false;
-		}else if (this.municipioCombo.getSelectionModel().getSelectedItem().isEmpty()) {
+		}else if (this.municipioCombo.getEditor().getText().equals("") || this.municipioCombo.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Municipio\" no puede estar vacio");
 			return false;
 		}else if (this.codigoPostalField.getText().isEmpty()) {

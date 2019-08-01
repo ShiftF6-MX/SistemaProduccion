@@ -23,7 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
-import mx.shf6.produccion.model.Componente;
+//import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -113,10 +113,10 @@ public class DialogoProyectos {
 				final Button botonEditar = new Button("Editar");
 				final Button botonArchivo = new Button("Archivo");
 				final Button botonEliminar = new Button("Eliminar");
-				final Button botonListaComponentes = new Button("Lista Componentes");
+				//final Button botonListaComponentes = new Button("Lista Componentes");
 				final Button botonEstructuraNiveles = new Button("EstructuraNiveles");
 				final Button botonPartesPrimarias = new Button("PartesPrimarias");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo,botonListaComponentes, botonEstructuraNiveles, botonPartesPrimarias);
+				final HBox cajaBotones = new HBox(botonVer, botonEditar,botonEliminar,botonArchivo, botonEstructuraNiveles, botonPartesPrimarias);
 
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -153,13 +153,13 @@ public class DialogoProyectos {
 		        	botonArchivo.setCursor(Cursor.HAND);
 		        	botonArchivo.setTooltip(new Tooltip("Documento registro"));
 
-		        	botonListaComponentes.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
+		        /*	botonListaComponentes.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DibujoIcono.png"))));
 		        	botonListaComponentes.setPrefSize(16.0, 16.0);
 		        	botonListaComponentes.setPadding(Insets.EMPTY);
 		        	botonListaComponentes.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		        	botonListaComponentes.setStyle("-fx-background-color: transparent;");
 		        	botonListaComponentes.setCursor(Cursor.HAND);
-		        	botonListaComponentes.setTooltip(new Tooltip("Lista componentes"));
+		        	botonListaComponentes.setTooltip(new Tooltip("Lista componentes"));*/
 
 		        	botonEstructuraNiveles.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ProyectoIcono.png"))));
 		        	botonEstructuraNiveles.setPrefSize(16.0, 16.0);
@@ -205,10 +205,10 @@ public class DialogoProyectos {
 							manejadorBotonEliminar(proyecto);
 						});//FIN MANEJADDOR
 
-						botonListaComponentes.setOnAction(event -> {
+						/*botonListaComponentes.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
 							manejadorBotonListaComponentes(proyecto);
-						});//FIN MANEJADDOR
+						});//FIN MANEJADDOR*/
 
 						botonEstructuraNiveles.setOnAction(event -> {
 							proyecto = getTableView().getItems().get(getIndex());
@@ -264,9 +264,9 @@ public class DialogoProyectos {
 		this.actualizarTabla();
 	}//FIN METODO
 
-	private void manejadorBotonListaComponentes(Proyecto proyecto) {
+	/*private void manejadorBotonListaComponentes(Proyecto proyecto) {
 		Notificacion.dialogoDetalleMensaje(Componente.mostrarInformacionEnsamble(this.mainApp.getConnection(), proyecto.getComponente(this.mainApp.getConnection()), 0, ""));
-	}//FIN METODO
+	}//FIN METODO*/
 
 	private void manejadorBotonEstructuraNiveles(Proyecto proyecto) {
 		this.mainApp.iniciarDialogoEstructuraNiveles(proyecto);
