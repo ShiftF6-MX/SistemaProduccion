@@ -8,13 +8,13 @@ import javafx.beans.property.StringProperty;
 public class Comprador {
 	
 	//PROPIEDADES
-	public ObjectProperty<Integer> sysPK;
-	public StringProperty nombre;
-	public StringProperty correo;
-	public StringProperty telefono;
-	public StringProperty telefonoAuxiliar;
-	public StringProperty areaDepartamento;
-	public ObjectProperty<Integer> clienteFK;
+	private ObjectProperty<Integer> sysPK;
+	private StringProperty nombre;
+	private StringProperty correo;
+	private StringProperty telefono;
+	private StringProperty telefonoAuxiliar;
+	private StringProperty areaDepartamento;
+	private ObjectProperty<Integer> clienteFK;
 	
 	//CONSTRUCTOR VACIO
 	public Comprador() {
