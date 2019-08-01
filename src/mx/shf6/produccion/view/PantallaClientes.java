@@ -103,8 +103,8 @@ public class PantallaClientes {
         		final Button botonEstadoCuenta = new Button("EC");
         		final Button botonCarpeta = new Button("C");
         		final Button botonArchivo = new Button("A");
-        		final Button botonAgregarComponente = new Button("AC")
-        		final HBox acciones = new HBox(botonVer, botonEliminar, botonEstadoCuenta, botonCarpeta, botonArchivo, botonAgregarComponente);
+        		final Button botonAgregarComprador = new Button("AC");
+        		final HBox acciones = new HBox(botonVer, botonEliminar, botonEstadoCuenta, botonCarpeta, botonArchivo, botonAgregarComprador);
         		
         		
 		        //PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
@@ -150,13 +150,13 @@ public class PantallaClientes {
 		        	botonArchivo.setCursor(Cursor.HAND);
 		        	botonArchivo.setTooltip(new Tooltip("Archivos del cliente"));
 		        	
-		        	botonAgregarComponente.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/CustomerIcon_1.png"))));
-		        	botonAgregarComponente.setPrefSize(16.0, 16.0);
-		        	botonAgregarComponente.setPadding(Insets.EMPTY);
-		        	botonAgregarComponente.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		        	botonAgregarComponente.setStyle("-fx-background-color: transparent;");
-		        	botonAgregarComponente.setCursor(Cursor.HAND);
-		        	botonAgregarComponente.setTooltip(new Tooltip("Agregar comprador"));
+		        	botonAgregarComprador.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/CustomerIcon_1.png"))));
+		        	botonAgregarComprador.setPrefSize(16.0, 16.0);
+		        	botonAgregarComprador.setPadding(Insets.EMPTY);
+		        	botonAgregarComprador.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonAgregarComprador.setStyle("-fx-background-color: transparent;");
+		        	botonAgregarComprador.setCursor(Cursor.HAND);
+		        	botonAgregarComprador.setTooltip(new Tooltip("Agregar comprador"));
 		        	
 		        	acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
@@ -225,9 +225,9 @@ public class PantallaClientes {
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
 		            	});//FIN LISTENER    
 		            	
-		            	botonArchivo.setOnAction(event -> {
+		            	botonAgregarComprador.setOnAction(event -> {
 		            		cliente = getTableView().getItems().get(getIndex());
-		            		mainApp.iniciarDialgoCompradores(cliente);
+		            		mainApp.iniciarDialogoCompradores(cliente);
 		            	});
 		            		
 		            	setGraphic(acciones);		                
