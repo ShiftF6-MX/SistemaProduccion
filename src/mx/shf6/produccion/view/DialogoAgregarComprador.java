@@ -36,7 +36,7 @@ public class DialogoAgregarComprador {
 	@FXML private void initialize() {
 		RestriccionTextField.limitarNumeroCaracteres(campoNombre, 64);
 		RestriccionTextField.limitarNumeroCaracteres(campoTelefono, 16);
-		RestriccionTextField.limitarNumeroCaracteres(campoTelefonoAuxiliar, 16);
+		//RestriccionTextField.limitarNumeroCaracteres(campoTelefonoAuxiliar, 16);
 		RestriccionTextField.limitarNumeroCaracteres(campoCorreo, 64);
 		RestriccionTextField.limitarNumeroCaracteres(campoAreaDepartamento, 32);
 	}//FIN METODO
