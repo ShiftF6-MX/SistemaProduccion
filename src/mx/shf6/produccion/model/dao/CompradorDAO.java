@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.Comprador;
 import mx.shf6.produccion.utilities.Notificacion;
 
@@ -98,6 +100,27 @@ public class CompradorDAO {
 		return comprador;
 	}//FIN METODO
 	
+	public static Comprador readCompradorNombre(Connection connection, String nombre) {
+		Comprador comprador = new Comprador();
+		String consulta = "SELECT Sys_PK, Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Nombre = '" + nombre + "'" ;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while(resultados.next()) {
+				comprador.setSysPK(resultados.getInt(1));
+				comprador.setNombre(resultados.getString(2));
+				comprador.setCorreo(resultados.getString(3));
+				comprador.setTelefono(resultados.getString(4));
+				comprador.setTelefonoAuxiliar(resultados.getString(5));
+				comprador.setAreaDepartamento(resultados.getString(6));
+				comprador.setClienteFK(resultados.getInt(7));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY CATCH
+		return comprador;
+	}//FIN METODO
+	
 	public static ArrayList<Comprador> readCompradores(Connection connection, int clienteFK) {
 		ArrayList<Comprador> listaCompradores = new ArrayList<Comprador>();
 		String consulta = "SELECT Sys_PK, Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE ClienteFK = " + clienteFK;
@@ -150,5 +173,21 @@ public class CompradorDAO {
 			Notificacion.dialogoException(ex);
 			return false;
 		}//FINAL TRY CATCH
+	}//FIN METODO
+	
+	public static ObservableList<String> leerCompradores(Connection connection, int sysPK) {
+		String query ="";
+		ObservableList<String> listaCompradores = FXCollections.observableArrayList();
+		query="SELECT Nombre FROM compradores WHERE ClienteFK = " + sysPK + " ORDER BY Nombre ASC";
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			while (resultSet.next()) {
+				listaCompradores.add(resultSet.getString(1));				
+			}//FIN WHILE
+		}catch (SQLException e) {
+			Notificacion.dialogoException(e);
+		}//FIN TRY-CATCH
+		return listaCompradores;
 	}//FIN METODO
 }//FIN CLASE
