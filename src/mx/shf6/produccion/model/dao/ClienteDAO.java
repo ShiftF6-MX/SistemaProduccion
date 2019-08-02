@@ -88,6 +88,30 @@ public class ClienteDAO{
 		return cliente;
 	}//FIN METODO
 	
+	public static Cliente readClienteNombre(Connection connection, String nombre) {
+		Cliente cliente = new Cliente();
+		String consulta = "SELECT Sys_PK, Codigo, Nombre, Status, FechaRegistro, RegistroContribuyente, Telefono, Correo, RutaCarpeta, DomicilioFK FROM clientes WHERE Nombre = '" + nombre + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				cliente.setSysPK(resultados.getInt(1));
+				cliente.setCodigo(resultados.getString(2));
+				cliente.setNombre(resultados.getString(3));
+				cliente.setStatus(resultados.getInt(4));
+				cliente.setFechaRegistro(resultados.getDate(5));
+				cliente.setRegistroContribuyente(resultados.getString(6));
+				cliente.setTelefono(resultados.getString(7));
+				cliente.setCorreo(resultados.getString(8));
+				cliente.setRutaCarpeta(resultados.getString(9));
+				cliente.setDomicilioFK(resultados.getInt(10));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return cliente;
+	}//FIN METODO
+	
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Cliente> readCliente(Connection connection, String like) {
 		ArrayList<Cliente> arrayListCliente = new ArrayList<Cliente>();
