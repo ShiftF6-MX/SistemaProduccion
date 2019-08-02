@@ -145,7 +145,7 @@ public class CompradorDAO {
 	}//FIN METODO
 	
 	public static boolean updateComprador(Connection connection, Comprador comprador) {
-		String consulta = "UPDATE compradores SET Nombre = ?, Correo = ?, Telefono = ?, TelefonoAuxiliar = ?, AreaDepartamento = ?, ClienteFK = ?";
+		String consulta = "UPDATE compradores SET Nombre = ?, Correo = ?, Telefono = ?, TelefonoAuxiliar = ?, AreaDepartamento = ?, ClienteFK = ? WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, comprador.getNombre());
@@ -154,6 +154,7 @@ public class CompradorDAO {
 			sentenciaPreparada.setString(4, comprador.getTelefonoAuxiliar());
 			sentenciaPreparada.setString(5, comprador.getAreaDepartamento());
 			sentenciaPreparada.setInt(6, comprador.getClienteFK());
+			sentenciaPreparada.setInt(7, comprador.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch(SQLException ex) {
