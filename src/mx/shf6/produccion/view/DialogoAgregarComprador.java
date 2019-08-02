@@ -8,6 +8,7 @@ import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Comprador;
 import mx.shf6.produccion.model.dao.CompradorDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoAgregarComprador {
 	
@@ -33,6 +34,11 @@ public class DialogoAgregarComprador {
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
+		RestriccionTextField.limitarNumeroCaracteres(campoNombre, 64);
+		RestriccionTextField.limitarNumeroCaracteres(campoTelefono, 16);
+		RestriccionTextField.limitarNumeroCaracteres(campoTelefonoAuxiliar, 16);
+		RestriccionTextField.limitarNumeroCaracteres(campoCorreo, 64);
+		RestriccionTextField.limitarNumeroCaracteres(campoAreaDepartamento, 32);
 	}//FIN METODO
 	
 	public void setMainApp(MainApp mainApp, Comprador comprador, Cliente cliente, int opcion) {
@@ -93,6 +99,9 @@ public class DialogoAgregarComprador {
 			return false;
 		} else if (this.campoAreaDepartamento.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Area / Departamento \" no puede estar vacio");
+			return false;
+		} else if (RestriccionTextField.validarEmail(this.campoCorreo.getText()) == false) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El correo no es valido");
 			return false;
 		}//FIN IF ELSE
 		return true;
