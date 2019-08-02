@@ -33,7 +33,7 @@ public class CompradorDAO {
 	
 	public static ArrayList<Comprador> readTodos(Connection connection) {
 		ArrayList<Comprador> arrayListComprador = new ArrayList<Comprador>();
-		String consulta = "SELECT Sys_PK Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores";
+		String consulta = "SELECT Sys_PK, Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -56,7 +56,7 @@ public class CompradorDAO {
 	
 	public static ArrayList<Comprador> readCompradorNombre(Connection connection, String like, int clienteFK) {
 		ArrayList<Comprador> arrayListComprador = new ArrayList<Comprador>();
-		String consulta = "SELECT Sys_PK Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Nombre LIKE '%" + like + "%' AND ClienteFK = " + clienteFK;
+		String consulta = "SELECT Sys_PK, Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Nombre LIKE '%" + like + "%' AND ClienteFK = " + clienteFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -79,7 +79,7 @@ public class CompradorDAO {
 	
 	public static Comprador readCompradorSys(Connection connection, int sysPK) {
 		Comprador comprador = new Comprador();
-		String consulta = "SELECT Sys_PK Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Sys_PK = " + sysPK ;
+		String consulta = "SELECT Sys_PK, Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Sys_PK = " + sysPK ;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);

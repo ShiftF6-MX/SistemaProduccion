@@ -56,15 +56,15 @@ public class DialogoAgregarComprador {
 			this.campoAreaDepartamento.setText("");
 			this.campoAreaDepartamento.setDisable(false);
 		} else if (this.opcion == VER) {
-			this.campoNombre.setText("");
+			this.campoNombre.setText(this.comprador.getNombre());
 			this.campoNombre.setDisable(true);
-			this.campoCorreo.setText("");
+			this.campoCorreo.setText(this.comprador.getCorreo());
 			this.campoCorreo.setDisable(true);
-			this.campoTelefono.setText("");
+			this.campoTelefono.setText(this.comprador.getTelefono());
 			this.campoTelefono.setDisable(true);
-			this.campoTelefonoAuxiliar.setText("");
+			this.campoTelefonoAuxiliar.setText(this.comprador.getTelefonoAuxiliar());
 			this.campoTelefonoAuxiliar.setDisable(true);
-			this.campoAreaDepartamento.setText("");
+			this.campoAreaDepartamento.setText(this.comprador.getAreaDepartamento());
 			this.campoAreaDepartamento.setDisable(true);
 		} else if (this.opcion == EDITAR) {
 			this.campoNombre.setText(this.comprador.getNombre());

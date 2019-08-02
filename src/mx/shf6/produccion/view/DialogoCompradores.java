@@ -156,10 +156,10 @@ public class DialogoCompradores {
 							manejadorBotonEliminar(comprador);
 						});//FIN MANEJADDOR
 						
+						cajaBotones.setSpacing(2);
+						super.setGraphic(cajaBotones);
+						super.setText(null);
 					}//FIN IF-ELSE
-					cajaBotones.setSpacing(2);
-					super.setGraphic(cajaBotones);
-					super.setText(null);
 				}//FIN METODO
 			};//FIN SENTENCIA
 			return cell;		

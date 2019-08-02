@@ -1426,11 +1426,11 @@ public class MainApp extends Application {
 			this.dialogoAgregarComprador = (AnchorPane) fxmlLoader.load();
 
 			Scene escenaAgregarDialogoComprador = this.iniciarEscenarioDialogosAlterno(this.dialogoAgregarComprador);
-			this.escenarioDialogos.setScene(escenaAgregarDialogoComprador);
+			this.escenarioDialogosAlterno.setScene(escenaAgregarDialogoComprador);
 			DialogoAgregarComprador dialogoAgregarCompradores = fxmlLoader.getController();
 			dialogoAgregarCompradores.setMainApp(this, comprador, cliente, opcion);
 
-		    this.escenarioDialogos.showAndWait();
+		    this.escenarioDialogosAlterno.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
