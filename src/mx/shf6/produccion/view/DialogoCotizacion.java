@@ -2,7 +2,6 @@ package mx.shf6.produccion.view;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,11 +12,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Comprador;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.Folio;
 import mx.shf6.produccion.model.dao.ClienteDAO;
+import mx.shf6.produccion.model.dao.CompradorDAO;
 import mx.shf6.produccion.model.dao.CotizacionDAO;
 import mx.shf6.produccion.model.dao.FolioDAO;
+import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
@@ -39,11 +41,12 @@ public class DialogoCotizacion {
 	private ObservableList<String> listaLetraFolio;
 	private ObservableList<String> listaNombreClientes;
 	private ObservableList<String> listaMonedas;
+	private ObservableList<String> listaCompradores;
 	
 	//COMPONENTES INTERZAS USUARIO
 	@FXML private ComboBox<String> comboBoxFolio;
 	@FXML private ComboBox<String> comboBoxClientes;
-	@FXML private TextField campoTextoSolicito;
+	@FXML private ComboBox<String> comboSolicito;
 	@FXML private TextField campoTextoAreaDepartamento;
 	@FXML private TextField campoTextoTelefonoFax;
 	@FXML private TextField campoTextoEmail;
@@ -54,11 +57,10 @@ public class DialogoCotizacion {
 	@FXML private ComboBox<String> comboBoxMonedas;
 	@FXML private TextField campoTextoTipoCambio;
 	@FXML private TextField campoTextoObservaciones;
-	@FXML private TextField campoTextoVigencia;;
+	@FXML private TextField campoTextoVigencia;
 	
 	//INICIALIZA COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
-		RestriccionTextField.soloLetras(this.campoTextoSolicito);
 		RestriccionTextField.soloLetras(this.campoTextoAreaDepartamento);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoTelefonoFax, 16);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoEmail, 64);
@@ -112,8 +114,32 @@ public class DialogoCotizacion {
 				}//FIN IF
 			}//FIN METODO
 		});//FIN LISTENER
+		this.inicializarCompradores();
 		this.mostrarDatosInterfaz();
 	}//FIN METODO	
+	
+	private void inicializarCompradores() {	
+		comboBoxClientes.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
+			Cliente cliente = ClienteDAO.readClienteNombre(this.mainApp.getConnection(), comboBoxClientes.getValue());
+			comboSolicito.getSelectionModel().clearSelection();
+			listaCompradores = CompradorDAO.leerCompradores(this.mainApp.getConnection(), cliente.getSysPK());
+			comboSolicito.setItems(listaCompradores);
+			new AutoCompleteComboBoxListener(comboSolicito);
+		});
+		
+		comboSolicito.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
+			Comprador comprador = CompradorDAO.readCompradorNombre(this.mainApp.getConnection(), comboSolicito.getValue());
+			
+			if (!comprador.equals(null)) {
+				this.campoTextoTelefonoFax.setText(comprador.getTelefono());
+				this.campoTextoTelefonoFax.setDisable(true);
+				this.campoTextoEmail.setText(comprador.getCorreo());
+				this.campoTextoEmail.setDisable(true);
+				this.campoTextoAreaDepartamento.setText(comprador.getAreaDepartamento());
+				this.campoTextoAreaDepartamento.setDisable(true);
+			}
+		});
+	}
 		
 	//MUESTRA DATOS DEL LA SOLICITUD
 	private void mostrarDatosInterfaz() {
@@ -127,8 +153,7 @@ public class DialogoCotizacion {
 				this.comboBoxClientes.getSelectionModel().select("");
 				this.comboBoxClientes.setDisable(false);
 			}			
-			this.campoTextoSolicito.setText("");
-			this.campoTextoSolicito.setDisable(false);
+			
 			this.campoTextoAreaDepartamento.setText("");
 			this.campoTextoAreaDepartamento.setDisable(false);
 			this.campoTextoTelefonoFax.setText("");
@@ -155,8 +180,8 @@ public class DialogoCotizacion {
 			this.comboBoxFolio.setValue(this.cotizacion.getFolio(this.mainApp.getConnection()).getFolio());
 			this.comboBoxClientes.getSelectionModel().select(this.cotizacion.getCliente(this.mainApp.getConnection()).getNombre());
 			this.comboBoxClientes.setDisable(true);
-			this.campoTextoSolicito.setText(this.cotizacion.getSolicitante());
-			this.campoTextoSolicito.setDisable(true);
+			this.comboSolicito.getSelectionModel().select(this.cotizacion.getSolicitante());
+			this.comboSolicito.setDisable(true);
 			this.campoTextoAreaDepartamento.setText(this.cotizacion.getAreaDepartamento());
 			this.campoTextoAreaDepartamento.setDisable(true);
 			this.campoTextoTelefonoFax.setText(this.cotizacion.getTelefonoFax());
@@ -185,14 +210,14 @@ public class DialogoCotizacion {
 			this.comboBoxFolio.setValue(this.cotizacion.getFolio(this.mainApp.getConnection()).getFolio());
 			this.comboBoxClientes.getSelectionModel().select(this.cotizacion.getCliente(this.mainApp.getConnection()).getNombre());
 			this.comboBoxClientes.setDisable(true);
-			this.campoTextoSolicito.setText(this.cotizacion.getSolicitante());
-			this.campoTextoSolicito.setDisable(false);
+			this.comboSolicito.getSelectionModel().select(this.cotizacion.getSolicitante());
+			this.comboSolicito.setDisable(false);
 			this.campoTextoAreaDepartamento.setText(this.cotizacion.getAreaDepartamento());
-			this.campoTextoAreaDepartamento.setDisable(false);
+			this.campoTextoAreaDepartamento.setDisable(true);
 			this.campoTextoTelefonoFax.setText(this.cotizacion.getTelefonoFax());
-			this.campoTextoTelefonoFax.setDisable(false);
+			this.campoTextoTelefonoFax.setDisable(true);
 			this.campoTextoEmail.setText(this.cotizacion.getEmail());
-			this.campoTextoEmail.setDisable(false);
+			this.campoTextoEmail.setDisable(true);
 			this.campoTextoTipoServicio.setText(this.cotizacion.getTipoServicio());
 			this.campoTextoTipoServicio.setDisable(false);
 			this.campoTextoFechaEntrega.setText(this.cotizacion.getFechaEntrega());
@@ -249,7 +274,7 @@ public class DialogoCotizacion {
 				this.cotizacion.setReferencia(listaFolios.get(comboBoxFolio.getSelectionModel().getSelectedIndex()).getFolio() + consecutivo);
 				this.cotizacion.setStatus(Cotizacion.PENDIENTE);
 				this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());
+				this.cotizacion.setSolicitante(comboSolicito.getValue());
 				this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
 				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
 				this.cotizacion.setEmail(this.campoTextoEmail.getText());
@@ -269,7 +294,7 @@ public class DialogoCotizacion {
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
 			} else if (this.opcion == EDITAR) {
 				this.cotizacion.setClienteFK(listaClientes.get(comboBoxClientes.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.cotizacion.setSolicitante(this.campoTextoSolicito.getText());
+				this.cotizacion.setSolicitante(comboSolicito.getValue());
 				this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
 				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
 				this.cotizacion.setEmail(this.campoTextoEmail.getText());
