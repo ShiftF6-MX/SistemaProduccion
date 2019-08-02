@@ -245,6 +245,9 @@ public class DialogoCotizacion {
 		}else if (this.comboBoxClientes.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cliente\" no puede estar vacio");
 			return false;
+		}else if (this.comboSolicito.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Solicitó\" no puede estar vacio");
+			return false;
 		}else if (this.campoTextoTipoServicio.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Servicio\" no puede estar vacio");
 			return false;
