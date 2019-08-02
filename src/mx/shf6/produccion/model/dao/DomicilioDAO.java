@@ -15,8 +15,8 @@ public class DomicilioDAO {
 	
 	//METODO PARA HACER CREATE EN LA TABLA DOMICILIOS
 	public static boolean createDomicilio(Connection connection, Domicilio domicilio) {	
-		String query = "INSERT INTO domicilios (calle, numeroInterior, numeroExterior, colonia, localidad, municipio, estado, codigoPostal) "
-				+ "values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO domicilios (Calle, NumeroInterior, NumeroExterior, Colonia, Localidad, Municipio, Estado, CodigoPostal, Pais) "
+				+ "values ( ?, ?, ?, ?, ?, ?, ?, ?,?)";
 		try {	
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.setString(1, domicilio.getCalle());
@@ -27,6 +27,7 @@ public class DomicilioDAO {
 			preparedStatement.setString(6, domicilio.getMunicipio());
 			preparedStatement.setString(7, domicilio.getEstado());
 			preparedStatement.setString(8, domicilio.getCodigoPostal());
+			preparedStatement.setString(9, domicilio.getPais());
 			preparedStatement.execute();
 			return true;   
 		} catch (SQLException ex) {
@@ -40,7 +41,7 @@ public class DomicilioDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Domicilio> readDomicilio(Connection connection) {
 		ArrayList<Domicilio> arrayListDomicilio = new ArrayList<Domicilio>();
-		String consulta = "SELECT Sys_PK, Calle, NumeroExterior, NumeroInterior, Colonia, Localidad, Municipio, Estado, CodigoPostal FROM domicilios";
+		String consulta = "SELECT Sys_PK, Calle, NumeroExterior, NumeroInterior, Colonia, Localidad, Municipio, Estado, CodigoPostal, Pais FROM domicilios";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -55,6 +56,7 @@ public class DomicilioDAO {
 				domicilio.setMunicipio(resultados.getString(7));
 				domicilio.setEstado(resultados.getString(8));
 				domicilio.setCodigoPostal(resultados.getString(9));
+				domicilio.setPais(resultados.getString(10));
 				arrayListDomicilio.add(domicilio);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -66,7 +68,7 @@ public class DomicilioDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static Domicilio readDomicilio(Connection connection, int sysPK) {
 		Domicilio domicilio = new Domicilio();
-		String consulta = "SELECT Sys_PK, Calle, NumeroExterior, NumeroInterior, Colonia, Localidad, Municipio, Estado, CodigoPostal FROM domicilios WHERE Sys_PK=" + sysPK;
+		String consulta = "SELECT Sys_PK, Calle, NumeroExterior, NumeroInterior, Colonia, Localidad, Municipio, Estado, CodigoPostal, Pais FROM domicilios WHERE Sys_PK=" + sysPK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -80,6 +82,7 @@ public class DomicilioDAO {
 				domicilio.setMunicipio(resultados.getString(7));
 				domicilio.setEstado(resultados.getString(8));
 				domicilio.setCodigoPostal(resultados.getString(9));
+				domicilio.setPais(resultados.getString(10));
 			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
@@ -88,7 +91,7 @@ public class DomicilioDAO {
 	}//FIN METODO
 	
 	public static boolean updateDomicilio(Connection connection, Domicilio domicilio) {
-		String consulta = "UPDATE domicilios SET Calle = ?, NumeroExterior = ?, NumeroInterior = ?, Colonia = ?, Localidad = ?, Municipio = ?, Estado = ?, CodigoPostal = ? WHERE Sys_PK = ?";
+		String consulta = "UPDATE domicilios SET Calle = ?, NumeroExterior = ?, NumeroInterior = ?, Colonia = ?, Localidad = ?, Municipio = ?, Estado = ?, CodigoPostal = ?, Pais = ? WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, domicilio.getCalle());
@@ -99,7 +102,8 @@ public class DomicilioDAO {
 			sentenciaPreparada.setString(6, domicilio.getMunicipio());
 			sentenciaPreparada.setString(7, domicilio.getEstado());
 			sentenciaPreparada.setString(8, domicilio.getCodigoPostal());
-			sentenciaPreparada.setInt(9, domicilio.getSysPK());
+			sentenciaPreparada.setString(9, domicilio.getPais());
+			sentenciaPreparada.setInt(10, domicilio.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {

@@ -30,6 +30,7 @@ import mx.shf6.produccion.model.ArchivoProyecto;
 import mx.shf6.produccion.model.CentroTrabajo;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
+import mx.shf6.produccion.model.Comprador;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
@@ -50,6 +51,7 @@ import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.LeerArchivo;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAgregarAcabado;
+import mx.shf6.produccion.view.DialogoAgregarComprador;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
 import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
 import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
@@ -61,6 +63,7 @@ import mx.shf6.produccion.view.DialogoArchivos;
 import mx.shf6.produccion.view.DialogoCentroTrabajo;
 import mx.shf6.produccion.view.DialogoClientes;
 import mx.shf6.produccion.view.DialogoComponente;
+import mx.shf6.produccion.view.DialogoCompradores;
 import mx.shf6.produccion.view.DialogoCotizacion;
 import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
@@ -181,6 +184,8 @@ public class MainApp extends Application {
 	private AnchorPane dialogoTipoMateriaPrima;
 	private AnchorPane dialogoAgregarTipoMateriaPrima;
 	private AnchorPane dialogoAgregarMaterial;
+	private AnchorPane dialogoCompradores;
+	private AnchorPane dialogoAgregarComprador;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -218,9 +223,9 @@ public class MainApp extends Application {
 	}//FIN METODO
 
 	private void configurarBaseDatos() {
-		//LeerArchivo.leerArchivo();
-		//this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
-		this.conexionBD = new ConnectionDB("produccion_mfg2","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+		LeerArchivo.leerArchivo();
+		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
+		//this.conexionBD = new ConnectionDB("produccion_mfg2","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		//this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.216", "conn01", "Simons83Mx");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
@@ -1388,6 +1393,42 @@ public class MainApp extends Application {
 			this.escenarioDialogos.setScene(escenaDialogoPartesPrimarias);
 			DialogoPartesPrimarias dialogoPartesPrimarias = fxmlLoader.getController();
 			dialogoPartesPrimarias.setMainApp(this, proyecto);
+
+		    this.escenarioDialogos.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoCompradores(Cliente cliente) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoCompradores.fxml"));
+
+			this.dialogoCompradores = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaDialogoCompradores = this.iniciarEscenarioDialogos(this.dialogoCompradores);
+			this.escenarioDialogos.setScene(escenaDialogoCompradores);
+			DialogoCompradores dialogoCompradores = fxmlLoader.getController();
+			dialogoCompradores.setMainApp(this, cliente);
+
+		    this.escenarioDialogos.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoAgregarComprador(Comprador comprador, Cliente cliente, int opcion) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarComprador.fxml"));
+
+			this.dialogoAgregarComprador = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaAgregarDialogoComprador = this.iniciarEscenarioDialogos(this.dialogoAgregarComprador);
+			this.escenarioDialogos.setScene(escenaAgregarDialogoComprador);
+			DialogoAgregarComprador dialogoAgregarCompradores = fxmlLoader.getController();
+			dialogoAgregarCompradores.setMainApp(this, comprador, cliente, opcion);
 
 		    this.escenarioDialogos.showAndWait();
 		} catch(IOException | IllegalStateException ex) {

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class DialogoClientes  {
 
 	private ObservableList<String> listaEstados;
 	private ObservableList<String> listaMunicipios;
+	private ObservableList<String> listaPaises;
 	
 	//VARIABLES
 	private int opcion;
@@ -69,6 +71,7 @@ public class DialogoClientes  {
 	@FXML private ComboBox<String> statusCombo;
 	@FXML private ComboBox<String> municipioCombo;
 	@FXML private ComboBox<String> estadoCombo;
+	@FXML private ComboBox<String> paisCombo;
 	@FXML private TextField codigoPostalField;
 	@FXML private ImageView eliminar;
 	@FXML private ImageView editar;
@@ -101,6 +104,31 @@ public class DialogoClientes  {
 
 		this.renameRuta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre());
 		
+		this.listaPaises = sepomexDAO.leerPaises(mainApp.getConnection());
+		paisCombo.setItems(listaPaises);
+		new AutoCompleteComboBoxListener(paisCombo);
+		paisCombo.valueProperty().addListener(new ChangeListener<String>(){
+			
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (paisCombo.getValue().equals("México")) {
+					estadoCombo.setDisable(false);
+					municipioCombo.setDisable(false);
+					
+					inicializarEstado();
+				}else {
+					estadoCombo.setItems(null);
+					municipioCombo.setItems(null);
+					estadoCombo.setDisable(true);
+					municipioCombo.setDisable(true);
+				}//FIN IF-ELSE
+			}//FIN METODO
+		});//FIN LISTENER		
+		
+		this.mostrarDatosInterfaz();
+	}//FIN METODO
+	
+	private void inicializarEstado() {
 		this.listaEstados = sepomexDAO.leerEstados(mainApp.getConnection()); 
 		estadoCombo.setItems(listaEstados);
 		new AutoCompleteComboBoxListener(estadoCombo);
@@ -110,7 +138,6 @@ public class DialogoClientes  {
 			municipioCombo.setItems(listaMunicipios);
 			new AutoCompleteComboBoxListener(municipioCombo);
 		});//FIN SENTENCIA
-		this.mostrarDatosInterfaz();
 	}//FIN METODO
 	
 	//MUESTRA LOS DATOS DEl CLIENTE
@@ -156,6 +183,9 @@ public class DialogoClientes  {
 			
 			this.localidadField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getLocalidad());
 			this.localidadField.setDisable(true);
+			
+			this.paisCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getPais());
+			this.paisCombo.setDisable(true);
 			
 			this.estadoCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getEstado());
 			this.estadoCombo.setDisable(true);
@@ -213,7 +243,6 @@ public class DialogoClientes  {
 			this.localidadField.setDisable(false);
 			
 			
-			
 			this.codigoPostalField.setText("");
 			this.codigoPostalField.setDisable(false);	
 			
@@ -261,6 +290,9 @@ public class DialogoClientes  {
 			
 			this.localidadField.setText(this.cliente.getDomicilio(this.mainApp.getConnection()).getLocalidad());
 			this.localidadField.setDisable(false);
+			
+			this.paisCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getPais());
+			this.paisCombo.setDisable(false);
 			
 			this.estadoCombo.setValue(this.cliente.getDomicilio(this.mainApp.getConnection()).getEstado());
 			this.estadoCombo.setDisable(false);
@@ -312,18 +344,23 @@ public class DialogoClientes  {
 		}else if (this.localidadField.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Localidad\" no puede estar vacio");
 			return false;
-		}else if (this.estadoCombo.getEditor().getText().equals("") || this.estadoCombo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Estado\" no puede estar vacio");
-			return false;
-		}else if (this.municipioCombo.getEditor().getText().equals("") || this.municipioCombo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Municipio\" no puede estar vacio");
-			return false;
 		}else if (this.codigoPostalField.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Codigo Postal\" no puede estar vacio");
 			return false;
 		}else if (RestriccionTextField.validarEmail(this.correoField.getText()) == false) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El correo no es valido.");
 			return false;
+		}else if (this.paisCombo.getEditor().getText().equals("") || this.paisCombo.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Pais\" no puede estar vacio");
+			return false;
+		}else if (this.paisCombo.getValue().equals("México")) {
+			 if (this.estadoCombo.getEditor().getText().equals("") || this.estadoCombo.getSelectionModel().getSelectedItem().isEmpty()) {
+					Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Estado\" no puede estar vacio");
+					return false;
+				}else if (this.municipioCombo.getEditor().getText().equals("") || this.municipioCombo.getSelectionModel().getSelectedItem().isEmpty()) {
+					Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Municipio\" no puede estar vacio");
+					return false;
+				}//FIN IF-ELSE
 		}//FIN IF-ELSE
 		return true;		
 	}//FIN METODO
@@ -361,6 +398,7 @@ public class DialogoClientes  {
 				this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
 				this.domicilio.setColonia(this.coloniaField.getText());
 				this.domicilio.setLocalidad(this.localidadField.getText());
+				this.domicilio.setPais(this.paisCombo.getValue());
 				this.domicilio.setMunicipio(this.municipioCombo.getValue());
 				this.domicilio.setEstado(this.estadoCombo.getValue());
 				this.domicilio.setCodigoPostal(this.codigoPostalField.getText());
@@ -405,6 +443,7 @@ public class DialogoClientes  {
 				this.domicilio.setNumeroInterior(this.numeroInteriorField.getText());
 				this.domicilio.setColonia(this.coloniaField.getText());
 				this.domicilio.setLocalidad(this.localidadField.getText());
+				this.domicilio.setPais(this.paisCombo.getValue());
 				this.domicilio.setMunicipio(this.municipioCombo.getValue());
 				this.domicilio.setEstado(this.estadoCombo.getValue());
 				this.domicilio.setCodigoPostal(this.codigoPostalField.getText());

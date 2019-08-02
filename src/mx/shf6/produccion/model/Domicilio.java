@@ -14,18 +14,19 @@ public class Domicilio {
 	private StringProperty numeroExterior;
 	private StringProperty colonia;
 	private StringProperty localidad;
+	private StringProperty pais;
 	private StringProperty municipio;
 	private StringProperty estado;
 	private StringProperty codigoPostal;
 	
 	//CONSTRUCTOR SIN PARAMETROS
 	public Domicilio() {
-		this(0,"","","","","","","","");
+		this(0,"","","","","","","","","");
 	}//FIN CONSTRUCTO
 	
 	//CONSTRUCTOR CON PARAMETROS
 	public Domicilio(Integer sys_PK, String calle, String numeroInterior, String numeroExterior, String colonia, String localidad,
-			String municipio, String estado, String codigoPostal) {
+			String municipio, String estado, String codigoPostal, String pais) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sys_PK);
 		this.calle = new SimpleStringProperty(calle);
 		this.numeroInterior = new SimpleStringProperty(numeroInterior);
@@ -35,6 +36,7 @@ public class Domicilio {
 		this.municipio = new SimpleStringProperty(municipio);
 		this.estado = new SimpleStringProperty(estado);
 		this.codigoPostal = new SimpleStringProperty(codigoPostal);
+		this.pais = new SimpleStringProperty(pais);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -120,6 +122,19 @@ public class Domicilio {
 		return this.localidad;
 	}//FIN METODO
 	//FIN METODOS "LOCALIDAD"
+	
+	//METODO PARA ACCESO A "PAIS"
+	public void setPais(String pais) {
+		this.pais.set(pais);
+	}//FIN METODO
+	
+	public String getPais() {
+		return this.pais.get();
+	}//FIN METODO
+	
+	public StringProperty paisProperty() {
+		return this.pais;
+	}//FIN METODO
 	
 	//METODOS PARA ACCESO A "MUNICIPIO"
 	public void setMunicipio(String municipio) {

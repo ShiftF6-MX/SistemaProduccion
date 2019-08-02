@@ -46,4 +46,19 @@ public class SepomexDAO {
 		}//FIN TRY-CATCH
 		return listaEstados;
 	}//FIN METODO
+	
+	public ObservableList<String> leerPaises(Connection connection){
+		String query = "SELECT Nombre FROM paises GROUP BY Nombre ORDER BY Nombre ASC";
+		ObservableList<String> listaPaises = FXCollections	.observableArrayList();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				listaPaises.add(resultados.getString(1));
+			}//FIN WHILE
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return listaPaises;
+	}//FIN METODO
 }//FIN CLASE
