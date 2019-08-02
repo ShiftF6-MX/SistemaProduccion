@@ -31,7 +31,7 @@ public class CompradorDAO {
 		}//FIN TRY CATCH
 	}//FIN METODO
 	
-	public static ArrayList<Comprador> readComprador(Connection connection) {
+	public static ArrayList<Comprador> readTodos(Connection connection) {
 		ArrayList<Comprador> arrayListComprador = new ArrayList<Comprador>();
 		String consulta = "SELECT Sys_PK Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores";
 		try {
@@ -54,9 +54,9 @@ public class CompradorDAO {
 		return arrayListComprador;
 	}//FIN METODO
 	
-	public static ArrayList<Comprador> readCompradorNombre(Connection connection, String like) {
+	public static ArrayList<Comprador> readCompradorNombre(Connection connection, String like, int clienteFK) {
 		ArrayList<Comprador> arrayListComprador = new ArrayList<Comprador>();
-		String consulta = "SELECT Sys_PK Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Nombre LIKE '%" + like;
+		String consulta = "SELECT Sys_PK Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE Nombre LIKE '%" + like + "%' AND ClienteFK = " + clienteFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -98,13 +98,14 @@ public class CompradorDAO {
 		return comprador;
 	}//FIN METODO
 	
-	public static Comprador readCompradorClienteFK(Connection connection, int clienteFK) {
-		Comprador comprador = new Comprador();
+	public static ArrayList<Comprador> readCompradores(Connection connection, int clienteFK) {
+		ArrayList<Comprador> listaCompradores = new ArrayList<Comprador>();
 		String consulta = "SELECT Sys_PK, Nombre, Correo, Telefono, TelefonoAuxiliar, AreaDepartamento, ClienteFK FROM compradores WHERE ClienteFK = " + clienteFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while(resultados.next()) {
+				Comprador comprador = new Comprador();
 				comprador.setSysPK(resultados.getInt(1));
 				comprador.setNombre(resultados.getString(2));
 				comprador.setCorreo(resultados.getString(3));
@@ -112,11 +113,12 @@ public class CompradorDAO {
 				comprador.setTelefonoAuxiliar(resultados.getString(5));
 				comprador.setAreaDepartamento(resultados.getString(6));
 				comprador.setClienteFK(resultados.getInt(7));
+				listaCompradores.add(comprador);
 			}//FIN WHILE
 		} catch (SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY CATCH
-		return comprador;
+		return listaCompradores;
 	}//FIN METODO
 	
 	public static boolean updateComprador(Connection connection, Comprador comprador) {

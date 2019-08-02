@@ -143,7 +143,7 @@ public class DialogoProyectos {
 					botonEliminar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 					botonEliminar.setStyle("-fx-background-color: transparent");
 					botonEliminar.setCursor(Cursor.HAND);
-					botonEliminar.setTooltip(new Tooltip("Eliminar regsitro"));
+					botonEliminar.setTooltip(new Tooltip("Eliminar registro"));
 
 					botonArchivo.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
 		        	botonArchivo.setPrefSize(16.0, 16.0);

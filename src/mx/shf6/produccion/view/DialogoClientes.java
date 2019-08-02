@@ -117,8 +117,7 @@ public class DialogoClientes  {
 					
 					inicializarEstado();
 				}else {
-					estadoCombo.setItems(null);
-					municipioCombo.setItems(null);
+					
 					estadoCombo.setDisable(true);
 					municipioCombo.setDisable(true);
 				}//FIN IF-ELSE

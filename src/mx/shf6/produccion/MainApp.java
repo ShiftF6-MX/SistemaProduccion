@@ -1425,7 +1425,7 @@ public class MainApp extends Application {
 
 			this.dialogoAgregarComprador = (AnchorPane) fxmlLoader.load();
 
-			Scene escenaAgregarDialogoComprador = this.iniciarEscenarioDialogos(this.dialogoAgregarComprador);
+			Scene escenaAgregarDialogoComprador = this.iniciarEscenarioDialogosAlterno(this.dialogoAgregarComprador);
 			this.escenarioDialogos.setScene(escenaAgregarDialogoComprador);
 			DialogoAgregarComprador dialogoAgregarCompradores = fxmlLoader.getController();
 			dialogoAgregarCompradores.setMainApp(this, comprador, cliente, opcion);
