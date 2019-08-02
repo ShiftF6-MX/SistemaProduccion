@@ -42,7 +42,7 @@
             <VBox spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Solicitó" />
-                  <TextField fx:id="campoTextoSolicito" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <ComboBox fx:id="comboSolicito" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <VBox spacing="2.0">
