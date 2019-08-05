@@ -27,6 +27,7 @@ import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.dao.CotizacionDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
+import mx.shf6.produccion.utilities.GenerarDocumento;
 import mx.shf6.produccion.utilities.Notificacion;
 
 public class PantallaCotizaciones {
@@ -213,10 +214,11 @@ public class PantallaCotizaciones {
 		            	//ACEPTA LA COTIZACION
 		            	botonAprobar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
-		            			if (Notificacion.dialogoPreguntar("Confirmación para aprobación", "¿Desea APROBAR la cotizacion " + cotizacion.getReferencia() + "?")){
-		            				cotizacion = getTableView().getItems().get(getIndex());
+		            			cotizacion = getTableView().getItems().get(getIndex());
+		            			if (Notificacion.dialogoPreguntar("Confirmación para aprobación", "¿Desea APROBAR la cotizacion " + cotizacion.getReferencia() + "?")){		            				
 			            			cotizacion.setStatus(Cotizacion.APROBADA);
 			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
+			            			GenerarDocumento.generaCotizacion(mainApp.getConnection(), cotizacion);
 			            			actualizarTabla();
 			            		}//FIN IF		            			
 		            		} else
@@ -226,8 +228,8 @@ public class PantallaCotizaciones {
 		            	//CANCELA LA COTIZACION
 		            	botonCancelar.setOnAction(event -> {
 		            		if(Seguridad.verificarAcceso(mainApp.getConnection(), mainApp.getUsuario().getGrupoUsuarioFk(), "uCotizacion")) {
-		            			if (Notificacion.dialogoPreguntar("Confirmación para cancelación", "¿Desea CANCELAR la cotizacion " + cotizacion.getReferencia() + "?")){
-		            				cotizacion = getTableView().getItems().get(getIndex());
+		            			cotizacion = getTableView().getItems().get(getIndex());
+		            			if (Notificacion.dialogoPreguntar("Confirmación para cancelación", "¿Desea CANCELAR la cotizacion " + cotizacion.getReferencia() + "?")) {
 			            			cotizacion.setStatus(Cotizacion.CANCELADA);
 			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
 			            			actualizarTabla();
@@ -244,8 +246,6 @@ public class PantallaCotizaciones {
 		};//FIN METODO	
 		accionesColumn.setCellFactory(cellFactory);
     }//FIN METODO
-	
-	
 	
 	@FXML private void manejadorBotonNuevo() {
 		this.cotizacion = new Cotizacion();

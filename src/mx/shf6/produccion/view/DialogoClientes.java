@@ -423,9 +423,8 @@ public class DialogoClientes  {
 						this.mainApp.getConnection().rollback();
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
 					}	//FIN IF
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (SQLException ex) {
+					Notificacion.dialogoException(ex);
 				}//FIN TRY/CATCH
 				
 			}else if(this.opcion == EDITAR) {
@@ -453,7 +452,6 @@ public class DialogoClientes  {
 					if(DomicilioDAO.updateDomicilio(this.mainApp.getConnection(), this.domicilio)) {
 						if (ClienteDAO.updateCliente(this.mainApp.getConnection(), this.cliente)) {
 							this.mainApp.getConnection().commit();
-							this.mainApp.getConnection().setAutoCommit(true);
 
 							this.renameRuta.renameTo(new File(MainApp.RAIZ_SERVIDOR +"Clientes\\" +  this.nombreField.getText() ));
 			
@@ -461,19 +459,15 @@ public class DialogoClientes  {
 							this.mainApp.getEscenarioDialogos().close();
 						} else {
 							this.mainApp.getConnection().rollback();
-							this.mainApp.getConnection().setAutoCommit(true);
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
 						}
 					}else {
 						this.mainApp.getConnection().rollback();
-						this.mainApp.getConnection().setAutoCommit(true);
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo actualizar el registro, revisa que la información sea correcta");
 					}	//FIN IF
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (SQLException ex) {
+					Notificacion.dialogoException(ex);
 				}//FIN TRY/CATCH	
-				
 			}//FIN ELSE IF
 		}//FIN IF
 		
@@ -482,18 +476,15 @@ public class DialogoClientes  {
 	
 	@FXML private void btnEditar() {
 		this.opcion = EDITAR;
-		
 		this.mostrarDatosInterfaz();
-		
 	}//FIN METODO
 	
 	private int proyectosRealizados(int clienteFK) {
 		int contador = 0;
-		for(@SuppressWarnings("unused") Proyecto proyecto : ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), clienteFK)) {
+		for(@SuppressWarnings("unused") Proyecto proyecto : ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), clienteFK)) 
 			contador = contador + 1;
-		}
 		return contador;
-	}
+	}//FIN METODO 
 	
 	@FXML private void cerrarDialogoButtonHandler() {
 		this.mainApp.getEscenarioDialogos().close();

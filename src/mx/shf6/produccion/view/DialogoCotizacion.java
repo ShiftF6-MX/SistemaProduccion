@@ -228,8 +228,13 @@ public class DialogoCotizacion {
 			this.campoTextoCondicionPago.setDisable(false);
 			this.comboBoxMonedas.getSelectionModel().select(this.cotizacion.getDescripcionMoneda());
 			this.comboBoxMonedas.setDisable(false);
-			this.campoTextoTipoCambio.setText(this.cotizacion.getTipoCambio().toString());
-			this.campoTextoTipoCambio.setDisable(false);
+			if (this.cotizacion.getDescripcionMoneda().equals("MXN")) {
+				this.campoTextoTipoCambio.setText(this.cotizacion.getTipoCambio().toString());
+				this.campoTextoTipoCambio.setDisable(true);
+			}else {
+				this.campoTextoTipoCambio.setText(this.cotizacion.getTipoCambio().toString());
+				this.campoTextoTipoCambio.setDisable(false);
+			}//FIN IF-ELSE
 			this.campoTextoObservaciones.setText(this.cotizacion.getObservaciones());
 			this.campoTextoObservaciones.setDisable(false);
 			this.campoTextoVigencia.setText(this.cotizacion.getVigencia());
