@@ -82,9 +82,9 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["FABRICACIÓN DE PARTES METAL MECÁNICAS  <br>" +
+				<textFieldExpression><![CDATA["FABRICACIÓN DE PARTES METAL MECÁNICAS  <br>" + 
 "Privada de Carlos Lazo #50-A, Col. Hidalgo, Cd. Sahagún, Hgo. CP 43998 <br>" +
-"Tels: 01(791) 33625, 9135875    Fax: 91 35991 <br>"  +
+"Tels: 01(791) 913625, 9135875    Fax: 91 35991 <br>"  +
 "Email: MANUFACTURASG@prodigy.net.mx"]]></textFieldExpression>
 			</textField>
 		</band>
@@ -256,7 +256,7 @@ $P{Email} + "<br>"]]></textFieldExpression>
 					<textElement textAlignment="Center" markup="html">
 						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA["JEFE DE PLANEACION"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{Puesto}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement positionType="Float" x="120" y="70" width="299" height="1" uuid="54d3539b-ce72-466d-9896-7a045781d231"/>
@@ -269,11 +269,11 @@ $P{Email} + "<br>"]]></textFieldExpression>
 					<textFieldExpression><![CDATA[$P{JefePlaneacion}]]></textFieldExpression>
 				</textField>
 				<image>
-					<reportElement x="256" y="110" width="50" height="50" uuid="948093db-1e87-4265-afe0-282e3e829beb"/>
+					<reportElement x="245" y="110" width="50" height="50" uuid="948093db-1e87-4265-afe0-282e3e829beb"/>
 					<imageExpression><![CDATA["resources/logo2.png"]]></imageExpression>
 				</image>
 				<staticText>
-					<reportElement x="286" y="130" width="80" height="20" uuid="21f419cb-dae2-4c53-8547-91fac66af7b8"/>
+					<reportElement x="230" y="130" width="80" height="20" uuid="21f419cb-dae2-4c53-8547-91fac66af7b8"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<text><![CDATA[ISO 9001:2015]]></text>
 				</staticText>
