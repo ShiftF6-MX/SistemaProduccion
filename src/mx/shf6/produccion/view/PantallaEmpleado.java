@@ -69,7 +69,7 @@ public class PantallaEmpleado {
 	private void inicializarTabla() {
 		this.columnaCodigo.setCellValueFactory(CellData -> CellData.getValue().codigoProperty());
 		this.columnaNombre.setCellValueFactory(CellData -> CellData.getValue().nombreProperty());
-		this.columnaPuesto.setCellValueFactory(CellData -> CellData.getValue().codigoPuesto());
+		this.columnaPuesto.setCellValueFactory(CellData -> CellData.getValue().getPuesto(this.connection).descripcionProperty());
 		inicializarColumnaAcciones();
 	}// FIN METODO
 

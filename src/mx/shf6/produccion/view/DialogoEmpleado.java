@@ -25,91 +25,73 @@ public class DialogoEmpleado {
 	private MainApp mainApp;
 	private Empleado empleado;
 	private Connection conexion;
-	private Puesto puesto;
+	//private Puesto puesto;
 	private ObservableList<String> observablePuesto;
 	private ArrayList<Puesto> listaPuesto;
 	
-	//FIN PROPIEDADES
-	
 	//VARIABLES
 	private int opcion;
-	//FIN VARIABLES
 	
 	//CONSTANTES
 	public static final int CREAR = 1;
 	public static final int VER = 2;
 	public static final int EDITAR = 3;
-	//FIN CONSTANTES
 	
 	//COMPONENETS INTERFAZ
 	@FXML private TextField campoTextoCodigo;
 	@FXML private TextField campoTextoNombre;
 	@FXML private ComboBox<String> comboPuesto;
 	
-	//INICIA COMPONENTES INTERFAZ USUARIO
+	//METODOS
 	@FXML
 	private void initialize() {
-
 		RestriccionTextField.limitarNumeroCaracteres(campoTextoCodigo, 8);
 		RestriccionTextField.limitarNumeroCaracteres(campoTextoNombre, 32);
 		RestriccionTextField.soloLetras(campoTextoNombre);
-	}
+	}//FIN METODO
 	
-	//ACCESO A LA CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp, Empleado empleado, int opcion) {
 		this.mainApp = mainApp;
 		this.empleado = empleado;
 		this.observablePuesto = FXCollections.observableArrayList();
 		this.conexion = this.mainApp.getConnection();
 		this.opcion = opcion;
-		this.puesto = new Puesto();
-		inicializarComponentes();
+		//this.puesto = new Puesto();
 		llenarComboEmpleado();
-	}
-	
-	//LLENAR COMBO
+		inicializarComponentes();		
+	}//FIN METODO
+
 	private void llenarComboEmpleado() {
 		this.listaPuesto = PuestoDAO.readPuesto(conexion);
 		for(Puesto puesto: listaPuesto)
-			this.observablePuesto.add(puesto.getCodigo());
+			this.observablePuesto.add(puesto.getDescripcion());
 		this.comboPuesto.setItems(observablePuesto);
-		
 	}//FIN COMBO
 	
-	//OBTENER DATOS
-	private void obtenerDatos() {
-		this.empleado.setCodigo(this.campoTextoCodigo.getText());
-		this.empleado.setNombre(this.campoTextoNombre.getText());
-		this.empleado.setPuestoFK(this.listaPuesto.get(this.comboPuesto.getSelectionModel().getSelectedIndex()).getSysPK());
-	}
-	
-	//INICIALIZA COMPONENTES
 	private void inicializarComponentes() {
 		if (this.opcion == CREAR) {
 			this.campoTextoCodigo.setText("");
 			this.campoTextoCodigo.setDisable(false);
 			this.campoTextoNombre.setText("");
 			this.campoTextoNombre.setDisable(false);
-			this.comboPuesto.setValue(empleado.getPuesto(conexion).getCodigo());
-			this.comboPuesto.setItems(observablePuesto);
+			this.comboPuesto.setValue("");
+			this.comboPuesto.setDisable(false);
 		} else if (this.opcion == VER) {
 			this.campoTextoCodigo.setText(empleado.getCodigo());
 			this.campoTextoCodigo.setDisable(true);
 			this.campoTextoNombre.setText(empleado.getNombre());
 			this.campoTextoNombre.setDisable(true);
-			this.comboPuesto.setValue(empleado.getPuesto(conexion).getCodigo());
+			this.comboPuesto.setValue(empleado.getPuesto(conexion).getDescripcion());
 			this.comboPuesto.setDisable(true);
 		} else if (this.opcion == EDITAR) {
 			this.campoTextoCodigo.setText(empleado.getCodigo());
 			this.campoTextoCodigo.setDisable(false);
 			this.campoTextoNombre.setText(empleado.getNombre());
 			this.campoTextoNombre.setDisable(false);
-			this.comboPuesto.getSelectionModel().select(PuestoDAO.readPuesto(conexion,this.empleado.getPuestoFK()).getCodigo());
+			this.comboPuesto.getSelectionModel().select(PuestoDAO.readPuesto(conexion,this.empleado.getPuestoFK()).getDescripcion());
 			this.comboPuesto.setDisable(false);
 		}//FIN ELSE-IF
 	}//FIN INICIALIZA COMPONENTE
-	
-	//METODO VALIDAR DATOS
 	
 	private boolean validarDatos() {
 		if (this.campoTextoCodigo.getText().isEmpty()) {
@@ -124,10 +106,14 @@ public class DialogoEmpleado {
 		}//FIN ELSE-IF
 		return true;
 	}// FIN METODO VALIDAR DATOS
-	
-	//MANJEADOR DE COMPONENTES
-	
-	//MANEJADOR BOTON ACEPTAR
+
+	private void obtenerDatos() {
+		this.empleado.setCodigo(this.campoTextoCodigo.getText());
+		this.empleado.setNombre(this.campoTextoNombre.getText());
+		this.empleado.setPuestoFK(this.listaPuesto.get(this.comboPuesto.getSelectionModel().getSelectedIndex()).getSysPK());
+	}//FIN METODO
+		
+	//MANEJADORES
 	@FXML private void manejadorBotonAceptar() {
 		if (this.validarDatos()) {
 			if (opcion == CREAR) {
