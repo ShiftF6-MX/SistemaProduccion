@@ -91,6 +91,41 @@ public class EmpleadoDAO {
 		return arrayListaEmpleado;
 	}// FIN METODO
 
+	// METODO PARA OBTENER EMPLEADOS SIN USUARIO
+	public static ArrayList<String> readEmpleadosSinUsuario(Connection connection) {
+		ArrayList<String> arrayListaEmpleado = new ArrayList<String>();
+		String consulta = "SELECT empleados.Nombre FROM empleados  LEFT JOIN usuarios ON usuarios.EmpleadoFK = empleados.Sys_PK WHERE usuarios.EmpleadoFK IS NULL";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				arrayListaEmpleado.add(resultados.getString(1));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY/CATCH
+		return arrayListaEmpleado;
+	}// FIN METODO
+
+	// METODO PARA OBTENER UN EMPLEADO POR NOMBRE
+	public static Empleado readEmpleadoPorNombre(Connection connection, String nombre) {
+		Empleado empleado = new Empleado();
+		String consulta = "SELECT Sys_PK, Codigo, Nombre, PuestoFK FROM empleados WHERE Nombre = '"+ nombre +"'";
+		try {
+			Statement sentencia = connection.createStatement();
+			java.sql.ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				empleado.setSysPK(resultados.getInt(1));
+				empleado.setCodigo(resultados.getString(2));
+				empleado.setNombre(resultados.getString(3));
+				empleado.setPuestoFK(resultados.getInt(4));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY/CATCH
+		return empleado;
+	}// FIN METODO
+
 	// METODO PARA EDITAR UN REGISTRO
 	public static boolean updateEmpleado(Connection connection, Empleado empleado) {
 		String consulta = "UPDATE empleados SET Codigo = ?, Nombre = ?, PuestoFK = ? WHERE Sys_PK = ?";
