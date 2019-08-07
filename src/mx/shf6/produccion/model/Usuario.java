@@ -25,6 +25,7 @@ public class Usuario {
 	private ObjectProperty<Image> imagenPerfil;
 	private StringProperty nombreGrupoUsuario;
 	private ObjectProperty<Integer> empleadoFK;
+	private StringProperty nombreEmpleado;
 
 	//CONSTANTES
 	public static final int BLOQUEADO = 0;
@@ -33,12 +34,12 @@ public class Usuario {
 
 	//CONSTRUCTOR SIN PARAMETROS
 	public Usuario() {
-		this(0,"","","",new Date(System.currentTimeMillis()),new Date(System.currentTimeMillis()),0,0,null, "", 0);
+		this(0,"","","",new Date(System.currentTimeMillis()),new Date(System.currentTimeMillis()),0,0,null, "", 0, "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
 	public Usuario(Integer sysPk, String usuario, String contrasena, String correoElectronico, Date fechaRegistro, Date fechaBloqueo,
-			Integer status, Integer grupoUsuarioFk, Image imagenPerfil, String nombreGrupoUsuario, int empleadoFK) {
+			Integer status, Integer grupoUsuarioFk, Image imagenPerfil, String nombreGrupoUsuario, int empleadoFK, String nombreEmpleado) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
 		this.usuario = new SimpleStringProperty(usuario);
 		this.contrasena = new SimpleStringProperty(contrasena);
@@ -50,6 +51,7 @@ public class Usuario {
 		this.imagenPerfil = new SimpleObjectProperty<Image>(imagenPerfil);
 		this.nombreGrupoUsuario = new SimpleStringProperty(nombreGrupoUsuario);
 		this.empleadoFK = new SimpleObjectProperty<Integer>(empleadoFK);
+		this.nombreEmpleado = new SimpleStringProperty(nombreEmpleado);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
@@ -264,4 +266,17 @@ public class Usuario {
 		return EmpleadoDAO.readEmpleado(connection, getEmpleadoFK());
 	}//FIN METODO
 	//FINT METODOS "EMPLEADOFK"
+
+	//METODO PARA ACCEDER A NOMBREEMPLEADO
+	public void setNombreEmpleado (String nombreEmpleado) {
+		this.nombreEmpleado.set(nombreEmpleado);
+	}//FIN METODO
+
+	public String getNombreEmpleado() {
+		return this.nombreEmpleado.get();
+	}//FIN METODO
+
+	public StringProperty nombreEmpleadoProperty() {
+		return this.nombreEmpleado;
+	}//FIN METODO
 }//FIN CLASE

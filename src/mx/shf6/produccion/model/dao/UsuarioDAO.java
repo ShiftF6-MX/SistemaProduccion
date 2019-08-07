@@ -23,7 +23,7 @@ public class UsuarioDAO {
 
 	//METODO PARA HACER CREATE EN LA TABLA USUARIOS
 	public static final boolean crear(Connection connection, Usuario usuario){
-		String query=" INSERT INTO usuarios (Usuario, Contrasena, CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK) VALUES ( ?, aes_encrypt(?, 'ShiftF6'), ?, CURDATE(), ?, ?, ?)";
+		String query=" INSERT INTO usuarios (Usuario, Contrasena, CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK, EmpleadoFK) VALUES ( ?, aes_encrypt(?, 'ShiftF6'), ?, CURDATE(), ?, ?, ?, ?)";
 		try {
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.setString(1, usuario.getUsuario());
@@ -35,6 +35,7 @@ public class UsuarioDAO {
 				preparedStatement.setNull(4, Types.DATE);
 			preparedStatement.setInt(5, usuario.getStatus());
 			preparedStatement.setInt(6, usuario.getGrupoUsuarioFk());
+			preparedStatement.setInt(7, usuario.getEmpleadoFK());
 			preparedStatement.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -46,7 +47,7 @@ public class UsuarioDAO {
 	//METODO PARA LEER REGISTROS EN LA TABLA USUARIOS. EMMANUEL OSTRIA
 	public static final ArrayList<Usuario> readTodos(Connection connection){
 		ArrayList<Usuario> arrayListUsuario = new ArrayList<Usuario>();
-		String query = "SELECT usuarios.Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK, gruposusuario.Nombre FROM usuarios INNER JOIN gruposusuario ON usuarios.GrupoUsuarioFK = gruposusuario.Sys_PK ORDER BY usuarios.Sys_PK";
+		String query = "SELECT usuarios.Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK, gruposusuario.Nombre, empleados.Nombre FROM usuarios INNER JOIN gruposusuario ON usuarios.GrupoUsuarioFK = gruposusuario.Sys_PK INNER JOIN empleados ON usuarios.EmpleadoFK = empleados.Sys_PK ORDER BY usuarios.Sys_PK";
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
@@ -61,6 +62,7 @@ public class UsuarioDAO {
 				usuario.setStatus(resultSet.getInt(7));
 		    	usuario.setGrupoUsuarioFk(resultSet.getInt(8));
 		    	usuario.setNombreGrupoUsuario(resultSet.getString(9));
+		    	usuario.setNombreEmpleado(resultSet.getString(10));
 				arrayListUsuario.add(usuario);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -72,7 +74,7 @@ public class UsuarioDAO {
 	//METODO PARA OBTENER REGISTROS SEGUN SU USUARIO O CORREO
 	public static final ArrayList<Usuario> readPorUsuarioCorreoLike (Connection connection, String like){
 		ArrayList<Usuario> arrayListUsuario = new ArrayList<Usuario>();
-		String query= "SELECT Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK FROM usuarios WHERE Usuario LIKE '%" + like + "%' OR CorreoElectronico LIKE '%" + like + "%'";
+		String query= "SELECT usuarios.Sys_PK, Usuario, aes_decrypt(Contrasena, 'ShiftF6'), CorreoElectronico, FechaRegistro, FechaBloqueo, Status, GrupoUsuarioFK, gruposusuario.Nombre, empleados.Nombre FROM usuarios INNER JOIN gruposusuario ON usuarios.GrupoUsuarioFK = gruposusuario.Sys_PK INNER JOIN empleados ON empleados.Sys_PK = usuarios.EmpleadoFK WHERE Usuario LIKE '%" + like + "%' OR CorreoElectronico LIKE '%" + like + "%'";
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
@@ -87,6 +89,8 @@ public class UsuarioDAO {
 				usuario.setFechaBloqueo(resultSet.getDate(6));
 				usuario.setStatus(resultSet.getInt(7));
 		    	usuario.setGrupoUsuarioFk(resultSet.getInt(8));
+		    	usuario.setNombreGrupoUsuario(resultSet.getString(9));
+		    	usuario.setNombreEmpleado(resultSet.getString(10));
 				arrayListUsuario.add(usuario);
 			}//END WHILE
 		} catch (SQLException ex) {
