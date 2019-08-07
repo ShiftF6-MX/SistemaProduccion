@@ -10,7 +10,10 @@ import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleCotizacion;
+import mx.shf6.produccion.model.Empleado;
+import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
+import mx.shf6.produccion.model.dao.EmpleadoDAO;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -25,8 +28,11 @@ public class GenerarDocumento {
 	//PROPIEDADES
 	private static List<DetalleCotizacion> datosTabla;
 
-	public static void generaCotizacion(Connection connection, Cotizacion cotizacion) {
+	public static void generaCotizacion(Connection connection, Cotizacion cotizacion, Usuario usuario) {
 		try {
+			Empleado empleado = new Empleado();
+			empleado = EmpleadoDAO.readEmpleado(connection, usuario.getEmpleadoFK());
+
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/COTIZACION.jasper");
 			datosTabla = DetalleCotizacionDAO.toList(DetalleCotizacionDAO.readCotizacionDetalle(connection, cotizacion.getSysPK()));
 			JRBeanCollectionDataSource itemsTabla = new JRBeanCollectionDataSource(datosTabla);
@@ -52,7 +58,8 @@ public class GenerarDocumento {
 			parameters.put("TipoCambio", cotizacion.getTipoCambio());
 			parameters.put("Observaciones", cotizacion.getObservaciones());
 			parameters.put("Vigencia", cotizacion.getVigencia());
-			parameters.put("JefePlaneacion", "OMAR GARRIDO ISLAS");
+			parameters.put("JefePlaneacion", usuario.getUsuario());
+			parameters.put("Puesto", empleado.getPuesto(connection).getDescripcion());
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
@@ -105,6 +112,4 @@ public class GenerarDocumento {
 			System.out.println(jre);
 		}//TRY/CATH
 	}//END METHOD
-
-
-}
+}//FIN CLASE
