@@ -218,7 +218,7 @@ public class PantallaCotizaciones {
 		            			if (Notificacion.dialogoPreguntar("Confirmación para aprobación", "¿Desea APROBAR la cotizacion " + cotizacion.getReferencia() + "?")){		            				
 			            			cotizacion.setStatus(Cotizacion.APROBADA);
 			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-			            			GenerarDocumento.generaCotizacion(mainApp.getConnection(), cotizacion);
+			            			GenerarDocumento.generaCotizacion(mainApp.getConnection(), cotizacion, mainApp.getUsuario());
 			            			actualizarTabla();
 			            		}//FIN IF		            			
 		            		} else
