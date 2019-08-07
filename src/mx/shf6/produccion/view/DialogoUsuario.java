@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.GrupoUsuario;
 import mx.shf6.produccion.model.Usuario;
+import mx.shf6.produccion.model.dao.EmpleadoDAO;
 import mx.shf6.produccion.model.dao.GrupoUsuarioDAO;
 import mx.shf6.produccion.model.dao.UsuarioDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
@@ -20,35 +21,37 @@ import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoUsuario {
-	
+
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Usuario usuario;
 	private ArrayList<GrupoUsuario> listaGrupoUsuario;
 	private ObservableList<String> observableListaGrupoUsuario;
 	private ArrayList<Usuario> listaUsuarios;
-	
+	private ArrayList<String> listaEmpleados;
+
 	//VARIABLES
 	private int opcion;
-	
+
 	//CONSTANTES
 	static final int CREAR = 1;
 	static final int VER = 2;
 	static final int EDITAR = 3;
-	
+
 	//COMPONENTES INTERFAZ
 	@FXML private TextField campoTextoNombreUsuario;
 	@FXML private PasswordField campoContrasena;
 	@FXML private TextField campoCorreo;
 	@FXML private ComboBox<String> comboGrupoUsuario;
 	@FXML private ComboBox<String> comboStatus;
-	
+	@FXML private ComboBox<String> comboEmpleados;
+
 	//INICIA COMPONENTES INTERFAZ DE USUARIO
 	@FXML private void initialize() {
 		RestriccionTextField.limitarNumeroCaracteres(campoTextoNombreUsuario, 32);
 		RestriccionTextField.limitarNumeroCaracteres(campoContrasena, 30);
 	}//FIN METODO
-	
+
 	//ACCESO A LA CLASE PRINCIPAL
 	public void setMainApp(MainApp mainApp, Usuario usuario, int opcion) {
 		this.mainApp = mainApp;
@@ -56,10 +59,11 @@ public class DialogoUsuario {
 		this.opcion = opcion;
 		this.observableListaGrupoUsuario = FXCollections.observableArrayList();
 		this.listaGrupoUsuario = GrupoUsuarioDAO.readTodos(this.mainApp.getConnection());
+		this.listaEmpleados = EmpleadoDAO.readEmpleadosSinUsuario(this.mainApp.getConnection());
 		inicializarCombos();
 		mostrarDatosInterfaz();
 	}//FIN METODO
-	
+
 	//INICIALIZAR COMBOS
 	private void inicializarCombos() {
 		listaGrupoUsuario = GrupoUsuarioDAO.readTodos(this.mainApp.getConnection());
@@ -68,11 +72,12 @@ public class DialogoUsuario {
 		}
 		this.comboGrupoUsuario.setItems(this.observableListaGrupoUsuario);
 		new AutoCompleteComboBoxListener(comboGrupoUsuario);
-		
+
 		ObservableList<String> status = FXCollections.observableArrayList("Bloqueado","Activo","Baja");
 		this.comboStatus.setItems(status);
+		this.comboEmpleados.setItems(FXCollections.observableArrayList(this.listaEmpleados));
 	}//FIN METODO
-	
+
 	//VALIDA LA EXISTENCIA DE EL NOMBRE DE USUARIO
 	private boolean compararNombreUsuario () {
 		listaUsuarios = UsuarioDAO.readTodos(this.mainApp.getConnection());
@@ -84,7 +89,7 @@ public class DialogoUsuario {
 		}//FIN FOR
 		return true;
 	}//FIN METODO
-	
+
 	//VALIDA LA EXISTENCIA DE CORREO ELECTRONICO
 	private boolean campararCorreo () {
 		listaUsuarios = UsuarioDAO.readTodos(this.mainApp.getConnection());
@@ -95,7 +100,7 @@ public class DialogoUsuario {
 		}//FIN FOR
 		return true;
 	}//FIN METODO
-	
+
 	//VALIDA FORMATO DEL CORREO
 	private boolean revisarFormatoCorreo() {
 		String correoE = this.campoCorreo.getText();
@@ -106,7 +111,7 @@ public class DialogoUsuario {
 		} else
 			return false;
 	}//FIN METODO
-	
+
 	//INNICIALIZAR COMPONENTES
 	private void mostrarDatosInterfaz() {
 		if (this.opcion == CREAR) {
@@ -120,6 +125,7 @@ public class DialogoUsuario {
 			this.comboGrupoUsuario.setDisable(false);
 			this.comboStatus.getSelectionModel().select("");
 			this.comboStatus.setDisable(false);
+			this.comboEmpleados.setDisable(false);
 		} else if (this.opcion == EDITAR) {
 			this.campoTextoNombreUsuario.setText(this.usuario.getUsuario());
 			this.campoTextoNombreUsuario.setDisable(true);
@@ -131,6 +137,8 @@ public class DialogoUsuario {
 			this.comboGrupoUsuario.setDisable(false);
 			this.comboStatus.setValue(this.usuario.getDescripcionStatus());
 			this.comboStatus.setDisable(false);
+			this.comboEmpleados.setValue(this.usuario.getNombreEmpleado());
+			this.comboEmpleados.setDisable(false);
 		} else if (this.opcion == VER) {
 			this.campoTextoNombreUsuario.setText(this.usuario.getUsuario());
 			this.campoTextoNombreUsuario.setDisable(true);
@@ -142,9 +150,11 @@ public class DialogoUsuario {
 			this.comboGrupoUsuario.setDisable(true);
 			this.comboStatus.setValue(this.usuario.getDescripcionStatus());
 			this.comboStatus.setDisable(true);
+			this.comboEmpleados.setValue(this.usuario.getNombreEmpleado());
+			this.comboEmpleados.setDisable(true);
 		}//FIN IF ELSE
 	}//FIN METODO
-	
+
 	//VALIDACIONES
 	private boolean validarDatos() {
 		if (this.opcion == CREAR) {
@@ -168,9 +178,12 @@ public class DialogoUsuario {
 				return false;
 			} else if (this.comboGrupoUsuario.getSelectionModel().getSelectedItem().isEmpty()) {
 				Notificacion.dialogoAlerta(AlertType.ERROR, "", "El ComboBox \"Grupo de usuario\" no puede estar vacio");
-				return false;	
+				return false;
 			} else if (this.comboStatus.getSelectionModel().getSelectedItem().isEmpty()) {
 				Notificacion.dialogoAlerta(AlertType.ERROR, "", "El ComboBox \"Status\" no puede estar vacio");
+				return false;
+			} else if (this.comboEmpleados.getSelectionModel().getSelectedItem().isEmpty()){
+				Notificacion.dialogoAlerta(AlertType.ERROR, "", "El ComboBox \"Empleado\" no puede estar vacio");
 				return false;
 			}//FIN IF ELSE
 		} else if (this.opcion == EDITAR) {
@@ -188,20 +201,23 @@ public class DialogoUsuario {
 				return false;
 			} else if (this.comboGrupoUsuario.getSelectionModel().getSelectedItem().isEmpty()) {
 				Notificacion.dialogoAlerta(AlertType.ERROR, "", "El ComboBox \"Grupo de usuario\" no puede estar vacio");
-				return false;	
+				return false;
 			} else if (this.comboStatus.getSelectionModel().getSelectedItem().isEmpty()) {
 				Notificacion.dialogoAlerta(AlertType.ERROR, "", "El ComboBox \"Status\" no puede estar vacio");
 				return false;
+			} else if (this.comboEmpleados.getSelectionModel().getSelectedItem().isEmpty()){
+				Notificacion.dialogoAlerta(AlertType.ERROR, "", "El ComboBox \"Empleado\" no puede estar vacio");
+				return false;
 			}//FIN IF ELSE
-		}//FIN METODO
+		}//FIN IF ELSE
 		return true;
 	}//FIN METODO
-	
+
 	//BOTON ACEPTAR
 	@FXML private void manejadorBotonAceptar() {
 		if (this.validarDatos()) {
 			if (this.opcion == CREAR) {
-				this.usuario.setUsuario(this.campoTextoNombreUsuario.getText());	
+				this.usuario.setUsuario(this.campoTextoNombreUsuario.getText());
 				this.usuario.setContrasena(this.campoContrasena.getText());
 				this.usuario.setCorreoElectronico(this.campoCorreo.getText());
 				if (comboStatus.getSelectionModel().getSelectedItem() == "Bloqueado")
@@ -211,7 +227,8 @@ public class DialogoUsuario {
 				if (comboStatus.getSelectionModel().getSelectedItem() == "Baja")
 					this.usuario.setStatus(2);
 				this.usuario.setGrupoUsuarioFk(listaGrupoUsuario.get(comboGrupoUsuario.getSelectionModel().getSelectedIndex()).getSysPk());
-				
+				this.usuario.setEmpleadoFK(EmpleadoDAO.readEmpleadoPorNombre(this.mainApp.getConnection(), comboEmpleados.getSelectionModel().getSelectedItem()).getSysPK());
+
 				if (UsuarioDAO.crear(this.mainApp.getConnection(), this.usuario)) {
 					manejadorBotonCerrar();
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo correctamente");
@@ -219,7 +236,7 @@ public class DialogoUsuario {
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro");
 				}//FIN IF-ELSE
 			} else if (this.opcion == EDITAR) {
-				this.usuario.setUsuario(this.campoTextoNombreUsuario.getText());	
+				this.usuario.setUsuario(this.campoTextoNombreUsuario.getText());
 				this.usuario.setContrasena(this.campoContrasena.getText());
 				this.usuario.setCorreoElectronico(this.campoCorreo.getText());
 				if (comboStatus.getSelectionModel().getSelectedItem() == "Bloqueado")
@@ -229,7 +246,8 @@ public class DialogoUsuario {
 				if (comboStatus.getSelectionModel().getSelectedItem() == "Baja")
 					this.usuario.setStatus(2);
 				this.usuario.setGrupoUsuarioFk(listaGrupoUsuario.get(comboGrupoUsuario.getSelectionModel().getSelectedIndex()).getSysPk());
-				
+				this.usuario.setEmpleadoFK(EmpleadoDAO.readEmpleadoPorNombre(this.mainApp.getConnection(), comboEmpleados.getSelectionModel().getSelectedItem()).getSysPK());
+
 				if (UsuarioDAO.update(this.mainApp.getConnection(), this.usuario)) {
 					manejadorBotonCerrar();
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se modifico correctamente");
@@ -241,7 +259,7 @@ public class DialogoUsuario {
 			}//FIN IF ELSE
 		}//FIN METODO
 	}//FIN METODO
-	
+
 	//BOTON CERRAR
 	@FXML private void manejadorBotonCerrar() {
 		this.mainApp.getEscenarioDialogos().close();
