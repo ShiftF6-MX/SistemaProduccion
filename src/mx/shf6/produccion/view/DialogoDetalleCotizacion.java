@@ -12,8 +12,10 @@ import javafx.scene.control.TextArea;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCotizacion;
+import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
+import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
@@ -27,14 +29,14 @@ public class DialogoDetalleCotizacion {
 	private DetalleCotizacion detalleCotizacio;
 	private ArrayList<Proyecto> listaProyectos;
 	private ObservableList<String> listaNombreProyectos;
+	private OrdenProduccion ordenProduccion;
 	
 	//VARIABLES
 	private int opcion;
 	
 	//CONSTANTES
 	public static final int CREAR = 1;
-	public static final int VER = 2;
-	public static final int EDITAR = 3;
+	public static final int EDITAR = 2;
 	
 	//COMPONENTES INTERFAZ
 	@FXML private ComboBox<String> comboBoxProyectos;
@@ -50,9 +52,11 @@ public class DialogoDetalleCotizacion {
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
-	public void setMainApp(MainApp mainApp, Cotizacion cotizacion) {
+	public void setMainApp(MainApp mainApp, Cotizacion cotizacion, DetalleCotizacion detalleCotizacion, int opcion) {
 		this.mainApp = mainApp;
 		this.cotizacion = cotizacion;
+		this.detalleCotizacio = detalleCotizacion;
+		this.opcion = opcion;
 		listaProyectos = ProyectoDAO.readProyectoCliente(this.mainApp.getConnection(), cotizacion.getClienteFK());
 		for (Proyecto proyecto : listaProyectos) {
 			listaNombreProyectos.add(proyecto.getDescripcion());
@@ -70,20 +74,22 @@ public class DialogoDetalleCotizacion {
 			this.campoTextoObservaciones.setDisable(false);
 			this.comboBoxProyectos.getSelectionModel().select("");
 			this.comboBoxProyectos.setDisable(false);
-		} else if (this.opcion == VER) {
-			this.campoTextoCantidad.setText(this.detalleCotizacio.getCantidad().toString());
-			this.campoTextoCantidad.setDisable(true);
-			this.campoTextoObservaciones.setText(this.detalleCotizacio.getObservaciones());
-			this.campoTextoObservaciones.setDisable(true);
-			this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
-			this.comboBoxProyectos.setDisable(true);
 		} else if (this.opcion == EDITAR) {
-			this.campoTextoCantidad.setText(this.detalleCotizacio.getCantidad().toString());
-			this.campoTextoCantidad.setDisable(false);
+			ordenProduccion = OrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), detalleCotizacio.getSysPK());
+			if (ordenProduccion.getSysPK() == 0) {
+				this.campoTextoCantidad.setText(this.detalleCotizacio.getCantidad().toString());
+				this.campoTextoCantidad.setDisable(false);
+				this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
+				this.comboBoxProyectos.setDisable(false);
+			} else {
+				this.campoTextoCantidad.setText(this.detalleCotizacio.getCantidad().toString());
+				this.campoTextoCantidad.setDisable(true);
+				this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
+				this.comboBoxProyectos.setDisable(true);
+			}
 			this.campoTextoObservaciones.setText(this.detalleCotizacio.getObservaciones());
 			this.campoTextoObservaciones.setDisable(false);
-			this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
-			this.comboBoxProyectos.setDisable(false);
+			
 		}//FIN METODO
 	}//FIN METODO
 	
@@ -102,11 +108,19 @@ public class DialogoDetalleCotizacion {
 	//MANEJADORES COMPONENTES	
 	@FXML private void manejadorBotonAceptar() {
 		if (validarDatos()) {
-			if (DetalleCotizacionDAO.createDetalleCotizacion(this.mainApp.getConnection(), getDetalleCotizacion())) {
-				Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "El proyecto se agrego de forma correcta a la cotización");
-				this.mainApp.getEscenarioDialogosAlterno().close();
-			} else
-				Notificacion.dialogoAlerta(AlertType.WARNING, "", "El proyecto no se pudo agregar a la cotización, ¡revisa que la información sea correcta!");
+			if (opcion == EDITAR) {
+				if (DetalleCotizacionDAO.updateDetalleCotizacion(this.mainApp.getConnection(), getDetalleCotizacion())) {
+					Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "El proyecto se actualizo de forma correcta a la cotización");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.WARNING, "", "El proyecto no se pudo actualizar, ¡revisa que la información sea correcta!");
+			} else if (opcion == CREAR) {
+				if (DetalleCotizacionDAO.createDetalleCotizacion(this.mainApp.getConnection(), getDetalleCotizacion())) {
+					Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "El proyecto se agrego de forma correcta a la cotización");
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				} else
+					Notificacion.dialogoAlerta(AlertType.WARNING, "", "El proyecto no se pudo agregar a la cotización, ¡revisa que la información sea correcta!");
+			} //FIN IF ELSE
 		}//FIN IF
 	}//FIN METODO
 	
