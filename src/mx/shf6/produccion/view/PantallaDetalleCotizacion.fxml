@@ -67,6 +67,7 @@
                         <ContextMenu>
                           <items>
                             <MenuItem fx:id="menuItemAgregarProyecto" mnemonicParsing="false" onAction="#manejadorAgregar" text="Agregar Proyecto" />
+                              <MenuItem fx:id="menuItemEditarProyecto" mnemonicParsing="false" onAction="#manejadorEditar" text="Editar Proyecto" />
                               <MenuItem fx:id="menuItemQuitarProyecto" mnemonicParsing="false" onAction="#manejadorQuitar" text="Quitar Proyecto" />
                           </items>
                         </ContextMenu>
