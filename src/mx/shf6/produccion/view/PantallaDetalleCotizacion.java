@@ -44,6 +44,9 @@ import javafx.geometry.Pos;
 
 public class PantallaDetalleCotizacion {
 
+	public static final int CREAR = 1;
+	public static final int EDITAR = 2;
+	
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Cotizacion cotizacion;
@@ -64,6 +67,8 @@ public class PantallaDetalleCotizacion {
 	@FXML private PTableColumn<DetalleCotizacion, String> columnaAcciones;
 	@FXML private MenuItem menuItemAgregarProyecto;
 	@FXML private MenuItem menuItemQuitarProyecto;
+	@FXML private MenuItem menuItemVerProyecto;
+	@FXML private MenuItem menuItemEditarProyecto;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -205,9 +210,17 @@ public class PantallaDetalleCotizacion {
 	}//FIN METODO
 	
 	@FXML private void manejadorAgregar() {
-		this.mainApp.iniciarDialogoDetalleCotizacion(this.cotizacion);
+		this.mainApp.iniciarDialogoDetalleCotizacion(this.cotizacion, detalleCotizacion, DialogoDetalleCotizacion.CREAR);
 		this.actualizarTabla();
 	}//FIN METODO
+	
+	@FXML private void manejadorEditar() {
+		if (this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem() != null) {
+			detalleCotizacion = this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem();
+			this.mainApp.iniciarDialogoDetalleCotizacion(this.cotizacion, this.detalleCotizacion, DialogoDetalleCotizacion.EDITAR);
+		}
+		this.actualizarTabla();
+	}
 	
 	@FXML private void manejadorQuitar() {
 		if(this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem() != null) {
