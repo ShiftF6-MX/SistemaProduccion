@@ -34,6 +34,7 @@ import mx.shf6.produccion.model.Comprador;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
+import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
@@ -226,12 +227,13 @@ public class MainApp extends Application {
 		LeerArchivo.leerArchivo();
 		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
 		//this.conexionBD = new ConnectionDB("produccion_mfg2","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+		//this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.100", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		//this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.216", "conn01", "Simons83Mx");
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		this.conexionBD.start();
 	}//FIN METODO
-
+	
 	private void configurarEscenarioPrincipal(Stage primaryStage) {
 		this.escenarioPrincipal = primaryStage;
 		this.escenarioPrincipal.setMaximized(false);
@@ -780,7 +782,7 @@ public class MainApp extends Application {
 		return  detalleComponente;
 	}//FIN METODO
 
-	public void iniciarDialogoDetalleCotizacion(Cotizacion cotizacion) {
+	public void iniciarDialogoDetalleCotizacion(Cotizacion cotizacion, DetalleCotizacion detalleCotizacion, int opcion) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleCotizacion.fxml"));
@@ -790,7 +792,7 @@ public class MainApp extends Application {
 			this.escenarioDialogosAlterno.setScene(escenaDialogoDetalleCotizacion);
 
 			DialogoDetalleCotizacion dialogoDetalleCotizacion = fxmlLoader.getController();
-			dialogoDetalleCotizacion.setMainApp(this, cotizacion);
+			dialogoDetalleCotizacion.setMainApp(this, cotizacion, detalleCotizacion, opcion);
 
 			this.escenarioDialogosAlterno.showAndWait();
 		} catch (IOException | IllegalStateException ex) {
