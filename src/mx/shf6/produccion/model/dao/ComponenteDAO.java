@@ -421,7 +421,12 @@ public class ComponenteDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateComponente(Connection connection, Componente componente) {
-		String consulta = "UPDATE componentes SET NumeroParte = ?, Descripcion = ?, Largo = ?, UnidadLargo = ?, Ancho = ?, UnidadAncho = ?, Alto = ?, UnidadAlto = ?, Grado = ?, Espesor = ?, UnidadEspesor = ?, DiametroExterno = ?, UnidadDExt = ?, DiametroInterno = ?, UnidadDInt = ?, Alto2 = ?, UnidadAlto2 = ?, AnchoTotal = ?, UnidadAnchoTotal = ?, CodigoCatalogo = ?, TipoComponente = ?, Costo = ?, CostoDirecto = ?, CostoIndirecto = ?, MaterialFK = ?, TipoMiscelaneoFK = ?, TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ?, EsInterno = ? WHERE Sys_PK = ?";
+		String consulta = "UPDATE componentes SET NumeroParte = ?, Descripcion = ?, Largo = ?, UnidadLargo = ?, Ancho = ?, UnidadAncho = ?, "
+				+ "Alto = ?, UnidadAlto = ?, Grado = ?, Espesor = ?, UnidadEspesor = ?, DiametroExterno = ?, UnidadDExt = ?, "
+				+ "DiametroInterno = ?, UnidadDInt = ?, Alto2 = ?, UnidadAlto2 = ?, AnchoTotal = ?, UnidadAnchoTotal = ?, CodigoCatalogo = ?,"
+				+ " TipoComponente = ?, Costo = ?, CostoDirecto = ?, CostoIndirecto = ?, MaterialFK = ?, TipoMiscelaneoFK = ?,"
+				+ " TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ?,"
+				+ " EsInterno = ? WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, componente.getNumeroParte());
@@ -476,6 +481,7 @@ public class ComponenteDAO {
 			else
 				sentenciaPreparada.setNull(33, Types.INTEGER);
 			sentenciaPreparada.setInt(34, componente.getEsInterno());
+			sentenciaPreparada.setInt(35, componente.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
