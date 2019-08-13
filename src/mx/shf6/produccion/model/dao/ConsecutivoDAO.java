@@ -11,9 +11,9 @@ import mx.shf6.produccion.utilities.Notificacion;
 public class ConsecutivoDAO {
 
 	//METODO PARA OBTENER UN REGISTRO
-	public static int readConsecutivoTipoMateriaPrima(Connection connection, int tipoMateriaPrimaFK) {
+	public static int readConsecutivoTipoMateriaPrima(Connection connection) {
 		int consecutivo = 0;
-		String consulta = "SELECT consecutivo FROM consecutivos WHERE TipoMateriaPrimaFK = " + tipoMateriaPrimaFK;
+		String consulta = "SELECT consecutivo FROM consecutivos2 WHERE Sys_PK = 2 ";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -27,9 +27,41 @@ public class ConsecutivoDAO {
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO
-	public static int readConsecutivoTipoMiscelaneo(Connection connection, int tipoMiscelaneoFK) {
+	public static int readConsecutivoTipoMiscelaneo(Connection connection) {
 		int consecutivo = 0;
-		String consulta = "SELECT consecutivo FROM consecutivos WHERE TipoMiscelaneoFK = " + tipoMiscelaneoFK;
+		String consulta = "SELECT consecutivo FROM consecutivos2 WHERE Sys_PK = 1 ";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				consecutivo = resultados.getInt(1);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return consecutivo + 1;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static int readConsecutivoPartePrimaria(Connection connection) {
+		int consecutivo = 0;
+		String consulta = "SELECT consecutivo FROM consecutivos2 WHERE Sys_PK = 3 ";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				consecutivo = resultados.getInt(1);
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return consecutivo + 1;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
+	public static int readConsecutivoEnsamble(Connection connection) {
+		int consecutivo = 0;
+		String consulta = "SELECT consecutivo FROM consecutivos2 WHERE Sys_PK = 4 ";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
