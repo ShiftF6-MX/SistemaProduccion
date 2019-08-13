@@ -46,14 +46,26 @@ public class DialogoComponente {
 	@FXML private TextField campoTextoNumeroParte;
 	@FXML private TextField campoTextoDescripcion;
 	@FXML private TextField campoTextoLargo;
+	@FXML private ComboBox<String> comboBoxLargo;
 	@FXML private TextField campoTextoAncho;
-	@FXML private TextField campoTextoAltoEspesor;
+	@FXML private ComboBox<String> comboBoxAncho;
+	@FXML private TextField campoTextoAlto;
+	@FXML private ComboBox<String> comboBoxAlto;
+	@FXML private TextField campoTextoDiametroInterior;
+	@FXML private ComboBox<String> comboBoxDiametroInterior;
+	@FXML private TextField campoTextoDiametroExterior;
+	@FXML private ComboBox<String> comboBoxDiametroExterior;
+	@FXML private TextField campoTextoAlto2;
+	@FXML private ComboBox<String> comboBoxAlto2;
+	@FXML private TextField campoAnchoTotal;
+	@FXML private ComboBox<String> comboBoxAnchoTotal;
+	@FXML private TextField campoTextoEspesor;
+	@FXML private ComboBox<String> comboBoxEspesor;
+	@FXML private TextField campoCodigoCatalogo;
 	@FXML private TextField campoTextoGradoMaterial;
-	@FXML private TextField campoTextoEspesorMaterial;
 	@FXML private TextField campoTextoCosto;
 	@FXML private TextField campoTextoCostoDirecto;
 	@FXML private TextField campoTextoCostoIndirecto;
-	@FXML private TextField campoTextoUnidad;
 	@FXML private TextField campoTextoNotas;
 	@FXML private ComboBox<String> comboBoxStatus;
 	@FXML private TextField campoTextoConsecutivo;
@@ -90,105 +102,225 @@ public class DialogoComponente {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue == TipoComponente.COMPRADO) {
-					comboBoxCliente.getSelectionModel().select("");
-					comboBoxCliente.setDisable(true);
-					comboBoxMaterial.getSelectionModel().select("");
-					comboBoxMaterial.setDisable(false);
-					comboBoxTipoMateriaPrima.getSelectionModel().select("");
-					comboBoxTipoMateriaPrima.setDisable(true);
-					comboBoxTipoMiscelaneo.getSelectionModel().select("");
-					comboBoxTipoMiscelaneo.setDisable(false);
-					comboBoxAcabado.getSelectionModel().select("");
-					comboBoxAcabado.setDisable(true);
-					comboBoxTratamiento.getSelectionModel().select("");
-					comboBoxTratamiento.setDisable(false);
-					campoTextoLargo.setText("0.0");
-					campoTextoLargo.setDisable(true);
-					campoTextoAncho.setText("0.0");
-					campoTextoAncho.setDisable(true);
-					campoTextoAltoEspesor.setText("0.0");
-					campoTextoAltoEspesor.setDisable(true);
-					campoTextoNumeroParte.setDisable(true);
-					campoTextoGradoMaterial.setText("");
-					campoTextoGradoMaterial.setDisable(true);
-					campoTextoEspesorMaterial.setText("");
-					campoTextoEspesorMaterial.setDisable(true);
-				} else if (newValue == TipoComponente.MATERIA_PRIMA) {
-					comboBoxCliente.getSelectionModel().select("");
-					comboBoxCliente.setDisable(true);
-					comboBoxMaterial.getSelectionModel().select("");
-					comboBoxMaterial.setDisable(false);
-					comboBoxTipoMateriaPrima.getSelectionModel().select("");
-					comboBoxTipoMateriaPrima.setDisable(false);
-					comboBoxTipoMiscelaneo.getSelectionModel().select("");
-					comboBoxTipoMiscelaneo.setDisable(true);
-					comboBoxAcabado.getSelectionModel().select("");
-					comboBoxAcabado.setDisable(false);
-					comboBoxTratamiento.getSelectionModel().select("");
-					comboBoxTratamiento.setDisable(true);
-					campoTextoLargo.setText("0.0");
-					campoTextoLargo.setDisable(false);
-					campoTextoAncho.setText("0.0");
-					campoTextoAncho.setDisable(false);
-					campoTextoAltoEspesor.setText("0.0");
-					campoTextoAltoEspesor.setDisable(false);
-					campoTextoNumeroParte.setDisable(true);
-					campoTextoGradoMaterial.setText("");
-					campoTextoGradoMaterial.setDisable(false);
-					campoTextoEspesorMaterial.setText("");
-					campoTextoEspesorMaterial.setDisable(false);
-				} else if (newValue == TipoComponente.SUB_ENSAMBLE || newValue == TipoComponente.PARTE_PRIMARIA) {
-					comboBoxCliente.getSelectionModel().select("");
-					comboBoxCliente.setDisable(false);
-					comboBoxMaterial.getSelectionModel().select("");
-					comboBoxMaterial.setDisable(false);
-					comboBoxTipoMateriaPrima.getSelectionModel().select("");
-					comboBoxTipoMateriaPrima.setDisable(true);
-					comboBoxTipoMiscelaneo.getSelectionModel().select("");
-					comboBoxTipoMiscelaneo.setDisable(true);
-					comboBoxAcabado.getSelectionModel().select("");
-					comboBoxAcabado.setDisable(true);
-					comboBoxTratamiento.getSelectionModel().select("");
-					comboBoxTratamiento.setDisable(true);
-					//campoTextoLargo.setText("");
-					campoTextoLargo.setDisable(false);
-					//campoTextoAncho.setText("");
-					campoTextoAncho.setDisable(false);
-					//campoTextoAltoEspesor.setText("");
-					campoTextoAltoEspesor.setDisable(false);
-					campoTextoNumeroParte.setDisable(true);;
-					campoTextoGradoMaterial.setText("");
-					campoTextoGradoMaterial.setDisable(true);
-					campoTextoEspesorMaterial.setText("");
-					campoTextoEspesorMaterial.setDisable(true);
-					
-				} else if (newValue == TipoComponente.ENSAMBLE) {
-					comboBoxCliente.getSelectionModel().select("");
-					comboBoxCliente.setDisable(false);
-					comboBoxMaterial.getSelectionModel().select("");
-					comboBoxMaterial.setDisable(true);
-					comboBoxTipoMateriaPrima.getSelectionModel().select("");
-					comboBoxTipoMateriaPrima.setDisable(true);
-					comboBoxTipoMiscelaneo.getSelectionModel().select("");
-					comboBoxTipoMiscelaneo.setDisable(true);
-					comboBoxAcabado.getSelectionModel().select("");
-					comboBoxAcabado.setDisable(true);
-					comboBoxTratamiento.getSelectionModel().select("");
-					comboBoxTratamiento.setDisable(true);
-					campoTextoLargo.setText("0.0");
-					campoTextoLargo.setDisable(true);
-					campoTextoAncho.setText("0.0");
-					campoTextoAncho.setDisable(true);
-					campoTextoAltoEspesor.setText("0.0");
-					campoTextoAltoEspesor.setDisable(true);
-					campoTextoNumeroParte.setDisable(false);
-					campoTextoGradoMaterial.setText("");
-					campoTextoGradoMaterial.setDisable(true);
-					campoTextoEspesorMaterial.setText("");
-					campoTextoEspesorMaterial.setDisable(true);
-					checkHabilitar.setDisable(true);
-				}//FIN IF/ELSE
+				if (opcion == CREAR) {
+					if (newValue == TipoComponente.COMPRADO) {
+						comboBoxCliente.getSelectionModel().select("");
+						comboBoxCliente.setDisable(true);
+						comboBoxMaterial.getSelectionModel().select("");
+						comboBoxMaterial.setDisable(false);
+						comboBoxTipoMateriaPrima.getSelectionModel().select("");
+						comboBoxTipoMateriaPrima.setDisable(true);
+						comboBoxTipoMiscelaneo.getSelectionModel().select("");
+						comboBoxTipoMiscelaneo.setDisable(false);
+						comboBoxAcabado.getSelectionModel().select("");
+						comboBoxAcabado.setDisable(true);
+						comboBoxTratamiento.getSelectionModel().select("");
+						comboBoxTratamiento.setDisable(false);
+						campoTextoLargo.setText("");
+						campoTextoLargo.setDisable(false);
+						comboBoxLargo.getSelectionModel().select("");
+						comboBoxLargo.setDisable(false);
+						campoTextoAncho.setText("");
+						campoTextoAncho.setDisable(false);
+						comboBoxAncho.getSelectionModel().select("");
+						comboBoxAncho.setDisable(false);
+						campoTextoAlto.setText("");
+						campoTextoAlto.setDisable(false);
+						comboBoxAlto.getSelectionModel().select("");
+						comboBoxAlto.setDisable(false);
+						campoTextoNumeroParte.setDisable(true);
+						campoTextoGradoMaterial.setText("");
+						campoTextoGradoMaterial.setDisable(false);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(false);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(false);
+						campoTextoDiametroExterior.setText("");
+						campoTextoDiametroExterior.setDisable(false);
+						comboBoxDiametroExterior.getSelectionModel().select("");
+						comboBoxDiametroExterior.setDisable(false);
+						campoTextoDiametroInterior.setText("");
+						campoTextoDiametroInterior.setDisable(false);
+						comboBoxDiametroInterior.getSelectionModel().select("");
+						comboBoxDiametroInterior.setDisable(false);
+						campoTextoAlto2.setText("");
+						campoTextoAlto2.setDisable(false);
+						comboBoxAlto2.getSelectionModel().select("");
+						comboBoxAlto2.setDisable(false);
+						campoAnchoTotal.setText("");
+						campoAnchoTotal.setDisable(false);
+						comboBoxAnchoTotal.getSelectionModel().select("");
+						comboBoxAnchoTotal.setDisable(false);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(false);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(false);
+						campoCodigoCatalogo.setText("");
+						campoCodigoCatalogo.setDisable(false);
+					} else if (newValue == TipoComponente.MATERIA_PRIMA) {
+						comboBoxCliente.getSelectionModel().select("");
+						comboBoxCliente.setDisable(true);
+						comboBoxMaterial.getSelectionModel().select("");
+						comboBoxMaterial.setDisable(false);
+						comboBoxTipoMateriaPrima.getSelectionModel().select("");
+						comboBoxTipoMateriaPrima.setDisable(false);
+						comboBoxTipoMiscelaneo.getSelectionModel().select("");
+						comboBoxTipoMiscelaneo.setDisable(true);
+						comboBoxAcabado.getSelectionModel().select("");
+						comboBoxAcabado.setDisable(false);
+						comboBoxTratamiento.getSelectionModel().select("");
+						comboBoxTratamiento.setDisable(true);
+						campoTextoLargo.setText("");
+						campoTextoLargo.setDisable(false);
+						comboBoxLargo.getSelectionModel().select("");
+						comboBoxLargo.setDisable(false);
+						campoTextoAncho.setText("");
+						campoTextoAncho.setDisable(false);
+						comboBoxAncho.getSelectionModel().select("");
+						comboBoxAncho.setDisable(false);
+						campoTextoAlto.setText("");
+						campoTextoAlto.setDisable(false);
+						comboBoxAlto.getSelectionModel().select("");
+						comboBoxAlto.setDisable(false);
+						campoTextoNumeroParte.setDisable(true);
+						campoTextoGradoMaterial.setText("");
+						campoTextoGradoMaterial.setDisable(false);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(false);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(false);
+						campoTextoDiametroExterior.setText("");
+						campoTextoDiametroExterior.setDisable(false);
+						comboBoxDiametroExterior.getSelectionModel().select("");
+						comboBoxDiametroExterior.setDisable(false);
+						campoTextoDiametroInterior.setText("");
+						campoTextoDiametroInterior.setDisable(false);
+						comboBoxDiametroInterior.getSelectionModel().select("");
+						comboBoxDiametroInterior.setDisable(false);
+						campoTextoAlto2.setText("");
+						campoTextoAlto2.setDisable(false);
+						comboBoxAlto2.getSelectionModel().select("");
+						comboBoxAlto2.setDisable(false);
+						campoAnchoTotal.setText("");
+						campoAnchoTotal.setDisable(false);
+						comboBoxAnchoTotal.getSelectionModel().select("");
+						comboBoxAnchoTotal.setDisable(false);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(false);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(false);
+						campoCodigoCatalogo.setText("");
+						campoCodigoCatalogo.setDisable(false);
+					} else if (newValue == TipoComponente.SUB_ENSAMBLE || newValue == TipoComponente.PARTE_PRIMARIA) {
+						comboBoxCliente.getSelectionModel().select("");
+						comboBoxCliente.setDisable(false);
+						comboBoxMaterial.getSelectionModel().select("");
+						comboBoxMaterial.setDisable(false);
+						comboBoxTipoMateriaPrima.getSelectionModel().select("");
+						comboBoxTipoMateriaPrima.setDisable(true);
+						comboBoxTipoMiscelaneo.getSelectionModel().select("");
+						comboBoxTipoMiscelaneo.setDisable(true);
+						comboBoxAcabado.getSelectionModel().select("");
+						comboBoxAcabado.setDisable(true);
+						comboBoxTratamiento.getSelectionModel().select("");
+						comboBoxTratamiento.setDisable(true);
+						campoTextoLargo.setText("");
+						campoTextoLargo.setDisable(false);
+						comboBoxLargo.getSelectionModel().select("");
+						comboBoxLargo.setDisable(false);
+						campoTextoAncho.setText("");
+						campoTextoAncho.setDisable(false);
+						comboBoxAncho.getSelectionModel().select("");
+						comboBoxAncho.setDisable(false);
+						campoTextoAlto.setText("");
+						campoTextoAlto.setDisable(false);
+						comboBoxAlto.getSelectionModel().select("");
+						comboBoxAlto.setDisable(false);
+						campoTextoNumeroParte.setDisable(true);
+						campoTextoGradoMaterial.setText("");
+						campoTextoGradoMaterial.setDisable(false);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(false);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(false);
+						campoTextoDiametroExterior.setText("");
+						campoTextoDiametroExterior.setDisable(false);
+						comboBoxDiametroExterior.getSelectionModel().select("");
+						comboBoxDiametroExterior.setDisable(false);
+						campoTextoDiametroInterior.setText("");
+						campoTextoDiametroInterior.setDisable(false);
+						comboBoxDiametroInterior.getSelectionModel().select("");
+						comboBoxDiametroInterior.setDisable(false);
+						campoTextoAlto2.setText("");
+						campoTextoAlto2.setDisable(false);
+						comboBoxAlto2.getSelectionModel().select("");
+						comboBoxAlto2.setDisable(false);
+						campoAnchoTotal.setText("");
+						campoAnchoTotal.setDisable(false);
+						comboBoxAnchoTotal.getSelectionModel().select("");
+						comboBoxAnchoTotal.setDisable(false);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(false);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(false);
+						campoCodigoCatalogo.setText("");
+						campoCodigoCatalogo.setDisable(false);
+					} else if (newValue == TipoComponente.ENSAMBLE) {
+						comboBoxCliente.getSelectionModel().select("");
+						comboBoxCliente.setDisable(false);
+						comboBoxMaterial.getSelectionModel().select("");
+						comboBoxMaterial.setDisable(true);
+						comboBoxTipoMateriaPrima.getSelectionModel().select("");
+						comboBoxTipoMateriaPrima.setDisable(true);
+						comboBoxTipoMiscelaneo.getSelectionModel().select("");
+						comboBoxTipoMiscelaneo.setDisable(true);
+						comboBoxAcabado.getSelectionModel().select("");
+						comboBoxAcabado.setDisable(true);
+						comboBoxTratamiento.getSelectionModel().select("");
+						comboBoxTratamiento.setDisable(true);
+						campoTextoLargo.setText("");
+						campoTextoLargo.setDisable(true);
+						comboBoxLargo.getSelectionModel().select("");
+						comboBoxLargo.setDisable(true);
+						campoTextoAncho.setText("");
+						campoTextoAncho.setDisable(true);
+						comboBoxAncho.getSelectionModel().select("");
+						comboBoxAncho.setDisable(true);
+						campoTextoAlto.setText("");
+						campoTextoAlto.setDisable(true);
+						comboBoxAlto.getSelectionModel().select("");
+						comboBoxAlto.setDisable(true);
+						campoTextoNumeroParte.setDisable(false);
+						campoTextoGradoMaterial.setText("");
+						campoTextoGradoMaterial.setDisable(true);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(true);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(true);
+						campoTextoDiametroExterior.setText("");
+						campoTextoDiametroExterior.setDisable(true);
+						comboBoxDiametroExterior.getSelectionModel().select("");
+						comboBoxDiametroExterior.setDisable(true);
+						campoTextoDiametroInterior.setText("");
+						campoTextoDiametroInterior.setDisable(true);
+						comboBoxDiametroInterior.getSelectionModel().select("");
+						comboBoxDiametroInterior.setDisable(true);
+						campoTextoAlto2.setText("");
+						campoTextoAlto2.setDisable(true);
+						comboBoxAlto2.getSelectionModel().select("");
+						comboBoxAlto2.setDisable(true);
+						campoAnchoTotal.setText("");
+						campoAnchoTotal.setDisable(true);
+						comboBoxAnchoTotal.getSelectionModel().select("");
+						comboBoxAnchoTotal.setDisable(true);
+						campoTextoEspesor.setText("");
+						campoTextoEspesor.setDisable(true);
+						comboBoxEspesor.getSelectionModel().select("");
+						comboBoxEspesor.setDisable(true);
+						campoCodigoCatalogo.setText("");
+						campoCodigoCatalogo.setDisable(true);
+					}//FIN IF/ELSE
+				}
 			} //FIN METODO
 			
 		});//FIN SENTENCIA
@@ -205,117 +337,171 @@ public class DialogoComponente {
 		this.comboBoxAcabado.setItems(listaAcabados);
 		ObservableList<String> listaTratamientos = TratamientoDAO.listaTiposTratamiento(this.mainApp.getConnection());
 		this.comboBoxTratamiento.setItems(listaTratamientos);
+		
+		ObservableList<String> listaMedidas = FXCollections.observableArrayList("mm", "inch");
+		this.comboBoxAlto.setItems(listaMedidas);
+		this.comboBoxAlto2.setItems(listaMedidas);
+		this.comboBoxAncho.setItems(listaMedidas);
+		this.comboBoxAnchoTotal.setItems(listaMedidas);
+		this.comboBoxDiametroExterior.setItems(listaMedidas);
+		this.comboBoxDiametroInterior.setItems(listaMedidas);
+		this.comboBoxEspesor.setItems(listaMedidas);
+		this.comboBoxLargo.setItems(listaMedidas);
 	}//FIN METODO
 	
 	//INICIALIZA COMPONENTE
 	private void inicializarComponentes() {		
 		if (this.opcion == CREAR) {
-			this.campoTextoNumeroParte.setText("");
-			this.campoTextoNumeroParte.setDisable(true);
-			this.campoTextoDescripcion.setText("");
-			this.campoTextoDescripcion.setDisable(false);
-			this.campoTextoLargo.setText("");
-			this.campoTextoLargo.setDisable(false);
-			this.campoTextoAncho.setText("");
-			this.campoTextoAncho.setDisable(false);
-			this.campoTextoAltoEspesor.setText("");
-			this.campoTextoAltoEspesor.setDisable(false);
-			this.campoTextoCosto.setText("0.0");
-			this.campoTextoCosto.setDisable(false);
-			this.campoTextoCostoDirecto.setText("");
-			this.campoTextoCostoDirecto.setDisable(false);
-			this.campoTextoCostoIndirecto.setText("");
-			this.campoTextoCostoIndirecto.setDisable(false);
-			this.campoTextoUnidad.setText("");
-			this.campoTextoUnidad.setDisable(false);
-			this.campoTextoNotas.setText("");
-			this.campoTextoNotas.setDisable(false);
-			this.comboBoxStatus.getSelectionModel().select("");
-			this.comboBoxStatus.setDisable(false);
-			this.campoTextoConsecutivo.setText("");
-			this.campoTextoConsecutivo.setDisable(true);
-			this.comboBoxTipoComponente.getSelectionModel().select("");
-			this.comboBoxTipoComponente.setDisable(false);
-			this.comboBoxMaterial.getSelectionModel().select("");
-			this.comboBoxMaterial.setDisable(false);
-			this.comboBoxCliente.getSelectionModel().select("");
-			this.comboBoxCliente.setDisable(false);
-			this.comboBoxTipoMateriaPrima.getSelectionModel().select("");
-			this.comboBoxTipoMateriaPrima.setDisable(false);
-			this.comboBoxTipoMiscelaneo.getSelectionModel().select("");
-			this.comboBoxTipoMiscelaneo.setDisable(false);
-			this.comboBoxAcabado.getSelectionModel().select("");
-			this.comboBoxAcabado.setDisable(false);
-			this.comboBoxTratamiento.getSelectionModel().select("");
-			this.comboBoxTratamiento.setDisable(false);
-			this.campoTextoGradoMaterial.setText("");
-			this.campoTextoGradoMaterial.setDisable(true);
-			this.campoTextoEspesorMaterial.setText("");
-			this.campoTextoEspesorMaterial.setDisable(true);
+			comboBoxCliente.getSelectionModel().select("");
+			comboBoxCliente.setDisable(false);
+			comboBoxMaterial.getSelectionModel().select("");
+			comboBoxMaterial.setDisable(false);
+			comboBoxTipoMateriaPrima.getSelectionModel().select("");
+			comboBoxTipoMateriaPrima.setDisable(true);
+			comboBoxTipoMiscelaneo.getSelectionModel().select("");
+			comboBoxTipoMiscelaneo.setDisable(true);
+			comboBoxAcabado.getSelectionModel().select("");
+			comboBoxAcabado.setDisable(true);
+			comboBoxTratamiento.getSelectionModel().select("");
+			comboBoxTratamiento.setDisable(true);
+			campoTextoLargo.setText("");
+			campoTextoLargo.setDisable(false);
+			comboBoxLargo.getSelectionModel().select("");
+			comboBoxLargo.setDisable(false);
+			campoTextoAncho.setText("");
+			campoTextoAncho.setDisable(false);
+			comboBoxAncho.getSelectionModel().select("");
+			comboBoxAncho.setDisable(false);
+			campoTextoAlto.setText("");
+			campoTextoAlto.setDisable(false);
+			comboBoxAlto.getSelectionModel().select("");
+			comboBoxAlto.setDisable(false);
+			campoTextoNumeroParte.setDisable(true);
+			campoTextoGradoMaterial.setText("");
+			campoTextoGradoMaterial.setDisable(false);
+			campoTextoEspesor.setText("");
+			campoTextoEspesor.setDisable(false);
+			comboBoxEspesor.getSelectionModel().select("");
+			comboBoxEspesor.setDisable(false);
+			campoTextoDiametroExterior.setText("");
+			campoTextoDiametroExterior.setDisable(false);
+			comboBoxDiametroExterior.getSelectionModel().select("");
+			comboBoxDiametroExterior.setDisable(false);
+			campoTextoDiametroInterior.setText("");
+			campoTextoDiametroInterior.setDisable(false);
+			comboBoxDiametroInterior.getSelectionModel().select("");
+			comboBoxDiametroInterior.setDisable(false);
+			campoTextoAlto2.setText("");
+			campoTextoAlto2.setDisable(false);
+			comboBoxAlto2.getSelectionModel().select("");
+			comboBoxAlto2.setDisable(false);
+			campoAnchoTotal.setText("");
+			campoAnchoTotal.setDisable(false);
+			comboBoxAnchoTotal.getSelectionModel().select("");
+			comboBoxAnchoTotal.setDisable(false);
+			campoTextoEspesor.setText("");
+			campoTextoEspesor.setDisable(false);
+			comboBoxEspesor.getSelectionModel().select("");
+			comboBoxEspesor.setDisable(false);
+			campoCodigoCatalogo.setText("");
+			campoCodigoCatalogo.setDisable(false);
+			campoTextoConsecutivo.setDisable(true);
 			
 		} else if (this.opcion == VER) {
+			
 			this.campoTextoNumeroParte.setText(this.componente.getNumeroParte());
 			this.campoTextoNumeroParte.setDisable(true);
-			this.campoTextoDescripcion.setText(componente.getDescripcion());
+			this.campoTextoDescripcion.setText(this.componente.getDescripcion());
 			this.campoTextoDescripcion.setDisable(true);
-			this.campoTextoLargo.setText(String.valueOf(componente.getDimensiones().getLargo()));
+			this.campoTextoLargo.setText(String.valueOf(this.componente.getDimensiones().getLargo()));
 			this.campoTextoLargo.setDisable(true);
-			this.campoTextoAncho.setText(String.valueOf(componente.getDimensiones().getAncho()));
+			this.comboBoxLargo.setValue(this.componente.getDimensiones().getUnidadLargo());
+			this.comboBoxLargo.setDisable(true);
+			this.campoTextoAncho.setText(String.valueOf(this.componente.getDimensiones().getAncho()));
 			this.campoTextoAncho.setDisable(true);
-			this.campoTextoAltoEspesor.setText(String.valueOf(componente.getDimensiones().getAltoEspesor()));
-			this.campoTextoAltoEspesor.setDisable(true);
-			this.campoTextoCosto.setText(String.valueOf(componente.getCosto()));
+			this.comboBoxAncho.setValue(this.componente.getDimensiones().getUnidadAncho());
+			this.comboBoxAncho.setDisable(true);
+			this.campoTextoAlto.setText(String.valueOf(this.componente.getDimensiones().getAlto2()));
+			this.campoTextoAlto.setDisable(true);
+			this.comboBoxAlto.setValue(this.componente.getDimensiones().getUnidadAlto());
+			this.comboBoxAlto.setDisable(true);
+			this.campoTextoCosto.setText(String.valueOf(this.componente.getCosto()));
 			this.campoTextoCosto.setDisable(true);
-			this.campoTextoCostoDirecto.setText(String.valueOf(componente.getCostoDirecto()));
+			this.campoTextoCostoDirecto.setText(String.valueOf(this.componente.getCostoDirecto()));
 			this.campoTextoCostoDirecto.setDisable(true);
-			this.campoTextoCostoIndirecto.setText(String.valueOf(componente.getCostoIndirecto()));
+			this.campoTextoCostoIndirecto.setText(String.valueOf(this.componente.getCostoIndirecto()));
 			this.campoTextoCostoIndirecto.setDisable(true);
-			this.campoTextoUnidad.setText(componente.getUnidad());
-			this.campoTextoUnidad.setDisable(true);
-			this.campoTextoNotas.setText(componente.getNotas());
+			this.campoTextoNotas.setText(this.componente.getNotas());
 			this.campoTextoNotas.setDisable(true);
-			this.comboBoxStatus.getSelectionModel().select(componente.getStatus());
+			this.comboBoxStatus.getSelectionModel().select(this.componente.getStatus());
 			this.comboBoxStatus.setDisable(true);
-			String consecutivo = decimalFormat.format(componente.getConsecutivo());
+			String consecutivo = decimalFormat.format(this.componente.getConsecutivo());
 			this.campoTextoConsecutivo.setText(consecutivo);
 			this.campoTextoConsecutivo.setDisable(true);
-			this.comboBoxTipoComponente.getSelectionModel().select(componente.getTipoComponente());
+			this.comboBoxTipoComponente.getSelectionModel().select(this.componente.getTipoComponente());
 			this.comboBoxTipoComponente.setDisable(true);
-			this.comboBoxMaterial.getSelectionModel().select(componente.getMaterial(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxMaterial.getSelectionModel().select(this.componente.getMaterial(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxMaterial.setDisable(true);
-			this.comboBoxCliente.getSelectionModel().select(componente.getCliente(this.mainApp.getConnection()).getNombre());
+			this.comboBoxCliente.getSelectionModel().select(this.componente.getCliente(this.mainApp.getConnection()).getNombre());
 			this.comboBoxCliente.setDisable(true);
-			this.comboBoxTipoMateriaPrima.getSelectionModel().select(componente.getTipoMateriaPrima(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxTipoMateriaPrima.getSelectionModel().select(this.componente.getTipoMateriaPrima(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxTipoMateriaPrima.setDisable(true);
-			this.comboBoxTipoMiscelaneo.getSelectionModel().select(componente.getTipoMiscelaneo(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxTipoMiscelaneo.getSelectionModel().select(this.componente.getTipoMiscelaneo(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxTipoMiscelaneo.setDisable(true);
-			this.comboBoxAcabado.getSelectionModel().select(componente.getAcabado(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxAcabado.getSelectionModel().select(this.componente.getAcabado(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxAcabado.setDisable(true);
-			this.comboBoxTratamiento.getSelectionModel().select(componente.getTratamiento(this.mainApp.getConnection()).getDescripcion());
+			this.comboBoxTratamiento.getSelectionModel().select(this.componente.getTratamiento(this.mainApp.getConnection()).getDescripcion());
 			this.comboBoxTratamiento.setDisable(true);
 			this.campoTextoGradoMaterial.setText(this.componente.getGradoMaterial());
 			this.campoTextoGradoMaterial.setDisable(true);
-			this.campoTextoEspesorMaterial.setText(this.componente.getEspesorMaterial());
-			this.campoTextoEspesorMaterial.setDisable(true);
+			this.campoTextoEspesor.setText(String.valueOf(this.componente.getDimensiones().getEspesor()));
+			this.campoTextoEspesor.setDisable(true);
+			this.comboBoxEspesor.setValue(this.componente.getDimensiones().getUnidadEspesor());
+			this.comboBoxEspesor.setDisable(true);
+			this.campoTextoDiametroInterior.setText(String.valueOf(this.componente.getDimensiones().getDiametroInterior()));
+			this.campoTextoDiametroInterior.setDisable(true);
+			this.comboBoxDiametroInterior.setValue(this.componente.getDimensiones().getUnidadDInt());
+			this.comboBoxDiametroInterior.setDisable(true);
+			this.campoTextoDiametroExterior.setText(String.valueOf(this.componente.getDimensiones().getDiametroExterior()));
+			this.campoTextoDiametroExterior.setDisable(true);
+			this.comboBoxDiametroExterior.setValue(this.componente.getDimensiones().getUnidadDExt());
+			this.comboBoxDiametroExterior.setDisable(true);
+			this.campoTextoAlto2.setText(String.valueOf(this.componente.getDimensiones().getAlto2()));
+			this.campoTextoAlto2.setDisable(true);
+			this.comboBoxAlto2.setValue(this.componente.getDimensiones().getUnidadAlto2());
+			this.comboBoxAlto2.setDisable(true);
+			this.campoAnchoTotal.setText(String.valueOf(this.componente.getDimensiones().getAnchoTotal()));
+			this.campoAnchoTotal.setDisable(true);
+			this.comboBoxAnchoTotal.setValue(this.componente.getDimensiones().getUnidadAnchoTotal());
+			this.comboBoxAnchoTotal.setDisable(true);
+			this.campoCodigoCatalogo.setText(this.componente.getDimensiones().getCodigoCatalogo());
+			this.campoCodigoCatalogo.setDisable(true);
+			
+			
 		} else if (this.opcion == EDITAR) {
+			
 			this.campoTextoNumeroParte.setText(this.componente.getNumeroParte());
 			this.campoTextoNumeroParte.setDisable(true);
 			this.campoTextoDescripcion.setText(componente.getDescripcion());
 			this.campoTextoDescripcion.setDisable(false);
-			this.campoTextoLargo.setText(String.valueOf(componente.getDimensiones().getLargo()));
+			this.campoTextoLargo.setText(String.valueOf(this.componente.getDimensiones().getLargo()));
 			this.campoTextoLargo.setDisable(false);
-			this.campoTextoAncho.setText(String.valueOf(componente.getDimensiones().getAncho()));
+			this.comboBoxLargo.setValue(this.componente.getDimensiones().getUnidadLargo());
+			this.comboBoxLargo.setDisable(false);
+			this.campoTextoAncho.setText(String.valueOf(this.componente.getDimensiones().getAncho()));
 			this.campoTextoAncho.setDisable(false);
-			this.campoTextoAltoEspesor.setText(String.valueOf(componente.getDimensiones().getAltoEspesor()));
-			this.campoTextoAltoEspesor.setDisable(false);
-			this.campoTextoCosto.setText(String.valueOf(componente.getCosto()));
+			this.comboBoxAncho.setValue(this.componente.getDimensiones().getUnidadAncho());
+			this.comboBoxAncho.setDisable(false);
+			this.campoTextoAlto.setText(String.valueOf(this.componente.getDimensiones().getAlto()));
+			this.campoTextoAlto.setDisable(false);
+			this.comboBoxAlto.setValue(this.componente.getDimensiones().getUnidadAlto());
+			this.comboBoxAlto.setDisable(false);
+			this.campoTextoCosto.setText(String.valueOf(this.componente.getCosto()));
 			this.campoTextoCosto.setDisable(false);
 			this.campoTextoCostoDirecto.setText(String.valueOf(componente.getCostoDirecto()));
 			this.campoTextoCostoDirecto.setDisable(false);
 			this.campoTextoCostoIndirecto.setText(String.valueOf(componente.getCostoIndirecto()));
 			this.campoTextoCostoIndirecto.setDisable(false);
-			this.campoTextoUnidad.setText(componente.getUnidad());
-			this.campoTextoUnidad.setDisable(false);
 			this.campoTextoNotas.setText(componente.getNotas());
 			this.campoTextoNotas.setDisable(false);
 			this.comboBoxStatus.getSelectionModel().select(componente.getStatus());
@@ -342,8 +528,28 @@ public class DialogoComponente {
 			this.comboBoxTratamiento.setDisable(true);
 			this.campoTextoGradoMaterial.setText(this.componente.getGradoMaterial());
 			this.campoTextoGradoMaterial.setDisable(false);
-			this.campoTextoEspesorMaterial.setText(this.componente.getEspesorMaterial());
-			this.campoTextoEspesorMaterial.setDisable(false);
+			this.campoTextoEspesor.setText(String.valueOf(this.componente.getDimensiones().getEspesor()));
+			this.campoTextoEspesor.setDisable(false);
+			this.comboBoxEspesor.setValue(this.componente.getDimensiones().getUnidadEspesor());
+			this.comboBoxEspesor.setDisable(false);
+			this.campoTextoDiametroInterior.setText(String.valueOf(this.componente.getDimensiones().getDiametroInterior()));
+			this.campoTextoDiametroInterior.setDisable(false);
+			this.comboBoxDiametroInterior.setValue(this.componente.getDimensiones().getUnidadDInt());
+			this.comboBoxDiametroInterior.setDisable(false);
+			this.campoTextoDiametroExterior.setText(String.valueOf(this.componente.getDimensiones().getDiametroExterior()));
+			this.campoTextoDiametroExterior.setDisable(false);
+			this.comboBoxDiametroExterior.setValue(this.componente.getDimensiones().getUnidadDExt());
+			this.comboBoxDiametroExterior.setDisable(false);
+			this.campoTextoAlto2.setText(String.valueOf(this.componente.getDimensiones().getAlto2()));
+			this.campoTextoAlto2.setDisable(false);
+			this.comboBoxAlto2.setValue(this.componente.getDimensiones().getUnidadAlto2());
+			this.comboBoxAlto2.setDisable(false);
+			this.campoAnchoTotal.setText(String.valueOf(this.componente.getDimensiones().getAnchoTotal()));
+			this.campoAnchoTotal.setDisable(false);
+			this.comboBoxAnchoTotal.setValue(this.componente.getDimensiones().getUnidadAnchoTotal());
+			this.comboBoxAnchoTotal.setDisable(false);
+			this.campoCodigoCatalogo.setText(this.componente.getDimensiones().getCodigoCatalogo());
+			this.campoCodigoCatalogo.setDisable(false);
 		}//FIN METODO
 		
 		checkHabilitar.selectedProperty().addListener((ov, oldValue, newValue) -> {
@@ -357,46 +563,58 @@ public class DialogoComponente {
 	
 	//VALIDAR DATOS
 	private boolean validarDatos() {
-		if (this.comboBoxTipoComponente.getSelectionModel().getSelectedItem().isEmpty()) {
+		if (this.comboBoxTipoComponente.getSelectionModel().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Componente\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxMaterial.getSelectionModel().getSelectedItem().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() != TipoComponente.ENSAMBLE) {
+		} else if (this.comboBoxMaterial.getSelectionModel().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() != TipoComponente.ENSAMBLE) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Material\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxCliente.getSelectionModel().getSelectedItem().isEmpty() && (this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.PARTE_PRIMARIA || this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.ENSAMBLE) ) {
+		} else if (this.comboBoxCliente.getSelectionModel().isEmpty() && (this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.PARTE_PRIMARIA || this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.ENSAMBLE) ) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cliente\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxTipoMateriaPrima.getSelectionModel().getSelectedItem().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.MATERIA_PRIMA) {
+		} else if (this.comboBoxTipoMateriaPrima.getSelectionModel().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.MATERIA_PRIMA) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Materia Prima\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxTipoMiscelaneo.getSelectionModel().getSelectedItem().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.COMPRADO) {
+		} else if (this.comboBoxTipoMiscelaneo.getSelectionModel().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.COMPRADO) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tipo Miscelaneo\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxAcabado.getSelectionModel().getSelectedItem().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.MATERIA_PRIMA) {
+		} else if (this.comboBoxAcabado.getSelectionModel().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.MATERIA_PRIMA) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Acabado\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxTratamiento.getSelectionModel().getSelectedItem().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.COMPRADO) {
+		} else if (this.comboBoxTratamiento.getSelectionModel().isEmpty() && this.comboBoxTipoComponente.getSelectionModel().getSelectedItem() == TipoComponente.COMPRADO) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Tratamiento\" no puede estar vacio");
 			return false;
 		} else if (this.campoTextoDescripcion.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripcion\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoLargo.getText().isEmpty() || this.campoTextoAncho.getText().isEmpty() || this.campoTextoAltoEspesor.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "Los campos de \"Dimensiones\" no puede estar vacio");
+		} else if (!this.campoTextoAlto.getText().isEmpty() && this.comboBoxAlto.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Altura debe de contener un unidad de medida\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoCosto.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Costo\" no puede estar vacio");
+		} else if (!this.campoTextoLargo.getText().isEmpty() && this.comboBoxLargo.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Largo debe de contener un unidad de medida\" no puede estar vacio");
 			return false;
-		}  else if (this.campoTextoCostoDirecto.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Costo Directo\" no puede estar vacio");
+		} else if (!this.campoTextoAncho.getText().isEmpty() && this.comboBoxAncho.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Ancho debe de contener un unidad de medida\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoCostoIndirecto.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Costo Indirecto\" no puede estar vacio");
+		} else if (!this.campoTextoAlto2.getText().isEmpty() && this.comboBoxAlto2.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Alto2 debe de contener un unidad de medida\" no puede estar vacio");
 			return false;
-		} else if (this.comboBoxStatus.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Status\" no puede estar vacio");
+		} else if (!this.campoTextoEspesor.getText().isEmpty() && this.comboBoxEspesor.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Espesor debe de contener un unidad de medida\" no puede estar vacio");
 			return false;
-		}//FIN IF/ESLE
+		} else if (!this.campoAnchoTotal.getText().isEmpty() && this.comboBoxAnchoTotal.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Ancho total debe de contener un unidad de medida\" no puede estar vacio");
+			return false;
+		} else if (!this.campoTextoDiametroExterior.getText().isEmpty() && this.comboBoxDiametroExterior.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Diametro exterior debe de contener un unidad de medida\" no puede estar vacio");
+			return false;
+		} else if (!this.campoTextoDiametroInterior.getText().isEmpty() && this.comboBoxDiametroInterior.getSelectionModel().getSelectedItem().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Diametro interior debe de contener un unidad de medida\" no puede estar vacio");
+			return false;
+		} else if (this.comboBoxStatus.getSelectionModel().isEmpty()) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El combo \"Status\" debe estar seleccionado");
+			return false;
+		}//FIN IF ELSE
 		return true;
 	}//FIN METODO
 	
@@ -427,14 +645,13 @@ public class DialogoComponente {
 					this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
 				} else {
 					if (this.componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE || this.componente.getTipoComponente() == TipoComponente.PARTE_PRIMARIA)
-						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoCliente(this.mainApp.getConnection(), this.componente.getclienteFK(), this.componente.getTipoComponenteChar()));
+						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoPartePrimaria(this.mainApp.getConnection()));
 					else if (this.componente.getTipoComponente() == TipoComponente.MATERIA_PRIMA)
-						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMateriaPrima(this.mainApp.getConnection(), this.componente.getTipoMateriaPrimaFK()));
+						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMateriaPrima(this.mainApp.getConnection()));
 					else if (this.componente.getTipoComponente() == TipoComponente.COMPRADO)
-						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMiscelaneo(this.mainApp.getConnection(), this.componente.getTipoMiscelaneoFK()));
+						this.componente.setConsecutivo(ConsecutivoDAO.readConsecutivoTipoMiscelaneo(this.mainApp.getConnection()));
 					else if (this.componente.getTipoComponente() == TipoComponente.ENSAMBLE)
 						this.componente.setConsecutivo(0);
-				
 					if (this.componente.getTipoComponente() == TipoComponente.ENSAMBLE)
 						this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
 					else
@@ -445,26 +662,84 @@ public class DialogoComponente {
 				this.componente.setDescripcion(this.campoTextoDescripcion.getText());
 					
 				Dimensiones dimensiones = new Dimensiones();
-				dimensiones.setLargo(Double.parseDouble(this.campoTextoLargo.getText()));
-				dimensiones.setAncho(Double.parseDouble(this.campoTextoAncho.getText()));
-				dimensiones.setAltoEspesor(Double.parseDouble(this.campoTextoAltoEspesor.getText()));
+				if (this.campoTextoLargo.getText().isEmpty())
+					dimensiones.setLargo(0.0);
+				else
+					dimensiones.setLargo(Double.parseDouble(this.campoTextoLargo.getText()));
+				if (this.campoTextoAncho.getText().isEmpty())
+					dimensiones.setAncho(0.0);
+				else
+					dimensiones.setAncho(Double.parseDouble(this.campoTextoAncho.getText()));
+				if (this.campoTextoAlto.getText().isEmpty())
+					dimensiones.setAlto(0.0);
+				else
+					dimensiones.setAlto(Double.parseDouble(this.campoTextoAlto.getText()));
+				if (this.campoTextoEspesor.getText().isEmpty())
+					dimensiones.setEspesor(0.0);
+				else
+					dimensiones.setEspesor(Double.parseDouble(this.campoTextoEspesor.getText()));
+				if (this.campoTextoDiametroExterior.getText().isEmpty())
+					dimensiones.setDiametroExterior(0.0);
+				else
+					dimensiones.setDiametroExterior(Double.parseDouble(this.campoTextoDiametroExterior.getText()));
+				if (this.campoTextoDiametroInterior.getText().isEmpty())
+					dimensiones.setDiametroInterior(0.0);
+				else
+					dimensiones.setDiametroInterior(Double.parseDouble(this.campoTextoDiametroInterior.getText()));
+				if (this.campoTextoAlto2.getText().isEmpty())
+					dimensiones.setAlto2(0.0);
+				else
+					dimensiones.setAlto2(Double.parseDouble(this.campoTextoAlto2.getText()));
+				if (this.campoAnchoTotal.getText().isEmpty())
+					dimensiones.setAnchoTotal(0.0);
+				else
+					dimensiones.setAnchoTotal(Double.parseDouble(this.campoAnchoTotal.getText()));
+				if (this.campoCodigoCatalogo.getText().isEmpty())
+					dimensiones.setCodigoCatalogo("");
+				else
+					dimensiones.setCodigoCatalogo(this.campoCodigoCatalogo.getText());
+				
+				dimensiones.setUnidadAlto(this.comboBoxAlto.getValue());
+				dimensiones.setUnidadAlto2(this.comboBoxAlto2.getValue());
+				dimensiones.setUnidadAncho(this.comboBoxAncho.getValue());
+				dimensiones.setUnidadAnchoTotal(this.comboBoxAnchoTotal.getValue());
+				dimensiones.setUnidadDExt(this.comboBoxDiametroExterior.getValue());
+				dimensiones.setUnidadDInt(this.comboBoxDiametroInterior.getValue());
+				dimensiones.setUnidadEspesor(this.comboBoxEspesor.getValue());
+				dimensiones.setUnidadLargo(this.comboBoxLargo.getValue());
+				
+				
 				this.componente.setDimensiones(dimensiones);
-				
 				this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
-				this.componente.setEspesorMaterial(this.campoTextoEspesorMaterial.getText());
-				this.componente.setCosto(Double.parseDouble(this.campoTextoCosto.getText()));
-				this.componente.setCostoDirecto(Double.parseDouble(this.campoTextoCostoDirecto.getText()));
-				this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
-				this.componente.setUnidad(this.campoTextoUnidad.getText());
+				if (campoTextoCosto.getText().isEmpty())
+					this.componente.setCosto(0.0);
+				else
+					this.componente.setCosto(Double.parseDouble(this.campoTextoCosto.getText()));
+				if (campoTextoCostoDirecto.getText().isEmpty())
+					this.componente.setCostoDirecto(0.0);
+				else
+					this.componente.setCostoDirecto(Double.parseDouble(this.campoTextoCostoDirecto.getText()));
+				if (campoTextoCostoIndirecto.getText().isEmpty())
+					this.componente.setCostoIndirecto(0.0);
+				else
+					this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
 				this.componente.setNotas(this.campoTextoNotas.getText());
-				this.componente.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
+				if (comboBoxStatus.getSelectionModel().isEmpty())
+					this.componente.setStatus(1);
+				else
+					this.componente.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
 				
-				if (ComponenteDAO.createComponente(this.mainApp.getConnection(), this.componente)) {
-					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
-					this.mainApp.getEscenarioDialogos().close();
-				} else
-					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
+				if (componente != null) { 
+					if (ComponenteDAO.createComponente(this.mainApp.getConnection(), this.componente)) {
+						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se creo de forma correcta");
+						this.mainApp.getEscenarioDialogos().close();
+					} else
+						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo crear el registro, revisa que la información sea correcta");
+				} else {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Fabor de seleccionar algo o cancelar la operación");
+				}
 			} else if (this.opcion == EDITAR) {
+				
 				this.componente.setTipoComponente(TipoComponente.toCharacter(this.comboBoxTipoComponente.getSelectionModel().getSelectedItem()));
 				this.componente.setMaterialFK(MaterialDAO.readMaterial(this.mainApp.getConnection(), this.comboBoxMaterial.getSelectionModel().getSelectedItem()).get(0).getSysPK());
 				
@@ -490,17 +765,67 @@ public class DialogoComponente {
 				this.componente.setDescripcion(this.campoTextoDescripcion.getText());
 				
 				Dimensiones dimensiones = new Dimensiones();
-				dimensiones.setLargo(Double.parseDouble(this.campoTextoLargo.getText()));
-				dimensiones.setAncho(Double.parseDouble(this.campoTextoAncho.getText()));
-				dimensiones.setAltoEspesor(Double.parseDouble(this.campoTextoAltoEspesor.getText()));
+				if (this.campoTextoLargo.getText().isEmpty())
+					dimensiones.setLargo(0.0);
+				else
+					dimensiones.setLargo(Double.parseDouble(this.campoTextoLargo.getText()));
+				if (this.campoTextoAncho.getText().isEmpty())
+					dimensiones.setAncho(0.0);
+				else
+					dimensiones.setAncho(Double.parseDouble(this.campoTextoAncho.getText()));
+				if (this.campoTextoAlto.getText().isEmpty())
+					dimensiones.setAlto(0.0);
+				else
+					dimensiones.setAlto(Double.parseDouble(this.campoTextoAlto.getText()));
+				if (this.campoTextoEspesor.getText().isEmpty())
+					dimensiones.setEspesor(0.0);
+				else
+					dimensiones.setEspesor(Double.parseDouble(this.campoTextoEspesor.getText()));
+				if (this.campoTextoDiametroExterior.getText().isEmpty())
+					dimensiones.setDiametroExterior(0.0);
+				else
+					dimensiones.setDiametroExterior(Double.parseDouble(this.campoTextoDiametroExterior.getText()));
+				if (this.campoTextoDiametroInterior.getText().isEmpty())
+					dimensiones.setDiametroInterior(0.0);
+				else
+					dimensiones.setDiametroInterior(Double.parseDouble(this.campoTextoDiametroInterior.getText()));
+				if (this.campoTextoAlto2.getText().isEmpty())
+					dimensiones.setAlto2(0.0);
+				else
+					dimensiones.setAlto2(Double.parseDouble(this.campoTextoAlto2.getText()));
+				if (this.campoAnchoTotal.getText().isEmpty())
+					dimensiones.setAnchoTotal(0.0);
+				else
+					dimensiones.setAnchoTotal(Double.parseDouble(this.campoAnchoTotal.getText()));
+				if (this.campoCodigoCatalogo.getText().isEmpty())
+					dimensiones.setCodigoCatalogo("");
+				else
+					dimensiones.setCodigoCatalogo(this.campoCodigoCatalogo.getText());
+				
+				dimensiones.setUnidadAlto(this.comboBoxAlto.getValue());
+				dimensiones.setUnidadAlto2(this.comboBoxAlto2.getValue());
+				dimensiones.setUnidadAncho(this.comboBoxAncho.getValue());
+				dimensiones.setUnidadAnchoTotal(this.comboBoxAnchoTotal.getValue());
+				dimensiones.setUnidadDExt(this.comboBoxDiametroExterior.getValue());
+				dimensiones.setUnidadDInt(this.comboBoxDiametroInterior.getValue());
+				dimensiones.setUnidadEspesor(this.comboBoxEspesor.getValue());
+				dimensiones.setUnidadLargo(this.comboBoxLargo.getValue());
+				
 				this.componente.setDimensiones(dimensiones);
 				
 				this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
-				this.componente.setEspesorMaterial(this.campoTextoEspesorMaterial.getText());
-				this.componente.setCosto(Double.parseDouble(this.campoTextoCosto.getText()));
-				this.componente.setCostoDirecto(Double.parseDouble(this.campoTextoCostoDirecto.getText()));
-				this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
-				this.componente.setUnidad(this.campoTextoUnidad.getText());
+				if (campoTextoCosto.getText().isEmpty())
+					this.componente.setCosto(0.0);
+				else
+					this.componente.setCosto(Double.parseDouble(this.campoTextoCosto.getText()));
+				if (campoTextoCostoDirecto.getText().isEmpty())
+					this.componente.setCostoDirecto(0.0);
+				else
+					this.componente.setCostoDirecto(Double.parseDouble(this.campoTextoCostoDirecto.getText()));
+				if (campoTextoCostoIndirecto.getText().isEmpty())
+					this.componente.setCostoIndirecto(0.0);
+				else
+					this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
 				this.componente.setNotas(this.campoTextoNotas.getText());
 				this.componente.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
 				
