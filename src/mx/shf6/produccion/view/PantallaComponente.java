@@ -121,7 +121,18 @@ public class PantallaComponente {
 	@FXML private void buscarRegistroTabla() {
 		this.tablaComponente.setItems(null);
 		this.listaComponente.clear();
-		this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection(), this.campoTextoBusqueda.getText());
+		if (this.checkMenuTodos.isSelected())
+			this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
+		else if (this.checkMenuMateriaPrima.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponenteParte(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.MATERIA_PRIMA), campoTextoBusqueda.getText());
+		else if (this.checkMenuMiscelaneo.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponenteParte(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.COMPRADO), campoTextoBusqueda.getText());
+		else if (this.checkMenuPartePrimaria.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponenteParte(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.PARTE_PRIMARIA), campoTextoBusqueda.getText());
+		else if (this.checkMenuSubEnsamble.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponenteParte(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.SUB_ENSAMBLE), campoTextoBusqueda.getText());
+		else if (this.checkMenuEnsamble.isSelected())
+			this.listaComponente = ComponenteDAO.readComponenteTipoComponenteParte(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.ENSAMBLE), campoTextoBusqueda.getText());
 		this.tablaComponente.setItems(ComponenteDAO.toObservableList(this.listaComponente));
 	}//FIN METODO
 	
