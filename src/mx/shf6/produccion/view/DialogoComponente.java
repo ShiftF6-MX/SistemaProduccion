@@ -1,8 +1,6 @@
 package mx.shf6.produccion.view;
 
-
 import java.text.DecimalFormat;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -12,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Status;
 import mx.shf6.produccion.model.TipoComponente;
@@ -67,7 +66,7 @@ public class DialogoComponente {
 	@FXML private TextField campoTextoCosto;
 	@FXML private TextField campoTextoCostoDirecto;
 	@FXML private TextField campoTextoCostoIndirecto;
-	@FXML private TextField campoTextoNotas;
+	@FXML private TextArea campoTextoNotas;
 	@FXML private ComboBox<String> comboBoxStatus;
 	@FXML private TextField campoTextoConsecutivo;
 	@FXML private ComboBox<String> comboBoxTipoComponente;
@@ -96,7 +95,6 @@ public class DialogoComponente {
 		RestriccionTextField.limitarPuntoDecimal(campoTextoDiametroInterior);
 		RestriccionTextField.limitarPuntoDecimal(campoTextoEspesor);
 		RestriccionTextField.limitarPuntoDecimal(campoTextoLargo);
-		RestriccionTextField.soloNumeros(campoTextoHilos);
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
@@ -530,7 +528,7 @@ public class DialogoComponente {
 			this.campoTextoCostoIndirecto.setText(String.valueOf(componente.getCostoIndirecto()));
 			this.campoTextoCostoIndirecto.setDisable(false);
 			this.campoTextoNotas.setText(componente.getNotas());
-			this.campoTextoNotas.setDisable(false);
+			this.campoTextoNotas.setDisable(false);;
 			this.comboBoxStatus.getSelectionModel().select(componente.getStatus());
 			this.comboBoxStatus.setDisable(false);
 			String consecutivo = decimalFormat.format(componente.getConsecutivo());
@@ -767,9 +765,9 @@ public class DialogoComponente {
 					this.componente.setDimensiones(dimensiones);
 					
 					if (campoTextoHilos.getText().isEmpty())
-						this.componente.setHilos(0);
+						this.componente.setHilos("");
 					else
-						this.componente.setHilos(Integer.parseInt(this.campoTextoHilos.getText()));
+						this.componente.setHilos(this.campoTextoHilos.getText());
 					this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
 					if (campoTextoCosto.getText().isEmpty())
 						this.componente.setCosto(0.0);
@@ -900,9 +898,9 @@ public class DialogoComponente {
 					this.componente.setDimensiones(dimensiones);
 					
 					if (campoTextoHilos.getText().isEmpty())
-						this.componente.setHilos(0);
+						this.componente.setHilos("");
 					else
-						this.componente.setHilos(Integer.parseInt(this.campoTextoHilos.getText()));
+						this.componente.setHilos(this.campoTextoHilos.getText());
 					this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
 					if (campoTextoCosto.getText().isEmpty())
 						this.componente.setCosto(0.0);
