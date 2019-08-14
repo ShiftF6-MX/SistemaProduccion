@@ -98,12 +98,18 @@
                   </VBox>
                   <VBox spacing="2.0">
                      <children>
-                        <Label text="Código catalogo" />
-                        <TextField fx:id="campoCodigoCatalogo" prefWidth="200.0" styleClass="campoBuscador" />
+                        <Label styleClass="labelRobotoMedium12" text="Código catalogo" />
+                        <TextField fx:id="campoCodigoCatalogo" prefWidth="100.0" styleClass="campoBuscador" />
                      </children>
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="labelRobotoMedium12" text="Hilos" />
+                        <TextField fx:id="campoTextoHilos" prefWidth="100.0" styleClass="campoBuscador" />
+                     </children>
                   </VBox>
                </children>
             </HBox>
