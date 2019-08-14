@@ -26,6 +26,7 @@ import mx.shf6.produccion.model.dao.TipoMiscelaneoDAO;
 import mx.shf6.produccion.model.dao.TratamientoDAO;
 import mx.shf6.produccion.utilities.Dimensiones;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoComponente {
 
@@ -77,11 +78,25 @@ public class DialogoComponente {
 	@FXML private ComboBox<String> comboBoxAcabado;
 	@FXML private ComboBox<String> comboBoxTratamiento;
 	@FXML private CheckBox checkHabilitar;
+	@FXML private TextField campoTextoHilos;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
 		this.componente = new Componente();
 		this.decimalFormat = new DecimalFormat("000");
+		
+		RestriccionTextField.limitarPuntoDecimal(campoAnchoTotal);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoAlto);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoAlto2);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoAncho);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoCosto);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoCostoDirecto);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoCostoIndirecto);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoDiametroExterior);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoDiametroInterior);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoEspesor);
+		RestriccionTextField.limitarPuntoDecimal(campoTextoLargo);
+		RestriccionTextField.soloNumeros(campoTextoHilos);
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
@@ -157,6 +172,8 @@ public class DialogoComponente {
 						comboBoxEspesor.setDisable(false);
 						campoCodigoCatalogo.setText("");
 						campoCodigoCatalogo.setDisable(false);
+						campoTextoHilos.setText("");
+						campoTextoHilos.setDisable(false);
 					} else if (newValue == TipoComponente.MATERIA_PRIMA) {
 						comboBoxCliente.getSelectionModel().select("");
 						comboBoxCliente.setDisable(true);
@@ -211,6 +228,8 @@ public class DialogoComponente {
 						comboBoxEspesor.setDisable(false);
 						campoCodigoCatalogo.setText("");
 						campoCodigoCatalogo.setDisable(false);
+						campoTextoHilos.setText("");
+						campoTextoHilos.setDisable(false);
 					} else if (newValue == TipoComponente.SUB_ENSAMBLE || newValue == TipoComponente.PARTE_PRIMARIA) {
 						comboBoxCliente.getSelectionModel().select("");
 						comboBoxCliente.setDisable(false);
@@ -265,6 +284,8 @@ public class DialogoComponente {
 						comboBoxEspesor.setDisable(false);
 						campoCodigoCatalogo.setText("");
 						campoCodigoCatalogo.setDisable(false);
+						campoTextoHilos.setText("");
+						campoTextoHilos.setDisable(false);
 					} else if (newValue == TipoComponente.ENSAMBLE) {
 						comboBoxCliente.getSelectionModel().select("");
 						comboBoxCliente.setDisable(false);
@@ -319,6 +340,8 @@ public class DialogoComponente {
 						comboBoxEspesor.setDisable(true);
 						campoCodigoCatalogo.setText("");
 						campoCodigoCatalogo.setDisable(true);
+						campoTextoHilos.setText("");
+						campoTextoHilos.setDisable(false);
 					}//FIN IF/ELSE
 				}
 			} //FIN METODO
@@ -406,6 +429,8 @@ public class DialogoComponente {
 			campoCodigoCatalogo.setText("");
 			campoCodigoCatalogo.setDisable(false);
 			campoTextoConsecutivo.setDisable(true);
+			campoTextoHilos.setText("");
+			campoTextoHilos.setDisable(false);
 			
 		} else if (this.opcion == VER) {
 			
@@ -477,7 +502,8 @@ public class DialogoComponente {
 			this.campoCodigoCatalogo.setText(this.componente.getDimensiones().getCodigoCatalogo());
 			this.campoCodigoCatalogo.setDisable(true);
 			this.checkHabilitar.setDisable(true);
-			
+			this.campoTextoHilos.setText(String.valueOf(this.componente.getHilos()));
+			this.campoTextoHilos.setDisable(true);
 			
 		} else if (this.opcion == EDITAR) {
 			
@@ -551,6 +577,8 @@ public class DialogoComponente {
 			this.comboBoxAnchoTotal.setDisable(false);
 			this.campoCodigoCatalogo.setText(this.componente.getDimensiones().getCodigoCatalogo());
 			this.campoCodigoCatalogo.setDisable(false);
+			this.campoTextoHilos.setText(String.valueOf(this.componente.getHilos()));
+			this.campoTextoHilos.setDisable(false);
 		}//FIN METODO
 		
 		checkHabilitar.selectedProperty().addListener((ov, oldValue, newValue) -> {
@@ -738,6 +766,10 @@ public class DialogoComponente {
 					
 					this.componente.setDimensiones(dimensiones);
 					
+					if (campoTextoHilos.getText().isEmpty())
+						this.componente.setHilos(0);
+					else
+						this.componente.setHilos(Integer.parseInt(this.campoTextoHilos.getText()));
 					this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
 					if (campoTextoCosto.getText().isEmpty())
 						this.componente.setCosto(0.0);
@@ -867,6 +899,10 @@ public class DialogoComponente {
 					
 					this.componente.setDimensiones(dimensiones);
 					
+					if (campoTextoHilos.getText().isEmpty())
+						this.componente.setHilos(0);
+					else
+						this.componente.setHilos(Integer.parseInt(this.campoTextoHilos.getText()));
 					this.componente.setGradoMaterial(this.campoTextoGradoMaterial.getText());
 					if (campoTextoCosto.getText().isEmpty())
 						this.componente.setCosto(0.0);
