@@ -250,7 +250,7 @@
                   <VBox spacing="2.0">
                      <children>
                         <Label styleClass="labelRobotoMedium12" text="Notas" />
-                        <TextField fx:id="campoTextoNotas" prefWidth="250.0" styleClass="campoBuscador" />
+                        <TextArea fx:id="campoTextoNotas" prefHeight="50.0" prefWidth="300.0" styleClass="campoAreaBuscador" />
                      </children>
                   </VBox>
                   <VBox spacing="2.0">
