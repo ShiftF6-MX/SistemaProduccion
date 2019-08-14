@@ -73,7 +73,7 @@ public class ComponenteDAO {
 			else
 				sentenciaPreparada.setNull(33, Types.INTEGER);
 			sentenciaPreparada.setInt(34, componente.getEsInterno());
-			sentenciaPreparada.setInt(35, componente.getHilos());
+			sentenciaPreparada.setString(35, componente.getHilos());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -127,7 +127,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setHilos(resultados.getInt(36));
+				componente.setHilos(resultados.getString(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponente.add(componente);
 			}//FIN WHILE
@@ -181,7 +181,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setHilos(resultados.getInt(36));
+				componente.setHilos(resultados.getString(36));
 				componente.setMaterialDescripcion(resultados.getString(37));
 				componente.setDimensiones(dimensiones);
 			}//FIN WHILE
@@ -236,7 +236,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setHilos(resultados.getInt(36));
+				componente.setHilos(resultados.getString(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponente.add(componente);
 			}//FIN WHILE
@@ -290,7 +290,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setHilos(resultados.getInt(36));
+				componente.setHilos(resultados.getString(36));
 				componente.setDimensiones(dimensiones);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -344,7 +344,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setHilos(resultados.getInt(36));
+				componente.setHilos(resultados.getString(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponente.add(componente);
 			}//FIN WHILE
@@ -416,7 +416,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setHilos(resultados.getInt(36));
+				componente.setHilos(resultados.getString(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponentesEnsambleCliente.add(componente);
 			}//FIN WHILE
@@ -488,7 +488,7 @@ public class ComponenteDAO {
 			else
 				sentenciaPreparada.setNull(33, Types.INTEGER);
 			sentenciaPreparada.setInt(34, componente.getEsInterno());
-			sentenciaPreparada.setInt(35, componente.getHilos());
+			sentenciaPreparada.setString(35, componente.getHilos());
 			sentenciaPreparada.setInt(36, componente.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
