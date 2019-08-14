@@ -18,7 +18,7 @@ public class ComponenteDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createComponente(Connection connection, Componente componente) {
-		String consulta = "INSERT INTO componentes (NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String consulta = "INSERT INTO componentes (NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, componente.getNumeroParte());
@@ -73,6 +73,7 @@ public class ComponenteDAO {
 			else
 				sentenciaPreparada.setNull(33, Types.INTEGER);
 			sentenciaPreparada.setInt(34, componente.getEsInterno());
+			sentenciaPreparada.setInt(35, componente.getHilos());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -84,7 +85,7 @@ public class ComponenteDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Componente> readComponente(Connection connection) {
 		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
-		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno FROM componentes";
+		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos FROM componentes";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -126,6 +127,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
+				componente.setHilos(resultados.getInt(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponente.add(componente);
 			}//FIN WHILE
@@ -138,7 +140,7 @@ public class ComponenteDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static Componente readComponente(Connection connection, int sysPK) {
 		Componente componente = new Componente();
-		String consulta = "SELECT componentes.Sys_PK, componentes.NumeroParte, componentes.Descripcion, componentes.Largo, componentes.UnidadLargo, componentes.Ancho, componentes.UnidadAncho, componentes.Alto, componentes.UnidadAlto, componentes.Grado, componentes.Espesor, componentes.UnidadEspesor, componentes.DiametroExterno, componentes.UnidadDExt, componentes.DiametroInterno, componentes.UnidadDInt, componentes.Alto2, componentes.UnidadAlto2, componentes.AnchoTotal, componentes.UnidadAnchoTotal, componentes.CodigoCatalogo, componentes.TipoComponente, componentes.Costo, componentes.CostoDirecto, componentes.CostoIndirecto, componentes.MaterialFK, componentes.TipoMiscelaneoFK, componentes.TipoMateriaPrimaFK, componentes.AcabadoFK, componentes.TratamientoFK, componentes.Notas, componentes.Status, componentes.Consecutivo, componentes.ClienteFK, componentes.EsInterno, materiales.Descripcion FROM componentes  INNER JOIN materiales ON componentes.MaterialFK = materiales.Sys_PK WHERE componentes.Sys_PK =  " + sysPK;
+		String consulta = "SELECT componentes.Sys_PK, componentes.NumeroParte, componentes.Descripcion, componentes.Largo, componentes.UnidadLargo, componentes.Ancho, componentes.UnidadAncho, componentes.Alto, componentes.UnidadAlto, componentes.Grado, componentes.Espesor, componentes.UnidadEspesor, componentes.DiametroExterno, componentes.UnidadDExt, componentes.DiametroInterno, componentes.UnidadDInt, componentes.Alto2, componentes.UnidadAlto2, componentes.AnchoTotal, componentes.UnidadAnchoTotal, componentes.CodigoCatalogo, componentes.TipoComponente, componentes.Costo, componentes.CostoDirecto, componentes.CostoIndirecto, componentes.MaterialFK, componentes.TipoMiscelaneoFK, componentes.TipoMateriaPrimaFK, componentes.AcabadoFK, componentes.TratamientoFK, componentes.Notas, componentes.Status, componentes.Consecutivo, componentes.ClienteFK, componentes.EsInterno, componente.Hilos, materiales.Descripcion FROM componentes  INNER JOIN materiales ON componentes.MaterialFK = materiales.Sys_PK WHERE componentes.Sys_PK =  " + sysPK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -179,7 +181,8 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
-				componente.setMaterialDescripcion(resultados.getString(36));
+				componente.setHilos(resultados.getInt(36));
+				componente.setMaterialDescripcion(resultados.getString(37));
 				componente.setDimensiones(dimensiones);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -191,7 +194,7 @@ public class ComponenteDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Componente> readComponente(Connection connection, String like) {
 		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
-		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno FROM componentes WHERE Descripcion LIKE '%" + like + "%' OR NumeroParte LIKE '%" + like + "%'";
+		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos FROM componentes WHERE Descripcion LIKE '%" + like + "%' OR NumeroParte LIKE '%" + like + "%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -233,6 +236,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
+				componente.setHilos(resultados.getInt(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponente.add(componente);
 			}//FIN WHILE
@@ -245,7 +249,7 @@ public class ComponenteDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static Componente readComponenteNumeroParte(Connection connection, String numeroParte) {
 		Componente componente = new Componente();
-		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno FROM componentes WHERE NumeroParte = '" + numeroParte + "'";
+		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos FROM componentes WHERE NumeroParte = '" + numeroParte + "'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -286,6 +290,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
+				componente.setHilos(resultados.getInt(36));
 				componente.setDimensiones(dimensiones);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -297,7 +302,7 @@ public class ComponenteDAO {
 	//METODO PARA OBTENER TODOS LOS COMPONENTES DE UN TIPOP EN ESPECIFICO
 	public static ArrayList<Componente> readComponenteTipoComponente(Connection connection, String tipoComponenteChar) {
 		ArrayList<Componente> arrayListComponente = new ArrayList<Componente>();
-		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno FROM componentes WHERE TipoComponente = '" + tipoComponenteChar + "'";
+		String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK, Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos FROM componentes WHERE TipoComponente = '" + tipoComponenteChar + "'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -339,6 +344,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
+				componente.setHilos(resultados.getInt(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponente.add(componente);
 			}//FIN WHILE
@@ -410,6 +416,7 @@ public class ComponenteDAO {
 				componente.setConsecutivo(resultados.getInt(33));
 				componente.setClienteFK(resultados.getInt(34));
 				componente.setEsInterno(resultados.getInt(35));
+				componente.setHilos(resultados.getInt(36));
 				componente.setDimensiones(dimensiones);
 				arrayListComponentesEnsambleCliente.add(componente);
 			}//FIN WHILE
@@ -426,7 +433,7 @@ public class ComponenteDAO {
 				+ "DiametroInterno = ?, UnidadDInt = ?, Alto2 = ?, UnidadAlto2 = ?, AnchoTotal = ?, UnidadAnchoTotal = ?, CodigoCatalogo = ?,"
 				+ " TipoComponente = ?, Costo = ?, CostoDirecto = ?, CostoIndirecto = ?, MaterialFK = ?, TipoMiscelaneoFK = ?,"
 				+ " TipoMateriaPrimaFK = ?, AcabadoFK = ?, TratamientoFK = ?, Notas = ?, Status = ?, Consecutivo = ?, ClienteFK = ?,"
-				+ " EsInterno = ? WHERE Sys_PK = ?";
+				+ " EsInterno = ?, Hilos = ? WHERE Sys_PK = ?";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setString(1, componente.getNumeroParte());
@@ -481,7 +488,8 @@ public class ComponenteDAO {
 			else
 				sentenciaPreparada.setNull(33, Types.INTEGER);
 			sentenciaPreparada.setInt(34, componente.getEsInterno());
-			sentenciaPreparada.setInt(35, componente.getSysPK());
+			sentenciaPreparada.setInt(35, componente.getHilos());
+			sentenciaPreparada.setInt(36, componente.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
