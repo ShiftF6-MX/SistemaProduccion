@@ -40,15 +40,15 @@ public class Componente {
 	private ObjectProperty<Integer> clienteFK;
 	private StringProperty materialDescripcion;
 	private ObjectProperty<Integer> esInterno;
-	private ObjectProperty<Integer> hilos;
+	private StringProperty hilos;
 
 	//CONSTRUCTOR VACIO
 	public Componente() {
-		this(0, "", "", new Dimensiones(), "", "", 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, "", "", 0, 0, "", 0, 0);
+		this(0, "", "", new Dimensiones(), "", "", 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, "", "", 0, 0, "", 0, "");
 	}//FIN CONSTRUCTOR
 
 	public Componente(int sysPK, String numeroParte, String descripcion, Dimensiones dimensiones, String gradoMaterial, String tipoComponente, Double costo, Double costoDirecto, Double costoIndirecto, int materialFK, int tipoMiscelaneoFK,
-			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK, String materialDescripcion, int esInterno, int hilos) {
+			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK, String materialDescripcion, int esInterno, String hilos) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.numeroParte = new SimpleStringProperty(numeroParte);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -69,7 +69,7 @@ public class Componente {
 		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 		this.materialDescripcion = new SimpleStringProperty(materialDescripcion);
 		this.esInterno = new SimpleObjectProperty<Integer>(esInterno);
-		this.hilos = new SimpleObjectProperty<Integer>(hilos);
+		this.hilos = new SimpleStringProperty(hilos);
 	}//FIN CONSTRUCTOR
 
 	public void setSysPK(int sysPK) {
@@ -376,15 +376,15 @@ public class Componente {
 	}//FIN METODO
 	
 	//METODO PARA ACCEDER A HILOS
-	public void setHilos(Integer hilos) {
+	public void setHilos(String hilos) {
 		this.hilos.set(hilos);
 	}//FIN METODO
 	
-	public Integer getHilos() {
+	public String getHilos() {
 		return this.hilos.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> hilosProperty() {
+	public StringProperty hilosProperty() {
 		return this.hilos;
 	}//FIN METODO
 }//FIN CLASE
