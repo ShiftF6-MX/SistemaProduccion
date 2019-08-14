@@ -122,7 +122,7 @@ public class PantallaComponente {
 		this.tablaComponente.setItems(null);
 		this.listaComponente.clear();
 		if (this.checkMenuTodos.isSelected())
-			this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
+			this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection(), campoTextoBusqueda.getText());
 		else if (this.checkMenuMateriaPrima.isSelected())
 			this.listaComponente = ComponenteDAO.readComponenteTipoComponenteParte(this.mainApp.getConnection(), TipoComponente.toCharacter(TipoComponente.MATERIA_PRIMA), campoTextoBusqueda.getText());
 		else if (this.checkMenuMiscelaneo.isSelected())
