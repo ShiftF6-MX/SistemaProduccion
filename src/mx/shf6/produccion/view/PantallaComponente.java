@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -147,6 +149,7 @@ public class PantallaComponente {
 				final Button botonDetalle = new Button("Detalle");
 				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonDibujo, botonDetalle);
 				
+				
 				@Override
 				public void updateItem(String item, boolean empty) {
 					//INICALIZA BOTONES
@@ -222,6 +225,7 @@ public class PantallaComponente {
 							manejadorBotonDetalle(componente);
 						});//FIN MANEJADDOR
 						
+						cajaBotones.setAlignment(Pos.CENTER);
 						cajaBotones.setSpacing(2);
 						super.setGraphic(cajaBotones);
 						super.setText(null);
