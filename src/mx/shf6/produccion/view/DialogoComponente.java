@@ -309,7 +309,7 @@ public class DialogoComponente {
 						campoTextoAlto.setDisable(true);
 						comboBoxAlto.getSelectionModel().select("");
 						comboBoxAlto.setDisable(true);
-						campoTextoNumeroParte.setDisable(false);
+						campoTextoNumeroParte.setDisable(true);
 						campoTextoGradoMaterial.setText("");
 						campoTextoGradoMaterial.setDisable(true);
 						campoTextoEspesor.setText("");
@@ -339,7 +339,7 @@ public class DialogoComponente {
 						campoCodigoCatalogo.setText("");
 						campoCodigoCatalogo.setDisable(true);
 						campoTextoHilos.setText("");
-						campoTextoHilos.setDisable(false);
+						campoTextoHilos.setDisable(true);
 					}//FIN IF/ELSE
 				}
 			} //FIN METODO
