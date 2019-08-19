@@ -71,7 +71,7 @@ public class ProcesoDAO {
 				"FROM procesos \r\n" + 
 				"INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK \r\n" + 
 				"INNER JOIN clientes ON componentes.ClienteFK = clientes.Sys_PK\r\n" + 
-				"INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE procesos.Sys_PK =" + procesoFK;
+				"INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE procesos.Sys_PK = " + procesoFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -82,8 +82,8 @@ public class ProcesoDAO {
 				proceso.setOrdenamiento(resultados.getInt(4));
 				proceso.setNivel(resultados.getInt(5));
 				proceso.setNombreCentroTrabajo(resultados.getString(6));
-				proceso.setDescripcionComponente(resultados.getString(7));
-				proceso.setNombreComponente(resultados.getString(8));
+				proceso.setNombreComponente(resultados.getString(7));
+				proceso.setDescripcionComponente(resultados.getString(8));
 				proceso.setNombreCliente(resultados.getString(9));
 			}//FIN WHILE
 		} catch(SQLException ex) {

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -185,5 +186,13 @@ public class DetalleProcesoDAO {
 				listaObservableDetalleProceso.add(detalleProceso);
 			}
 			return listaObservableDetalleProceso;
+		}//FIN METODO
+		
+		public static List<DetalleProceso> toList(ArrayList<DetalleProceso> arrayList) {
+			List<DetalleProceso> listaDetalleProceso = new ArrayList<DetalleProceso>();
+			for (DetalleProceso detalleProceso : arrayList) {
+				listaDetalleProceso.add(detalleProceso);
+			}
+			return listaDetalleProceso;
 		}//FIN METODO
 }//FIN CLASE

@@ -1,5 +1,6 @@
 package mx.shf6.produccion.view;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.dao.ProcesoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
+import mx.shf6.produccion.utilities.GenerarDocumento;
 
 public class PantallaProceso {
 	
@@ -111,7 +113,8 @@ public class PantallaProceso {
 				final Button botonModificar = new Button("Modificar");
 				final Button botonEliminar = new Button("Eliminar");
 				final Button botonDetalle = new Button("Detalles");
-				final HBox acciones = new HBox(botonVer, botonModificar, botonEliminar, botonDetalle);
+				final Button botonProceso = new Button("Hoja de proceso");
+				final HBox acciones = new HBox(botonVer, botonModificar, botonEliminar, botonDetalle, botonProceso);
 				
 				//PARA MOSTRAR LOS DIALOGOS
 				@Override
@@ -148,6 +151,14 @@ public class PantallaProceso {
 		        	botonDetalle.setCursor(Cursor.HAND);
 		        	botonDetalle.setTooltip(new Tooltip("Detalles"));
 		        	
+		        	botonProceso.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DocumentIcon.png"))));
+		        	botonProceso.setPrefSize(16.0, 16.0);
+		        	botonProceso.setPadding(Insets.EMPTY);
+		        	botonProceso.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		        	botonProceso.setStyle("-fx-background-color: transparent;");
+		        	botonProceso.setCursor(Cursor.HAND);
+		        	botonProceso.setTooltip(new Tooltip("Hoja de Proceso"));
+		        	
 		        	acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
 		        	acciones.setAlignment(Pos.CENTER_LEFT);
@@ -179,6 +190,10 @@ public class PantallaProceso {
 		            		manejadorBotonDetalles(proceso);
 		            	});
 		            	
+		            	botonProceso.setOnAction(event -> {
+		            		proceso = getTableView().getItems().get(getIndex()); 		
+		            		GenerarDocumento.generarHojaProceso(mainApp.getConnection(), proceso.getSysPK());
+		            	});
 		            	setGraphic(acciones);
 		            	setText(null);
 		            }//FIN IF-ELSE

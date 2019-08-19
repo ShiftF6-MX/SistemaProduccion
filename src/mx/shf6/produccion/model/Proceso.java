@@ -37,11 +37,12 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "",0, "");
+		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer componenteFK, String nombreComponente, Integer empleadoFK, String nombreEmpleado){
+	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, String nombreCentroTrabajo, 
+			Integer componenteFK, String nombreComponente, String descripcionComponente, Integer empleadoFK, String nombreEmpleado, Integer clienteFK, String nombreCliente){
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
@@ -52,8 +53,11 @@ public class Proceso {
 		//this.tiempo = new SimpleIntegerProperty(tiempo);
 		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
 		this.nombreComponente = new SimpleStringProperty(nombreComponente);
+		this.descripcionComponente = new SimpleStringProperty(descripcionComponente);
 		this.empleadoFK = new SimpleObjectProperty<Integer>(empleadoFK);
 		this.nombreEmpleado = new SimpleStringProperty(nombreEmpleado);
+		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
+		this.nombreCliente = new SimpleStringProperty(nombreCliente);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
