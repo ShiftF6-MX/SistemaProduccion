@@ -117,7 +117,7 @@
                <children>
                   <VBox spacing="2.0">
                      <children>
-                        <Label styleClass="labelRobotoMedium12" text="Alto" />
+                        <Label styleClass="labelRobotoMedium12" text="Alto / Lado" />
                         <HBox spacing="2.0">
                            <children>
                               <TextField fx:id="campoTextoAlto" prefWidth="80.0" styleClass="campoBuscador" />
@@ -139,7 +139,7 @@
                   </VBox>
                   <VBox spacing="2.0">
                      <children>
-                        <Label styleClass="labelRobotoMedium12" text="Ancho" />
+                        <Label styleClass="labelRobotoMedium12" text="Ancho / Lado" />
                         <HBox spacing="2.0">
                            <children>
                               <TextField fx:id="campoTextoAncho" prefWidth="80.0" styleClass="campoBuscador" />
