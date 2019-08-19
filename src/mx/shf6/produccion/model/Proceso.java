@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import mx.shf6.produccion.model.dao.CentroTrabajoDAO;
+import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.EmpleadoDAO;
 import javafx.beans.property.ObjectProperty;
@@ -24,8 +25,11 @@ public class Proceso {
 	//private IntegerProperty tiempo;
 	private ObjectProperty<Integer> componenteFK;
 	private StringProperty nombreComponente;
+	private StringProperty descripcionComponente;
 	private ObjectProperty<Integer> empleadoFK;
 	private StringProperty nombreEmpleado;
+	private StringProperty nombreCliente;
+	private ObjectProperty<Integer> clienteFK;
 
 	//VARIABLES
 
@@ -196,6 +200,29 @@ public class Proceso {
 	public StringProperty nombreComponenteProperty() {
 		return this.nombreComponente;
 	}//FIN METODO
+	
+	public void setClienteFK(int clienteFK) {
+		this.clienteFK.set(clienteFK);
+	}//FIN METODO
+	
+	public Integer getClienteFK() {
+		return this.clienteFK.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> clienteFKProperty() {
+		return this.clienteFK;
+	}//FIN METODO
+	public void setDescripcionComponente(String descripcionComponente) {
+		this.descripcionComponente.set(descripcionComponente);
+	}//FIN METODO
+	
+	public String getDescripcionComponente() {
+		return this.descripcionComponente.get();
+	}//FIN METODO
+	
+	public StringProperty descripcionComponenteProperty() {
+		return this.descripcionComponente;
+	}//FIN METODO
 	//FIN METODOS "COMPONENTEFK"
 
 	//METODOS PARA ACCESO A "EMPLEADOFK"
@@ -227,5 +254,21 @@ public class Proceso {
 		 return this.nombreEmpleado;
 	 } //FIN METODO
 	//FIN METODOS "EMPLEADOFK"
+	 
+	 public Cliente getCliente(Connection connection) {
+			return ClienteDAO.readCliente(connection, this.getClienteFK());
+		}//FIN METODO
+	 
+	 public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente.set(nombreCliente);
+	}//FIN METODO
+	
+	public String getNombreCliente() {
+		return this.nombreCliente.get();
+	}//FIN METODO
+	
+	public StringProperty nombreClienteProperty() {
+		return this.nombreCliente;
+	}//FIN METODO
 
 }//FIN CLASE
