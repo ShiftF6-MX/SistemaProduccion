@@ -309,7 +309,7 @@ public class DialogoComponente {
 						campoTextoAlto.setDisable(true);
 						comboBoxAlto.getSelectionModel().select("");
 						comboBoxAlto.setDisable(true);
-						campoTextoNumeroParte.setDisable(true);
+						campoTextoNumeroParte.setDisable(false);
 						campoTextoGradoMaterial.setText("");
 						campoTextoGradoMaterial.setDisable(true);
 						campoTextoEspesor.setText("");
@@ -615,28 +615,28 @@ public class DialogoComponente {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripcion\" no puede estar vacio");
 			return false;
 		} else if (!this.campoTextoAlto.getText().isEmpty() && this.comboBoxAlto.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Altura debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Altura\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoTextoLargo.getText().isEmpty() && this.comboBoxLargo.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Largo debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Largo\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoTextoAncho.getText().isEmpty() && this.comboBoxAncho.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Ancho debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Ancho\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoTextoAlto2.getText().isEmpty() && this.comboBoxAlto2.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Alto2 debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Alto2\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoTextoEspesor.getText().isEmpty() && this.comboBoxEspesor.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Espesor debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Espesor\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoAnchoTotal.getText().isEmpty() && this.comboBoxAnchoTotal.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Ancho total debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Ancho total\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoTextoDiametroExterior.getText().isEmpty() && this.comboBoxDiametroExterior.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Diametro exterior debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Diametro exterior\" debe de contener un unidad de medida");
 			return false;
 		} else if (!this.campoTextoDiametroInterior.getText().isEmpty() && this.comboBoxDiametroInterior.getSelectionModel().getSelectedItem().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Diametro interior debe de contener un unidad de medida\" no puede estar vacio");
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Diametro interior\"  debe de contener un unidad de medida");
 			return false;
 		} else if (this.comboBoxStatus.getSelectionModel().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El combo \"Status\" debe estar seleccionado");
@@ -820,9 +820,14 @@ public class DialogoComponente {
 						this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
 					else if (this.componente.getEsInterno() == 1)
 						this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
-					else
+					else if (this.checkHabilitar.isSelected())
+						this.componente.setNumeroParte(this.campoTextoNumeroParte.getText());
+					else if (!this.checkHabilitar.isSelected())
 						this.componente.setNumeroParte(this.componente.doNumeroParte(this.mainApp.getConnection()));
 					this.componente.setDescripcion(this.campoTextoDescripcion.getText());
+
+
+					
 					
 					Dimensiones dimensiones = new Dimensiones();
 					if (this.campoTextoLargo.getText().isEmpty())
