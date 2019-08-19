@@ -9,15 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
-import mx.shf6.produccion.model.Comprador;
 import mx.shf6.produccion.model.Proyecto;
-
 import mx.shf6.produccion.model.dao.ComponenteDAO;
-import mx.shf6.produccion.model.dao.CompradorDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -31,6 +29,8 @@ public class DialogoProyectosCliente {
 	private Cliente cliente;
 	private File renameRuta;
 	private ArrayList<Componente> arrayListComponentesEnsambleCliente;
+	private ArrayList<Componente> arrayListComponentes;
+	private ArrayList<String> arrayListNumeroParteComponentes;
 	private ArrayList<String> arrayListNumeroParteComponentesEnsambleCliente;
 
 	// VARIABLES
@@ -42,22 +42,15 @@ public class DialogoProyectosCliente {
 	public static final int EDITAR = 3;
 
 	// COMPONENTES INTERFAZ
-	@FXML
-	private TextField campoTextoCodigo;
-	@FXML
-	private TextField campoTextoDescripcion;
-	@FXML
-	private TextField campoTextoCarpeta;
-	@FXML
-	private TextField campoTextoEspecificacionTecnica;
-	@FXML
-	private TextField campoCostoDirecto;
-	@FXML
-	private TextField campoCostoIndirecto;
-	@FXML
-	private TextField campoPrecio;
-	@FXML
-	private ComboBox<String> comboBoxComponentes;
+	@FXML private TextField campoTextoCodigo;
+	@FXML private TextField campoTextoDescripcion;
+	@FXML private TextField campoTextoCarpeta;
+	@FXML private TextField campoTextoEspecificacionTecnica;
+	@FXML private TextField campoCostoDirecto;
+	@FXML private TextField campoCostoIndirecto;
+	@FXML private TextField campoPrecio;
+	@FXML private ComboBox<String> comboBoxComponentes;
+	@FXML private CheckBox campoMostrarTodos;
 
 	// INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML
@@ -66,7 +59,6 @@ public class DialogoProyectosCliente {
 		this.cliente = new Cliente();
 
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoCodigo, 16);
-
 		RestriccionTextField.limitarPuntoDecimal(this.campoCostoDirecto);
 		RestriccionTextField.limitarPuntoDecimal(this.campoCostoIndirecto);
 		RestriccionTextField.limitarPuntoDecimal(this.campoPrecio);
@@ -81,9 +73,9 @@ public class DialogoProyectosCliente {
 
 		this.renameRuta = new File(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre() + "\\Proyectos\\"
 				+ this.proyecto.getCodigo());
-
-		this.arrayListComponentesEnsambleCliente = ComponenteDAO
-				.readComponentesEnsambleCliente(this.mainApp.getConnection(), this.cliente.getSysPK());
+		
+		this.arrayListComponentesEnsambleCliente = ComponenteDAO.readComponentesEnsambleCliente(this.mainApp.getConnection(), 
+				this.cliente.getSysPK());
 		this.arrayListNumeroParteComponentesEnsambleCliente = new ArrayList<String>();
 
 		for (Componente componente : this.arrayListComponentesEnsambleCliente)
@@ -91,8 +83,29 @@ public class DialogoProyectosCliente {
 
 		this.comboBoxComponentes
 				.setItems(FXCollections.observableArrayList(this.arrayListNumeroParteComponentesEnsambleCliente));
-		new AutoCompleteComboBoxListener(comboBoxComponentes);
 
+		campoMostrarTodos.selectedProperty().addListener((ov, oldValue, newValue) -> { 
+			if (campoMostrarTodos.isSelected()) {
+				this.arrayListComponentes = ComponenteDAO.readComponentesEnsambleAndPrimarias(this.mainApp.getConnection(), this.cliente.getSysPK());
+				this.arrayListNumeroParteComponentes = new ArrayList<String>();
+				
+				for (Componente componente : this.arrayListComponentes) 
+					this.arrayListNumeroParteComponentes.add(componente.getNumeroParte());
+				
+				this.comboBoxComponentes.setItems(FXCollections.observableArrayList(this.arrayListNumeroParteComponentes));
+			} else {
+				this.arrayListComponentesEnsambleCliente = ComponenteDAO.readComponentesEnsambleCliente(this.mainApp.getConnection(), 
+						this.cliente.getSysPK());
+				this.arrayListNumeroParteComponentesEnsambleCliente = new ArrayList<String>();
+
+				for (Componente componente : this.arrayListComponentesEnsambleCliente)
+					this.arrayListNumeroParteComponentesEnsambleCliente.add(componente.getNumeroParte());
+
+				this.comboBoxComponentes
+						.setItems(FXCollections.observableArrayList(this.arrayListNumeroParteComponentesEnsambleCliente));
+			}//FIN IF ELSE
+		});
+		new AutoCompleteComboBoxListener(comboBoxComponentes);
 		
 		comboBoxComponentes.valueProperty().addListener((ChangeListener<String>) (ov, t, t1) -> {
 			Componente componente = ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboBoxComponentes.getValue());		
@@ -114,7 +127,7 @@ public class DialogoProyectosCliente {
 			this.campoTextoCodigo.setDisable(true);
 			this.campoTextoDescripcion.setText("");
 			this.campoTextoDescripcion.setDisable(true);
-
+			this.campoMostrarTodos.setDisable(false);
 			this.campoTextoCarpeta.setText(MainApp.RAIZ_SERVIDOR);
 			this.campoTextoCarpeta.setDisable(true);
 			this.campoTextoEspecificacionTecnica.setText("");
@@ -134,6 +147,7 @@ public class DialogoProyectosCliente {
 			this.campoTextoCarpeta.setText(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre()
 					+ "\\Proyectos\\" + this.proyecto.getCodigo());
 			this.campoTextoCarpeta.setDisable(true);
+			this.campoMostrarTodos.setDisable(true);
 			this.campoTextoEspecificacionTecnica.setText(this.proyecto.getEspecificacionTecnica());
 			this.campoTextoEspecificacionTecnica.setDisable(true);
 			this.campoCostoDirecto.setText(String.valueOf(this.proyecto.getCostoDirecto()));
@@ -154,6 +168,7 @@ public class DialogoProyectosCliente {
 			this.campoTextoCarpeta.setText(MainApp.RAIZ_SERVIDOR + "Clientes\\" + this.cliente.getNombre()
 					+ "\\Proyectos\\" + this.proyecto.getCodigo());
 			this.campoTextoCarpeta.setDisable(true);
+			this.campoMostrarTodos.setDisable(false);
 			this.campoTextoEspecificacionTecnica.setText(this.proyecto.getEspecificacionTecnica());
 			this.campoTextoEspecificacionTecnica.setDisable(false);
 			this.campoCostoDirecto.setText(String.valueOf(this.proyecto.getCostoDirecto()));
