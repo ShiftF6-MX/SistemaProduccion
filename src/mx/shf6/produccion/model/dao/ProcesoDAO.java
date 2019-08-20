@@ -63,35 +63,35 @@ public class ProcesoDAO {
 		return arrayListProceso;
 	}//FIN METODO
 
-	//METODO PARA OBTENER UN REGISTRO
 	public static Proceso readProcesoHoja(Connection connection, int procesoFK) {
 		Proceso proceso = new Proceso();
 		String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel,\r\n" + 
-				"centrostrabajo.Descripcion, componentes.NumeroParte, componentes.Descripcion, clientes.Nombre\r\n" + 
-				"FROM procesos \r\n" + 
-				"INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK \r\n" + 
-				"INNER JOIN clientes ON componentes.ClienteFK = clientes.Sys_PK\r\n" + 
-				"INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE procesos.Sys_PK = " + procesoFK;
+				"				centrostrabajo.Descripcion, componentes.NumeroParte, componentes.Descripcion, clientes.Nombre, empleados.Nombre\r\n" + 
+				"				FROM procesos \r\n" + 
+				"                INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK\r\n" + 
+				"				INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK\r\n" + 
+				"				INNER JOIN clientes ON componentes.ClienteFK = clientes.Sys_PK\r\n" + 
+				"				INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE procesos.Sys_PK = " + procesoFK;
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
 			while (resultados.next()) {
 				proceso.setSysPK(resultados.getInt(1));
-				proceso.setFecha(resultados.getDate(2));
+				proceso.setFecha(resultados.getDate(2));	
 				proceso.setCantidad(resultados.getInt(3));
 				proceso.setOrdenamiento(resultados.getInt(4));
 				proceso.setNivel(resultados.getInt(5));
 				proceso.setNombreCentroTrabajo(resultados.getString(6));
-				proceso.setNombreComponente(resultados.getString(7));
-				proceso.setDescripcionComponente(resultados.getString(8));
+				proceso.setDescripcionComponente(resultados.getString(7));
+				proceso.setNombreComponente(resultados.getString(8));
 				proceso.setNombreCliente(resultados.getString(9));
+				proceso.setNombreEmpleado(resultados.getString(10));
 			}//FIN WHILE
 		} catch(SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 		return proceso;
 	}//FIN METODO
-
 	
 	//METODO PARA OBTENER UN REGISTRO POR SYSPK
 		public static Proceso readProceso(Connection connection, int sysPK) {
