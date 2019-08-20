@@ -105,7 +105,7 @@ public class GenerarDocumento {
 			parameters.put("pNivel", procesito.getNivel().toString());
 			parameters.put("pDestino", procesito.getNombreTrabajo());
 			parameters.put("Parameter1", itemsTabla);
-			
+			parameters.put("pElaboro", procesito.getEmpleado());
 			Date fecha = new Date();
 			 SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
 			 String fechaActual = dt1.format(fecha);
