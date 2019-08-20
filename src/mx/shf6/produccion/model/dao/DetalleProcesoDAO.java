@@ -16,7 +16,7 @@ public class DetalleProcesoDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 		public static boolean createDetalleProceso(Connection connection, DetalleProceso detalleProceso) {
-			String consulta = "INSERT INTO detalleProcesos (Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK, Cantidad, Componente) VALUES (?,?,?,?,?,?,?,?,?)";
+			String consulta = "INSERT INTO detalleProcesos (Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK, Cantidad, Componente, Herramienta) VALUES (?,?,?,?,?,?,?,?,?)";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setInt(1, detalleProceso.getOperacion());
@@ -41,7 +41,7 @@ public class DetalleProcesoDAO {
 			ArrayList<DetalleProceso> arrayListDetalleProceso = new ArrayList<DetalleProceso>();
 			String consulta = "SELECT detalleProcesos.Sys_PK, detalleProcesos.Operacion, detalleProcesos.Descripcion, detalleProcesos.TiempoPreparacion,\r\n" + 
 					" detalleProcesos.TiempoOperacion, detalleProcesos.CentroTrabajoFK, centrostrabajo.Descripcion, detalleProcesos.GrupoTrabajoFK, \r\n" + 
-					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, detalleprocesos.Cantidad, detalleprocesos.Componente\r\n" + 
+					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, detalleprocesos.Cantidad, detalleprocesos.Componente, detalleprocesos.Herramienta\r\n" + 
 					" FROM detalleProcesos \r\n" + 
 					" INNER JOIN centrostrabajo ON detalleProcesos.CentroTrabajoFK = centrostrabajo.Sys_PK \r\n" + 
 					" INNER JOIN grupostrabajo ON detalleProcesos.GrupoTrabajoFK = grupostrabajo.Sys_PK \r\n" + 
@@ -63,6 +63,7 @@ public class DetalleProcesoDAO {
 					detalleProceso.setProcesoFK(resultados.getInt(10));
 					detalleProceso.setCantidad(resultados.getInt(11));
 					detalleProceso.setComponentes(resultados.getString(12));
+					detalleProceso.setHerramienta(resultados.getString(13));
 					arrayListDetalleProceso.add(detalleProceso);
 				}//FIN WHILE
 			} catch(SQLException ex) {
@@ -74,7 +75,7 @@ public class DetalleProcesoDAO {
 		//METODO PARA OBTENER UN REGISTRO POR SYSPK
 		public static DetalleProceso readDetalleProceso(Connection connection, int sysPK) {
 			DetalleProceso detalleProceso = new DetalleProceso();
-			String consulta = "SELECT Sys_PK, Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK, Componente, Cantidad FROM detalleProcesos WHERE Sys_PK =" + sysPK;
+			String consulta = "SELECT Sys_PK, Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK, Componente, Cantidad, Herramienta FROM detalleProcesos WHERE Sys_PK =" + sysPK;
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -89,6 +90,7 @@ public class DetalleProcesoDAO {
 					detalleProceso.setProcesoFK(resultados.getInt(8));
 					detalleProceso.setComponentes(resultados.getString(9));
 					detalleProceso.setCantidad(resultados.getInt(10));
+					detalleProceso.setHerramienta(resultados.getString(11));
 				}//FIN WHILE
 			} catch(SQLException ex) {
 				Notificacion.dialogoException(ex);
@@ -101,7 +103,7 @@ public class DetalleProcesoDAO {
 			ArrayList<DetalleProceso> arrayListDetalleProceso = new ArrayList<DetalleProceso>();
 			String consulta = "SELECT detalleProcesos.Sys_PK, detalleProcesos.Operacion, detalleProcesos.Descripcion, detalleProcesos.TiempoPreparacion,\r\n" + 
 					" detalleProcesos.TiempoOperacion, detalleProcesos.CentroTrabajoFK, centrostrabajo.Descripcion, detalleProcesos.GrupoTrabajoFK, \r\n" + 
-					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, detalleprocesos.Cantidad, detalleprocesos.Componente\r\n" + 
+					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, detalleprocesos.Cantidad, detalleprocesos.Componente, detalleprocesos.Herramienta\r\n " + 
 					" FROM detalleProcesos \r\n" + 
 					" INNER JOIN centrostrabajo ON detalleProcesos.CentroTrabajoFK = centrostrabajo.Sys_PK \r\n" + 
 					" INNER JOIN grupostrabajo ON detalleProcesos.GrupoTrabajoFK = grupostrabajo.Sys_PK \r\n" + 
@@ -123,6 +125,7 @@ public class DetalleProcesoDAO {
 					detalleProceso.setProcesoFK(resultados.getInt(10));
 					detalleProceso.setCantidad(resultados.getInt(11));
 					detalleProceso.setComponentes(resultados.getString(12));
+					detalleProceso.setHerramienta(resultados.getString(13));
 					arrayListDetalleProceso.add(detalleProceso);
 				}//FIN-WHILE
 			} catch (SQLException ex) {
@@ -133,7 +136,7 @@ public class DetalleProcesoDAO {
 
 		//METODO PARA ACTUALIZAR UN REGISTRO
 		public static boolean updateDetalleProceso(Connection connection, DetalleProceso detalleProceso) {
-			String consulta = "UPDATE detalleProcesos SET Operacion = ?, Descripcion = ?, TiempoPreparacion = ?, TiempoOperacion = ?, CentroTrabajoFK = ?, GrupoTrabajoFK = ?, ProcesoFK = ?, Componente = ?, Cantidad = ? WHERE Sys_PK = ?";
+			String consulta = "UPDATE detalleProcesos SET Operacion = ?, Descripcion = ?, TiempoPreparacion = ?, TiempoOperacion = ?, CentroTrabajoFK = ?, GrupoTrabajoFK = ?, ProcesoFK = ?, Componente = ?, Cantidad = ?, Herramienta = ? WHERE Sys_PK = ?";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setInt(1, detalleProceso.getOperacion());
@@ -145,7 +148,8 @@ public class DetalleProcesoDAO {
 				sentenciaPreparada.setInt(7, detalleProceso.getProcesoFK());
 				sentenciaPreparada.setString(8, detalleProceso.getComponentes());
 				sentenciaPreparada.setInt(9, detalleProceso.getCantidad());	
-				sentenciaPreparada.setInt(10, detalleProceso.getSysPK());
+				sentenciaPreparada.setString(10,  detalleProceso.getHerramientas());
+				sentenciaPreparada.setInt(11, detalleProceso.getSysPK());
 				sentenciaPreparada.execute();
 				return true;
 			} catch (SQLException ex) {
