@@ -24,8 +24,8 @@ public class DetalleProceso {
 	private ObjectProperty<Integer> procesoFK;
 	private StringProperty nombreProceso;
 	private ObjectProperty<Integer> cantidad;
-	private ObjectProperty<Integer> componenteFK;
-	private StringProperty nombreComponenteFK;
+	private StringProperty componentes;
+	private StringProperty herramienta;
 
 	//VARIABLES
 
@@ -33,11 +33,11 @@ public class DetalleProceso {
 
 	//CONSTRUCTOR VACIO
 	public DetalleProceso() {
-		this(0,0,"",0.0,0.0,0,"",0,"",0, "",0,0,"");
+		this(0, 0, "", 0.0, 0.0, 0, "", 0, "",0, "", 0, "", "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, Integer cantidad, Integer componenteFK, String nombreComponenteFK) {
+	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, Integer cantidad, String componente, String herramienta) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.operacion = new SimpleObjectProperty<Integer>(operacion);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -50,8 +50,8 @@ public class DetalleProceso {
 		this.procesoFK = new SimpleObjectProperty<Integer>(procesoFK);
 		this.nombreProceso = new SimpleStringProperty(nombreProceso);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
-		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
-		this.nombreComponenteFK = new SimpleStringProperty(nombreComponenteFK);
+		this.componentes = new SimpleStringProperty(componente);
+		this.herramienta = new SimpleStringProperty(herramienta);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
@@ -224,30 +224,32 @@ public class DetalleProceso {
 	}//FIN METODO
 	//FIN METODOS CANTIDAD
 	
-	//METODOS DE ACCESO A COMPONENTEFK
-	public void setComponenteFK(Integer componenteFK) {
-		this.componenteFK.set(componenteFK);
+	//METODOS DE ACCESO A COMPONENTES
+	public void setComponentes(String componentes) {
+		this.componentes.set(componentes);
 	}//FIN METODO
 	
-	public Integer getComponenteFK() {
-		return componenteFK.get();
+	public String getComponentes() {
+		return componentes.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> componenteFK() {
-		return componenteFK;
+	public StringProperty componentesProperty() {
+		return componentes;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A COMPONENTES
+	
+	//METODOS DE ACCESO HERRAMIENTA
+	public void setHerramienta(String herramienta) {
+		this.herramienta.set(herramienta);
 	}//FIN METODO
 	
-	public void setNombreComponenteFK(String nombreComponenteFK) {
-		this.nombreComponenteFK.set(nombreComponenteFK);
+	public String getHerramientas() {
+		return this.herramienta.get();
 	}//FIN METODO
 	
-	public String getNombreComponenteFK() {
-		return nombreComponenteFK.get();
+	public StringProperty herramientaProperty() {
+		return this.herramienta;
 	}//FIN METODO
-	
-	public StringProperty nombreComponenteFKProperty() {
-		return nombreComponenteFK;
-	}//FIN METODO
-	//FIN DE LOS METODOS NOMBRECOMPONENTEFK
+	//FIN METODOS DE ACCESO HERRAMIENTA
 
 }//FIN CLASE
