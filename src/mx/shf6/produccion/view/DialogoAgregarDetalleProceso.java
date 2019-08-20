@@ -15,7 +15,6 @@ import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.TipoComponente;
 import mx.shf6.produccion.model.dao.CentroTrabajoDAO;
-import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleProcesoDAO;
 import mx.shf6.produccion.model.dao.GrupoTrabajoDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
@@ -39,10 +38,8 @@ public class DialogoAgregarDetalleProceso {
 	private Componente componente;
 	private ArrayList<CentroTrabajo> listaCentroTrabajo;
 	private ArrayList<GrupoTrabajo> listaGrupoTrabajo;
-	private ArrayList<Componente> listaComponente;
 	private ObservableList<String> observableListaCentroTrabajo;
 	private ObservableList<String> observableListaGrupoTrabajo;	
-	private ObservableList<String> observableListaComponente;
 	
 	//COMPONENTE INTERFAZ
 	@FXML private TextField campoOperacion;
@@ -51,7 +48,7 @@ public class DialogoAgregarDetalleProceso {
 	@FXML private TextField campoTiempoPreparacion;
 	@FXML private ComboBox<String> comboBoxCentroTrabajo;
 	@FXML private ComboBox<String> comboBoxGrupoTrabajo;
-	@FXML private ComboBox<String> comboBoxComponentes;
+	@FXML private TextField campoComponentes;
 	@FXML private TextField campoCantidad;
 	@FXML private Label labelComboboxParte;
 	@FXML private Label labelCantidad;
@@ -70,10 +67,8 @@ public class DialogoAgregarDetalleProceso {
 		this.opcion = opcion;
 		this.observableListaCentroTrabajo = FXCollections.observableArrayList();
 		this.observableListaGrupoTrabajo = FXCollections.observableArrayList();
-		this.observableListaComponente = FXCollections.observableArrayList();
 		this.listaCentroTrabajo = CentroTrabajoDAO.readCentroTrabajo(this.mainApp.getConnection());
 		this.listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajo(this.mainApp.getConnection());
-		this.listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
 		inicializarCombos();
 		mostrarDatosInterfaz();
 	}//FIN METODO
@@ -102,11 +97,6 @@ public class DialogoAgregarDetalleProceso {
 		this.comboBoxGrupoTrabajo.setItems(this.observableListaGrupoTrabajo);
 		new AutoCompleteComboBoxListener(comboBoxGrupoTrabajo);
 		
-		listaComponente = ComponenteDAO.readComponente(this.mainApp.getConnection());
-		for (Componente componente : listaComponente)
-			this.observableListaComponente.add(componente.getNumeroParte());
-		this.comboBoxComponentes.setItems(this.observableListaComponente);
-		new AutoCompleteComboBoxListener(comboBoxComponentes);
 	}//FIN METODO
 	
 	//INICIALIZA COMPONENTES
@@ -127,7 +117,7 @@ public class DialogoAgregarDetalleProceso {
 				this.comboBoxCentroTrabajo.setDisable(false);
 				this.comboBoxGrupoTrabajo.getSelectionModel().select("");
 				this.comboBoxGrupoTrabajo.setDisable(false);
-				this.comboBoxComponentes.setVisible(false);
+				this.campoComponentes.setVisible(false);
 				this.labelComboboxParte.setVisible(false);
 				this.labelCantidad.setVisible(false);
 				this.campoCantidad.setVisible(false);
@@ -143,7 +133,7 @@ public class DialogoAgregarDetalleProceso {
 				this.comboBoxCentroTrabajo.setValue(this.detalleProceso.getNombreCentroTrabajo());
 				this.comboBoxCentroTrabajo.setDisable(false);
 				this.comboBoxGrupoTrabajo.setValue(this.detalleProceso.getNombreGrupoTrabajo());
-				this.comboBoxComponentes.setVisible(false);
+				this.campoComponentes.setVisible(false);
 				this.labelComboboxParte.setVisible(false);
 				this.labelCantidad.setVisible(false);
 				this.campoCantidad.setVisible(false);
@@ -165,8 +155,8 @@ public class DialogoAgregarDetalleProceso {
 				this.comboBoxCentroTrabajo.setDisable(false);
 				this.comboBoxGrupoTrabajo.getSelectionModel().select("");
 				this.comboBoxGrupoTrabajo.setDisable(false);
-				this.comboBoxComponentes.getSelectionModel().select("");
-				this.comboBoxComponentes.setDisable(false);
+				this.campoComponentes.setText("");
+				this.campoComponentes.setDisable(false);
 				this.campoCantidad.setText("");
 				this.campoCantidad.setDisable(false);
 			} else if (this.opcion == EDITAR) {
@@ -182,8 +172,8 @@ public class DialogoAgregarDetalleProceso {
 				this.comboBoxCentroTrabajo.setDisable(false);
 				this.comboBoxGrupoTrabajo.setValue(this.detalleProceso.getNombreGrupoTrabajo());
 				this.comboBoxGrupoTrabajo.setDisable(false);
-				this.comboBoxComponentes.setValue(this.detalleProceso.getNombreComponenteFK());
-				this.comboBoxComponentes.setDisable(false);
+				this.campoComponentes.setText(this.detalleProceso.getComponentes());
+				this.campoComponentes.setDisable(false);
 				this.campoCantidad.setText(String.valueOf(this.detalleProceso.getCantidad()));
 				this.campoCantidad.setDisable(false);
 			}//FIN IF-ELSE
@@ -200,7 +190,7 @@ public class DialogoAgregarDetalleProceso {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Centro de trabajo\" no puede estar vacio");
 		} else if (this.comboBoxGrupoTrabajo.getSelectionModel().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Grupo de trabajo\" no puede estar vacio");
-		} else {
+		}else {
 			if (this.componente.getTipoComponente() != TipoComponente.ENSAMBLE && this.componente.getTipoComponente() != TipoComponente.SUB_ENSAMBLE) {
 				this.detalleProceso.setOperacion(Integer.parseInt(this.campoOperacion.getText()));
 				this.detalleProceso.setDescripcion(this.campoDescripcion.getText());
@@ -216,7 +206,7 @@ public class DialogoAgregarDetalleProceso {
 				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setProcesoFK(this.syspk);
 				this.detalleProceso.setCantidad(0);
-				this.detalleProceso.setComponenteFK(0);
+				this.detalleProceso.setComponentes("");
 				
 				this.mainApp.getEscenarioDialogosAlterno().close();
 			} else {
@@ -237,10 +227,10 @@ public class DialogoAgregarDetalleProceso {
 					this.detalleProceso.setCantidad(0);
 				else
 					this.detalleProceso.setCantidad(Integer.parseInt(this.campoCantidad.getText()));
-				if (comboBoxComponentes.getSelectionModel().isEmpty())
-					this.detalleProceso.setComponenteFK(0);
+				if (campoComponentes.getText().isEmpty())
+					this.detalleProceso.setComponentes("");
 				else	
-					this.detalleProceso.setComponenteFK(listaComponente.get(comboBoxComponentes.getSelectionModel().getSelectedIndex()).getSysPK());
+					this.detalleProceso.setComponentes(campoComponentes.getText());
 				
 				this.mainApp.getEscenarioDialogosAlterno().close();
 			}//FIN IF ELSE

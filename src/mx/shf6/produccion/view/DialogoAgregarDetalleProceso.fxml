@@ -53,7 +53,7 @@
             <VBox spacing="2.0">
                <children>
                   <Label fx:id="labelComboboxParte" text="Numero de parte" />
-                  <ComboBox fx:id="comboBoxComponentes" prefWidth="200.0" styleClass="comboEditable" />
+                  <TextField fx:id="campoComponentes" styleClass="campoBuscador" />
                </children>
             </VBox>
             <VBox spacing="2.0">

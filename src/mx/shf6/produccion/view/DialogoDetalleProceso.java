@@ -84,7 +84,7 @@ public class DialogoDetalleProceso {
 			this.tiempoOperacionColumna.setCellValueFactory(cellData -> cellData.getValue().tiempoOperacionProperty());
 			this.centroTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreCentroTrabajoProperty());
 			this.grupoTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreGrupoTrabajoProperty());
-			this.componenteColumna.setCellValueFactory(cellData -> cellData.getValue().nombreComponenteFKProperty());
+			this.componenteColumna.setCellValueFactory(cellData -> cellData.getValue().componentesProperty());
 			this.cantidadColumna.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
 		}//FIN IF/ELSE
 	}//FIN METODO
