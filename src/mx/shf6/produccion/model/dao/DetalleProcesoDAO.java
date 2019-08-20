@@ -41,7 +41,7 @@ public class DetalleProcesoDAO {
 			ArrayList<DetalleProceso> arrayListDetalleProceso = new ArrayList<DetalleProceso>();
 			String consulta = "SELECT detalleProcesos.Sys_PK, detalleProcesos.Operacion, detalleProcesos.Descripcion, detalleProcesos.TiempoPreparacion,\r\n" + 
 					" detalleProcesos.TiempoOperacion, detalleProcesos.CentroTrabajoFK, centrostrabajo.Descripcion, detalleProcesos.GrupoTrabajoFK, \r\n" + 
-					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, procesos.Cantidad, detalleprocesos.Componente\r\n" + 
+					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, detalleprocesos.Cantidad, detalleprocesos.Componente\r\n" + 
 					" FROM detalleProcesos \r\n" + 
 					" INNER JOIN centrostrabajo ON detalleProcesos.CentroTrabajoFK = centrostrabajo.Sys_PK \r\n" + 
 					" INNER JOIN grupostrabajo ON detalleProcesos.GrupoTrabajoFK = grupostrabajo.Sys_PK \r\n" + 
@@ -101,11 +101,11 @@ public class DetalleProcesoDAO {
 			ArrayList<DetalleProceso> arrayListDetalleProceso = new ArrayList<DetalleProceso>();
 			String consulta = "SELECT detalleProcesos.Sys_PK, detalleProcesos.Operacion, detalleProcesos.Descripcion, detalleProcesos.TiempoPreparacion,\r\n" + 
 					" detalleProcesos.TiempoOperacion, detalleProcesos.CentroTrabajoFK, centrostrabajo.Descripcion, detalleProcesos.GrupoTrabajoFK, \r\n" + 
-					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, procesos.Cantidad, detalleprocesos.Componente\r\n" + 
+					" grupostrabajo.Descripcion, detalleProcesos.ProcesoFK, detalleprocesos.Cantidad, detalleprocesos.Componente\r\n" + 
 					" FROM detalleProcesos \r\n" + 
 					" INNER JOIN centrostrabajo ON detalleProcesos.CentroTrabajoFK = centrostrabajo.Sys_PK \r\n" + 
 					" INNER JOIN grupostrabajo ON detalleProcesos.GrupoTrabajoFK = grupostrabajo.Sys_PK \r\n" + 
-					" INNER JOIN procesos ON detalleProcesos.ProcesoFK = procesos.Sys_PK WHERE ProcesoFK = " + procesoFK + "ORDER BY Operacion";
+					" INNER JOIN procesos ON detalleProcesos.ProcesoFK = procesos.Sys_PK WHERE ProcesoFK = " + procesoFK + " ORDER BY Operacion";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
