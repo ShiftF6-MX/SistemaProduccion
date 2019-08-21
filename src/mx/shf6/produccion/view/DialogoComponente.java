@@ -78,6 +78,7 @@ public class DialogoComponente {
 	@FXML private ComboBox<String> comboBoxTratamiento;
 	@FXML private CheckBox checkHabilitar;
 	@FXML private TextField campoTextoHilos;
+	@FXML private TextField campoTextoRevision;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -95,6 +96,7 @@ public class DialogoComponente {
 		RestriccionTextField.limitarPuntoDecimal(campoTextoDiametroInterior);
 		RestriccionTextField.limitarPuntoDecimal(campoTextoEspesor);
 		RestriccionTextField.limitarPuntoDecimal(campoTextoLargo);
+		RestriccionTextField.limitarNumeroCaracteres(campoTextoRevision, 2);
 	}//FIN METODO
 	
 	//ACCESO CLASE PRINCIPAL
@@ -172,6 +174,8 @@ public class DialogoComponente {
 						campoCodigoCatalogo.setDisable(false);
 						campoTextoHilos.setText("");
 						campoTextoHilos.setDisable(false);
+						campoTextoRevision.setText("");
+						campoTextoRevision.setDisable(false);
 					} else if (newValue == TipoComponente.MATERIA_PRIMA) {
 						comboBoxCliente.getSelectionModel().select("");
 						comboBoxCliente.setDisable(true);
@@ -228,6 +232,8 @@ public class DialogoComponente {
 						campoCodigoCatalogo.setDisable(false);
 						campoTextoHilos.setText("");
 						campoTextoHilos.setDisable(false);
+						campoTextoRevision.setText("");
+						campoTextoRevision.setDisable(false);
 					} else if (newValue == TipoComponente.SUB_ENSAMBLE || newValue == TipoComponente.PARTE_PRIMARIA) {
 						comboBoxCliente.getSelectionModel().select("");
 						comboBoxCliente.setDisable(false);
@@ -284,6 +290,8 @@ public class DialogoComponente {
 						campoCodigoCatalogo.setDisable(false);
 						campoTextoHilos.setText("");
 						campoTextoHilos.setDisable(false);
+						campoTextoRevision.setText("");
+						campoTextoRevision.setDisable(false);
 					} else if (newValue == TipoComponente.ENSAMBLE) {
 						comboBoxCliente.getSelectionModel().select("");
 						comboBoxCliente.setDisable(false);
@@ -340,6 +348,8 @@ public class DialogoComponente {
 						campoCodigoCatalogo.setDisable(true);
 						campoTextoHilos.setText("");
 						campoTextoHilos.setDisable(true);
+						campoTextoRevision.setText("");
+						campoTextoRevision.setDisable(false);
 					}//FIN IF/ELSE
 				}
 			} //FIN METODO
@@ -429,6 +439,8 @@ public class DialogoComponente {
 			campoTextoConsecutivo.setDisable(true);
 			campoTextoHilos.setText("");
 			campoTextoHilos.setDisable(false);
+			campoTextoRevision.setText("");
+			campoTextoRevision.setDisable(false);
 			
 		} else if (this.opcion == VER) {
 			
@@ -502,6 +514,8 @@ public class DialogoComponente {
 			this.checkHabilitar.setDisable(true);
 			this.campoTextoHilos.setText(String.valueOf(this.componente.getHilos()));
 			this.campoTextoHilos.setDisable(true);
+			this.campoTextoRevision.setText(this.componente.getRevision());
+			this.campoTextoRevision.setDisable(true);
 			
 		} else if (this.opcion == EDITAR) {
 			
@@ -577,6 +591,8 @@ public class DialogoComponente {
 			this.campoCodigoCatalogo.setDisable(false);
 			this.campoTextoHilos.setText(String.valueOf(this.componente.getHilos()));
 			this.campoTextoHilos.setDisable(false);
+			this.campoTextoRevision.setText(this.componente.getRevision());
+			this.campoTextoRevision.setDisable(false);
 		}//FIN METODO
 		
 		checkHabilitar.selectedProperty().addListener((ov, oldValue, newValue) -> {
@@ -782,6 +798,7 @@ public class DialogoComponente {
 					else
 						this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
 					this.componente.setNotas(this.campoTextoNotas.getText());
+					this.componente.setRevision(this.campoTextoRevision.getText());
 					if (comboBoxStatus.getSelectionModel().isEmpty())
 						this.componente.setStatus(1);
 					else
@@ -826,9 +843,6 @@ public class DialogoComponente {
 						this.componente.setNumeroParte(this.componente.doNumeroParte(this.mainApp.getConnection()));
 					this.componente.setDescripcion(this.campoTextoDescripcion.getText());
 
-
-					
-					
 					Dimensiones dimensiones = new Dimensiones();
 					if (this.campoTextoLargo.getText().isEmpty())
 						dimensiones.setLargo(0.0);
@@ -920,6 +934,7 @@ public class DialogoComponente {
 					else
 						this.componente.setCostoIndirecto(Double.parseDouble(this.campoTextoCostoIndirecto.getText()));
 					this.componente.setNotas(this.campoTextoNotas.getText());
+					this.componente.setRevision(this.campoTextoRevision.getText());
 					this.componente.setStatus(Status.toInt(this.comboBoxStatus.getSelectionModel().getSelectedItem()));
 					
 					if (ComponenteDAO.updateComponente(this.mainApp.getConnection(), this.componente)) {
