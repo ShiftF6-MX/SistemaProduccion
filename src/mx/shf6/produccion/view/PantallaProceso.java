@@ -1,6 +1,6 @@
 package mx.shf6.produccion.view;
 
-import java.sql.Connection;
+
 import java.sql.Date;
 import java.util.ArrayList;
 

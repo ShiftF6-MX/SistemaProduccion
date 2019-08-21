@@ -41,14 +41,15 @@ public class Componente {
 	private StringProperty materialDescripcion;
 	private ObjectProperty<Integer> esInterno;
 	private StringProperty hilos;
+	private StringProperty revision;
 
 	//CONSTRUCTOR VACIO
 	public Componente() {
-		this(0, "", "", new Dimensiones(), "", "", 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, "", "", 0, 0, "", 0, "");
+		this(0, "", "", new Dimensiones(), "", "", 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, "", "", 0, 0, "", 0, "", "");
 	}//FIN CONSTRUCTOR
 
 	public Componente(int sysPK, String numeroParte, String descripcion, Dimensiones dimensiones, String gradoMaterial, String tipoComponente, Double costo, Double costoDirecto, Double costoIndirecto, int materialFK, int tipoMiscelaneoFK,
-			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK, String materialDescripcion, int esInterno, String hilos) {
+			int tipoMateriaPrimaFK, int acabadoFK, int tratamientoFK, String notas, String status, int consecutivo, int clienteFK, String materialDescripcion, int esInterno, String hilos, String revision) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.numeroParte = new SimpleStringProperty(numeroParte);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -70,6 +71,7 @@ public class Componente {
 		this.materialDescripcion = new SimpleStringProperty(materialDescripcion);
 		this.esInterno = new SimpleObjectProperty<Integer>(esInterno);
 		this.hilos = new SimpleStringProperty(hilos);
+		this.revision = new SimpleStringProperty(revision);
 	}//FIN CONSTRUCTOR
 
 	public void setSysPK(int sysPK) {
@@ -361,7 +363,6 @@ public class Componente {
 		}
 		return lista;
 	}//FIN METODO
-	
 
 	public void setEsInterno(Integer esInterno) {
 		this.esInterno.set(esInterno);
@@ -386,5 +387,18 @@ public class Componente {
 	
 	public StringProperty hilosProperty() {
 		return this.hilos;
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A REVISION
+	public void setRevision(String revision) {
+		this.revision.set(revision);
+	}//FIN METODO
+	
+	public String getRevision() {
+		return this.revision.get();
+	}//FIN METODO
+	
+	public StringProperty revisionProperty() {
+		return this.revision;
 	}//FIN METODO
 }//FIN CLASE
