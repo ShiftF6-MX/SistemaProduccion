@@ -30,6 +30,7 @@ public class Proceso {
 	private StringProperty nombreEmpleado;
 	private StringProperty nombreCliente;
 	private ObjectProperty<Integer> clienteFK;
+	private StringProperty tipoComponente;
 
 	//VARIABLES
 
@@ -37,12 +38,13 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "");
+		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "", "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
 	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, String nombreCentroTrabajo, 
-			Integer componenteFK, String nombreComponente, String descripcionComponente, Integer empleadoFK, String nombreEmpleado, Integer clienteFK, String nombreCliente){
+			Integer componenteFK, String nombreComponente, String descripcionComponente, Integer empleadoFK, String nombreEmpleado,
+			Integer clienteFK, String nombreCliente, String tipoComponente){
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
@@ -58,6 +60,7 @@ public class Proceso {
 		this.nombreEmpleado = new SimpleStringProperty(nombreEmpleado);
 		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 		this.nombreCliente = new SimpleStringProperty(nombreCliente);
+		this.tipoComponente = new SimpleStringProperty(tipoComponente);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
@@ -226,6 +229,18 @@ public class Proceso {
 	
 	public StringProperty descripcionComponenteProperty() {
 		return this.descripcionComponente;
+	}//FIN METODO
+	
+	public void setTipoComponente(String tipoComponente) {
+		this.tipoComponente.set(tipoComponente);
+	}//FIN METODO
+	
+	public String getTipoComponente() {
+		return this.tipoComponente.get();
+	}//FIN METODO
+	
+	public StringProperty tipoComponenteProperty() {
+		return this.tipoComponente;
 	}//FIN METODO
 	//FIN METODOS "COMPONENTEFK"
 
