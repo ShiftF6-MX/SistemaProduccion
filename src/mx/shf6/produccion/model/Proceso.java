@@ -31,6 +31,7 @@ public class Proceso {
 	private StringProperty nombreCliente;
 	private ObjectProperty<Integer> clienteFK;
 	private StringProperty tipoComponente;
+	private StringProperty revisionComponente;
 
 	//VARIABLES
 
@@ -38,13 +39,13 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "", "");
+		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "", "", "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
 	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, String nombreCentroTrabajo, 
 			Integer componenteFK, String nombreComponente, String descripcionComponente, Integer empleadoFK, String nombreEmpleado,
-			Integer clienteFK, String nombreCliente, String tipoComponente){
+			Integer clienteFK, String nombreCliente, String tipoComponente, String revisionComponente){
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
@@ -61,6 +62,7 @@ public class Proceso {
 		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 		this.nombreCliente = new SimpleStringProperty(nombreCliente);
 		this.tipoComponente = new SimpleStringProperty(tipoComponente);
+		this.revisionComponente = new SimpleStringProperty(revisionComponente);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
@@ -219,6 +221,7 @@ public class Proceso {
 	public ObjectProperty<Integer> clienteFKProperty() {
 		return this.clienteFK;
 	}//FIN METODO
+	
 	public void setDescripcionComponente(String descripcionComponente) {
 		this.descripcionComponente.set(descripcionComponente);
 	}//FIN METODO
@@ -241,6 +244,18 @@ public class Proceso {
 	
 	public StringProperty tipoComponenteProperty() {
 		return this.tipoComponente;
+	}//FIN METODO
+	
+	public void setRevisionComponente(String revisionComponente) {
+		this.revisionComponente.set(revisionComponente);
+	}//FIN METODO
+	
+	public String getRevisionComponente() {
+		return this.revisionComponente.get();
+	}//FIN METODO
+	
+	public StringProperty revisionComponenteProperty() {
+		return this.revisionComponente;
 	}//FIN METODO
 	//FIN METODOS "COMPONENTEFK"
 
