@@ -82,7 +82,8 @@
                         <TextField fx:id="campoTextoNumeroParte" maxWidth="450.0" styleClass="campoBuscador" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets right="10.0" />
-                           </HBox.margin></TextField>
+                           </HBox.margin>
+                        </TextField>
                         <CheckBox fx:id="checkHabilitar" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Editar" />
                      </children>
                   </HBox>
@@ -255,8 +256,14 @@
                   </VBox>
                   <VBox spacing="2.0">
                      <children>
+                        <Label styleClass="labelRobotoMedium12" text="Revisión" />
+                        <TextField fx:id="campoTextoRevision" prefWidth="100.0" styleClass="campoBuscador" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="2.0">
+                     <children>
                         <Label styleClass="labelRobotoMedium12" text="Status" />
-                        <ComboBox fx:id="comboBoxStatus" prefWidth="250.0" styleClass="campoBuscador" />
+                        <ComboBox fx:id="comboBoxStatus" prefWidth="100.0" styleClass="campoBuscador" />
                      </children>
                   </VBox>
                </children>
