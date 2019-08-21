@@ -514,9 +514,13 @@ public class DialogoComponente {
 			this.checkHabilitar.setDisable(true);
 			this.campoTextoHilos.setText(String.valueOf(this.componente.getHilos()));
 			this.campoTextoHilos.setDisable(true);
-			this.campoTextoRevision.setText(this.componente.getRevision());
-			this.campoTextoRevision.setDisable(true);
-			
+			if (this.componente.getRevision() != null) {
+				this.campoTextoRevision.setText(this.componente.getRevision());
+				this.campoTextoRevision.setDisable(true);
+			} else {
+				this.campoTextoRevision.setText("");
+				this.campoTextoRevision.setDisable(true);
+			}
 		} else if (this.opcion == EDITAR) {
 			
 			this.campoTextoNumeroParte.setText(this.componente.getNumeroParte());
@@ -591,8 +595,13 @@ public class DialogoComponente {
 			this.campoCodigoCatalogo.setDisable(false);
 			this.campoTextoHilos.setText(String.valueOf(this.componente.getHilos()));
 			this.campoTextoHilos.setDisable(false);
-			this.campoTextoRevision.setText(this.componente.getRevision());
-			this.campoTextoRevision.setDisable(false);
+			if (this.componente.getRevision() != null) {
+				this.campoTextoRevision.setText(this.componente.getRevision());
+				this.campoTextoRevision.setDisable(false);
+			} else {
+				this.campoTextoRevision.setText("");
+				this.campoTextoRevision.setDisable(false);
+			}
 		}//FIN METODO
 		
 		checkHabilitar.selectedProperty().addListener((ov, oldValue, newValue) -> {
