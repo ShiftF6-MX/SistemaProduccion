@@ -82,7 +82,6 @@ public class GenerarDocumento {
 		try {
 			Proceso procesito = new Proceso();
 			procesito = ProcesoDAO.readProcesoHoja(conexion, sysPK);
-			System.out.println(procesito.getTipoComponente());
 			if (procesito.getTipoComponente().equals("E") || procesito.getTipoComponente().equals("A")) {
 				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/hojaProcesoRev.jasper");
 			} else { 
@@ -91,8 +90,8 @@ public class GenerarDocumento {
 			tablaDetalleProceso = DetalleProcesoDAO.toList(DetalleProcesoDAO.readDetalleProcesoFK(conexion, sysPK));
 			JRBeanCollectionDataSource itemsTabla = new JRBeanCollectionDataSource(tablaDetalleProceso);
 			Map<String,Object> parameters = new HashMap<String,Object>();
-			parameters.put("pNoParte", procesito.getNombreComponente());
-			parameters.put("pNombre", procesito.getDescripcionComponente());
+			parameters.put("pNoParte", procesito.getDescripcionComponente());
+			parameters.put("pNombre", procesito.getNombreComponente());
 			parameters.put("pCliente", procesito.getNombreCliente());
 			parameters.put("pFecha", procesito.getFecha().toString());
 			if (procesito.getCantidad() == 0) 
@@ -118,10 +117,8 @@ public class GenerarDocumento {
 			jasperView.setVisible(true);
 		} catch (JRException e) {
 			System.out.println("Error en el reporte Chidooo!! " + e);
-		}
-		
-		
-	}
+		}//FIN TRY CATCH
+	}//FIN METODO
 	
 	public static void generaValeMovimientoInventario(Connection connection, ArrayList <DetalleCardex> listaDetalleCardex, int tipoMovimiento) {
 		String titulo = "";
