@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
@@ -79,13 +78,16 @@ public class GenerarDocumento {
 
 	
 	public static void generarHojaProceso(Connection conexion, int sysPK) {
-		
-
+		JasperReport jasperReport;
 		try {
 			Proceso procesito = new Proceso();
 			procesito = ProcesoDAO.readProcesoHoja(conexion, sysPK);
-			
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/hojaProceso.jasper");
+			System.out.println(procesito.getTipoComponente());
+			if (procesito.getTipoComponente().equals("E") || procesito.getTipoComponente().equals("A")) {
+				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/hojaProcesoRev.jasper");
+			} else { 
+				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/hojaProceso2.jasper");
+			}
 			tablaDetalleProceso = DetalleProcesoDAO.toList(DetalleProcesoDAO.readDetalleProcesoFK(conexion, sysPK));
 			JRBeanCollectionDataSource itemsTabla = new JRBeanCollectionDataSource(tablaDetalleProceso);
 			Map<String,Object> parameters = new HashMap<String,Object>();
@@ -93,15 +95,15 @@ public class GenerarDocumento {
 			parameters.put("pNombre", procesito.getDescripcionComponente());
 			parameters.put("pCliente", procesito.getNombreCliente());
 			parameters.put("pFecha", procesito.getFecha().toString());
-			if (procesito.getCantidad()==0) 
+			if (procesito.getCantidad() == 0) 
 				parameters.put("pCantidad", " ");
 			else
-				parameters.put("pcantidad", procesito.getCantidad());
+				parameters.put("pcantidad", procesito.getCantidad().toString());
 				
 			if (procesito.getOrdenamiento() == 0)
 				parameters.put("pOrdenamiento", " ");
 			else 
-				parameters.put("pOrdenamiento", procesito.getOrdenamiento());
+				parameters.put("pOrdenamiento", procesito.getOrdenamiento().toString());
 			parameters.put("pNivel", procesito.getNivel().toString());
 			parameters.put("pDestino", procesito.getNombreTrabajo());
 			parameters.put("Parameter1", itemsTabla);
