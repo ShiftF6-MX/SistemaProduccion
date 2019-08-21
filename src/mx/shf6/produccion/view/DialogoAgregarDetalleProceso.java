@@ -50,8 +50,10 @@ public class DialogoAgregarDetalleProceso {
 	@FXML private ComboBox<String> comboBoxGrupoTrabajo;
 	@FXML private TextField campoComponentes;
 	@FXML private TextField campoCantidad;
+	@FXML private TextField campoHerramienta;
 	@FXML private Label labelComboboxParte;
 	@FXML private Label labelCantidad;
+	@FXML private Label labelHerramienta;
 	
 	//INICIALIZAR
 	@FXML private void initialize() {
@@ -121,6 +123,8 @@ public class DialogoAgregarDetalleProceso {
 				this.labelComboboxParte.setVisible(false);
 				this.labelCantidad.setVisible(false);
 				this.campoCantidad.setVisible(false);
+				this.labelHerramienta.setVisible(false);
+				this.campoHerramienta.setVisible(false);
 			} else if (this.opcion == EDITAR) {
 				this.campoOperacion.setText(String.valueOf(this.detalleProceso.getOperacion()));
 				this.campoOperacion.setDisable(false);
@@ -137,7 +141,8 @@ public class DialogoAgregarDetalleProceso {
 				this.labelComboboxParte.setVisible(false);
 				this.labelCantidad.setVisible(false);
 				this.campoCantidad.setVisible(false);
-				
+				this.labelHerramienta.setVisible(false);
+				this.campoHerramienta.setVisible(false);				
 			}//FIN IF ELSE
 		} else {
 			if (this.opcion == CREAR ) {
@@ -159,6 +164,8 @@ public class DialogoAgregarDetalleProceso {
 				this.campoComponentes.setDisable(false);
 				this.campoCantidad.setText("");
 				this.campoCantidad.setDisable(false);
+				this.campoHerramienta.setText("");
+				this.campoHerramienta.setDisable(false);
 			} else if (this.opcion == EDITAR) {
 				this.campoOperacion.setText(String.valueOf(this.detalleProceso.getOperacion()));
 				this.campoOperacion.setDisable(false);
@@ -176,21 +183,32 @@ public class DialogoAgregarDetalleProceso {
 				this.campoComponentes.setDisable(false);
 				this.campoCantidad.setText(String.valueOf(this.detalleProceso.getCantidad()));
 				this.campoCantidad.setDisable(false);
+				this.campoHerramienta.setText(this.detalleProceso.getHerramientas());
+				this.campoHerramienta.setDisable(false);
 			}//FIN IF-ELSE
 		}//FIN IF ELSE			
 	}//FIN METODO
 	
 	//VALIDAR DATOS
-	private void validarDatos() {
+	private boolean validarDatos() {
 		if (this.campoOperacion.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Descripción \" no puede estar vacio");
+			return false;
 		} else if (this.campoDescripcion.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Operacion \" no puede estar vacio");
+			return false;
 		} else if (this.comboBoxCentroTrabajo.getSelectionModel().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Centro de trabajo\" no puede estar vacio");
+			return false;
 		} else if (this.comboBoxGrupoTrabajo.getSelectionModel().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Grupo de trabajo\" no puede estar vacio");
-		}else {
+			return false;
+		}//FIN IF ELSE
+		return true;
+	}//FIN METODO
+	
+	private void obtenerInformacion() {
+		if (this.validarDatos()) {
 			if (this.componente.getTipoComponente() != TipoComponente.ENSAMBLE && this.componente.getTipoComponente() != TipoComponente.SUB_ENSAMBLE) {
 				this.detalleProceso.setOperacion(Integer.parseInt(this.campoOperacion.getText()));
 				this.detalleProceso.setDescripcion(this.campoDescripcion.getText());
@@ -207,7 +225,7 @@ public class DialogoAgregarDetalleProceso {
 				this.detalleProceso.setProcesoFK(this.syspk);
 				this.detalleProceso.setCantidad(0);
 				this.detalleProceso.setComponentes("");
-				
+				this.detalleProceso.setHerramienta("");			
 				this.mainApp.getEscenarioDialogosAlterno().close();
 			} else {
 				this.detalleProceso.setOperacion(Integer.parseInt(this.campoOperacion.getText()));
@@ -231,10 +249,13 @@ public class DialogoAgregarDetalleProceso {
 					this.detalleProceso.setComponentes("");
 				else	
 					this.detalleProceso.setComponentes(campoComponentes.getText());
-				
+				if (campoHerramienta.getText().isEmpty())
+					this.detalleProceso.setHerramienta("");
+				else
+					this.detalleProceso.setHerramienta(campoHerramienta.getText());			
 				this.mainApp.getEscenarioDialogosAlterno().close();
-			}//FIN IF ELSE
-		}//FIN IF ELSE
+			}//FIN IF-ELSE
+		}//FIN IF
 	}//FIN METODO
 	
 	//RETORNO DE OBJETO
@@ -244,13 +265,12 @@ public class DialogoAgregarDetalleProceso {
 	
 	//BOTON ACEPTAR
 	@FXML private void manejadorBotonAceptar() {
-		this.validarDatos();
+		this.obtenerInformacion();
 	}//FIN METODO
 	
 	//BOTON CERRAR
 	@FXML private void manejadorBotonCerrar() {
 		this.detalleProceso = null;
 		this.mainApp.getEscenarioDialogosAlterno().close();
-	}//FIN MODELO
-	
+	}//FIN MODELO	
 }//FIN CLASE

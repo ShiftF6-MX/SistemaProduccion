@@ -46,6 +46,7 @@ public class DialogoDetalleProceso {
 	@FXML private PTableColumn<DetalleProceso, String> grupoTrabajoColumna;
 	@FXML private PTableColumn<DetalleProceso, String> componenteColumna;
 	@FXML private PTableColumn<DetalleProceso, Integer> cantidadColumna;
+	@FXML private PTableColumn<DetalleProceso, String> herramientaColumna;
 	
 	//INICIALIZAR COMPONENTES CONTROLAN INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -76,6 +77,7 @@ public class DialogoDetalleProceso {
 			this.grupoTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreGrupoTrabajoProperty());
 			this.componenteColumna.setPercentageWidth(0);
 			this.cantidadColumna.setPercentageWidth(0);
+			this.herramientaColumna.setPercentageWidth(0);
 			this.descripcionColumna.setPercentageWidth(0.65);
 		} else {
 			this.operacionColumna.setCellValueFactory(cellData -> cellData.getValue().operacionProperty());
@@ -86,6 +88,7 @@ public class DialogoDetalleProceso {
 			this.grupoTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreGrupoTrabajoProperty());
 			this.componenteColumna.setCellValueFactory(cellData -> cellData.getValue().componentesProperty());
 			this.cantidadColumna.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
+			this.herramientaColumna.setCellValueFactory(cellData -> cellData.getValue().herramientaProperty());
 		}//FIN IF/ELSE
 	}//FIN METODO
 	

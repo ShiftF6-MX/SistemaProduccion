@@ -62,14 +62,17 @@
                   <TextField fx:id="campoCantidad" styleClass="campoBuscador" />
                </children>
             </VBox>
+            <VBox layoutX="10.0" layoutY="118.0" spacing="2.0">
+               <children>
+                  <Label fx:id="labelHerramienta" text="Herramienta" />
+                  <TextField fx:id="campoHerramienta" styleClass="campoBuscador" />
+               </children>
+            </VBox>
             <VBox spacing="5.0">
                <children>
                   <Button minHeight="30.0" mnemonicParsing="false" onAction="#manejadorBotonAceptar" prefWidth="200.0" styleClass="buttonGreen" text="Aceptar" />
                   <Button minHeight="30.0" mnemonicParsing="false" onAction="#manejadorBotonCerrar" prefWidth="200.0" styleClass="buttonRed" text="Cancelar" />
                </children>
-               <padding>
-                  <Insets top="20.0" />
-               </padding>
             </VBox>
          </children>
       </VBox>

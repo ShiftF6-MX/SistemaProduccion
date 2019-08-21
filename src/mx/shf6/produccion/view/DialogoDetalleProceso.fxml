@@ -50,7 +50,7 @@
                   <TableView fx:id="tablaDetalleProceso" editable="true" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                     <columns>
                         <PTableColumn fx:id="operacionColumna" minWidth="-1.0" percentageWidth="0.05" prefWidth="56.0" text="Op." />
-                      	<PTableColumn fx:id="descripcionColumna" minWidth="-1.0" percentageWidth="0.4" prefWidth="56.0" text="Descripción" />
+                      	<PTableColumn fx:id="descripcionColumna" minWidth="-1.0" percentageWidth="0.3" prefWidth="56.0" text="Descripción" />
                         <PTableColumn percentageWidth="0.2" prefWidth="56.0" text="Rutas">
                            <columns>
                               <PTableColumn fx:id="grupoTrabajoColumna" minWidth="-1.0" percentageWidth="0.1" prefWidth="56.0" text="Grupo" />
@@ -65,6 +65,7 @@
                         </PTableColumn>
                         <PTableColumn fx:id="componenteColumna" minWidth="-1.0" percentageWidth="0.2" prefWidth="75.0" text="Componente" />
                         <PTableColumn fx:id="cantidadColumna" minWidth="-1.0" percentageWidth="0.05" prefWidth="75.0" text="Can." />
+                        <PTableColumn fx:id="herramientaColumna" minWidth="-1.0" percentageWidth="0.1" prefWidth="75.0" text="Herramienta" />
                     </columns>
                      <contextMenu>
                         <ContextMenu>
