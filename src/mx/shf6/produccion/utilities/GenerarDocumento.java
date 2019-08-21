@@ -91,6 +91,10 @@ public class GenerarDocumento {
 			JRBeanCollectionDataSource itemsTabla = new JRBeanCollectionDataSource(tablaDetalleProceso);
 			Map<String,Object> parameters = new HashMap<String,Object>();
 			parameters.put("pNoParte", procesito.getDescripcionComponente());
+			if (procesito.getRevisionComponente() != null)
+				parameters.put("pRev", procesito.getRevisionComponente());
+			else
+				parameters.put("pRev", " ");
 			parameters.put("pNombre", procesito.getNombreComponente());
 			parameters.put("pCliente", procesito.getNombreCliente());
 			parameters.put("pFecha", procesito.getFecha().toString());
