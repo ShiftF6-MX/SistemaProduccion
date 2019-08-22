@@ -93,7 +93,7 @@ public class CentroTrabajoDAO {
 	// METODO PARA OBTENER UN REGISTRO
 	public static CentroTrabajo readCentroTrabajoNombre(Connection connection, String nombre) {
 		CentroTrabajo centrotrabajo = new CentroTrabajo();
-		String consulta = "SELECT centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, grupostrabajo.Codigo FROM centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK WHERE centrostrabajo.Descripcion = '" + nombre + "'";
+		String consulta = "SELECT centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, centrostrabajo.GrupoTrabajoFK FROM centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK WHERE centrostrabajo.Descripcion = '" + nombre + "'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
