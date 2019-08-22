@@ -90,6 +90,25 @@ public class CentroTrabajoDAO {
 		return arrayListaCentroTrabajo;
 	}// FIN METODO
 
+	// METODO PARA OBTENER UN REGISTRO
+	public static CentroTrabajo readCentroTrabajoNombre(Connection connection, String nombre) {
+		CentroTrabajo centrotrabajo = new CentroTrabajo();
+		String consulta = "SELECT centrostrabajo.Sys_PK, centrostrabajo.Codigo, centrostrabajo.Descripcion, grupostrabajo.Codigo FROM centrostrabajo INNER JOIN grupostrabajo ON centrostrabajo.GrupoTrabajoFK = grupostrabajo.Sys_PK WHERE centrostrabajo.Descripcion = '" + nombre + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				centrotrabajo.setSysPK(resultados.getInt(1));
+				centrotrabajo.setCodigo(resultados.getString(2));
+				centrotrabajo.setDescripcion(resultados.getString(3));
+				centrotrabajo.setgrupoTrabajoFK(resultados.getInt(4));
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY/CATCH
+		return centrotrabajo;
+	}// FIN METODO
+	
 	// METODO PARA EDITAR UN REGISTRO
 	public static boolean updateCentroTrabajo(Connection connection, CentroTrabajo centrotrabajo) {
 		String consulta = "UPDATE centrostrabajo SET Codigo = ?, Descripcion = ?, GrupoTrabajoFK = ? WHERE Sys_PK = ?";
