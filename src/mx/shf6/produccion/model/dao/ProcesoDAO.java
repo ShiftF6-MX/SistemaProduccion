@@ -16,7 +16,7 @@ public class ProcesoDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean createProceso(Connection connection, Proceso proceso) {
-		String consulta = "INSERT INTO procesos (Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK, EmpleadoFK) VALUES (?,?,?,?,?,?,?)";
+		String consulta = "INSERT INTO procesos (Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK, EmpleadoFK, Debit) VALUES (?,?,?,?,?,?,?,?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setDate(1, proceso.getFecha());
@@ -26,7 +26,7 @@ public class ProcesoDAO {
 			sentenciaPreparada.setInt(5, proceso.getCentroTrabajoFK());
 			sentenciaPreparada.setInt(6, proceso.getComponenteFK());
 			sentenciaPreparada.setInt(7, proceso.getEmpleadoFK());
-
+			sentenciaPreparada.setInt(8, proceso.getDebit());
 			sentenciaPreparada.execute();
 			return true;
 		} catch(SQLException ex) {
@@ -38,7 +38,7 @@ public class ProcesoDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Proceso> readProceso(Connection connection) {
 		ArrayList<Proceso> arrayListProceso = new ArrayList<Proceso>();
-		String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK ORDER BY procesos.Fecha";
+		String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre, procesos.Debit FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK ORDER BY procesos.Fecha";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -55,6 +55,7 @@ public class ProcesoDAO {
 				proceso.setNombreComponente(resultados.getString(9));
 				proceso.setEmpleadoFK(resultados.getInt(10));
 				proceso.setNombreEmpleado(resultados.getString(11));
+				proceso.setDebit(resultados.getInt(12));
 				arrayListProceso.add(proceso);
 			}//FIN WHILE
 		} catch(SQLException ex) {
@@ -66,7 +67,8 @@ public class ProcesoDAO {
 	public static Proceso readProcesoHoja(Connection connection, int procesoFK) {
 		Proceso proceso = new Proceso();
 		String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel,\r\n" + 
-				"				centrostrabajo.Descripcion, componentes.NumeroParte, componentes.Descripcion, clientes.Nombre, empleados.Nombre, componentes.TipoComponente, componentes.Revision\r\n" + 
+				"				centrostrabajo.Descripcion, componentes.NumeroParte, componentes.Descripcion, clientes.Nombre, empleados.Nombre,"
+				+ "			    componentes.TipoComponente, componentes.Revision, procesos.Debit\r\n" + 
 				"				FROM procesos \r\n" + 
 				"                INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK\r\n" + 
 				"				INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK\r\n" + 
@@ -88,6 +90,7 @@ public class ProcesoDAO {
 				proceso.setNombreEmpleado(resultados.getString(10));
 				proceso.setTipoComponente(resultados.getString(11));
 				proceso.setRevisionComponente(resultados.getString(12));
+				proceso.setDebit(resultados.getInt(13));
 			}//FIN WHILE
 		} catch(SQLException ex) {
 			Notificacion.dialogoException(ex);
@@ -98,7 +101,7 @@ public class ProcesoDAO {
 	//METODO PARA OBTENER UN REGISTRO POR SYSPK
 		public static Proceso readProceso(Connection connection, int sysPK) {
 			Proceso proceso = new Proceso();
-			String consulta = "SELECT Sys_PK, Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK,EmpleadoFK FROM procesos WHERE Sys_PK = " + sysPK;
+			String consulta = "SELECT Sys_PK, Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK, EmpleadoFK, Debit FROM procesos WHERE Sys_PK = " + sysPK;
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -111,6 +114,7 @@ public class ProcesoDAO {
 					proceso.setCentroTrabajoFK(resultados.getInt(6));
 					proceso.setComponenteFK(resultados.getInt(7));
 					proceso.setEmpleadoFK(resultados.getInt(8));
+					proceso.setDebit(resultados.getInt(9));
 				}//FIN WHILE
 			} catch(SQLException ex) {
 				Notificacion.dialogoException(ex);
@@ -121,7 +125,7 @@ public class ProcesoDAO {
 		//METODO PARA OBTENER UN REGISTRO POR LIKE
 		public static ArrayList<Proceso> readProceso(Connection connection, String like) {
 			ArrayList<Proceso> arrayListProceso = new ArrayList<Proceso>();
-			String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE componentes.NumeroParte LIKE '%" + like + "%' OR empleados.Nombre LIKE '%" + like + "%' OR centrostrabajo.Descripcion LIKE '%" + like + "%'";
+			String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre, procesos.Debit FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE componentes.NumeroParte LIKE '%" + like + "%' OR empleados.Nombre LIKE '%" + like + "%' OR centrostrabajo.Descripcion LIKE '%" + like + "%'";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -138,6 +142,7 @@ public class ProcesoDAO {
 					proceso.setNombreComponente(resultados.getString(9));
 					proceso.setEmpleadoFK(resultados.getInt(10));
 					proceso.setNombreEmpleado(resultados.getString(11));
+					proceso.setDebit(resultados.getInt(12));
 					arrayListProceso.add(proceso);
 				}//FIN WHILE
 			} catch(SQLException ex) {
@@ -148,7 +153,7 @@ public class ProcesoDAO {
 
 		//METODO PARA ACTUALIZAR UN REGISTRO
 		public static boolean updateProceso(Connection connection, Proceso proceso) {
-			String consulta = "UPDATE procesos SET Fecha = ?, Cantidad = ?, Ordenamiento = ?, Nivel = ?, CentroTrabajoFK = ?, ComponenteFK = ?, EmpleadoFK = ? WHERE Sys_PK = ?";
+			String consulta = "UPDATE procesos SET Fecha = ?, Cantidad = ?, Ordenamiento = ?, Nivel = ?, CentroTrabajoFK = ?, ComponenteFK = ?, EmpleadoFK = ?, Debit = ? WHERE Sys_PK = ?";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setDate(1, proceso.getFecha());
@@ -158,8 +163,8 @@ public class ProcesoDAO {
 				sentenciaPreparada.setInt(5, proceso.getCentroTrabajoFK());
 				sentenciaPreparada.setInt(6, proceso.getComponenteFK());
 				sentenciaPreparada.setInt(7, proceso.getEmpleadoFK());	
-				sentenciaPreparada.setInt(8, proceso.getSysPK());
-				
+				sentenciaPreparada.setInt(8, proceso.getDebit());
+				sentenciaPreparada.setInt(9, proceso.getSysPK());
 				sentenciaPreparada.execute();
 				return true;
 			} catch (SQLException ex) {
