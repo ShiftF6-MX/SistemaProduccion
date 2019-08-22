@@ -16,7 +16,7 @@ public class DetalleProcesoDAO {
 
 	//METODO PARA CREAR UN REGISTRO
 		public static boolean createDetalleProceso(Connection connection, DetalleProceso detalleProceso) {
-			String consulta = "INSERT INTO detalleProcesos (Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK, Cantidad, Componente, Herramienta) VALUES (?,?,?,?,?,?,?,?,?)";
+			String consulta = "INSERT INTO detalleProcesos (Operacion, Descripcion, TiempoPreparacion, TiempoOperacion, CentroTrabajoFK, GrupoTrabajoFK, ProcesoFK, Cantidad, Componente, Herramienta) VALUES (?,?,?,?,?,?,?,?,?,?)";
 			try {
 				PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 				sentenciaPreparada.setInt(1, detalleProceso.getOperacion());
@@ -28,6 +28,7 @@ public class DetalleProcesoDAO {
 				sentenciaPreparada.setInt(7, detalleProceso.getProcesoFK());
 				sentenciaPreparada.setInt(8,detalleProceso.getCantidad());
 				sentenciaPreparada.setString(9, detalleProceso.getComponentes());
+				sentenciaPreparada.setString(10, detalleProceso.getHerramientas());
 				sentenciaPreparada.execute();
 				return true;
 			} catch(SQLException ex) {

@@ -306,6 +306,7 @@ public class DialogoCotizacion {
 				this.cotizacion.setAreaDepartamento(this.campoTextoAreaDepartamento.getText());
 				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
 				this.cotizacion.setEmail(this.campoTextoEmail.getText());
+				this.cotizacion.setTipoServicio(this.campoTextoTipoServicio.getText());
 				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
 				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
 				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());

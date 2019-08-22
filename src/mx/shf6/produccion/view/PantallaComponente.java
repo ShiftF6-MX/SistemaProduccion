@@ -251,7 +251,6 @@ public class PantallaComponente {
 	
 	private void manejadorBotonVer(Componente componente) {
 		this.mainApp.iniciarDialogoComponente(componente, DialogoComponente.VER);
-		this.actualizarTabla();
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(Componente componente) {

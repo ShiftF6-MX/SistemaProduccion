@@ -81,7 +81,6 @@ public class DialogoAgregarDetalleProceso {
 		RestriccionTextField.limitarNumeroCaracteres(this.campoOperacion, 4);
 		RestriccionTextField.limitarPuntoDecimal(campoTiempoPreparacion);
 		RestriccionTextField.limitarPuntoDecimal(campoTiempoOperacion);
-		RestriccionTextField.soloNumeros(this.campoCantidad);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoCantidad, 4);
 	}//FIN METODO
 	
