@@ -174,11 +174,17 @@ public class DialogoProceso {
 					this.proceso.setCantidad(0);
 				else
 					this.proceso.setCantidad(Integer.parseInt(this.campoTextoCantidad.getText()));
-				this.proceso.setOrdenamiento(Integer.parseInt(this.campoTextoOrdenamiento.getText()));
+				if (campoTextoOrdenamiento.getText().isEmpty())
+					this.proceso.setOrdenamiento(0);
+				else
+					this.proceso.setOrdenamiento(Integer.parseInt(this.campoTextoOrdenamiento.getText()));
 				this.proceso.setNivel(Integer.parseInt(this.campoTextoNivel.getText()));
-				this.proceso.setCentroTrabajoFK(listaCentrosTrabajo.get(comboBoxDestino.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.proceso.setComponenteFK(listaComponentes.get(comboTextoComponentes.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.proceso.setEmpleadoFK(listaEmpleados.get(comboBoxEmpleados.getSelectionModel().getSelectedIndex()).getSysPK());
+				CentroTrabajo centroFK = CentroTrabajoDAO.readCentroTrabajoNombre(this.mainApp.getConnection(), comboBoxDestino.getValue());
+				this.proceso.setCentroTrabajoFK(centroFK.getSysPK());
+				Componente componenteFK = ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboTextoComponentes.getValue().toString());
+				this.proceso.setComponenteFK(componenteFK.getSysPK());
+				Empleado empleadoFK = EmpleadoDAO.readEmpleadoPorNombre(this.mainApp.getConnection(), comboBoxEmpleados.getValue());
+				this.proceso.setEmpleadoFK(empleadoFK.getSysPK());
 				
 				if (ProcesoDAO.createProceso(this.mainApp.getConnection(), this.proceso)) {
 					manejadorBotonCerrar();
@@ -189,13 +195,21 @@ public class DialogoProceso {
 				
 			} else if (this.opcion == EDITAR) {
 				this.proceso.setFecha(Date.valueOf(this.campoDateFecha.getValue()));
-				this.proceso.setCantidad(Integer.parseInt(this.campoTextoCantidad.getText()));
-				this.proceso.setOrdenamiento(Integer.parseInt(this.campoTextoOrdenamiento.getText()));
+				if (this.campoTextoCantidad.getText().isEmpty())
+					this.proceso.setCantidad(0);
+				else
+					this.proceso.setCantidad(Integer.parseInt(this.campoTextoCantidad.getText()));
+				if (campoTextoOrdenamiento.getText().isEmpty())
+					this.proceso.setOrdenamiento(0);
+				else
+					this.proceso.setOrdenamiento(Integer.parseInt(this.campoTextoOrdenamiento.getText()));
 				this.proceso.setNivel(Integer.parseInt(this.campoTextoNivel.getText()));
-				this.proceso.setCentroTrabajoFK(listaCentrosTrabajo.get(comboBoxDestino.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.proceso.setComponenteFK(listaComponentes.get(comboTextoComponentes.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.proceso.setEmpleadoFK(listaEmpleados.get(comboBoxEmpleados.getSelectionModel().getSelectedIndex()).getSysPK());
-				
+				CentroTrabajo centroFK = CentroTrabajoDAO.readCentroTrabajoNombre(this.mainApp.getConnection(), comboBoxDestino.getValue());
+				this.proceso.setCentroTrabajoFK(centroFK.getSysPK());
+				Componente componenteFK = ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboTextoComponentes.getValue().toString());
+				this.proceso.setComponenteFK(componenteFK.getSysPK());
+				Empleado empleadoFK = EmpleadoDAO.readEmpleadoPorNombre(this.mainApp.getConnection(), comboBoxEmpleados.getValue());
+				this.proceso.setEmpleadoFK(empleadoFK.getSysPK());
 				if (ProcesoDAO.updateProceso(this.mainApp.getConnection(), this.proceso)) {
 					manejadorBotonCerrar();
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "El registro se modifico correctamente");
