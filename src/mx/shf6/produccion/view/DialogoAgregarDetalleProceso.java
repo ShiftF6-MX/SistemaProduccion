@@ -87,13 +87,13 @@ public class DialogoAgregarDetalleProceso {
 	private void inicializarCombos() {
 		listaCentroTrabajo = CentroTrabajoDAO.readCentroTrabajo(this.mainApp.getConnection());
 		for (CentroTrabajo trabajo : listaCentroTrabajo)
-			this.observableListaCentroTrabajo.add(trabajo.getDescripcion());
+			this.observableListaCentroTrabajo.add(trabajo.getCodigo());
 		this.comboBoxCentroTrabajo.setItems(this.observableListaCentroTrabajo);
 		new AutoCompleteComboBoxListener(comboBoxCentroTrabajo);
 		
 		listaGrupoTrabajo = GrupoTrabajoDAO.readGrupoTrabajo(this.mainApp.getConnection());
 		for (GrupoTrabajo grupo : listaGrupoTrabajo)
-			this.observableListaGrupoTrabajo.add(grupo.getDescripcion());
+			this.observableListaGrupoTrabajo.add(grupo.getCodigo());
 		this.comboBoxGrupoTrabajo.setItems(this.observableListaGrupoTrabajo);
 		new AutoCompleteComboBoxListener(comboBoxGrupoTrabajo);
 		
