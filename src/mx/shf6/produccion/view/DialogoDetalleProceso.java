@@ -45,7 +45,7 @@ public class DialogoDetalleProceso {
 	@FXML private PTableColumn<DetalleProceso, String> centroTrabajoColumna;
 	@FXML private PTableColumn<DetalleProceso, String> grupoTrabajoColumna;
 	@FXML private PTableColumn<DetalleProceso, String> componenteColumna;
-	@FXML private PTableColumn<DetalleProceso, Integer> cantidadColumna;
+	@FXML private PTableColumn<DetalleProceso, String> cantidadColumna;
 	@FXML private PTableColumn<DetalleProceso, String> herramientaColumna;
 	
 	//INICIALIZAR COMPONENTES CONTROLAN INTERFAZ USUARIO

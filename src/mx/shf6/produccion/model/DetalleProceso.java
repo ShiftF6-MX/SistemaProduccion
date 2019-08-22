@@ -23,7 +23,7 @@ public class DetalleProceso {
 	private StringProperty nombreGrupoTrabajo;
 	private ObjectProperty<Integer> procesoFK;
 	private StringProperty nombreProceso;
-	private ObjectProperty<Integer> cantidad;
+	private StringProperty cantidad;
 	private StringProperty componentes;
 	private StringProperty herramienta;
 
@@ -33,11 +33,11 @@ public class DetalleProceso {
 
 	//CONSTRUCTOR VACIO
 	public DetalleProceso() {
-		this(0, 0, "", 0.0, 0.0, 0, "", 0, "",0, "", 0, "", "");
+		this(0, 0, "", 0.0, 0.0, 0, "", 0, "",0, "", "", "", "");
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, Integer cantidad, String componente, String herramienta) {
+	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, String cantidad, String componente, String herramienta) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.operacion = new SimpleObjectProperty<Integer>(operacion);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -49,7 +49,7 @@ public class DetalleProceso {
 		this.nombreGrupoTrabajo =  new SimpleStringProperty(nombreGrupoTrabajo);
 		this.procesoFK = new SimpleObjectProperty<Integer>(procesoFK);
 		this.nombreProceso = new SimpleStringProperty(nombreProceso);
-		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
+		this.cantidad = new SimpleStringProperty(cantidad);
 		this.componentes = new SimpleStringProperty(componente);
 		this.herramienta = new SimpleStringProperty(herramienta);
 	}//FIN CONSTRUCTOR
@@ -211,15 +211,15 @@ public class DetalleProceso {
 	//FIN METODOS "PROCESOFK"
 	
 	//METODOS PARA ACCESO A CANTIDAD
-	public void setCantidad(Integer cantidad) {
+	public void setCantidad(String cantidad) {
 		this.cantidad.set(cantidad);
 	}//FIN METODO
 	
-	public Integer getCantidad() {
+	public String getCantidad() {
 		return cantidad.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> cantidadProperty() {
+	public StringProperty cantidadProperty() {
 		return cantidad;
 	}//FIN METODO
 	//FIN METODOS CANTIDAD

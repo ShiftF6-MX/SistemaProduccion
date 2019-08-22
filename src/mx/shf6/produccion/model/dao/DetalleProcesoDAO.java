@@ -26,7 +26,7 @@ public class DetalleProcesoDAO {
 				sentenciaPreparada.setInt(5, detalleProceso.getCentroTrabajoFK());
 				sentenciaPreparada.setInt(6, detalleProceso.getGrupoTrabajoFK());
 				sentenciaPreparada.setInt(7, detalleProceso.getProcesoFK());
-				sentenciaPreparada.setInt(8,detalleProceso.getCantidad());
+				sentenciaPreparada.setString(8,detalleProceso.getCantidad());
 				sentenciaPreparada.setString(9, detalleProceso.getComponentes());
 				sentenciaPreparada.setString(10, detalleProceso.getHerramientas());
 				sentenciaPreparada.execute();
@@ -62,7 +62,7 @@ public class DetalleProcesoDAO {
 					detalleProceso.setGrupoTrabajoFK(resultados.getInt(8));
 					detalleProceso.setNombreGrupoTrabajo(resultados.getString(9));
 					detalleProceso.setProcesoFK(resultados.getInt(10));
-					detalleProceso.setCantidad(resultados.getInt(11));
+					detalleProceso.setCantidad(resultados.getString(11));
 					detalleProceso.setComponentes(resultados.getString(12));
 					detalleProceso.setHerramienta(resultados.getString(13));
 					arrayListDetalleProceso.add(detalleProceso);
@@ -90,7 +90,7 @@ public class DetalleProcesoDAO {
 					detalleProceso.setGrupoTrabajoFK(resultados.getInt(7));
 					detalleProceso.setProcesoFK(resultados.getInt(8));
 					detalleProceso.setComponentes(resultados.getString(9));
-					detalleProceso.setCantidad(resultados.getInt(10));
+					detalleProceso.setCantidad(resultados.getString(10));
 					detalleProceso.setHerramienta(resultados.getString(11));
 				}//FIN WHILE
 			} catch(SQLException ex) {
@@ -124,7 +124,7 @@ public class DetalleProcesoDAO {
 					detalleProceso.setGrupoTrabajoFK(resultados.getInt(8));
 					detalleProceso.setNombreGrupoTrabajo(resultados.getString(9));
 					detalleProceso.setProcesoFK(resultados.getInt(10));
-					detalleProceso.setCantidad(resultados.getInt(11));
+					detalleProceso.setCantidad(resultados.getString(11));
 					detalleProceso.setComponentes(resultados.getString(12));
 					detalleProceso.setHerramienta(resultados.getString(13));
 					arrayListDetalleProceso.add(detalleProceso);
@@ -148,7 +148,7 @@ public class DetalleProcesoDAO {
 				sentenciaPreparada.setInt(6, detalleProceso.getGrupoTrabajoFK());
 				sentenciaPreparada.setInt(7, detalleProceso.getProcesoFK());
 				sentenciaPreparada.setString(8, detalleProceso.getComponentes());
-				sentenciaPreparada.setInt(9, detalleProceso.getCantidad());	
+				sentenciaPreparada.setString(9, detalleProceso.getCantidad());	
 				sentenciaPreparada.setString(10,  detalleProceso.getHerramientas());
 				sentenciaPreparada.setInt(11, detalleProceso.getSysPK());
 				sentenciaPreparada.execute();

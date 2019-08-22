@@ -81,7 +81,6 @@ public class DialogoAgregarDetalleProceso {
 		RestriccionTextField.limitarNumeroCaracteres(this.campoOperacion, 4);
 		RestriccionTextField.limitarPuntoDecimal(campoTiempoPreparacion);
 		RestriccionTextField.limitarPuntoDecimal(campoTiempoOperacion);
-		RestriccionTextField.limitarNumeroCaracteres(this.campoCantidad, 4);
 	}//FIN METODO
 	
 	//INICIALIZAR COMBOS
@@ -222,7 +221,7 @@ public class DialogoAgregarDetalleProceso {
 				this.detalleProceso.setCentroTrabajoFK(listaCentroTrabajo.get(comboBoxCentroTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setProcesoFK(this.syspk);
-				this.detalleProceso.setCantidad(0);
+				this.detalleProceso.setCantidad("");
 				this.detalleProceso.setComponentes("");
 				this.detalleProceso.setHerramienta("");			
 				this.mainApp.getEscenarioDialogosAlterno().close();
@@ -241,9 +240,9 @@ public class DialogoAgregarDetalleProceso {
 				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
 				this.detalleProceso.setProcesoFK(this.syspk);
 				if (campoCantidad.getText().isEmpty())
-					this.detalleProceso.setCantidad(0);
+					this.detalleProceso.setCantidad("");
 				else
-					this.detalleProceso.setCantidad(Integer.parseInt(this.campoCantidad.getText()));
+					this.detalleProceso.setCantidad(this.campoCantidad.getText());
 				if (campoComponentes.getText().isEmpty())
 					this.detalleProceso.setComponentes("");
 				else	
