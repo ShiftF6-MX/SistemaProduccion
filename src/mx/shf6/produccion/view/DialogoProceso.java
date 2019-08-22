@@ -206,7 +206,7 @@ public class DialogoProceso {
 				this.proceso.setNivel(Integer.parseInt(this.campoTextoNivel.getText()));
 				CentroTrabajo centroFK = CentroTrabajoDAO.readCentroTrabajoNombre(this.mainApp.getConnection(), comboBoxDestino.getValue());
 				this.proceso.setCentroTrabajoFK(centroFK.getSysPK());
-				Componente componenteFK = ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboTextoComponentes.getValue().toString());
+				Componente componenteFK = ComponenteDAO.readComponenteNumeroParte(this.mainApp.getConnection(), comboTextoComponentes.getValue());
 				this.proceso.setComponenteFK(componenteFK.getSysPK());
 				Empleado empleadoFK = EmpleadoDAO.readEmpleadoPorNombre(this.mainApp.getConnection(), comboBoxEmpleados.getValue());
 				this.proceso.setEmpleadoFK(empleadoFK.getSysPK());
