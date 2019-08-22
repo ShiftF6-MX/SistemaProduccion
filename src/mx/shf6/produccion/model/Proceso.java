@@ -32,6 +32,7 @@ public class Proceso {
 	private ObjectProperty<Integer> clienteFK;
 	private StringProperty tipoComponente;
 	private StringProperty revisionComponente;
+	private ObjectProperty<Integer> debit;
 
 	//VARIABLES
 
@@ -39,13 +40,13 @@ public class Proceso {
 
 	//CONSTRUCTOR VACIO
 	public Proceso() {
-		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "", "", "");
+		this(0, new Date(System.currentTimeMillis()),0,0,0,0, "", 0, "", "", 0, "", 0, "", "", "", 0);
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
 	public Proceso(Integer sysPK, Date fecha, Integer cantidad, Integer ordenamiento, Integer nivel, Integer centroTrabajoFK, String nombreCentroTrabajo, 
 			Integer componenteFK, String nombreComponente, String descripcionComponente, Integer empleadoFK, String nombreEmpleado,
-			Integer clienteFK, String nombreCliente, String tipoComponente, String revisionComponente){
+			Integer clienteFK, String nombreCliente, String tipoComponente, String revisionComponente, Integer debit){
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
@@ -63,6 +64,7 @@ public class Proceso {
 		this.nombreCliente = new SimpleStringProperty(nombreCliente);
 		this.tipoComponente = new SimpleStringProperty(tipoComponente);
 		this.revisionComponente = new SimpleStringProperty(revisionComponente);
+		this.debit = new SimpleObjectProperty<Integer>(debit);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
@@ -286,12 +288,13 @@ public class Proceso {
 	 
 	 public StringProperty nombreEmpleadoProperty() {
 		 return this.nombreEmpleado;
-	 } //FIN METODO
+	 }//FIN METODO
 	//FIN METODOS "EMPLEADOFK"
 	 
+	 //METODOS DE ACCESO A CLIENTE
 	 public Cliente getCliente(Connection connection) {
-			return ClienteDAO.readCliente(connection, this.getClienteFK());
-		}//FIN METODO
+		return ClienteDAO.readCliente(connection, this.getClienteFK());
+	}//FIN METODO
 	 
 	 public void setNombreCliente(String nombreCliente) {
 		this.nombreCliente.set(nombreCliente);
@@ -304,5 +307,20 @@ public class Proceso {
 	public StringProperty nombreClienteProperty() {
 		return this.nombreCliente;
 	}//FIN METODO
+	//FIN METODOS DE ACCESO A CLIENTES
+	
+	//METODOS DE ACCESO A DEBIT
+	public void setDebit(Integer debit) {
+		this.debit.set(debit);
+	}//FIN METODO
+	
+	public Integer getDebit() {
+		return this.debit.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> debitProperty() {
+		return this.debit;
+	}//FIN METODO
+	//FIN DE METODOS DE ACCESO A DEBIT
 
 }//FIN CLASE
