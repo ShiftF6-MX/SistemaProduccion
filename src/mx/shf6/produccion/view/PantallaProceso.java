@@ -49,6 +49,7 @@ public class PantallaProceso {
 	@FXML private PTableColumn<Proceso, String> nombreCentroTrabajoColumna;
 	@FXML private PTableColumn<Proceso, String> nombreParteComponenteColumna;
 	@FXML private PTableColumn<Proceso, String> nombreEmpleadoColumna;
+	@FXML private PTableColumn<Proceso, Integer> DebitColumn;
 	@FXML private PTableColumn<Proceso, String> accionesColumna;
 	@FXML private TextField buscarProceso;
 	
@@ -83,6 +84,7 @@ public class PantallaProceso {
 		this.nombreCentroTrabajoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreCentroTrabajoProperty());
 		this.nombreParteComponenteColumna.setCellValueFactory(cellData -> cellData.getValue().nombreComponenteProperty());
 		this.nombreEmpleadoColumna.setCellValueFactory(cellData -> cellData.getValue().nombreEmpleadoProperty());
+		this.DebitColumn.setCellValueFactory(cellData -> cellData.getValue().debitProperty());
 		this.inicializarColumnaAcciones();
 	}//FIN METODO
 	
