@@ -65,6 +65,25 @@ public class GrupoTrabajoDAO {
 		} // FIN TRY/CATCH
 		return grupotrabajo;
 	}// FIN METODO
+	
+	// METODO PARA OBTENER UN REGISTRO
+	public static GrupoTrabajo readGrupoTrabajoNombre(Connection connection, String nombre) {
+		GrupoTrabajo grupotrabajo = new GrupoTrabajo();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion FROM grupostrabajo WHERE Codigo = '" + nombre + "'" ;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				grupotrabajo.setSysPK(resultados.getInt(1));
+				grupotrabajo.setCodigo(resultados.getString(2));
+				grupotrabajo.setDescripcion(resultados.getString(3));
+
+			} // FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		} // FIN TRY/CATCH
+		return grupotrabajo;
+	}// FIN METODO
 
 	// METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<GrupoTrabajo> readGrupoTrabajoLike(Connection connection, String like) {
