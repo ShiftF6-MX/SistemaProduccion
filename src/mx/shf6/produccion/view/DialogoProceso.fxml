@@ -49,16 +49,16 @@
                   <TextField fx:id="campoTextoNivel" maxWidth="250.0" styleClass="campoBuscador" />
                </children>
             </VBox>
-         </children>
-      </VBox>
-      <VBox maxWidth="250.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
-         <children>
             <VBox maxWidth="250.0" spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Centro trabajo" />
                   <ComboBox fx:id="comboBoxDestino" maxWidth="250.0" prefWidth="150.0" styleClass="campoBuscador" />
                </children>
             </VBox>
+         </children>
+      </VBox>
+      <VBox maxWidth="250.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0">
+         <children>
             <VBox maxWidth="250.0" spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Empleados" />
@@ -69,6 +69,12 @@
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Componentes" />
                   <ComboBox fx:id="comboTextoComponentes" maxWidth="250.0" prefWidth="150.0" styleClass="campoBuscador" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label fx:id="tituloDebit" styleClass="labelRobotoMedium12" text="Debit" />
+                  <TextField fx:id="campoDebit" styleClass="campoBuscador" />
                </children>
             </VBox>
             <VBox maxWidth="250.0" prefWidth="250.0" spacing="5.0">
@@ -86,6 +92,9 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
             </VBox>
          </children>
       </VBox>
