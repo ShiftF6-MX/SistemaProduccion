@@ -87,7 +87,7 @@ public class DialogoAgregarDetalleProceso {
 	private void inicializarCombos() {
 		listaCentroTrabajo = CentroTrabajoDAO.readCentroTrabajo(this.mainApp.getConnection());
 		for (CentroTrabajo trabajo : listaCentroTrabajo)
-			this.observableListaCentroTrabajo.add(trabajo.getCodigo());
+			this.observableListaCentroTrabajo.add(trabajo.getDescripcion());
 		this.comboBoxCentroTrabajo.setItems(this.observableListaCentroTrabajo);
 		new AutoCompleteComboBoxListener(comboBoxCentroTrabajo);
 		
@@ -218,9 +218,10 @@ public class DialogoAgregarDetalleProceso {
 					this.detalleProceso.setTiempoOperacion(0.0);
 				else
 					this.detalleProceso.setTiempoOperacion(Double.parseDouble(this.campoTiempoOperacion.getText()));
-				this.detalleProceso.setCentroTrabajoFK(listaCentroTrabajo.get(comboBoxCentroTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.detalleProceso.setProcesoFK(this.syspk);
+				CentroTrabajo centroFK = CentroTrabajoDAO.readCentroTrabajoNombre(this.mainApp.getConnection(), comboBoxCentroTrabajo.getValue());
+				this.detalleProceso.setCentroTrabajoFK(centroFK.getSysPK());
+				GrupoTrabajo grupoFK = GrupoTrabajoDAO.readGrupoTrabajoNombre(this.mainApp.getConnection(), comboBoxGrupoTrabajo.getValue());
+				this.detalleProceso.setGrupoTrabajoFK(grupoFK.getSysPK());this.detalleProceso.setProcesoFK(this.syspk);
 				this.detalleProceso.setCantidad("");
 				this.detalleProceso.setComponentes("");
 				this.detalleProceso.setHerramienta("");			
@@ -236,8 +237,10 @@ public class DialogoAgregarDetalleProceso {
 					this.detalleProceso.setTiempoOperacion(0.0);
 				else
 					this.detalleProceso.setTiempoOperacion(Double.parseDouble(this.campoTiempoOperacion.getText()));
-				this.detalleProceso.setCentroTrabajoFK(listaCentroTrabajo.get(comboBoxCentroTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
-				this.detalleProceso.setGrupoTrabajoFK(listaGrupoTrabajo.get(comboBoxGrupoTrabajo.getSelectionModel().getSelectedIndex()).getSysPK());
+				CentroTrabajo centroFK = CentroTrabajoDAO.readCentroTrabajoNombre(this.mainApp.getConnection(), comboBoxCentroTrabajo.getValue());
+				this.detalleProceso.setCentroTrabajoFK(centroFK.getSysPK());
+				GrupoTrabajo grupoFK = GrupoTrabajoDAO.readGrupoTrabajoNombre(this.mainApp.getConnection(), comboBoxGrupoTrabajo.getValue());
+				this.detalleProceso.setGrupoTrabajoFK(grupoFK.getSysPK());
 				this.detalleProceso.setProcesoFK(this.syspk);
 				if (campoCantidad.getText().isEmpty())
 					this.detalleProceso.setCantidad("");
