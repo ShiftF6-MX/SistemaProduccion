@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
@@ -15,6 +17,8 @@ import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Usuario;
+import mx.shf6.produccion.model.dao.ComponenteDAO;
+import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.model.dao.DetalleProcesoDAO;
 import mx.shf6.produccion.model.dao.EmpleadoDAO;
@@ -109,10 +113,17 @@ public class GenerarDocumento {
 				parameters.put("pOrdenamiento", procesito.getOrdenamiento().toString());
 			parameters.put("pNivel", procesito.getNivel().toString());
 			parameters.put("pDestino", procesito.getNombreTrabajo());
+			if (procesito.getDebit().equals(0) || procesito.getDebit() == null)
+				parameters.put("pDebit", " ");
+			else
+				parameters.put("pDebit", procesito.getDebit().toString());
+			DetalleComponente detalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFKObject(conexion, procesito.getComponenteFK());
+			Componente componente = ComponenteDAO.readComponente(conexion, detalleComponente.getComponenteInferiorFK());
+			parameters.put("pMaterial", componente.getNumeroParte());
 			parameters.put("Parameter1", itemsTabla);
 			parameters.put("pElaboro", procesito.getEmpleado());
 			Date fecha = new Date();
-			 SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+			 SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
 			 String fechaActual = dt1.format(fecha);
 			 parameters.put("pFechaActual", fechaActual);
 			
