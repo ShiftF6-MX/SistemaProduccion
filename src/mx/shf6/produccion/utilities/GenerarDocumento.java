@@ -131,7 +131,7 @@ public class GenerarDocumento {
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
 		} catch (JRException e) {
-			System.out.println("Error en el reporte Chidooo!! " + e);
+			Notificacion.dialogoException(e);
 		}//FIN TRY CATCH
 	}//FIN METODO
 	
