@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import mx.shf6.produccion.utilities.PTableColumn?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDetalleCotizacion">
+<AnchorPane prefHeight="500.0" prefWidth="750.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.PantallaDetalleCotizacion">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -60,15 +60,16 @@
                         <PTableColumn fx:id="columnaDescripcion" minWidth="-1.0" percentageWidth="0.3" prefWidth="33.0" text="Descripcion" />
                         <PTableColumn fx:id="columnaCantidad" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Cantidad" />
                         <PTableColumn fx:id="columaPrecioUnitario" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Costo Unitario" />
+                        <PTableColumn fx:id="columnaFechaEstimada" percentageWidth="0.1" prefWidth="75.0" text="Fecha estimada" />
                         <PTableColumn fx:id="columnaObservaciones" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Observaciones" />
-                        <PTableColumn fx:id="columnaAcciones" percentageWidth="0.2" prefWidth="75.0" text="Acciones" />
+                        <PTableColumn fx:id="columnaAcciones" percentageWidth="0.1" prefWidth="75.0" text="Acciones" />
                      </columns>
                      <contextMenu>
                         <ContextMenu>
                           <items>
                             <MenuItem fx:id="menuItemAgregarProyecto" mnemonicParsing="false" onAction="#manejadorAgregar" text="Agregar Proyecto" />
-                              <MenuItem fx:id="menuItemEditarProyecto" mnemonicParsing="false" onAction="#manejadorEditar" text="Editar Proyecto" />
-                              <MenuItem fx:id="menuItemQuitarProyecto" mnemonicParsing="false" onAction="#manejadorQuitar" text="Quitar Proyecto" />
+                            <MenuItem fx:id="menuItemEditarProyecto" mnemonicParsing="false" onAction="#manejadorEditar" text="Editar Proyecto" />
+                            <MenuItem fx:id="menuItemQuitarProyecto" mnemonicParsing="false" onAction="#manejadorQuitar" text="Quitar Proyecto" />
                           </items>
                         </ContextMenu>
                      </contextMenu>
