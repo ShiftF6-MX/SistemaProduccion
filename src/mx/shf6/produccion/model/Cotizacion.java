@@ -22,7 +22,7 @@ public class Cotizacion {
 	private StringProperty telefonoFax;
 	private StringProperty email;
 	private StringProperty tipoServicio;
-	private StringProperty fechaEntrega;
+	private ObjectProperty<Date> fechaEntrega;
 	private StringProperty condicionEmbarque;
 	private StringProperty condicionPago;
 	private ObjectProperty<Integer> moneda;
@@ -43,13 +43,13 @@ public class Cotizacion {
 	
 	//CONSTRUCTOR VACIO
 	public Cotizacion() {
-		this(-1, "", null, -1, "", "", "", "", "", "", "", "", -1, 0.0, "", "", -1, -1);
+		this(-1, "", null, -1, "", "", "", "", "", null, "", "", -1, 0.0, "", "", -1, -1);
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
 	public Cotizacion(int sysPK, String referencia, Date fecha, int status, String solicitante, 
 			String areaDepartamento, String telefonoFax, String email, String tipoServicio, 
-			String fechaEntrega, String condicionEmbarque, String condicionPago, int moneda, 
+			Date fechaEntrega, String condicionEmbarque, String condicionPago, int moneda, 
 			double tipoCambio, String observaciones, String vigencia, int folioFK, int clienteFK) {
 		
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
@@ -61,7 +61,7 @@ public class Cotizacion {
 		this.telefonoFax = new SimpleStringProperty(telefonoFax);
 		this.email = new SimpleStringProperty(email);
 		this.tipoServicio = new SimpleStringProperty(tipoServicio);
-		this.fechaEntrega = new SimpleStringProperty(fechaEntrega);
+		this.fechaEntrega = new SimpleObjectProperty<Date>(fechaEntrega);
 		this.condicionEmbarque = new SimpleStringProperty(condicionEmbarque);
 		this.condicionPago = new SimpleStringProperty(condicionPago);
 		this.moneda = new SimpleObjectProperty<Integer>(moneda);
@@ -238,15 +238,15 @@ public class Cotizacion {
 	//FIN METODOS "TIPOSERVICIO"
 	
 	//METODOS DE ACCESO A "FECHA ENTREGA"
-	public void setFechaEntrega(String fechaEntrega) {
+	public void setFechaEntrega(Date fechaEntrega) {
 		this.fechaEntrega.set(fechaEntrega);
 	}//FIN METODO
 	
-	public String getFechaEntrega() {
+	public Date getFechaEntrega() {
 		return this.fechaEntrega.get();
 	}//FIN METODO
 	
-	public StringProperty fechaEntregaProperty() {
+	public ObjectProperty<Date> fechaEntregaProperty() {
 		return this.fechaEntrega;
 	}//FIN METODO
 	//FIN METODOS "FECHA ENTREGA"
