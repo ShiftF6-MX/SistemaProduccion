@@ -101,57 +101,73 @@ public class ProcesoDAO {
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO POR SYSPK
-		public static Proceso readProceso(Connection connection, int sysPK) {
-			Proceso proceso = new Proceso();
-			String consulta = "SELECT Sys_PK, Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK, EmpleadoFK, Debit FROM procesos WHERE Sys_PK = " + sysPK;
-			try {
-				Statement sentencia = connection.createStatement();
-				ResultSet resultados = sentencia.executeQuery(consulta);
-				while (resultados.next()) {
-					proceso.setSysPK(resultados.getInt(1));
-					proceso.setFecha(resultados.getDate(2));
-					proceso.setCantidad(resultados.getInt(3));
-					proceso.setOrdenamiento(resultados.getInt(4));
-					proceso.setNivel(resultados.getInt(5));
-					proceso.setCentroTrabajoFK(resultados.getInt(6));
-					proceso.setComponenteFK(resultados.getInt(7));
-					proceso.setEmpleadoFK(resultados.getInt(8));
-					proceso.setDebit(resultados.getInt(9));
-				}//FIN WHILE
-			} catch(SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-			return proceso;
-		}//FIN METODO
+	public static Proceso readProceso(Connection connection, int sysPK) {
+		Proceso proceso = new Proceso();
+		String consulta = "SELECT Sys_PK, Fecha, Cantidad, Ordenamiento, Nivel, CentroTrabajoFK, ComponenteFK, EmpleadoFK, Debit FROM procesos WHERE Sys_PK = " + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				proceso.setSysPK(resultados.getInt(1));
+				proceso.setFecha(resultados.getDate(2));
+				proceso.setCantidad(resultados.getInt(3));
+				proceso.setOrdenamiento(resultados.getInt(4));
+				proceso.setNivel(resultados.getInt(5));
+				proceso.setCentroTrabajoFK(resultados.getInt(6));
+				proceso.setComponenteFK(resultados.getInt(7));
+				proceso.setEmpleadoFK(resultados.getInt(8));
+				proceso.setDebit(resultados.getInt(9));
+			}//FIN WHILE
+		} catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return proceso;
+	}//FIN METODO
 
-		//METODO PARA OBTENER UN REGISTRO POR LIKE
-		public static ArrayList<Proceso> readProceso(Connection connection, String like) {
-			ArrayList<Proceso> arrayListProceso = new ArrayList<Proceso>();
-			String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre, procesos.Debit FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE componentes.NumeroParte LIKE '%" + like + "%' OR empleados.Nombre LIKE '%" + like + "%' OR centrostrabajo.Descripcion LIKE '%" + like + "%'";
-			try {
-				Statement sentencia = connection.createStatement();
-				ResultSet resultados = sentencia.executeQuery(consulta);
-				while (resultados.next()) {
-					Proceso proceso = new Proceso();
-					proceso.setSysPK(resultados.getInt(1));
-					proceso.setFecha(resultados.getDate(2));
-					proceso.setCantidad(resultados.getInt(3));
-					proceso.setOrdenamiento(resultados.getInt(4));
-					proceso.setNivel(resultados.getInt(5));
-					proceso.setCentroTrabajoFK(resultados.getInt(6));
-					proceso.setNombreCentroTrabajo(resultados.getString(7));
-					proceso.setComponenteFK(resultados.getInt(8));
-					proceso.setNombreComponente(resultados.getString(9));
-					proceso.setEmpleadoFK(resultados.getInt(10));
-					proceso.setNombreEmpleado(resultados.getString(11));
-					proceso.setDebit(resultados.getInt(12));
-					arrayListProceso.add(proceso);
-				}//FIN WHILE
-			} catch(SQLException ex) {
-				Notificacion.dialogoException(ex);
-			}//FIN TRY/CATCH
-			return arrayListProceso;
-		}//FIN METODO
+	//METODO PARA OBTENER UN REGISTRO POR SYSPK
+	public static int readProcesoComponenteFK(Connection connection, int componenteFK) {
+		int procesoSysPK = 0;
+		String consulta = "SELECT Sys_PK FROM procesos WHERE ComponenteFK = " + componenteFK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				procesoSysPK = resultados.getInt(1);
+			}//FIN WHILE
+		} catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return procesoSysPK;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO POR LIKE
+	public static ArrayList<Proceso> readProceso(Connection connection, String like) {
+		ArrayList<Proceso> arrayListProceso = new ArrayList<Proceso>();
+		String consulta = "SELECT procesos.Sys_PK, procesos.Fecha, procesos.Cantidad, procesos.Ordenamiento, procesos.Nivel, procesos.CentroTrabajoFK, centrostrabajo.Descripcion, procesos.ComponenteFK, componentes.NumeroParte, procesos.EmpleadoFK, empleados.Nombre, procesos.Debit FROM procesos INNER JOIN componentes ON procesos.ComponenteFK = componentes.Sys_PK INNER JOIN empleados ON procesos.EmpleadoFK = empleados.Sys_PK INNER JOIN centrostrabajo ON procesos.CentroTrabajoFK = centrostrabajo.Sys_PK WHERE componentes.NumeroParte LIKE '%" + like + "%' OR empleados.Nombre LIKE '%" + like + "%' OR centrostrabajo.Descripcion LIKE '%" + like + "%'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				Proceso proceso = new Proceso();
+				proceso.setSysPK(resultados.getInt(1));
+				proceso.setFecha(resultados.getDate(2));
+				proceso.setCantidad(resultados.getInt(3));
+				proceso.setOrdenamiento(resultados.getInt(4));
+				proceso.setNivel(resultados.getInt(5));
+				proceso.setCentroTrabajoFK(resultados.getInt(6));
+				proceso.setNombreCentroTrabajo(resultados.getString(7));
+				proceso.setComponenteFK(resultados.getInt(8));
+				proceso.setNombreComponente(resultados.getString(9));
+				proceso.setEmpleadoFK(resultados.getInt(10));
+				proceso.setNombreEmpleado(resultados.getString(11));
+				proceso.setDebit(resultados.getInt(12));
+				arrayListProceso.add(proceso);
+			}//FIN WHILE
+		} catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListProceso;
+	}//FIN METODO
 
 		//METODO PARA ACTUALIZAR UN REGISTRO
 		public static boolean updateProceso(Connection connection, Proceso proceso) {
