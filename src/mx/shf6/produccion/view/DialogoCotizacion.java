@@ -1,5 +1,6 @@
 package mx.shf6.produccion.view;
 
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javafx.beans.value.ChangeListener;
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
@@ -51,7 +53,7 @@ public class DialogoCotizacion {
 	@FXML private TextField campoTextoTelefonoFax;
 	@FXML private TextField campoTextoEmail;
 	@FXML private TextField campoTextoTipoServicio;
-	@FXML private TextField campoTextoFechaEntrega;
+	@FXML private DatePicker campoFechaEntrega;
 	@FXML private TextField campoTextoCondicionEmbarque;
 	@FXML private TextField campoTextoCondicionPago;
 	@FXML private ComboBox<String> comboBoxMonedas;
@@ -65,7 +67,6 @@ public class DialogoCotizacion {
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoTelefonoFax, 16);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoEmail, 64);
 		RestriccionTextField.soloLetras(this.campoTextoTipoServicio);
-		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoFechaEntrega, 64);
 		RestriccionTextField.soloLetras(this.campoTextoCondicionEmbarque);
 		RestriccionTextField.limitarNumeroCaracteres(this.campoTextoCondicionPago, 64);
 		RestriccionTextField.limitarPuntoDecimal(this.campoTextoTipoCambio);
@@ -162,8 +163,8 @@ public class DialogoCotizacion {
 			this.campoTextoEmail.setDisable(false);
 			this.campoTextoTipoServicio.setText("");
 			this.campoTextoTipoServicio.setDisable(false);
-			this.campoTextoFechaEntrega.setText("");
-			this.campoTextoFechaEntrega.setDisable(false);
+			this.campoFechaEntrega.setUserData("");
+			this.campoFechaEntrega.setDisable(false);
 			this.campoTextoCondicionEmbarque.setText("");
 			this.campoTextoCondicionEmbarque.setDisable(false);
 			this.campoTextoCondicionPago.setText("");
@@ -190,8 +191,8 @@ public class DialogoCotizacion {
 			this.campoTextoEmail.setDisable(true);
 			this.campoTextoTipoServicio.setText(this.cotizacion.getTipoServicio());
 			this.campoTextoTipoServicio.setDisable(true);
-			this.campoTextoFechaEntrega.setText(this.cotizacion.getFechaEntrega());
-			this.campoTextoFechaEntrega.setDisable(true);
+			this.campoFechaEntrega.setValue(this.cotizacion.getFechaEntrega().toLocalDate());
+			this.campoFechaEntrega.setDisable(true);
 			this.campoTextoCondicionEmbarque.setText(this.cotizacion.getCondicionEmbarque());
 			this.campoTextoCondicionEmbarque.setDisable(true);
 			this.campoTextoCondicionPago.setText(this.cotizacion.getCondicionPago());
@@ -220,8 +221,8 @@ public class DialogoCotizacion {
 			this.campoTextoEmail.setDisable(true);
 			this.campoTextoTipoServicio.setText(this.cotizacion.getTipoServicio());
 			this.campoTextoTipoServicio.setDisable(false);
-			this.campoTextoFechaEntrega.setText(this.cotizacion.getFechaEntrega());
-			this.campoTextoFechaEntrega.setDisable(false);
+			this.campoFechaEntrega.setValue(this.cotizacion.getFechaEntrega().toLocalDate());
+			this.campoFechaEntrega.setDisable(false);
 			this.campoTextoCondicionEmbarque.setText(this.cotizacion.getCondicionEmbarque());
 			this.campoTextoCondicionEmbarque.setDisable(false);
 			this.campoTextoCondicionPago.setText(this.cotizacion.getCondicionPago());
@@ -259,7 +260,7 @@ public class DialogoCotizacion {
 		}else if (this.campoTextoCondicionPago.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Condiciones Pago\" no puede estar vacio");
 			return false;
-		} else if (this.campoTextoFechaEntrega.getText().isEmpty()) {
+		} else if (this.campoFechaEntrega.getValue() == null) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Días Entrega\" no puede estar vacio");
 			return false;
 		}else if (this.comboBoxMonedas.getSelectionModel().getSelectedItem().isEmpty()) {
@@ -287,7 +288,7 @@ public class DialogoCotizacion {
 				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
 				this.cotizacion.setEmail(this.campoTextoEmail.getText());
 				this.cotizacion.setTipoServicio(this.campoTextoTipoServicio.getText());
-				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
+				this.cotizacion.setFechaEntrega(Date.valueOf(this.campoFechaEntrega.getValue()));
 				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
 				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
 				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getSelectionModel().getSelectedItem());
@@ -307,7 +308,7 @@ public class DialogoCotizacion {
 				this.cotizacion.setTelefonoFax(this.campoTextoTelefonoFax.getText());
 				this.cotizacion.setEmail(this.campoTextoEmail.getText());
 				this.cotizacion.setTipoServicio(this.campoTextoTipoServicio.getText());
-				this.cotizacion.setFechaEntrega(this.campoTextoFechaEntrega.getText());
+				this.cotizacion.setFechaEntrega(Date.valueOf(this.campoFechaEntrega.getValue()));
 				this.cotizacion.setCondicionEmbarque(this.campoTextoCondicionEmbarque.getText());
 				this.cotizacion.setCondicionPago(this.campoTextoCondicionPago.getText());
 				this.cotizacion.setNumeroMoneda(this.comboBoxMonedas.getSelectionModel().getSelectedItem());
