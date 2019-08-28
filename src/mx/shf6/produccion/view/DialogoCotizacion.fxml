@@ -71,8 +71,8 @@
             </VBox>
             <VBox spacing="2.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Días entrega" />
-                  <TextField fx:id="campoTextoFechaEntrega" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <Label styleClass="labelRobotoMedium12" text="Fecha de entrega estimada" />
+                  <DatePicker fx:id="campoFechaEntrega" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
          </children>
