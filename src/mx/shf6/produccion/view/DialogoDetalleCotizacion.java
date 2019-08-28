@@ -1,5 +1,6 @@
 package mx.shf6.produccion.view;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cotizacion;
@@ -42,7 +44,7 @@ public class DialogoDetalleCotizacion {
 	@FXML private ComboBox<String> comboBoxProyectos;
 	@FXML private TextField campoTextoCantidad;
 	@FXML private TextArea campoTextoObservaciones;
-	
+	@FXML private DatePicker campoFechaEstimada;
 	
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
@@ -74,6 +76,8 @@ public class DialogoDetalleCotizacion {
 			this.campoTextoObservaciones.setDisable(false);
 			this.comboBoxProyectos.getSelectionModel().select("");
 			this.comboBoxProyectos.setDisable(false);
+			this.campoFechaEstimada.setUserData("");
+			this.campoFechaEstimada.setDisable(false);
 		} else if (this.opcion == EDITAR) {
 			ordenProduccion = OrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), detalleCotizacio.getSysPK());
 			if (ordenProduccion.getSysPK() == 0) {
@@ -86,7 +90,9 @@ public class DialogoDetalleCotizacion {
 				this.campoTextoCantidad.setDisable(true);
 				this.comboBoxProyectos.getSelectionModel().select(this.detalleCotizacio.getProyecto(this.mainApp.getConnection()).getDescripcion());
 				this.comboBoxProyectos.setDisable(true);
-			}
+			}//FIN IF ELSE
+			this.campoFechaEstimada.setValue(this.detalleCotizacio.getFechaEntrega().toLocalDate());
+			this.campoFechaEstimada.setDisable(false);
 			this.campoTextoObservaciones.setText(this.detalleCotizacio.getObservaciones());
 			this.campoTextoObservaciones.setDisable(false);
 			
@@ -100,6 +106,9 @@ public class DialogoDetalleCotizacion {
 			return false;
 		} else if (this.comboBoxProyectos.getSelectionModel().getSelectedItem().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Proyectos\" no puede estar vacio");
+			return false;
+		} else if (this.campoFechaEstimada.getValue() == null) {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Fecha estimada de entrega\" no puede estar vacio");
 			return false;
 		}//FIN IF/ESLE
 		return true;
@@ -136,6 +145,7 @@ public class DialogoDetalleCotizacion {
 		detalleCotizacio.setProyectoFK(proyecto.getSysPK());
 		detalleCotizacio.setCotizacionFK(cotizacion.getSysPK());
 		detalleCotizacio.setObservaciones(campoTextoObservaciones.getText());
+		detalleCotizacio.setFechaEntrega(Date.valueOf(campoFechaEstimada.getValue()));
 		return detalleCotizacio;
 	}//FIN METODO
 	
