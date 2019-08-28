@@ -25,6 +25,12 @@
                   <TextField fx:id="campoTextoCantidad" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Label styleClass="labelRobotoMedium12" text="Fecha estimada de entrega" />
+                  <DatePicker fx:id="campoFechaEstimada" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+               </children>
+            </VBox>
             <VBox layoutX="10.0" layoutY="10.0" spacing="2.0">
                <children>
                   <Label styleClass="labelRobotoMedium12" text="Observaciones" />
