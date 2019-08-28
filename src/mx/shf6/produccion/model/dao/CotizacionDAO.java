@@ -31,7 +31,7 @@ public class CotizacionDAO{
 			sentenciaPreparada.setString(4, cotizacion.getTelefonoFax());
 			sentenciaPreparada.setString(5, cotizacion.getEmail());
 			sentenciaPreparada.setString(6, cotizacion.getTipoServicio());
-			sentenciaPreparada.setString(7, cotizacion.getFechaEntrega());
+			sentenciaPreparada.setDate(7, cotizacion.getFechaEntrega());
 			sentenciaPreparada.setString(8, cotizacion.getCondicionEmbarque());
 			sentenciaPreparada.setString(9, cotizacion.getCondicionPago());
 			sentenciaPreparada.setInt(10, cotizacion.getMoneda());
@@ -69,7 +69,7 @@ public class CotizacionDAO{
 				cotizacion.setTelefonoFax(resultados.getString(7));
 				cotizacion.setEmail(resultados.getString(8));
 				cotizacion.setTipoServicio(resultados.getString(9));
-				cotizacion.setFechaEntrega(resultados.getString(10));
+				cotizacion.setFechaEntrega(resultados.getDate(10));
 				cotizacion.setCondicionEmbarque(resultados.getString(11));
 				cotizacion.setCondicionPago(resultados.getString(12));
 				cotizacion.setMoneda(resultados.getInt(13));
@@ -107,7 +107,7 @@ public class CotizacionDAO{
 				cotizacion.setTelefonoFax(resultados.getString(7));
 				cotizacion.setEmail(resultados.getString(8));
 				cotizacion.setTipoServicio(resultados.getString(9));
-				cotizacion.setFechaEntrega(resultados.getString(10));
+				cotizacion.setFechaEntrega(resultados.getDate(10));
 				cotizacion.setCondicionEmbarque(resultados.getString(11));
 				cotizacion.setCondicionPago(resultados.getString(12));
 				cotizacion.setMoneda(resultados.getInt(13));
@@ -144,7 +144,7 @@ public class CotizacionDAO{
 				cotizacion.setTelefonoFax(resultados.getString(7));
 				cotizacion.setEmail(resultados.getString(8));
 				cotizacion.setTipoServicio(resultados.getString(9));
-				cotizacion.setFechaEntrega(resultados.getString(10));
+				cotizacion.setFechaEntrega(resultados.getDate(10));
 				cotizacion.setCondicionEmbarque(resultados.getString(11));
 				cotizacion.setCondicionPago(resultados.getString(12));
 				cotizacion.setMoneda(resultados.getInt(13));
@@ -183,7 +183,7 @@ public class CotizacionDAO{
 				cotizacion.setTelefonoFax(resultados.getString(7));
 				cotizacion.setEmail(resultados.getString(8));
 				cotizacion.setTipoServicio(resultados.getString(9));
-				cotizacion.setFechaEntrega(resultados.getString(10));
+				cotizacion.setFechaEntrega(resultados.getDate(10));
 				cotizacion.setCondicionEmbarque(resultados.getString(11));
 				cotizacion.setCondicionPago(resultados.getString(12));
 				cotizacion.setMoneda(resultados.getInt(13));
@@ -222,7 +222,7 @@ public class CotizacionDAO{
 				cotizacion.setTelefonoFax(resultados.getString(7));
 				cotizacion.setEmail(resultados.getString(8));
 				cotizacion.setTipoServicio(resultados.getString(9));
-				cotizacion.setFechaEntrega(resultados.getString(10));
+				cotizacion.setFechaEntrega(resultados.getDate(10));
 				cotizacion.setCondicionEmbarque(resultados.getString(11));
 				cotizacion.setCondicionPago(resultados.getString(12));
 				cotizacion.setMoneda(resultados.getInt(13));
@@ -255,7 +255,7 @@ public class CotizacionDAO{
 			sentenciaPreparada.setString(5, cotizacion.getTelefonoFax());
 			sentenciaPreparada.setString(6, cotizacion.getEmail());
 			sentenciaPreparada.setString(7, cotizacion.getTipoServicio());
-			sentenciaPreparada.setString(8, cotizacion.getFechaEntrega());
+			sentenciaPreparada.setDate(8, cotizacion.getFechaEntrega());
 			sentenciaPreparada.setString(9, cotizacion.getCondicionEmbarque());
 			sentenciaPreparada.setString(10, cotizacion.getCondicionPago());
 			sentenciaPreparada.setInt(11, cotizacion.getMoneda());
