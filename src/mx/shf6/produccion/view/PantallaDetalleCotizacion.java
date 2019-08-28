@@ -1,6 +1,10 @@
 package mx.shf6.produccion.view;
 
 import java.security.SecureRandom;
+import java.sql.Connection;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -22,18 +26,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Componente;
+import mx.shf6.produccion.model.ControlOperacion;
+import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.Proyecto;
+import mx.shf6.produccion.model.TipoComponente;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
+import mx.shf6.produccion.model.dao.DetalleProcesoDAO;
 import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
+import mx.shf6.produccion.model.dao.ProcesoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 import javafx.scene.layout.HBox;
@@ -41,6 +50,8 @@ import javafx.util.Callback;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.geometry.Pos;
+import java.time.*;
+import java.time.format.*;
 
 public class PantallaDetalleCotizacion {
 
@@ -53,7 +64,10 @@ public class PantallaDetalleCotizacion {
 	private ArrayList<DetalleCotizacion> listaDetalleCotizacion;
 	private DetalleCotizacion detalleCotizacion;
 	private ArrayList<DetalleComponente> listaDetalleComponente;
+	private ArrayList<Componente> listaComponentes;
 	private ArrayList<Integer> listaComponenteInferior;
+	ArrayList<DetalleComponente> listaComponentesP;
+	ArrayList<Componente> listaPartePrimarias;
 	
 	//COMPONENTES INTERFAZ
 	@FXML private TextField labelCotizacion;
@@ -63,6 +77,7 @@ public class PantallaDetalleCotizacion {
 	@FXML private PTableColumn<DetalleCotizacion, String> columnaDescripcion;
 	@FXML private PTableColumn<DetalleCotizacion, Double> columnaCantidad;
 	@FXML private PTableColumn<DetalleCotizacion, Double> columaPrecioUnitario;
+	@FXML private PTableColumn<DetalleCotizacion, Date> columnaFechaEstimada;
 	@FXML private PTableColumn<DetalleCotizacion, String> columnaObservaciones;
 	@FXML private PTableColumn<DetalleCotizacion, String> columnaAcciones;
 	@FXML private MenuItem menuItemAgregarProyecto;
@@ -91,6 +106,7 @@ public class PantallaDetalleCotizacion {
 		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().getProyecto(this.mainApp.getConnection()).descripcionProperty());
 		this.columnaCantidad.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
 		this.columaPrecioUnitario.setCellValueFactory(cellData -> cellData.getValue().costoProperty());
+		this.columnaFechaEstimada.setCellValueFactory(cellData -> cellData.getValue().fechaEntregaProperty());
 		this.columnaObservaciones.setCellValueFactory(cellData -> cellData.getValue().observacionesProperty());
 		
 		this.columnaAcciones.setCellValueFactory(new PropertyValueFactory<>("DUM"));
@@ -127,7 +143,6 @@ public class PantallaDetalleCotizacion {
 							System.out.println(detalleCotizacion.getSysPK() + " " + ordenProduccion.getSysPK());
 							
 							Proyecto proyecto = ProyectoDAO.readProyecto(mainApp.getConnection(), detalleCotizacion.getProyectoFK());
-    						Componente componente = ComponenteDAO.readComponente(mainApp.getConnection(), proyecto.getComponenteFK());
     						
 							if (ordenProduccion.getSysPK() == 0) {
 								if (Notificacion.dialogoPreguntar("Confirmación para generar una orden de trabajo", "¿Desea generar una orden de trabajo?")){
@@ -142,8 +157,37 @@ public class PantallaDetalleCotizacion {
 			            					detalleOrden.setNumeroSerie(generarNumeroSerie());
 			            					detalleOrden.setOrdenProduccionFK(syspk);
 			            					if (DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden)) {
-			            						
-			            					}
+			            						listaComponentesP = new ArrayList<DetalleComponente>();
+			            						listaPartePrimarias = new ArrayList<Componente>();
+			       
+			            						listaComponentes(mainApp.getConnection(), proyecto.getComponenteFK());
+			            						for (Componente comp : listaPartePrimarias) {
+			            							ControlOperacion controlOperacion = new ControlOperacion();
+			            							int proceso = ProcesoDAO.readProcesoComponenteFK(mainApp.getConnection(), comp.getSysPK());
+			            							DetalleProceso detalleProceso = new DetalleProceso();
+			            							detalleProceso = DetalleProcesoDAO.primeraOperacion(mainApp.getConnection(), proceso);
+			            							
+			            							DetalleComponente detalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFKObject(mainApp.getConnection(), comp.getSysPK());
+			            							
+			            							java.util.Date d = new java.util.Date(); 
+			            					        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			            					        String n = format.format(d);
+			            					        java.sql.Timestamp hor = new java.sql.Timestamp(Date.parse(n));
+			            							
+			            							/*for (int j = 0; j < detalleComponente.getCantidad(); j++) {
+			            								controlOperacion.setCantidad(0);
+				            							controlOperacion.setHoraFechaInicio(hor);
+				            							controlOperacion.setFechaEstimada();
+				            							controlOperacion.setCentroTrabajoFK(detalleProceso.getCentroTrabajoFK());
+				            							controlOperacion.setCodigoParo(0);
+				            							controlOperacion.setComponenteFK(comp.getSysPK());
+				            							controlOperacion.setDetalleProcesoFK(proceso);
+				            							controlOperacion.setDetalleOrdenProduccionFK(detalleOrden.getSysPK());
+				            							
+				            							
+			            							}*/
+			            						}//FIN FOR	            							
+			            					}//FIN IF
 			            				}//FIN FOR
 			            				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");				            				
 			            			}//FIN IF
@@ -171,6 +215,19 @@ public class PantallaDetalleCotizacion {
         String fechaSys = String.valueOf(LocalDate.now().getDayOfMonth()) + m + String.valueOf(LocalDate.now().getYear() + String.valueOf(syspk));
         
         return fechaSys;
+	}//FIN METODO
+	
+	
+	public void listaComponentes(Connection connection, int sys) {
+		 listaComponentesP = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(this.mainApp.getConnection(), sys);
+		 for (DetalleComponente deta : listaComponentesP) {
+				Componente objetoComponente = ComponenteDAO.readComponente(this.mainApp.getConnection(), deta.getComponenteSuperiorFK());
+
+				if (objetoComponente.getTipoComponente() == TipoComponente.PARTE_PRIMARIA) {
+					listaPartePrimarias.add(objetoComponente);
+				}//FIN IF
+				listaComponentes(this.mainApp.getConnection(), deta.getComponenteInferiorFK());
+		}//FIN FOR
 	}//FIN METODO
 	
 	public String generarNumeroSerie() {
@@ -223,9 +280,15 @@ public class PantallaDetalleCotizacion {
 	}
 	
 	@FXML private void manejadorQuitar() {
-		if(this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem() != null) {
-			if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar el proyecto de la cotización?"))
-				DetalleCotizacionDAO.deleteDetalleCotizacion(mainApp.getConnection(), this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem());
+		DetalleCotizacion detalle = this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem();
+		OrdenProduccion orden = OrdenProduccionDAO.searchOrdenProduccion(this.mainApp.getConnection(), detalle.getSysPK());
+		if(detalle.getSysPK() != 0) {
+			if (orden.getSysPK() == 0) {
+				if (Notificacion.dialogoPreguntar("Confirmación para eliminar", "¿Desea eliminar el proyecto de la cotización?"))
+					DetalleCotizacionDAO.deleteDetalleCotizacion(mainApp.getConnection(), this.tablaDetalleCotizacion.getSelectionModel().getSelectedItem());
+			} else {
+				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se puede eliminar porque ya se genero la orden de producción.");
+			}//FIN IF
 		}else
 			Notificacion.dialogoAlerta(AlertType.ERROR, "Mensaje Sistema", "Seleccione el elemento que desea borrar.");
 		actualizarTabla();
