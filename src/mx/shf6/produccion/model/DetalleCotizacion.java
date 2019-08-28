@@ -2,7 +2,6 @@ package mx.shf6.produccion.model;
 
 import java.sql.Connection;
 import java.sql.Date;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,7 +26,7 @@ public class DetalleCotizacion {
 	
 	//CONSTRUCTOR VACIO
 	public DetalleCotizacion() {
-		this(-1, 0.0, 0.0, 0.0, null, "", -1, -1, -1, "", "");
+		this(-1, 0.0, 0.0, 0.0, new Date(System.currentTimeMillis()), "", -1, -1, -1, "", "");
 	}//FIN CONTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
@@ -111,7 +110,7 @@ public class DetalleCotizacion {
 	}//FIN METODO
 	
 	public ObjectProperty<Date> fechaEntregaProperty() {
-		return this.fechaEntrega;
+		return fechaEntrega;
 	}//FIN METODO
 	//FIN METODOS "FECHA ENTREGA"
 	
