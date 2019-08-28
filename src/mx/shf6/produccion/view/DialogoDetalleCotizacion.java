@@ -95,7 +95,6 @@ public class DialogoDetalleCotizacion {
 			this.campoFechaEstimada.setDisable(false);
 			this.campoTextoObservaciones.setText(this.detalleCotizacio.getObservaciones());
 			this.campoTextoObservaciones.setDisable(false);
-			
 		}//FIN METODO
 	}//FIN METODO
 	
