@@ -41,6 +41,7 @@ import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
+import mx.shf6.produccion.model.dao.ControlOperacionesDAO;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.model.dao.ProcesoDAO;
 import mx.shf6.produccion.utilities.Notificacion;
@@ -64,7 +65,7 @@ public class PantallaDetalleCotizacion {
 	private ArrayList<DetalleCotizacion> listaDetalleCotizacion;
 	private DetalleCotizacion detalleCotizacion;
 	private ArrayList<DetalleComponente> listaDetalleComponente;
-	private ArrayList<Componente> listaComponentes;
+	private ArrayList<Componente> listadoComponentes;
 	private ArrayList<Integer> listaComponenteInferior;
 	ArrayList<DetalleComponente> listaComponentesP;
 	ArrayList<Componente> listaPartePrimarias;
@@ -140,7 +141,7 @@ public class PantallaDetalleCotizacion {
 							detalleCotizacion = getTableView().getItems().get(getIndex());
 							OrdenProduccion ordenProduccion = new OrdenProduccion();
 							ordenProduccion = OrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), detalleCotizacion.getSysPK());
-							System.out.println(detalleCotizacion.getSysPK() + " " + ordenProduccion.getSysPK());
+							//System.out.println(detalleCotizacion.getSysPK() + " " + ordenProduccion.getSysPK());
 							
 							Proyecto proyecto = ProyectoDAO.readProyecto(mainApp.getConnection(), detalleCotizacion.getProyectoFK());
     						
@@ -160,36 +161,34 @@ public class PantallaDetalleCotizacion {
 			            						listaComponentesP = new ArrayList<DetalleComponente>();
 			            						listaPartePrimarias = new ArrayList<Componente>();
 			       
-			            						listaComponentes(mainApp.getConnection(), proyecto.getComponenteFK());
+			            						listaComponentes(mainApp.getConnection(), proyecto.getComponenteFK(), proyecto);
 			            						for (Componente comp : listaPartePrimarias) {
 			            							ControlOperacion controlOperacion = new ControlOperacion();
 			            							int proceso = ProcesoDAO.readProcesoComponenteFK(mainApp.getConnection(), comp.getSysPK());
 			            							DetalleProceso detalleProceso = new DetalleProceso();
 			            							detalleProceso = DetalleProcesoDAO.primeraOperacion(mainApp.getConnection(), proceso);
 			            							
-			            							DetalleComponente detalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFKObject(mainApp.getConnection(), comp.getSysPK());
-			            							
 			            							java.util.Date d = new java.util.Date(); 
 			            					        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			            					        String n = format.format(d);
 			            					        java.sql.Timestamp hor = new java.sql.Timestamp(Date.parse(n));
-			            							
-			            							/*for (int j = 0; j < detalleComponente.getCantidad(); j++) {
-			            								controlOperacion.setCantidad(0);
-				            							controlOperacion.setHoraFechaInicio(hor);
-				            							controlOperacion.setFechaEstimada();
-				            							controlOperacion.setCentroTrabajoFK(detalleProceso.getCentroTrabajoFK());
-				            							controlOperacion.setCodigoParo(0);
-				            							controlOperacion.setComponenteFK(comp.getSysPK());
-				            							controlOperacion.setDetalleProcesoFK(proceso);
-				            							controlOperacion.setDetalleOrdenProduccionFK(detalleOrden.getSysPK());
-				            							
-				            							
-			            							}*/
-			            						}//FIN FOR	            							
+			            					        System.out.println(comp.getNumeroParte());
+			            					        //DetalleComponente detalleComponente = DetalleComponenteDAO.
+			            						/*
+			            							controlOperacion.setCantidad();
+				            						controlOperacion.setHoraFechaInicio(hor);
+				            						controlOperacion.setFechaEstimada(detalleCotizacion.getFechaEntrega());
+				            						controlOperacion.setCentroTrabajoFK(detalleProceso.getCentroTrabajoFK());
+				            						controlOperacion.setCodigoParo(0);
+				            						controlOperacion.setComponenteFK(comp.getSysPK());
+				            						controlOperacion.setDetalleProcesoFK(proceso);
+				            						controlOperacion.setDetalleOrdenProduccionFK(detalleOrden.getSysPK());
+				            	
+				            						if (ControlOperacionesDAO.createControlOperaciones(mainApp.getConnection(), controlOperacion))
+				            							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");		
+			            						*/}//FIN FOR	            							
 			            					}//FIN IF
-			            				}//FIN FOR
-			            				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");				            				
+			            				}//FIN FOR		            				
 			            			}//FIN IF
 								}//FIN IF
 							} else {
@@ -218,16 +217,26 @@ public class PantallaDetalleCotizacion {
 	}//FIN METODO
 	
 	
-	public void listaComponentes(Connection connection, int sys) {
+	int nivel = 0;
+	ArrayList<Componente> componentes = new ArrayList<Componente>();
+	public void listaComponentes(Connection connection, int sys, Proyecto proyecto) {
+	/*	//componentes = (ArrayList<Componente>)listaPartePrimarias.clone(); 
 		 listaComponentesP = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(this.mainApp.getConnection(), sys);
+		 
 		 for (DetalleComponente deta : listaComponentesP) {
-				Componente objetoComponente = ComponenteDAO.readComponente(this.mainApp.getConnection(), deta.getComponenteSuperiorFK());
-
-				if (objetoComponente.getTipoComponente() == TipoComponente.PARTE_PRIMARIA) {
-					listaPartePrimarias.add(objetoComponente);
-				}//FIN IF
-				listaComponentes(this.mainApp.getConnection(), deta.getComponenteInferiorFK());
-		}//FIN FOR
+			Componente objetoComponente = ComponenteDAO.readComponente(this.mainApp.getConnection(), deta.getComponenteSuperiorFK());
+			if (listaPartePrimarias.size() > 0) { 
+					if (nivel == 1 && objetoComponente.getTipoComponente() != TipoComponente.COMPRADO)
+						listaPartePrimarias.add(objetoComponente);
+					listaComponentes(this.mainApp.getConnection(), deta.getComponenteInferiorFK(), proyecto);
+				
+			} else {
+				listaPartePrimarias.add(objetoComponente);
+				listaComponentes(this.mainApp.getConnection(), deta.getComponenteInferiorFK(), proyecto);
+			}
+		 }//FIN FOR
+		 nivel++;*/
+		
 	}//FIN METODO
 	
 	public String generarNumeroSerie() {
