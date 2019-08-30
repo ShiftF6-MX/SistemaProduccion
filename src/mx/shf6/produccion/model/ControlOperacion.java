@@ -1,6 +1,8 @@
 package mx.shf6.produccion.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,27 +12,33 @@ public class ControlOperacion {
 	//PROPIEDADES
 	private ObjectProperty<Integer> sysPK;
 	private ObjectProperty<Integer> cantidad;
-	private ObjectProperty<Date> horaFechaInicio;
-	private ObjectProperty<Date> horaFechaFinal;
+	private ObjectProperty<Timestamp> horaFechaInicio;
+	private ObjectProperty<Date> fechaEstimada;
+	private ObjectProperty<Timestamp> horaFechaFinal;
 	private ObjectProperty<Integer> centroTrabajoFK;
+	private StringProperty nombreCentroTrabajo;
 	private ObjectProperty<Integer> codigoParoFK;
+	private StringProperty descripcionParo;
 	private ObjectProperty<Integer> componenteFK;
+	private StringProperty numeroParte;
 	private ObjectProperty<Integer> detalleProcesoFK;
+	private StringProperty descripcionDetalleProceso;
 	private ObjectProperty<Integer> detalleOrdenProduccionFK;
 	private StringProperty numeroSerie;
 	private StringProperty numeroLote;
 	
 	//CONSTRUCTOR VACIO
 	public ControlOperacion() {
-		this(0, 0, new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 0, 0, 0, 0, 0, "", "");
+		this(0, 0, new Timestamp(0), new Date(System.currentTimeMillis()), new Timestamp(0), 0, 0, 0, 0, 0, "", "");
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public ControlOperacion(Integer sysPK, Integer cantidad, Date horaFechaInicio, Date horaFechaFinal, Integer centroTrabajoFK,Integer codigoParoFK, Integer componenteFK, Integer detalleProcesoFK, Integer detalleOrdenProduccionFK, String numeroSerie, String numeroLote) {
+	public ControlOperacion(Integer sysPK, Integer cantidad, Timestamp horaFechaInicio, Date horaFechaEstimada, Timestamp horaFechaFinal, Integer centroTrabajoFK,Integer codigoParoFK, Integer componenteFK, Integer detalleProcesoFK, Integer detalleOrdenProduccionFK, String numeroSerie, String numeroLote) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
-		this.horaFechaInicio = new SimpleObjectProperty<Date>(horaFechaInicio);
-		this.horaFechaFinal = new SimpleObjectProperty<Date>(horaFechaFinal);
+		this.horaFechaInicio = new SimpleObjectProperty<Timestamp>(horaFechaInicio);
+		this.fechaEstimada = new SimpleObjectProperty<Date>(horaFechaEstimada);
+		this.horaFechaFinal = new SimpleObjectProperty<Timestamp>(horaFechaFinal);
 		this.centroTrabajoFK = new SimpleObjectProperty<Integer>(centroTrabajoFK);
 		this.codigoParoFK = new SimpleObjectProperty<Integer>(codigoParoFK);
 		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
@@ -69,29 +77,43 @@ public class ControlOperacion {
 	//FIN METODOS DE ACCESO A CANTIDAD
 	
 	//METODOS DE ACCESO A HORAFECHAINICIO
-	public void setHoraFechaInicio(Date horaFechaInicio) {
+	public void setHoraFechaInicio(Timestamp horaFechaInicio) {
 		this.horaFechaInicio.set(horaFechaInicio);
 	}//FIN METODO
 	
-	public Date getHoraFechaInicio() {
+	public Timestamp getHoraFechaInicio() {
 		return horaFechaInicio.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Date> horaFechaInicioProperty() {
+	public ObjectProperty<Timestamp> horaFechaInicioProperty() {
 		return horaFechaInicio;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A HORAFECHAINICIO
 	
+	//METODOS DE ACCESO A HORAFECHAESTIMADAq
+	public void setFechaEstimada(Date fechaEstimada) {
+		this.fechaEstimada.set(fechaEstimada);
+	}//FIN METODO
+	
+	public Date getFechaEstimada() {
+		return fechaEstimada.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Date> fechaEstimadaProperty() {
+		return fechaEstimada;
+	}//FIN METODO
+	//FIN METODOS DE ACCESO A HORAFECHAESTIMADA	
+	
 	//METODOS DE ACCESO A HORAFECHAFINAL
-	public void setHoraFechaFinal(Date horaFechaFinal) {
+	public void setHoraFechaFinal(Timestamp horaFechaFinal) {
 		this.horaFechaFinal.set(horaFechaFinal);
 	}//FIN METODO
 	
-	public Date getHoraFechaFinal() {
+	public Timestamp getHoraFechaFinal() {
 		return horaFechaFinal.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Date> horaFechaFinalProperty() {
+	public ObjectProperty<Timestamp> horaFechaFinalProperty() {
 		return horaFechaFinal;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A HORAFECHAFINAL
