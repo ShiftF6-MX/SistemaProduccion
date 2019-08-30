@@ -71,5 +71,22 @@ public class DetalleOrdenProduccionDAO {
 		return listaDetalleLoteProduccion;
 	}//FIN METODO
 	
+	public static DetalleOrdenProduccion searchOrdenProduccion(Connection connection, int sysPK) {
+		DetalleOrdenProduccion detalleOrden = new DetalleOrdenProduccion();
+		String consulta = "SELECT Sys_PK, NumeroSerie, OrdenProduccionFK, Status FROM detalleordenesproduccion WHERE OrdenProduccionFK =" + sysPK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				detalleOrden.setSysPK(resultados.getInt(1));
+				detalleOrden.setNumeroSerie(resultados.getString(2));
+				detalleOrden.setOrdenProduccionFK(resultados.getInt(3));
+				detalleOrden.setStatus(resultados.getInt(4));
+			}
+		} catch (SQLException e) {
+			Notificacion.dialogoException(e);
+		}
+		return detalleOrden;
+	}
 	
 }//FIN CLASE
