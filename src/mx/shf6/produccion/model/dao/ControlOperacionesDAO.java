@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import mx.shf6.produccion.model.ControlOperacion;
@@ -13,18 +14,26 @@ import mx.shf6.produccion.utilities.Notificacion;
 public class ControlOperacionesDAO {
 	
 	//METODO PARA CREAR UN REGISTRO
-	public static boolean createBitacoraNumeroSerie(Connection connection, ControlOperacion controlOperacion) {
-		String consulta = "INSERTE INTO bitacorasNumeroSerie (HoraInicio, FechaInicio, HoraFinal, FechaFinal, ProcesoFK, DetalleProcesoFK, DetalleLoteProduccionFK) VALUES (?,?,?,?,?,?,?)";
+	public static boolean createControlOperaciones(Connection connection, ControlOperacion controlOperacion) {
+		String consulta = "INSERT INTO controloperaciones (Cantidad, HoraFechaInicio, HoraFechaEstimada, HoraFechaFinal, CentroTrabajoFK,"
+				+ " CodigoParoFK, ComponenteFK, DetalleProcesoFK, DetalleOrdenProduccionFK) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setInt(1, controlOperacion.getCantidad());
-			sentenciaPreparada.setDate(2, controlOperacion.getHoraFechaInicio());
-			sentenciaPreparada.setDate(3, controlOperacion.getHoraFechaFinal());
-			sentenciaPreparada.setInt(4, controlOperacion.getCentroTrabajo());
-			sentenciaPreparada.setInt(5, controlOperacion.getCodigoParoFK());
-			sentenciaPreparada.setInt(6, controlOperacion.getComponenteFK());
-			sentenciaPreparada.setInt(7, controlOperacion.getDetalleProcesoFK());
-			sentenciaPreparada.setInt(8, controlOperacion.getDetalleOrdenProduccionFK());
+			sentenciaPreparada.setTimestamp(2, controlOperacion.getHoraFechaInicio());
+			sentenciaPreparada.setDate(3, controlOperacion.getFechaEstimada());
+			if (controlOperacion.getHoraFechaFinal() == null)
+				sentenciaPreparada.setNull(4, Types.NULL);
+			else
+				sentenciaPreparada.setTimestamp(4, controlOperacion.getHoraFechaFinal());
+			if (controlOperacion.getCentroTrabajo() != 0)
+				sentenciaPreparada.setInt(5, controlOperacion.getCentroTrabajo());
+			else
+				sentenciaPreparada.setNull(5, Types.NULL);
+			sentenciaPreparada.setInt(6, controlOperacion.getCodigoParoFK());
+			sentenciaPreparada.setInt(7, controlOperacion.getComponenteFK());
+			sentenciaPreparada.setInt(8, controlOperacion.getDetalleProcesoFK());
+			sentenciaPreparada.setInt(9, controlOperacion.getDetalleOrdenProduccionFK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -43,8 +52,8 @@ public class ControlOperacionesDAO {
 				ControlOperacion operacion = new ControlOperacion();
 				operacion.setSysPK(resultados.getInt(1));
 				operacion.setCantidad(resultados.getInt(2));
-				operacion.setHoraFechaInicio(resultados.getDate(3));
-				operacion.setHoraFechaFinal(resultados.getDate(4));
+				operacion.setHoraFechaInicio(resultados.getTimestamp(3));
+				operacion.setHoraFechaFinal(resultados.getTimestamp(4));
 				operacion.setCentroTrabajoFK(resultados.getInt(5));
 				operacion.setCodigoParo(resultados.getInt(6));
 				operacion.setComponenteFK(resultados.getInt(7));
@@ -68,8 +77,8 @@ public class ControlOperacionesDAO {
 				ControlOperacion operacion = new ControlOperacion();
 				operacion.setSysPK(resultados.getInt(1));
 				operacion.setCantidad(resultados.getInt(2));
-				operacion.setHoraFechaInicio(resultados.getDate(3));
-				operacion.setHoraFechaFinal(resultados.getDate(4));
+				operacion.setHoraFechaInicio(resultados.getTimestamp(3));
+				operacion.setHoraFechaFinal(resultados.getTimestamp(4));
 				operacion.setCentroTrabajoFK(resultados.getInt(5));
 				operacion.setCodigoParo(resultados.getInt(6));
 				operacion.setComponenteFK(resultados.getInt(7));
