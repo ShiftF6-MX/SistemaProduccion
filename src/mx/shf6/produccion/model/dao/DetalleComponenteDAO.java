@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mx.shf6.produccion.model.DetalleComponente;
@@ -128,6 +127,32 @@ public class DetalleComponenteDAO {
 		return detalleComponente;
 	}//FIN METODO
 	
+	public static DetalleComponente readDetalleComponenteInferiorFKObject(Connection connection, int componenteInferiorFK) {
+		DetalleComponente detalleComponente = new DetalleComponente();
+		String consulta =  "SELECT detallecomponentes.Sys_PK, detallecomponentes.ComponenteSuperiorFK, detallecomponentes.ComponenteInferiorFK, detallecomponentes.Cantidad, detallecomponentes.Notas, cI.Descripcion AS DescripcionComponenteInferior, cI.NumeroParte AS NumeroParteInferior, cI.TipoComponente AS TipoComponenteInferior, cS.Descripcion AS DescripcionComponenteSuperior, cS.NumeroParte AS NumeroParteSuperior, cS.TipoComponente AS TipoComponenteSuperior FROM detallecomponentes INNER JOIN componentes AS cI ON cI.Sys_PK = detallecomponentes.ComponenteInferiorFK  INNER JOIN componentes AS cS ON cS.Sys_PK = detallecomponentes.ComponenteSuperiorFK WHERE ComponenteInferiorFK =" + componenteInferiorFK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				detalleComponente.setSysPK(resultados.getInt(1));
+				detalleComponente.setComponenteSuperiorFK(resultados.getInt(2));
+				detalleComponente.setComponenteInferiorFK(resultados.getInt(3));
+				detalleComponente.setCantidad(resultados.getDouble(4));
+				detalleComponente.setNotas(resultados.getString(5));
+				detalleComponente.setDescripcionComponenteInferior(resultados.getString(6));
+				detalleComponente.setNumeroParteComponenteInferior(resultados.getString(7));
+				detalleComponente.setNumeroDescripcionComponenteIferior();
+				detalleComponente.setTipoComponenteInferior(resultados.getString(8));
+				detalleComponente.setDescripcionComponenteSuperior(resultados.getString(9));
+				detalleComponente.setNumeroParteComponenteSuperior(resultados.getString(10));
+				detalleComponente.setTipoComponenteSuperior(resultados.getString(11));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return detalleComponente;
+	}//FIN METODO
+	
 	//METODO PARA CREAR UN REGISTRO
 	public static boolean updateDetalleComponente(Connection connection, DetalleComponente detalleComponente) {
 		String consulta = "UPDATE detallecomponentes SET ComponenteSuperiorFK = ?, ComponenteInferiorFK = ?, Cantidad = ?, Notas = ? WHERE Sys_PK = ?";
@@ -166,5 +191,5 @@ public class DetalleComponenteDAO {
 			listaObservableDetalleComponente.add(detalleComponente);
 		return listaObservableDetalleComponente;
 	}//FIN METODO
-
+	
 }//FIN CLASE
