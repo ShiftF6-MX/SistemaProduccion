@@ -114,6 +114,12 @@ public class DialogoProyectosCliente {
 				this.campoTextoCodigo.setDisable(true);
 				this.campoTextoDescripcion.setText(componente.getDescripcion());
 				this.campoTextoDescripcion.setDisable(true);
+				this.campoCostoDirecto.setText(String.valueOf(componente.getCostoDirecto()));
+				this.campoCostoDirecto.setDisable(true);
+				this.campoCostoIndirecto.setText(String.valueOf(componente.getCostoIndirecto()));
+				this.campoCostoIndirecto.setDisable(true);
+				this.campoPrecio.setText(String.valueOf(componente.getCosto() + componente.getCostoIndirecto() + componente.getCostoDirecto()));
+				this.campoPrecio.setDisable(true);
 			}//FIN IF
 		});//FIN METODO LISTENER
 		this.inicializarComponentes();
@@ -133,11 +139,11 @@ public class DialogoProyectosCliente {
 			this.campoTextoEspecificacionTecnica.setText("");
 			this.campoTextoEspecificacionTecnica.setDisable(false);
 			this.campoCostoDirecto.setText("");
-			this.campoCostoDirecto.setDisable(false);
+			this.campoCostoDirecto.setDisable(true);
 			this.campoCostoIndirecto.setText("");
-			this.campoCostoIndirecto.setDisable(false);
+			this.campoCostoIndirecto.setDisable(true);
 			this.campoPrecio.setText("");
-			this.campoPrecio.setDisable(false);
+			this.campoPrecio.setDisable(true);
 
 		} else if (this.opcion == VER) {
 			this.campoTextoCodigo.setText(this.proyecto.getCodigo());
