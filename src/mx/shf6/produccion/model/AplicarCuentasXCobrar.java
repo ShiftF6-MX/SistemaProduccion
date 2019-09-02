@@ -68,7 +68,7 @@ public class AplicarCuentasXCobrar {
 	}//FIN METODO
 
 	//METODOS DE ACCESO A IMPORTE
-	public void setAplicadoA(Double importe) {
+	public void setImporte(Double importe) {
 		this.importe.set(importe);
 	}//FIN METODO
 
@@ -81,7 +81,7 @@ public class AplicarCuentasXCobrar {
 	}//FIN METODO
 
 	//METODOS DE ACCESO A FECHA
-	public void setAplicadoA(Date fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha.set(fecha);
 	}//FIN METODO
 

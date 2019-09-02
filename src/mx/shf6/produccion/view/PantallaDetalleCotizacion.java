@@ -213,7 +213,7 @@ public class PantallaDetalleCotizacion {
 					            						
 					            						if (ControlOperacionesDAO.createControlOperaciones(mainApp.getConnection(), controlOperacion))
 					            							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");	
-			            					        }
+			            					        }//FIN IF
 			            						}//FIN FOR	            							
 			            					}//FIN IF
 			            				}//FIN FOR		            				
