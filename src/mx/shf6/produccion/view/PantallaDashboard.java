@@ -1,31 +1,38 @@
 package mx.shf6.produccion.view;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.util.ArrayList;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import mx.shf6.produccion.MainApp;
+import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.ControlOperacion;
+import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.OrdenProduccion;
+import mx.shf6.produccion.model.TipoComponente;
+import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.ControlOperacionesDAO;
+import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
 import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
 import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
@@ -39,42 +46,49 @@ public class PantallaDashboard extends Thread{
 	private ArrayList<OrdenProduccion> listaLotes;
 	private ArrayList<DetalleOrdenProduccion> listaSeries;
 	private ArrayList<String> listaComboLotes;
+	private ArrayList<String> listaComboLotes2;
 	private ArrayList<String> listaStatusLote;
 	private ArrayList<String> listaStatusSerie;
-	private GraphicsContext graficaLineaTiempo;
+	private StackedBarChart<Number, String> graficaPorSeries;
+	private CategoryAxis xAxisSerie;
+	private NumberAxis yAxisSerie;
+	private TreeItem<ControlOperacion> root;
+	private OrdenProduccion raiz;
+	private ControlOperacion detalleRaiz;
+	private Componente componente;
+	private ArrayList<ControlOperacion> listaComponentes;
 	
 	//VARIABLES
-
+	int i = 0;
+	
 	//CONSTANTES
 	
 	//COMPONENTES INTERFAZ
 	@FXML private ComboBox<String> comboLotes;
 	@FXML private ComboBox<String> comboLotes2;
 	@FXML private BarChart<String, Integer> graficaPorLotes;
-	@FXML private StackedBarChart<String, Integer> graficaPorSeries;
+	@FXML private HBox series;
 	@FXML private CategoryAxis xAxisLote;
 	@FXML private NumberAxis yAxisLote;
-	@FXML private CategoryAxis xAxisSerie;
-	@FXML private NumberAxis yAxisSerie;	
-	@FXML private Canvas canvas;
-	@FXML private Group root;
-	@FXML private Label fechaActual;
-	@FXML private Label fechaInicio;
-	@FXML private Label fechaFinal;
-	@FXML private Label diasTranscurridos;
-	@FXML private Label diasFaltantes;
-	@FXML private Circle shape;
+	@FXML private TreeTableView<ControlOperacion> ttv = new TreeTableView<ControlOperacion>();
+	@FXML private TreeTableColumn <ControlOperacion, String> columnaComponente;
+	@FXML private TreeTableColumn <ControlOperacion, Integer> columnaNivel;
+	@FXML private TreeTableColumn <ControlOperacion, String> columnaStatus;
 	
 	//METODOS
 	@FXML private void initialize() {
+		this.raiz = new OrdenProduccion();
+		this.detalleRaiz = new ControlOperacion();
+		this.root = new TreeItem<ControlOperacion>();
 		this.listaLotes = new ArrayList<OrdenProduccion>();
 		this.listaSeries = new ArrayList<DetalleOrdenProduccion>();
 		this.listaComboLotes = new ArrayList<String>();
+		this.listaComboLotes2 = new ArrayList<String>();
 		this.listaStatusLote = new ArrayList<String>();
 		this.listaStatusSerie = new ArrayList<String>();
-		this.fechaActual.setText(new Date(System.currentTimeMillis()).toString());
-		this.graficaLineaTiempo = this.canvas.getGraphicsContext2D();
-		this.inicializarComponentes();
+		this.componente = new Componente();
+		this.listaComponentes = new ArrayList<ControlOperacion>();
+		this.inicializarComponentes();	
 	}//FIN METODO
 	
 	public void setMainApp(MainApp mainApp) {
@@ -97,7 +111,14 @@ public class PantallaDashboard extends Thread{
 		this.listaStatusSerie.add("PR");
 		this.listaStatusSerie.add("PA");
 		this.listaStatusSerie.add("TE");
+		this.xAxisSerie = new CategoryAxis();
 		this.xAxisSerie.setCategories(FXCollections.observableArrayList(this.listaStatusSerie));
+		this.yAxisSerie = new NumberAxis();
+		this.yAxisSerie.setAutoRanging(false);
+		this.yAxisSerie.setTickUnit(25);
+		this.graficaPorSeries = new StackedBarChart<Number, String>(yAxisSerie, xAxisSerie);
+		this.graficaPorSeries.setLegendVisible(false);
+		this.graficaPorSeries.setAnimated(false);
 			
 	}//FIN METODO
 	
@@ -109,9 +130,9 @@ public class PantallaDashboard extends Thread{
 					inicializarCombo();
 					graficaPorLotes();
 					graficaPorSeries();
-					lineaDelTiempo();
+					//obtenerArbol(this.comboLotes2.getValue());
 				});//FIN SENTENCIA
-				Thread.sleep(1500);
+				Thread.sleep(600000);
 			}//FIN WHILE
 		}catch(InterruptedException ex) {
 			Notificacion.dialogoException(ex);
@@ -121,18 +142,21 @@ public class PantallaDashboard extends Thread{
 	private void inicializarCombo() {
 		//COMBO LOTES 1
 		this.listaComboLotes.clear();
+		this.listaComboLotes2.clear();
 		this.listaComboLotes.add("Todos");
-		for (OrdenProduccion orden : OrdenProduccionDAO.readLoteProduccion(this.connection)) 
+		for (OrdenProduccion orden : OrdenProduccionDAO.readLoteProduccion(this.connection)){
 			this.listaComboLotes.add(orden.getLote());
+			this.listaComboLotes2.add(orden.getLote());
+		}			
 		this.comboLotes.setItems(FXCollections.observableArrayList(this.listaComboLotes));
-		new AutoCompleteComboBoxListener(this.comboLotes);
+		new AutoCompleteComboBoxListener(this.comboLotes);	
 		
 		//COMBO LOTES 2
-		this.listaComboLotes.clear();
-		for (OrdenProduccion orden : OrdenProduccionDAO.readLoteProduccion(this.connection)) 
-			this.listaComboLotes.add(orden.getLote());
-		this.comboLotes2.setItems(FXCollections.observableArrayList(this.listaComboLotes));
+		this.comboLotes2.setItems(FXCollections.observableArrayList(this.listaComboLotes2));
 		new AutoCompleteComboBoxListener(this.comboLotes2);
+		this.comboLotes2.valueProperty().addListener((ov, oldValue, newValue) -> {	
+			obtenerArbol(newValue);
+		});
 	}//FIN METODO
 	
 	private void graficaPorLotes() {
@@ -157,6 +181,9 @@ public class PantallaDashboard extends Thread{
 		int sysPKLote = 0;
 		int cantidadTotal = 1;
 		this.listaSeries.clear();
+		this.graficaPorSeries.getData().clear();
+		this.series.getChildren().clear();
+		
 		if(this.comboLotes.getSelectionModel().isEmpty() || this.comboLotes.getValue().equals("Todos"))
 			this.listaSeries = DetalleOrdenProduccionDAO.readDetalleLoteProduccion(this.connection, -1);
 		else {
@@ -174,108 +201,74 @@ public class PantallaDashboard extends Thread{
 			contadorStatus[series]++;
 		}//FIN FOR
 		
-		XYChart.Series<String, Integer> serie1 = new XYChart.Series<>();
-		XYChart.Series<String, Integer> serie2 = new XYChart.Series<>();
-		this.graficaPorSeries.getData().clear();
+		XYChart.Series<Number, String> serie1 = new XYChart.Series<Number, String>();
+		XYChart.Series<Number, String> serie2 = new XYChart.Series<Number, String>();
+		
 		for (int i = 0; i < contadorStatus.length; i++) {
-			serie1.getData().add(new XYChart.Data<>(this.listaStatusSerie.get(i), (contadorStatus[i] *100)/ cantidadTotal));
-			serie2.getData().add(new XYChart.Data<>(this.listaStatusSerie.get(i), 100-((contadorStatus[i] *100)/ cantidadTotal)));
+			serie1.getData().add(new XYChart.Data<Number, String>((contadorStatus[i] *100)/ cantidadTotal, this.listaStatusSerie.get(i)));
+			serie2.getData().add(new XYChart.Data<>( 100-((contadorStatus[i] *100)/ cantidadTotal), this.listaStatusSerie.get(i)));
 		}//FIN FOR
 		this.graficaPorSeries.getData().addAll(serie1, serie2);
+		this.series.getChildren().add(this.graficaPorSeries);
 	}//FIN METODO
 	
-	private void lineaDelTiempo() {
-		Date fechaActual = new Date(System.currentTimeMillis());
-		OrdenProduccion orden = new OrdenProduccion();
-		int sysPKLote = OrdenProduccionDAO.sysPKOrdenProduccion(this.connection, this.comboLotes2.getValue());
-		int diasFaltantes = 0;
-		int diasTranscurridos = 0;
-		int totalDias = 0;
-    	orden = OrdenProduccionDAO.fechasPorLote(this.connection, sysPKLote);
-    	this.root.getChildren().clear();
-        
-        //FECHA INICIAL Y FINAL
-        if (this.comboLotes2.getSelectionModel().isEmpty()) {
-        	this.fechaInicio.setText("");
-            this.fechaFinal.setText("");
-            this.diasFaltantes.setText("");
-            this.diasTranscurridos.setText("");
-        }else {        	
-        	diasTranscurridos = (int) ((fechaActual.getTime() - orden.getFecha().getTime())/86400000);
-    		diasFaltantes = (int) ((orden.getFechaEntrega().getTime() - fechaActual.getTime())/86400000);
-    		totalDias = (int) ((orden.getFechaEntrega().getTime() - orden.getFecha().getTime())/86400000);
-            this.fechaInicio.setText(orden.getFecha().toString());
-            this.fechaFinal.setText(orden.getFechaEntrega().toString());
-            this.diasTranscurridos.setText(Integer.toString(diasTranscurridos));
-            if (diasFaltantes < 0 )
-            	this.diasFaltantes.setText("0");
-            else
-            	this.diasFaltantes.setText(Integer.toString(diasFaltantes));
-            //FIN IF-ELSE
-            this.lasSeries(totalDias, diasTranscurridos);
-        }//FIN IF-ELSE
-        
-        //LINEA DEL TIEMPO	
-        if (diasFaltantes > 3)
-        	this.graficaLineaTiempo.setFill(Color.GREEN);
-        else if (diasFaltantes <= 3 && diasFaltantes > 0)
-        	this.graficaLineaTiempo.setFill(Color.YELLOW);
-        else if (diasFaltantes <= 0)
-        	this.graficaLineaTiempo.setFill(Color.RED);
-        //FIN IF-ELSE
-        this.graficaLineaTiempo.fillRect(100, 100, 500, 100);
-        this.graficaLineaTiempo.setFill(Color.BLACK);
-        this.graficaLineaTiempo.setLineWidth(5);
-        this.graficaLineaTiempo.strokeLine(100, 88, 100, 212);
-        this.graficaLineaTiempo.strokeLine(600, 88, 600, 212);       
-	}//FIN METODO
-	
-	private void lasSeries(int totalDias, int diasTranscurridos) {
-		this.root.getChildren().add(this.canvas);
-		double avanza = 0.0;
-		int x = 100;
-		int y = 90;
+	private void inicializarTabla(int niveles) {
+		this.columnaComponente.setCellValueFactory(new TreeItemPropertyValueFactory<ControlOperacion, String>("numeroSerie"));
+		this.columnaStatus.setCellValueFactory(new TreeItemPropertyValueFactory<ControlOperacion, String>("detalleStatus"));
 		
-		for (ControlOperacion orden : ControlOperacionesDAO.readLote(this.connection, this.comboLotes2.getValue())) {
-			Label label = new Label();
-			Circle circle = new Circle();
-			avanza = (diasTranscurridos * 100)/totalDias;
-			circle.setRadius(3.5);
-			circle.setFill(Color.BLUEVIOLET);
-			circle.setStroke(Color.BLACK);
-			label.setGraphic(circle);
-			label.setCursor(Cursor.HAND);
-			if (avanza >= 0 && avanza < 20) 
-				label.setLayoutX(x);
-			else if (avanza >= 20 && avanza < 40 ) 
-				label.setLayoutX(x + 100);
-			else if (avanza >= 40 && avanza < 60)
-				label.setLayoutX(x + 200);
-			else if (avanza >= 60 && avanza < 80) 
-				label.setLayoutX(x + 300);
-			else if (avanza >= 80 && avanza < 100) 
-				label.setLayoutX(x + 400);
-			else if (avanza == 100) 
-				label.setLayoutX(600);
-			//FIN IF-ELSE
-			
-			label.setLayoutY(y);
-			if (y == 190) {
-				x = x + 8;
-				y= 100;
-			}else {
-				y = y + 8;
-			}//FIN IF-ELSE
-			label.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					Notificacion.dialogoDetalleMensaje(orden.getNumeroSerie() + " - " + orden.getHoraFechaInicio());
+		for (int i = 1; i <= niveles; i++) {
+			this.columnaNivel = new TreeTableColumn<>("Nivel " + i);
+			this.columnaNivel.setCellValueFactory(new TreeItemPropertyValueFactory<ControlOperacion, Integer>("niveles"));
+			this.columnaNivel.setCellFactory(new Callback<TreeTableColumn<ControlOperacion, Integer>, TreeTableCell<ControlOperacion, Integer>>(){
+				public TreeTableCell<ControlOperacion, Integer> call(final TreeTableColumn<ControlOperacion, Integer> p){
+					return new TreeTableCell<ControlOperacion, Integer>(){
+						protected void updateItem(Integer item, boolean empty){
+							super.updateItem(item, empty);
+							if(empty)
+								setText(null);
+							else
+								setText(p.getCellObservableValue(niveles).toString());
+						}//FIN METODO
+					};//FIN RETURN
 				}//FIN METODO
-			});//FIN LISTENER
-			this.root.getChildren().add(label);
+			});//FIN METODO
 		}//FIN FOR
 	}//FIN METODO
 	
-	//MANEJADORES 
+	private void obtenerArbol(String lote) {	
+		
+		root.getChildren().clear();
+		
+		raiz = OrdenProduccionDAO.loteOrdenProduccion(this.connection, lote);
+		detalleRaiz.setNumeroSerie(raiz.getLote());
+		detalleRaiz.setStatus(raiz.getStatus());
+		detalleRaiz.detalleStatusProperty();
+		root.setValue(detalleRaiz);
+		ttv.setRoot(root);
 	
+		
+		ArrayList<ControlOperacion> listaControl  = new ArrayList<ControlOperacion>();
+		listaControl = ControlOperacionesDAO.readLote(connection, lote);
+		for(ControlOperacion detalleControl : listaControl){
+			TreeItem<ControlOperacion> nodo = new TreeItem<>(detalleControl);
+			root.getChildren().add(nodo);
+			obtenerEstructura(lote, nodo);
+		}//FIN FOR
+		
+		
+	}//FIN METODO
+	
+	private void obtenerEstructura(String lote, TreeItem<ControlOperacion> treeItem){
+		int nivel = 0;
+		this.listaComponentes.clear();
+		this.listaComponentes = ControlOperacionesDAO.readControlLote(connection, lote);
+		for(ControlOperacion operacion : this.listaComponentes) {
+			TreeItem<ControlOperacion> nodo = new TreeItem<>(operacion);
+			if (operacion.getNivel() > nivel) 
+				nivel = operacion.getNivel();
+			treeItem.getChildren().add(nodo);
+		}//FIN FOR
+		inicializarTabla(nivel);
+	}//FIN METODO
+	//MANEJADORES 
 }//FIN METODO

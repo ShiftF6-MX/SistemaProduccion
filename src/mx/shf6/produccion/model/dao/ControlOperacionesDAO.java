@@ -94,4 +94,27 @@ public class ControlOperacionesDAO {
 		return listaControlOperacionesLote;
 	}//FIN METODO
 	
+	public static final ArrayList<ControlOperacion> readControlLote(Connection connection, String lote){
+		ArrayList<ControlOperacion> listaControlOperacionesLote = new ArrayList<ControlOperacion>();
+		String query = "SELECT componentes.Descripcion, controloperaciones.HoraFechaInicio, controloperaciones.HoraFechaFinal, controloperaciones.CodigoParoFK, controloperaciones.Nivel FROM controloperaciones INNER JOIN componentes ON controloperaciones.ComponenteFK = componentes.Sys_PK INNER JOIN detalleordenesproduccion ON controloperaciones.DetalleOrdenProduccionFK = detalleordenesproduccion.Sys_PK INNER JOIN ordenesproduccion ON detalleordenesproduccion.OrdenProduccionFK = ordenesproduccion.Sys_PK WHERE ordenesproduccion.Lote = '" + lote + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				ControlOperacion operacion = new ControlOperacion();
+				operacion.setNumeroSerie(resultados.getString(1));
+				if (resultados.getTimestamp(3) != null)
+					operacion.setStatus(3);
+				else if(resultados.getInt(4) != 1)
+					operacion.setStatus(2);
+				else if(resultados.getString(2) != null)
+					operacion.setStatus(1);
+				operacion.setNivel(resultados.getInt(5));
+				listaControlOperacionesLote.add(operacion);
+			}//FIN WHILE			
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return listaControlOperacionesLote;
+	}//FIN METODO
 }//FIN CLASE

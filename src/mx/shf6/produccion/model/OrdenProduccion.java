@@ -23,7 +23,8 @@ public class OrdenProduccion {
 	//CONSTANTES
 	public static final int PENDIENTE = 0;
 	public static final int EN_PROCESO = 1;
-	public static final int TERMINADO = 2;
+	public static final int PARO = 2;
+	public static final int TERMINADO = 3;
 	
 	//CONSTRUCTOR VACIO
 	public OrdenProduccion() {

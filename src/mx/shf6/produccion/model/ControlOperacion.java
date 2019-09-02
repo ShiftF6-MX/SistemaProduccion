@@ -26,14 +26,16 @@ public class ControlOperacion {
 	private ObjectProperty<Integer> detalleOrdenProduccionFK;
 	private StringProperty numeroSerie;
 	private StringProperty numeroLote;
+	private ObjectProperty<Integer> status;
+	private ObjectProperty<Integer> nivel;
 	
 	//CONSTRUCTOR VACIO
 	public ControlOperacion() {
-		this(0, 0, new Timestamp(0), new Date(System.currentTimeMillis()), new Timestamp(0), 0, 0, 0, 0, 0, "", "");
+		this(0, 0, new Timestamp(0), new Date(System.currentTimeMillis()), new Timestamp(0), 0, 0, 0, 0, 0, "", "", 0, 0);
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public ControlOperacion(Integer sysPK, Integer cantidad, Timestamp horaFechaInicio, Date horaFechaEstimada, Timestamp horaFechaFinal, Integer centroTrabajoFK,Integer codigoParoFK, Integer componenteFK, Integer detalleProcesoFK, Integer detalleOrdenProduccionFK, String numeroSerie, String numeroLote) {
+	public ControlOperacion(Integer sysPK, Integer cantidad, Timestamp horaFechaInicio, Date horaFechaEstimada, Timestamp horaFechaFinal, Integer centroTrabajoFK,Integer codigoParoFK, Integer componenteFK, Integer detalleProcesoFK, Integer detalleOrdenProduccionFK, String numeroSerie, String numeroLote, Integer status, Integer nivel) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.cantidad = new SimpleObjectProperty<Integer>(cantidad);
 		this.horaFechaInicio = new SimpleObjectProperty<Timestamp>(horaFechaInicio);
@@ -46,6 +48,8 @@ public class ControlOperacion {
 		this.detalleOrdenProduccionFK = new SimpleObjectProperty<Integer>(detalleOrdenProduccionFK);
 		this.numeroSerie = new SimpleStringProperty(numeroSerie);
 		this.numeroLote = new SimpleStringProperty(numeroLote);
+		this.status = new SimpleObjectProperty<Integer>(status);
+		this.nivel = new SimpleObjectProperty<Integer>(nivel);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS DE ACCESO A SYSPK
@@ -216,4 +220,43 @@ public class ControlOperacion {
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A NUMEROLOTE
 	
+	//METODOS DE ACCESO A STATUS
+	public void setStatus(Integer status) {
+		this.status.set(status);
+	}//FIN METODO
+		
+	public Integer getStatus() {
+		return status.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> statusProperty() {
+		return status;
+	}//FIN METODO
+		
+	public StringProperty detalleStatusProperty() {
+		switch(this.getStatus()) {
+			case 0:
+				return new SimpleStringProperty("Pendiente");
+			case 1:
+				return new SimpleStringProperty("En proceso");
+			case 2: 
+				return new SimpleStringProperty("Paro");
+			case 3:
+				return new SimpleStringProperty("Terminado");
+		}//FIN SWITCH
+		return new SimpleStringProperty();
+	}//FIN METODO
+	
+	//METODOS PARA ACCEDER A NIVEL
+	public void setNivel(int nivel) {
+		this.nivel.set(nivel);
+	}//FIN METODO
+	
+	public int getNivel() {
+		return this.nivel.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> nivelProperty(){
+		return this.nivel;
+	}//FIN METODO
 }//FIN CLASE

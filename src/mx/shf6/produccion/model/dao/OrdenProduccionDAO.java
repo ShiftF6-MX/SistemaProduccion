@@ -250,6 +250,26 @@ public class OrdenProduccionDAO {
 		return orden;
 	}//FIN METODO
 	
+	//METODO PARA OBTENER LA ORDEN PRODUCCION SEGUN EL LOTE
+	public static final OrdenProduccion loteOrdenProduccion (Connection connection, String lote) {
+		OrdenProduccion orden = new OrdenProduccion();
+		String query = "SELECT Sys_PK, Fecha, Lote, Status, DetalleCotizacionFK FROM ordenesproduccion WHERE lote = '" + lote + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				orden.setSysPK(resultados.getInt(1));
+				orden.setFecha(resultados.getDate(2));
+				orden.setLote(resultados.getString(3));
+				orden.setStatus(resultados.getInt(4));
+				orden.setDetalleCotizacionFK(resultados.getInt(5));
+			}//FIN WHILE
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return orden;
+	}//FIN METODO
+	
 	public static ObservableList<OrdenProduccion> toObservableList(ArrayList<OrdenProduccion> arrayList) {
 		ObservableList<OrdenProduccion> listaObservableOrdenProduccion = FXCollections.observableArrayList();
 		for (OrdenProduccion orden : arrayList) 
