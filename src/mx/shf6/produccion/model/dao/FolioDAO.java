@@ -50,7 +50,7 @@ public class FolioDAO {
 		return arrayListFolio;
 	}//FIN METODO
 
-	public static int readSerieMovimientoIventario(Connection connection, String folio) {
+	public static int readSeriePorFolio(Connection connection, String folio) {
 		int serie = 0;
 		String consulta = "SELECT Sys_PK, Folio, Serie, Descripcion FROM folios WHERE Folio = '" + folio + "'";
 		try {
