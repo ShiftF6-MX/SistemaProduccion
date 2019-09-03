@@ -17,7 +17,8 @@ public class DetalleOrdenProduccion {
 	//CONSTANTES
 	public static final int PENDIENTE = 0;
 	public static final int EN_PROCESO = 1;
-	public static final int TERMINADO = 2;
+	public static final int PARO = 2;
+	public static final int TERMINADO = 3;
 	
 	//CONSTRUCTOR VACIO
 	public DetalleOrdenProduccion() {
@@ -81,10 +82,14 @@ public class DetalleOrdenProduccion {
 			case 1:
 				return new SimpleStringProperty("En proceso");
 			case 2: 
+				return new SimpleStringProperty("Paro");
+			case 3:
 				return new SimpleStringProperty("Terminado");
 		}//FIN SWITCH
 		return new SimpleStringProperty();
 	}//FIN METODO
+	
+	//public String getStringStatus() {
 	//FIN METODOS DE ACCESO A STATUS
 	
 	//METODOS DE ACCESO A ORDENPRODUCCIONFK

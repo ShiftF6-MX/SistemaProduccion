@@ -57,7 +57,7 @@
 	<parameter name="TablaReporte" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="FirmaDirector" class="java.lang.String"/>
 	<parameter name="Presidente" class="java.lang.String"/>
-	<parameter name="FechaEntrega" class="java.lang.String"/>
+	<parameter name="FechaEntrega" class="java.sql.Date"/>
 	<parameter name="CondicionEmbarque" class="java.lang.String"/>
 	<parameter name="CondicionPago" class="java.lang.String"/>
 	<parameter name="Moneda" class="java.lang.String"/>
@@ -364,7 +364,7 @@ $P{Email} + "<br>"]]></textFieldExpression>
 				<textFieldExpression><![CDATA["OBSERVACIONES"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="280" y="190" width="254" height="17" uuid="590119b9-7547-46ae-83ff-3e18e028662d"/>
+				<reportElement positionType="Float" x="260" y="190" width="274" height="17" uuid="590119b9-7547-46ae-83ff-3e18e028662d"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
 					<font size="8"/>
 				</textElement>
