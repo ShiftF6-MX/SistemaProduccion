@@ -23,14 +23,24 @@ public class DocumentosCuentasXCobrar {
 	private ObjectProperty<Integer> clienteFK;
 	private ObjectProperty<Integer> cotizacionFK;
 	private ObjectProperty<Integer> reciboFK;
+	private ObjectProperty<Double> saldo;
+	private ObjectProperty<Double> importeAplicar;
+
+	//CONSTANTES PARA DOCUMENTO
+	public static final int COTIZACION = 1;
+	public static final int RECIBO = 2;
+
+	public static final int PENDIENTES = 3;
+	public static final int MOVIMIENTOS = 4;
+	public static final int SALDADOS = 5;
 
 	//CONSTRUCTOR VACIO
 	public DocumentosCuentasXCobrar() {
-		this(0, "", new Date(System.currentTimeMillis()), 0, "", 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0);
+		this(0, "", new Date(System.currentTimeMillis()), 0, "", 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0, 0.0);
 	}
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DocumentosCuentasXCobrar(int sysPk, String referencia, Date fecha, int documento, String notas, Double debe, Double haber, Double xaplicar, Double pagos, Double bonificaciones, int clienteFK, int cotizacionFK, int reciboFK){
+	public DocumentosCuentasXCobrar(int sysPk, String referencia, Date fecha, int documento, String notas, Double debe, Double haber, Double xaplicar, Double pagos, Double bonificaciones, int clienteFK, int cotizacionFK, int reciboFK, Double saldo, Double importeAplicar){
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPk);
 		this.referencia = new SimpleStringProperty(referencia);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
@@ -44,6 +54,8 @@ public class DocumentosCuentasXCobrar {
 		this.clienteFK = new SimpleObjectProperty<Integer>(clienteFK);
 		this.cotizacionFK = new SimpleObjectProperty<Integer>(cotizacionFK);
 		this.reciboFK = new SimpleObjectProperty<Integer>(reciboFK);
+		this.saldo = new SimpleObjectProperty<Double>(saldo);
+		this.importeAplicar = new SimpleObjectProperty<Double>(importeAplicar);
 	}
 
 	//METODOS DE ACCESO A SYSPK
@@ -215,5 +227,33 @@ public class DocumentosCuentasXCobrar {
 		return this.reciboFK;
 	}//FIN METODO
 
+	//METODO DE ACCESO A SALDO
+	public void setSaldo(Double saldo) {
+		if(saldo >= 0)
+			this.saldo.set(saldo);
+		else
+			this.saldo.set(0.0);
+	}//FIN METODO
+
+	public Double getSaldo() {
+		return this.saldo.get();
+	}//FIN METODO
+
+	public ObjectProperty<Double> saldoProperty() {
+		return this.saldo;
+	}//FIN METODO
+
+	//METODO DE ACCESO A IMPORTE A APLICAR
+	public void setImporteAplicar(Double importeAplicar) {
+		this.importeAplicar.set(importeAplicar);
+	}//FIN METODO
+
+	public Double getImporteAplicar() {
+		return this.importeAplicar.get();
+	}//FIN METODO
+
+	public ObjectProperty<Double> importeAplicarProperty() {
+		return this.importeAplicar;
+	}//FIN METODO
 }//FIN CLASE
 

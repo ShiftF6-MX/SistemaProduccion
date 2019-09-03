@@ -14,14 +14,13 @@ import mx.shf6.produccion.utilities.Notificacion;
 public class ReciboDAO {
 
 	public static boolean create(Connection connection, Recibo recibo) {
-		String consulta = "INSERT INTO recibos (Fecha, Hora, Importe, Referencia, Notas, FolioFK, ClienteFK) VALUES (CURDATE(), NOW(), ?, ?, ?, ?, ?)";
+		String consulta = "INSERT INTO recibos (Fecha, Hora, Importe, Referencia, Notas, FolioFK, ClienteFK) VALUES (CURDATE(), NOW(), ?, ?, ?, 4, ?)";
 		try {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setDouble(1, recibo.getImporte());
 			sentenciaPreparada.setString(2, recibo.getReferencia());
 			sentenciaPreparada.setString(3, recibo.getNotas());
-			sentenciaPreparada.setInt(4, recibo.getFolioFK());
-			sentenciaPreparada.setInt(5, recibo.getClienteFK());
+			sentenciaPreparada.setInt(4, recibo.getClienteFK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
@@ -75,6 +74,22 @@ public class ReciboDAO {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 		return recibo;
+	}//FIN METODO
+
+	public static int ultimoSysPk(Connection connection) {
+		String query = "SELECT Sys_PK FROM recibos ORDER BY Sys_PK ASC";
+		int ultimoSysPk=0;
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+			while (resultSet.next())
+				ultimoSysPk=resultSet.getInt(1);
+			return ultimoSysPk;
+		}catch (SQLException e) {
+			System.out.println("Error: En método leer");
+			e.printStackTrace();
+		}//FIN TRY/CATCH
+		return ultimoSysPk;
 	}//FIN METODO
 
 	public static boolean update(Connection connection, Recibo recibo) {

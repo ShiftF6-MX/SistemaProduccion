@@ -100,7 +100,7 @@ public class DialogoMovimientoInventario {
 
 		areaTextoNotas.setWrapText(true);
 
-		campoTextoReferencia.setText("MVI" + decimalFormat.format((FolioDAO.readSerieMovimientoIventario(conexion, "MV") + 1)));
+		campoTextoReferencia.setText("MVI" + decimalFormat.format((FolioDAO.readSeriePorFolio(conexion, "MV") + 1)));
 		campoTextoReferencia.setDisable(true);
 
 		selectorFecha.setEditable(false);
