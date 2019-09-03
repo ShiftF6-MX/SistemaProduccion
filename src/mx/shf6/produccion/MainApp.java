@@ -40,6 +40,7 @@ import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.GrupoUsuario;
 import mx.shf6.produccion.model.Material;
+import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.Puesto;
@@ -1384,7 +1385,7 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 
-	public void iniciarDialogoPartesPrimarias(Proyecto proyecto) {
+	public void iniciarDialogoPartesPrimarias(Proyecto proyecto, OrdenProduccion ordenProduccion) {
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoPartesPrimarias.fxml"));
@@ -1394,7 +1395,7 @@ public class MainApp extends Application {
 			Scene escenaDialogoPartesPrimarias = this.iniciarEscenarioDialogos(this.dialogoPartesPrimarias);
 			this.escenarioDialogos.setScene(escenaDialogoPartesPrimarias);
 			DialogoPartesPrimarias dialogoPartesPrimarias = fxmlLoader.getController();
-			dialogoPartesPrimarias.setMainApp(this, proyecto);
+			dialogoPartesPrimarias.setMainApp(this, proyecto, ordenProduccion);
 
 		    this.escenarioDialogos.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
