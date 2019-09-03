@@ -36,6 +36,7 @@ import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.DetalleProceso;
+import mx.shf6.produccion.model.DocumentosCuentasXCobrar;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.GrupoUsuario;
@@ -60,6 +61,7 @@ import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
 import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
 import mx.shf6.produccion.view.DialogoAgregarPermiso;
 import mx.shf6.produccion.view.DialogoAlmacen;
+import mx.shf6.produccion.view.DialogoAplicarPagos;
 import mx.shf6.produccion.view.DialogoArchivoProyecto;
 import mx.shf6.produccion.view.DialogoArchivos;
 import mx.shf6.produccion.view.DialogoCentroTrabajo;
@@ -73,6 +75,7 @@ import mx.shf6.produccion.view.DialogoDetalleCotizacion;
 import mx.shf6.produccion.view.DialogoDetalleProceso;
 import mx.shf6.produccion.view.DialogoEmpleado;
 import mx.shf6.produccion.view.DialogoEsquemaSeguridad;
+import mx.shf6.produccion.view.DialogoEstadoCuentaCliente;
 import mx.shf6.produccion.view.DialogoEstructuraNiveles;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoGrupoUsuario;
@@ -84,6 +87,7 @@ import mx.shf6.produccion.view.DialogoProceso;
 import mx.shf6.produccion.view.DialogoProyectos;
 import mx.shf6.produccion.view.DialogoProyectosCliente;
 import mx.shf6.produccion.view.DialogoPuesto;
+import mx.shf6.produccion.view.DialogoRecibo;
 import mx.shf6.produccion.view.DialogoAgregarTipoMateriaPrima;
 import mx.shf6.produccion.view.DialogoAgregarTipoMiscelaneo;
 import mx.shf6.produccion.view.DialogoAgregarTratamiento;
@@ -188,6 +192,10 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAgregarMaterial;
 	private AnchorPane dialogoCompradores;
 	private AnchorPane dialogoAgregarComprador;
+	private AnchorPane dialogoAgregarTipoMiscelaneo;
+	private AnchorPane dialogoAplicarPagos;
+	private AnchorPane dialogoRecibo;
+	private AnchorPane dialogoEstadoCuentaCliente;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -195,7 +203,7 @@ public class MainApp extends Application {
 	//VARIABLES
 	private double xOffset = 0.0;
 	private double yOffset = 0.0;
-	private AnchorPane dialogoAgregarTipoMiscelaneo;
+
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -234,7 +242,7 @@ public class MainApp extends Application {
 		this.sesionActiva = false;
 		this.conexionBD.start();
 	}//FIN METODO
-	
+
 	private void configurarEscenarioPrincipal(Stage primaryStage) {
 		this.escenarioPrincipal = primaryStage;
 		this.escenarioPrincipal.setMaximized(false);
@@ -548,7 +556,7 @@ public class MainApp extends Application {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	public void iniciarPantallaOrdenProduccion() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -836,8 +844,8 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN METODO
     }//FIN METODO
-	
-	
+
+
 
 	public void iniciarDialogoCotizacionCliente(Cliente cliente) {
 		try {
@@ -1076,7 +1084,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoAgregarTipoMateriaPrima(TipoMateriaPrima tipoMateriaPrima, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1094,7 +1102,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoMaterial() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1112,7 +1120,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoAgregarMaterial(Material material, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1130,7 +1138,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoTipoMiscelaneo() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1148,7 +1156,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoAgregarTipoMiscelaneo(TipoMiscelaneo tipoMiscelaneo, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1166,7 +1174,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoAcabado() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1184,7 +1192,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoAgregarAcabado(Acabado acabado, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1202,7 +1210,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoTratamiento() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1220,7 +1228,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public void iniciarDialogoAgregarTratamiento(Tratamiento tratamiento, int opcion) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1238,7 +1246,7 @@ public class MainApp extends Application {
             Notificacion.dialogoException(ex);
         }//FIN TRY/CATCH
     }//FIN METODO
-	
+
 	public DetalleProceso iniciarDialogoAgregarDetalleProceso(DetalleProceso detalleProceso, int opcion, int procesoFK, Componente componente) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1402,7 +1410,7 @@ public class MainApp extends Application {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	public void iniciarDialogoCompradores(Cliente cliente) {
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1420,7 +1428,7 @@ public class MainApp extends Application {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
 	}//FIN METODO
-	
+
 	public void iniciarDialogoAgregarComprador(Comprador comprador, Cliente cliente, int opcion) {
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1432,6 +1440,59 @@ public class MainApp extends Application {
 			this.escenarioDialogosAlterno.setScene(escenaAgregarDialogoComprador);
 			DialogoAgregarComprador dialogoAgregarCompradores = fxmlLoader.getController();
 			dialogoAgregarCompradores.setMainApp(this, comprador, cliente, opcion);
+
+		    this.escenarioDialogosAlterno.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	public void iniciarDialogoEstadoCuentaCliente(Cliente cliente) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoEstadoCuentaCliente.fxml"));
+
+			this.dialogoEstadoCuentaCliente = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaDialogoEstadoCuentaCliente = this.iniciarEscenarioDialogos(this.dialogoEstadoCuentaCliente);
+			this.escenarioDialogos.setScene(escenaDialogoEstadoCuentaCliente);
+			DialogoEstadoCuentaCliente dialogoEstadoCuentaCliente = fxmlLoader.getController();
+			dialogoEstadoCuentaCliente.setMainApp(this, cliente);
+
+		    this.escenarioDialogos.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+
+	public void iniciarDialogoRecibo(Cliente cliente) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoRecibo.fxml"));
+
+			this.dialogoRecibo = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaAgregarDialogoRecibo = this.iniciarEscenarioDialogosAlterno(this.dialogoRecibo);
+			this.escenarioDialogosAlterno.setScene(escenaAgregarDialogoRecibo);
+			DialogoRecibo dialogoRecibo = fxmlLoader.getController();
+			dialogoRecibo.setMainApp(this, cliente);
+
+		    this.escenarioDialogosAlterno.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+
+	public void iniciarDialogoAplicarPagos(DocumentosCuentasXCobrar documentosCuentasXCobrar) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAplicarPagos.fxml"));
+
+			this.dialogoAplicarPagos = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaAgregarDialogoAplicarPagos = this.iniciarEscenarioDialogosAlterno(this.dialogoAplicarPagos);
+			this.escenarioDialogosAlterno.setScene(escenaAgregarDialogoAplicarPagos);
+			DialogoAplicarPagos dialogoAplicarPagos = fxmlLoader.getController();
+			dialogoAplicarPagos.setMainApp(this, documentosCuentasXCobrar);
 
 		    this.escenarioDialogosAlterno.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
