@@ -134,6 +134,10 @@ public class PantallaDetalleCotizacion {
 					botonIniciarOrdenProduccion.setStyle("-fx-background-color: transparent");
 					botonIniciarOrdenProduccion.setCursor(Cursor.HAND);
 					botonIniciarOrdenProduccion.setTooltip(new Tooltip("Generar Orden de trabajo"));
+					if (cotizacion.getStatus() != Cotizacion.APROBADA)
+						botonIniciarOrdenProduccion.setDisable(true);
+					else
+						botonIniciarOrdenProduccion.setDisable(false);					
 					
 					acciones.setSpacing(2);
 					acciones.setPrefWidth(80.0);
@@ -165,56 +169,56 @@ public class PantallaDetalleCotizacion {
 			            					detalleOrden.setOrdenProduccionFK(syspk);
 			            					if (DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden)) {
 			         
-			            						listaPartePrimaria = new ArrayList<DetalleComponente>();
-			            						listaSubEnsambles = new ArrayList<DetalleComponente>();
-			            						listaEnsambles = new ArrayList<DetalleComponente>();
-			            						componenteRaiz = new Componente();
-			            						hs = new HashSet<DetalleComponente>();
+//			            						listaPartePrimaria = new ArrayList<DetalleComponente>();
+//			            						listaSubEnsambles = new ArrayList<DetalleComponente>();
+//			            						listaEnsambles = new ArrayList<DetalleComponente>();
+//			            						componenteRaiz = new Componente();
+//			            						hs = new HashSet<DetalleComponente>();
+//			            						
+//			            						obtenerPartesPrimarias(proyecto.getComponenteFK());
+//			            						hs.addAll(listaSubEnsambles);
+//			            						listaSubEnsambles.clear();
+//			            						listaSubEnsambles.addAll(hs);
+//			            						hs.clear();
+//			            						hs.addAll(listaEnsambles);
+//			            						listaSubEnsambles.addAll(hs);
+//			            						listaPartePrimaria.addAll(listaSubEnsambles);
 			            						
-			            						obtenerPartesPrimarias(proyecto.getComponenteFK());
-			            						hs.addAll(listaSubEnsambles);
-			            						listaSubEnsambles.clear();
-			            						listaSubEnsambles.addAll(hs);
-			            						hs.clear();
-			            						hs.addAll(listaEnsambles);
-			            						listaSubEnsambles.addAll(hs);
-			            						listaPartePrimaria.addAll(listaSubEnsambles);
-			            						
-			            						for (DetalleComponente comp : listaPartePrimaria) {
-			            							
-			            							ControlOperacion controlOperacion = new ControlOperacion();
-			            							DetalleProceso detalleProceso = new DetalleProceso();
-			            							Componente cont = ComponenteDAO.readComponenteNumeroParte(mainApp.getConnection(), comp.getNumeroParteComponenteSuperior());
-			            							int proceso = ProcesoDAO.readProcesoComponenteFK(mainApp.getConnection(), cont.getSysPK());
-			            							detalleProceso = DetalleProcesoDAO.primeraOperacion(mainApp.getConnection(), proceso);
-			            							DetalleOrdenProduccion detalleOrdenProduccion = DetalleOrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), syspk);
-			            							DetalleComponente detalleCom = DetalleComponenteDAO.readDetalleComponenteInferiorFKObject(mainApp.getConnection(), comp.getComponenteSuperiorFK());
-			            							
-			            					        java.sql.Timestamp hor = new java.sql.Timestamp(System.currentTimeMillis());
-			            					        
-			            					        int cant = detalleCom.getCantidad().intValue();
-			            					       
-			            					        if (!comp.getTipoComponenteSuperior().equals("Comprado") && !comp.getTipoComponenteSuperior().equals("Materia prima")) {
-			            					        	if (cant == 0)
-				            					        	controlOperacion.setCantidad(1);
-				            					        else
-				            					        	controlOperacion.setCantidad(cant);
-					            						controlOperacion.setHoraFechaInicio(hor);
-					            						controlOperacion.setHoraFechaFinal(null);
-					            						controlOperacion.setFechaEstimada(detalleCotizacion.getFechaEntrega());
-					            						if (detalleProceso.getCentroTrabajoFK() != 0)
-					            							controlOperacion.setCentroTrabajoFK(detalleProceso.getCentroTrabajoFK());
-					            						else 
-					            							controlOperacion.setCentroTrabajoFK(0);
-					            						controlOperacion.setCodigoParo(1);
-					            						controlOperacion.setComponenteFK(cont.getSysPK());
-					            						controlOperacion.setDetalleProcesoFK(detalleProceso.getSysPK());
-					            						controlOperacion.setDetalleOrdenProduccionFK(detalleOrdenProduccion.getSysPK());
-					            						
-					            						if (ControlOperacionesDAO.createControlOperaciones(mainApp.getConnection(), controlOperacion))
-					            							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");	
-			            					        }
-			            						}//FIN FOR	            							
+//			            						for (DetalleComponente comp : listaPartePrimaria) {
+//			            							
+//			            							ControlOperacion controlOperacion = new ControlOperacion();
+//			            							DetalleProceso detalleProceso = new DetalleProceso();
+//			            							Componente cont = ComponenteDAO.readComponenteNumeroParte(mainApp.getConnection(), comp.getNumeroParteComponenteSuperior());
+//			            							int proceso = ProcesoDAO.readProcesoComponenteFK(mainApp.getConnection(), cont.getSysPK());
+//			            							detalleProceso = DetalleProcesoDAO.primeraOperacion(mainApp.getConnection(), proceso);
+//			            							DetalleOrdenProduccion detalleOrdenProduccion = DetalleOrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), syspk);
+//			            							DetalleComponente detalleCom = DetalleComponenteDAO.readDetalleComponenteInferiorFKObject(mainApp.getConnection(), comp.getComponenteSuperiorFK());
+//			            							
+//			            					        java.sql.Timestamp hor = new java.sql.Timestamp(System.currentTimeMillis());
+//			            					        
+//			            					        int cant = detalleCom.getCantidad().intValue();
+//			            					       
+//			            					        if (!comp.getTipoComponenteSuperior().equals("Comprado") && !comp.getTipoComponenteSuperior().equals("Materia prima")) {
+//			            					        	if (cant == 0)
+//				            					        	controlOperacion.setCantidad(1);
+//				            					        else
+//				            					        	controlOperacion.setCantidad(cant);
+//					            						controlOperacion.setHoraFechaInicio(hor);
+//					            						controlOperacion.setHoraFechaFinal(null);
+//					            						controlOperacion.setFechaEstimada(detalleCotizacion.getFechaEntrega());
+//					            						if (detalleProceso.getCentroTrabajoFK() != 0)
+//					            							controlOperacion.setCentroTrabajoFK(detalleProceso.getCentroTrabajoFK());
+//					            						else 
+//					            							controlOperacion.setCentroTrabajoFK(0);
+//					            						controlOperacion.setCodigoParo(1);
+//					            						controlOperacion.setComponenteFK(cont.getSysPK());
+//					            						controlOperacion.setDetalleProcesoFK(detalleProceso.getSysPK());
+//					            						controlOperacion.setDetalleOrdenProduccionFK(detalleOrdenProduccion.getSysPK());
+//					            						
+//					            						if (ControlOperacionesDAO.createControlOperaciones(mainApp.getConnection(), controlOperacion))
+//					            							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");	
+//			            					        }
+//			            						}//FIN FOR	            							
 			            					}//FIN IF
 			            				}//FIN FOR		            				
 			            			}//FIN IF

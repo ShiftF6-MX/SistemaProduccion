@@ -18,6 +18,7 @@ public class OrdenProduccion {
 	private StringProperty cotizacion;
 	private StringProperty proyecto;
 	private StringProperty componente;
+	private ObjectProperty<Double> cantidad;
 	private ObjectProperty<Date> fechaEntrega;
 	
 	//CONSTANTES
@@ -27,11 +28,11 @@ public class OrdenProduccion {
 	
 	//CONSTRUCTOR VACIO
 	public OrdenProduccion() {
-		this(0, new Date(System.currentTimeMillis()), "",0,0,"","","","", new Date(System.currentTimeMillis()));
+		this(0, new Date(System.currentTimeMillis()), "",0,0,"","","","", 0.0, new Date(System.currentTimeMillis()));
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, String proyecto, String componente, Date fechaEntrega) {
+	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, String proyecto, String componente, Double cantidad, Date fechaEntrega) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.lote = new SimpleStringProperty(lote);
@@ -41,6 +42,7 @@ public class OrdenProduccion {
 		this.cotizacion = new SimpleStringProperty(cotizacion);
 		this.proyecto = new SimpleStringProperty(proyecto);
 		this.componente =  new SimpleStringProperty(componente);
+		this.cantidad = new SimpleObjectProperty<Double>(cantidad);
 		this.fechaEntrega = new SimpleObjectProperty<Date>(fechaEntrega);
 	}//FIN CONSTRUCTOR
 	
@@ -169,6 +171,18 @@ public class OrdenProduccion {
 		return componente;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A COMPONENTE
+	
+	public void setCantidad(Double cantidad) {
+		this.cantidad.set(cantidad);
+	}//FIN METODO
+	
+	public Double getCantidad() {
+		return this.cantidad.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Double> cantidadProperty() {
+		return this.cantidad;
+	}//FIN METODO
 	
 	//METODOS PARA ACCESO A FECHA ENTREGA
 	public void setFechaEntrega(Date fechaEntrega) {
