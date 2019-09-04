@@ -70,7 +70,7 @@
                   </HBox>
                   <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonActualizar" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/1x/ActualizarButton.png" />
+                        <Image url="@images/1x/ActualizarBoton.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -82,12 +82,13 @@
                   <TableView fx:id="tablaOrdenProduccion" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                     <columns>
                       <PTableColumn fx:id="columnaFecha" percentageWidth="0.1" prefWidth="75.0" text="Fecha" />
-                      <PTableColumn fx:id="columnaLote" percentageWidth="0.1" prefWidth="75.0" text="Lote" />
+                      <PTableColumn fx:id="columnaLote" percentageWidth="0.05" prefWidth="75.0" text="Lote" />
                         <PTableColumn fx:id="columnaCliente" percentageWidth="0.2" prefWidth="75.0" text="Cliente" />
-                        <PTableColumn fx:id="columnaCotizacion" percentageWidth="0.1" prefWidth="75.0" text="Cotización" />
+                        <PTableColumn fx:id="columnaCotizacion" percentageWidth="0.05" prefWidth="75.0" text="Cotización" />
                         <PTableColumn fx:id="columnaProyecto" percentageWidth="0.1" prefWidth="75.0" text="Proyecto" />
-                        <PTableColumn fx:id="columnaComponente" percentageWidth="0.1" prefWidth="75.0" text="Componente" />
-                        <PTableColumn fx:id="columnaStatus" percentageWidth="0.1" prefWidth="75.0" text="Status" />
+                        <PTableColumn fx:id="columnaDescripcion" percentageWidth="0.2" prefWidth="75.0" text="Descripcion" />
+                        <PTableColumn fx:id="columnaCantidad" percentageWidth="0.05" prefWidth="75.0" text="Cantidad" />
+                        <PTableColumn fx:id="columnaStatus" percentageWidth="0.05" prefWidth="75.0" text="Status" />
                         <PTableColumn fx:id="columnaAcciones" percentageWidth="0.2" prefWidth="75.0" text="Acciones" />
                     </columns>
                   </TableView>

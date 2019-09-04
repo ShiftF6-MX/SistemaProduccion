@@ -56,7 +56,7 @@ public class ConnectionDB extends Thread{
 					//System.out.println(resultados.getString(1));
 					//System.out.println(resultados.getString(2));
 				}//FIN WHILE
-			Thread.sleep(300000);
+			Thread.sleep(100000);
 			}//FIN WHILE
 		} catch (SQLException | InterruptedException ex) {
 			Notificacion.dialogoException(ex);

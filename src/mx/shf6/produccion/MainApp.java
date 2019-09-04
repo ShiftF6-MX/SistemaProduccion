@@ -40,6 +40,7 @@ import mx.shf6.produccion.model.DocumentosCuentasXCobrar;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.GrupoUsuario;
+import mx.shf6.produccion.model.HojaViajera;
 import mx.shf6.produccion.model.Material;
 import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.Proceso;
@@ -72,6 +73,7 @@ import mx.shf6.produccion.view.DialogoCotizacion;
 import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
+import mx.shf6.produccion.view.DialogoDetalleHojaViajera;
 import mx.shf6.produccion.view.DialogoDetalleProceso;
 import mx.shf6.produccion.view.DialogoEmpleado;
 import mx.shf6.produccion.view.DialogoEsquemaSeguridad;
@@ -196,6 +198,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoAplicarPagos;
 	private AnchorPane dialogoRecibo;
 	private AnchorPane dialogoEstadoCuentaCliente;
+	private AnchorPane dialogoDetalleHojaViajera;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -845,8 +848,6 @@ public class MainApp extends Application {
         }//FIN METODO
     }//FIN METODO
 
-
-
 	public void iniciarDialogoCotizacionCliente(Cliente cliente) {
 		try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -1495,6 +1496,24 @@ public class MainApp extends Application {
 			dialogoAplicarPagos.setMainApp(this, documentosCuentasXCobrar);
 
 		    this.escenarioDialogosAlterno.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoDetalleHojaViajera(HojaViajera hojaViajera) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleHojaViajera.fxml"));
+
+			this.dialogoDetalleHojaViajera = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaDialogoDetalleHojaViajera = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoDetalleHojaViajera);
+			this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoDetalleHojaViajera);
+			DialogoDetalleHojaViajera dialogoDetalleHojaViajera = fxmlLoader.getController();
+			dialogoDetalleHojaViajera.setMainApp(this, hojaViajera);
+
+		    this.escenarioDialogosAlternoSecundario.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH

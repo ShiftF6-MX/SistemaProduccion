@@ -93,6 +93,33 @@ public class ProyectoDAO{
 	}//FIN METODO
 	
 	//METODO PARA OBTENER UN REGISTRO
+	public static Proyecto readProyectoPorCodigo(Connection connection, String codigo) {
+		Proyecto proyecto = new Proyecto();
+		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK,ComponenteFK "
+				+ "FROM proyectos "
+				+ "WHERE Codigo = '" + codigo + "'";
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				proyecto.setSysPK(resultados.getInt(1));
+				proyecto.setCodigo(resultados.getString(2));
+				proyecto.setDescripcion(resultados.getString(3));
+				proyecto.setCarpeta(resultados.getString(4));
+				proyecto.setEspecificacionTenica(resultados.getString(5));
+				proyecto.setCostoDirecto(resultados.getDouble(6));
+				proyecto.setCostoIndirecto(resultados.getDouble(7));
+				proyecto.setPrecio(resultados.getDouble(8));
+				proyecto.setClienteFK(resultados.getInt(9));
+				proyecto.setComponenteFK(resultados.getInt(10));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return proyecto;
+	}//FIN METODO
+	
+	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<Proyecto> readProyecto(Connection connection, String like, int clienteFK) {
 		ArrayList<Proyecto> arrayListProyecto = new ArrayList<Proyecto>();
 		String consulta = "SELECT Sys_PK, Codigo, Descripcion, Carpeta, EspecificacionTecnica, CostoDirecto, CostoIndirecto, Precio, ClienteFK,ComponenteFK "

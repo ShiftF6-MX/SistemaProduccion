@@ -90,7 +90,7 @@ public class DetalleCotizacionDAO {
 	//METODO PARA OBTENER UN REGISTRO
 	public static ArrayList<DetalleCotizacion> readCotizacionDetalle(Connection connection, int CotizacionFK) {
 		ArrayList<DetalleCotizacion> arrayListDetalleCotizacion = new ArrayList<DetalleCotizacion>();
-		String consulta = "SELECT detallecotizaciones.Sys_PK, detallecotizaciones.Cantidad, detallecotizaciones.Precio, detallecotizaciones.Costo, detallecotizaciones.FechaEntrega, detallecotizaciones.Observaciones, detallecotizaciones.ProyectoFK, detallecotizaciones.CotizacionFK, proyectos.Codigo, proyectos.Descripcion FROM detallecotizaciones INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK WHERE CotizacionFK = " + CotizacionFK;
+		String consulta = "SELECT detallecotizaciones.Sys_PK, detallecotizaciones.Cantidad, detallecotizaciones.Precio, detallecotizaciones.Costo, detallecotizaciones.FechaEntrega, detallecotizaciones.Observaciones, detallecotizaciones.ProyectoFK, detallecotizaciones.CotizacionFK, proyectos.Codigo, proyectos.Descripcion FROM detallecotizaciones INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK WHERE CotizacionFK = " + CotizacionFK + " ORDER BY detallecotizaciones.FechaEntrega ASC";
 		int consecutivo = 1;
 		try {
 			Statement sentencia = connection.createStatement();

@@ -81,7 +81,7 @@
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/1x/PuestosIcono.png" />
+                        <Image url="@images/1x/ProduccionIcono.png" />
                      </image>
                   </ImageView>
                   <Label styleClass="labelRobotoBold14" text="Orden producción" textFill="#d1d0d2" />

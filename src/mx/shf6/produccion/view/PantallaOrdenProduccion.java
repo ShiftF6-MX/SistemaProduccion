@@ -1,5 +1,6 @@
 package mx.shf6.produccion.view;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.ArrayList;
 import javafx.scene.Cursor;
@@ -28,12 +29,14 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
+import mx.shf6.produccion.model.dao.ProyectoDAO;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class PantallaOrdenProduccion {
 	
 	//PROPIEDADES
 	private MainApp mainApp;
+	private Connection conexion;
 	private OrdenProduccion ordenProduccion;
 	private ArrayList<OrdenProduccion> listaOrdenProduccion;
 	
@@ -45,7 +48,8 @@ public class PantallaOrdenProduccion {
 	@FXML private PTableColumn<OrdenProduccion, String> columnaCliente;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaCotizacion;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaProyecto;
-	@FXML private PTableColumn<OrdenProduccion, String> columnaComponente;
+	@FXML private PTableColumn<OrdenProduccion, String> columnaDescripcion;
+	@FXML private PTableColumn<OrdenProduccion, Double> columnaCantidad;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaStatus;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaAcciones;
 	@FXML private ComboBox<String> comboStatus;
@@ -61,6 +65,7 @@ public class PantallaOrdenProduccion {
 	
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		this.conexion = this.mainApp.getConnection();
 		this.listaOrdenProduccion = OrdenProduccionDAO.readOrdenProduccion(this.mainApp.getConnection());
 		this.inicializaTabla();
 		this.actualizarTabla();
@@ -124,7 +129,8 @@ public class PantallaOrdenProduccion {
 		this.columnaCliente.setCellValueFactory(cellData -> cellData.getValue().clienteProperty());
 		this.columnaCotizacion.setCellValueFactory(cellData -> cellData.getValue().cotizacionProperty());
 		this.columnaProyecto.setCellValueFactory(cellData -> cellData.getValue().proyectoProperty());
-		this.columnaComponente.setCellValueFactory(cellData -> cellData.getValue().componenteProperty());
+		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().componenteProperty());
+		this.columnaCantidad.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
 		this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().descripcionStatusProperty());
 		this.iniciarColumnaAcciones();
 	}//FIN METODO
@@ -154,19 +160,28 @@ public class PantallaOrdenProduccion {
 		Callback<TableColumn<OrdenProduccion, String>, TableCell<OrdenProduccion, String>> cellFactory = param -> {
 			
 			final TableCell<OrdenProduccion, String> cell = new TableCell<OrdenProduccion, String>() {
-				final Button botonVerDetalleOrdenProduccion = new Button("VerDetalleOrdenProduccion");
-				final HBox acciones = new HBox(botonVerDetalleOrdenProduccion);
+				final Button botonListaMateriales = new Button("ListaMateriales");
+				final Button botonEstructuraNiveles = new Button("EstructuraNiveles");
+				final HBox acciones = new HBox(botonListaMateriales, botonEstructuraNiveles);
 				
 				//PARA MOSTRAR LOS DIALOGOS
 				@Override
 				public void updateItem(String item, boolean empty) {
-					botonVerDetalleOrdenProduccion.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
-					botonVerDetalleOrdenProduccion.setPrefSize(16.0, 16.0);
-					botonVerDetalleOrdenProduccion.setPadding(Insets.EMPTY);
-					botonVerDetalleOrdenProduccion.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-					botonVerDetalleOrdenProduccion.setStyle("-fx-background-color: transparent;");
-					botonVerDetalleOrdenProduccion.setCursor(Cursor.HAND);
-					botonVerDetalleOrdenProduccion.setTooltip(new Tooltip("Detalles de la orden de producción"));
+					botonListaMateriales.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/ListaMaterialesIcono.png"))));
+					botonListaMateriales.setPrefSize(16.0, 16.0);
+					botonListaMateriales.setPadding(Insets.EMPTY);
+					botonListaMateriales.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonListaMateriales.setStyle("-fx-background-color: transparent;");
+					botonListaMateriales.setCursor(Cursor.HAND);
+					botonListaMateriales.setTooltip(new Tooltip("Lista de Materiales"));
+					
+					botonEstructuraNiveles.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EstructuraNivelesIcono.png"))));
+					botonEstructuraNiveles.setPrefSize(16.0, 16.0);
+					botonEstructuraNiveles.setPadding(Insets.EMPTY);
+					botonEstructuraNiveles.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEstructuraNiveles.setStyle("-fx-background-color: transparent;");
+					botonEstructuraNiveles.setCursor(Cursor.HAND);
+					botonEstructuraNiveles.setTooltip(new Tooltip("Estructura de Niveles"));
 					
 					acciones.setSpacing(3);
 		        	acciones.setPrefWidth(80.0);
@@ -177,9 +192,15 @@ public class PantallaOrdenProduccion {
 		        		super.setGraphic(null);
 		                super.setText(null);
 		        	} else {
-		        		botonVerDetalleOrdenProduccion.setOnAction(event -> {
+		        		
+		        		botonListaMateriales.setOnAction(event -> {
 		        			ordenProduccion = getTableView().getItems().get(getIndex());
-		        			manejadorBotonVerDetalleOrdenProduccion(ordenProduccion);
+		        			manejadorBotonListaMateriales(ordenProduccion);
+		        		});
+		        		
+		        		botonEstructuraNiveles.setOnAction(event -> {
+		        			ordenProduccion = getTableView().getItems().get(getIndex());
+		        			manejadorBotonEstructuraNiveles(ordenProduccion);
 		        		});
 		        		
 		        		setGraphic(acciones);
@@ -197,8 +218,13 @@ public class PantallaOrdenProduccion {
 		this.actualizarTabla();
 	}//FIN METODO
 	
-	//VER DETALLES DE ORDEN DE PRODUCCION
-	private void manejadorBotonVerDetalleOrdenProduccion(OrdenProduccion ordenProduccion) {
+	//VER LISTA DE MATERIALES
+	private void manejadorBotonListaMateriales(OrdenProduccion ordenProduccion) {
+		this.mainApp.iniciarDialogoPartesPrimarias(ProyectoDAO.readProyectoPorCodigo(this.conexion, ordenProduccion.getProyecto()), ordenProduccion);
+	}//FIN METODO
+	
+	//VER ESTRUCTURA DE NIVELES
+	private void manejadorBotonEstructuraNiveles(OrdenProduccion ordenProduccion) {
 		//this.mainApp.
 	}//FIN METODO
 	

@@ -23,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.OrdenProduccion;
 //import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Proyecto;
 import mx.shf6.produccion.model.dao.ProyectoDAO;
@@ -273,7 +274,7 @@ public class DialogoProyectos {
 	}//FIN METODO
 
 	private void manejadorBotonPartesPrimarias(Proyecto proyecto) {
-		this.mainApp.iniciarDialogoPartesPrimarias(proyecto);
+		this.mainApp.iniciarDialogoPartesPrimarias(proyecto, new OrdenProduccion());
 	}//FIN METODO
 
 	@FXML private void manejadorBotonCerrar() {
