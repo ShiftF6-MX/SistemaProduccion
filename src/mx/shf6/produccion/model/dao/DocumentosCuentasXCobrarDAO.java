@@ -101,9 +101,9 @@ public class DocumentosCuentasXCobrarDAO {
 		return documentosCuentasXCobrar;
 	}//FIN METODO
 
-	public static ArrayList<DocumentosCuentasXCobrar> readRecibosPorClienteFK(Connection connection, int clienteFK, Date fechaInicio, Date fechaFin, String like) {
+	public static ArrayList<DocumentosCuentasXCobrar> readMovimientosPorClienteFK(Connection connection, int clienteFK, Date fechaInicio, Date fechaFin, String like) {
 		ArrayList<DocumentosCuentasXCobrar> arrayListDocumentosCuentasXCobrar = new ArrayList<DocumentosCuentasXCobrar>();
-		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE ClienteFK = " + clienteFK +" AND Documento = 2 AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
+		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE ClienteFK = " + clienteFK +" AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -122,7 +122,7 @@ public class DocumentosCuentasXCobrarDAO {
 				documentosCuentasXCobrar.setClienteFK(resultados.getInt(11));
 				documentosCuentasXCobrar.setReciboFK(resultados.getInt(12));
 				documentosCuentasXCobrar.setCotizacionFK(resultados.getInt(13));
-				documentosCuentasXCobrar.setSaldo(resultados.getDouble(3) - resultados.getDouble(6));
+				documentosCuentasXCobrar.setSaldo(resultados.getDouble(3) - resultados.getDouble(8));
 				arrayListDocumentosCuentasXCobrar.add(documentosCuentasXCobrar);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -220,6 +220,32 @@ public class DocumentosCuentasXCobrarDAO {
 		return arrayListDocumentosCuentasXCobrar;
 	}//FIN METODO
 
+	public static DocumentosCuentasXCobrar readPorCotizacionFK(Connection connection, int cotizacionFK) {
+		DocumentosCuentasXCobrar documentosCuentasXCobrar = new DocumentosCuentasXCobrar();
+		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE CotizacionFK =" + cotizacionFK;
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(consulta);
+			while (resultados.next()) {
+				documentosCuentasXCobrar.setSysPK(resultados.getInt(1));
+				documentosCuentasXCobrar.setBonificaciones(resultados.getDouble(2));
+				documentosCuentasXCobrar.setDebe(resultados.getDouble(3));
+				documentosCuentasXCobrar.setDocumento(resultados.getInt(4));
+				documentosCuentasXCobrar.setFecha(resultados.getDate(5));
+				documentosCuentasXCobrar.setHaber(resultados.getDouble(6));
+				documentosCuentasXCobrar.setNotas(resultados.getString(7));
+				documentosCuentasXCobrar.setPagos(resultados.getDouble(8));
+				documentosCuentasXCobrar.setReferencia(resultados.getString(9));
+				documentosCuentasXCobrar.setXAplicar(resultados.getDouble(10));
+				documentosCuentasXCobrar.setClienteFK(resultados.getInt(11));
+				documentosCuentasXCobrar.setReciboFK(resultados.getInt(12));
+				documentosCuentasXCobrar.setCotizacionFK(resultados.getInt(13));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return documentosCuentasXCobrar;
+	}//FIN METODO
 
 	public static boolean update(Connection connection,  DocumentosCuentasXCobrar documentosCuentasXCobrar) {
 		String consulta = "UPDATE dcxc SET Bonificacion = ?, Debe = ?, Documento = ?, Haber = ?, Notas = ?, Pagos = ?, XAplicar = ?, ClienteFK = ?, ReciboFK = ?, CotizacionFK = ? WHERE Sys_PK = ?";

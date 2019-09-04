@@ -24,7 +24,7 @@ public class DocumentosCuentasXCobrar {
 	private ObjectProperty<Integer> cotizacionFK;
 	private ObjectProperty<Integer> reciboFK;
 	private ObjectProperty<Double> saldo;
-	private ObjectProperty<Double> importeAplicar;
+	private StringProperty importeAplicar;
 
 	//CONSTANTES PARA DOCUMENTO
 	public static final int COTIZACION = 1;
@@ -36,11 +36,11 @@ public class DocumentosCuentasXCobrar {
 
 	//CONSTRUCTOR VACIO
 	public DocumentosCuentasXCobrar() {
-		this(0, "", new Date(System.currentTimeMillis()), 0, "", 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0, 0.0);
+		this(0, "", new Date(System.currentTimeMillis()), 0, "", 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0, "0.0");
 	}
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DocumentosCuentasXCobrar(int sysPk, String referencia, Date fecha, int documento, String notas, Double debe, Double haber, Double xaplicar, Double pagos, Double bonificaciones, int clienteFK, int cotizacionFK, int reciboFK, Double saldo, Double importeAplicar){
+	public DocumentosCuentasXCobrar(int sysPk, String referencia, Date fecha, int documento, String notas, Double debe, Double haber, Double xaplicar, Double pagos, Double bonificaciones, int clienteFK, int cotizacionFK, int reciboFK, Double saldo, String importeAplicar){
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPk);
 		this.referencia = new SimpleStringProperty(referencia);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
@@ -55,7 +55,7 @@ public class DocumentosCuentasXCobrar {
 		this.cotizacionFK = new SimpleObjectProperty<Integer>(cotizacionFK);
 		this.reciboFK = new SimpleObjectProperty<Integer>(reciboFK);
 		this.saldo = new SimpleObjectProperty<Double>(saldo);
-		this.importeAplicar = new SimpleObjectProperty<Double>(importeAplicar);
+		this.importeAplicar = new SimpleStringProperty (importeAplicar);
 	}
 
 	//METODOS DE ACCESO A SYSPK
@@ -244,15 +244,18 @@ public class DocumentosCuentasXCobrar {
 	}//FIN METODO
 
 	//METODO DE ACCESO A IMPORTE A APLICAR
-	public void setImporteAplicar(Double importeAplicar) {
-		this.importeAplicar.set(importeAplicar);
+	public void setImporteAplicar(String importeAplicar) {
+		if(importeAplicar.equals(""))
+			this.importeAplicar.set("0.0");
+		else
+			this.importeAplicar.set(importeAplicar);
 	}//FIN METODO
 
-	public Double getImporteAplicar() {
+	public String getImporteAplicar() {
 		return this.importeAplicar.get();
 	}//FIN METODO
 
-	public ObjectProperty<Double> importeAplicarProperty() {
+	public StringProperty importeAplicarProperty() {
 		return this.importeAplicar;
 	}//FIN METODO
 }//FIN CLASE

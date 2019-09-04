@@ -15,6 +15,8 @@ import mx.shf6.produccion.model.dao.DocumentosCuentasXCobrarDAO;
 import mx.shf6.produccion.model.dao.FolioDAO;
 import mx.shf6.produccion.model.dao.ReciboDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
+import mx.shf6.produccion.utilities.TransaccionSQL;
 
 public class DialogoRecibo {
 
@@ -36,7 +38,7 @@ public class DialogoRecibo {
 
 	//INICIA COMPONENTES INTERFAZ USUARIO
 	@FXML private void initialize() {
-
+		RestriccionTextField.limitarPuntoDecimal(this.campoTextoImporte);
 	}//FIN METODO
 
 	//ACCESO CLASE PRINCIPAL
@@ -50,37 +52,55 @@ public class DialogoRecibo {
 		mostrarDatosInterfaz();
 	}//FIN METODO
 
-	public void mostrarDatosInterfaz() {
+	private void mostrarDatosInterfaz() {
 		this.campoTextoCliente.setDisable(true);
 		this.campoTextoReferencia.setDisable(true);
 		this.campoTextoCliente.setText(this.cliente.getNombre());
 		this.campoTextoReferencia.setText("R" + decimalFormat.format((FolioDAO.readSeriePorFolio(conexion, "R") + 1)));
 	}// FIN METODO
 
-	public void generarRecibo(){
-		recibo.setClienteFK(cliente.getSysPK());
-		recibo.setReferencia(this.campoTextoReferencia.getText());
-		recibo.setNotas(this.areaTextoNotas.getText());
-		recibo.setImporte(Double.parseDouble(this.campoTextoImporte.getText()));
+	private boolean validarCampos(){
+		if(this.campoTextoImporte.getText().isEmpty()){
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Importe\" no puede estar vacio");
+			return false;
+		} else if (this.areaTextoNotas.getText().isEmpty()){
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Notas\" no puede estar vacio");
+			return false;
+		}//FIN IF ELSE
+	return true;
+	}//FIN METODO
 
-		DocumentosCuentasXCobrar documentosCuentasXCobrar = new DocumentosCuentasXCobrar();
-		documentosCuentasXCobrar.setDocumento(DocumentosCuentasXCobrar.RECIBO);
-		documentosCuentasXCobrar.setReferencia(recibo.getReferencia());
-		documentosCuentasXCobrar.setNotas(recibo.getNotas());
-		documentosCuentasXCobrar.setHaber(recibo.getImporte());
-		documentosCuentasXCobrar.setXAplicar(recibo.getImporte());
-		documentosCuentasXCobrar.setClienteFK(cliente.getSysPK());
+	private void generarRecibo(){
+		if(validarCampos()){
+			recibo.setClienteFK(cliente.getSysPK());
+			recibo.setReferencia(this.campoTextoReferencia.getText());
+			recibo.setNotas(this.areaTextoNotas.getText());
+			recibo.setImporte(Double.parseDouble(this.campoTextoImporte.getText()));
 
-		if(ReciboDAO.create(conexion, recibo)){
-			documentosCuentasXCobrar.setReciboFK(ReciboDAO.ultimoSysPk(conexion));
-				if(DocumentosCuentasXCobrarDAO.create(mainApp.getConnection(), documentosCuentasXCobrar)){
-					Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡El registro se guardó de forma correcta!");
-				}
-			this.mainApp.getEscenarioDialogosAlterno().close();
-		}else{
-			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el registro, ¡revisa que la información sea correcta!");
-			this.mainApp.getEscenarioDialogosAlterno().close();
-		}
+			DocumentosCuentasXCobrar documentosCuentasXCobrar = new DocumentosCuentasXCobrar();
+			documentosCuentasXCobrar.setDocumento(DocumentosCuentasXCobrar.RECIBO);
+			documentosCuentasXCobrar.setReferencia(recibo.getReferencia());
+			documentosCuentasXCobrar.setNotas(recibo.getNotas());
+			documentosCuentasXCobrar.setHaber(recibo.getImporte());
+			documentosCuentasXCobrar.setXAplicar(recibo.getImporte());
+			documentosCuentasXCobrar.setClienteFK(cliente.getSysPK());
+
+			TransaccionSQL.setStatusTransaccion(this.mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
+			if(ReciboDAO.create(conexion, recibo)){
+				documentosCuentasXCobrar.setReciboFK(ReciboDAO.ultimoSysPk(conexion));
+					if(DocumentosCuentasXCobrarDAO.create(mainApp.getConnection(), documentosCuentasXCobrar)){
+						TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
+						Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡El recibo se guardó de forma correcta!");
+					}else{
+						TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el recibo,  ¡revisa que la información sea correcta!");
+					}//FIN IF ELSE DE CREAR DCXC
+				this.mainApp.getEscenarioDialogosAlterno().close();
+			}else{
+				TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo guardar el registro, ¡revisa que la información sea correcta!");
+			}//FIN IF ELSE DE CREAR RECIBO
+		}//FIN IF
 	}//FIN METODO
 
 	//MANEJADORES

@@ -86,12 +86,15 @@ public class DialogoEstadoCuentaCliente {
 				if(newValue.getText().equals("Pendientes")){
 					documentosAMostrar = DocumentosCuentasXCobrar.PENDIENTES;
 					itemAplicarPagos.setDisable(false);
+					columnaPagos.setCellValueFactory(cellData -> cellData.getValue().pagosProperty());
 				} else if(newValue.getText().equals("Movimientos")){
 					documentosAMostrar = DocumentosCuentasXCobrar.MOVIMIENTOS;
+					columnaPagos.setCellValueFactory(cellData -> cellData.getValue().haberProperty());
 					itemAplicarPagos.setDisable(true);
 				} else if(newValue.getText().equals("Saldados")){
 					documentosAMostrar = DocumentosCuentasXCobrar.SALDADOS;
 					itemAplicarPagos.setDisable(true);
+					columnaPagos.setCellValueFactory(cellData -> cellData.getValue().pagosProperty());
 				}//FIN ELSE IF
 				actualizarTabla();
 			}//FIN METODO
@@ -110,7 +113,10 @@ public class DialogoEstadoCuentaCliente {
 		this.columnaReferencia.setCellValueFactory(cellData -> cellData.getValue().referenciaProperty());
 		this.columnaFecha.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
 		this.columnaImporte.setCellValueFactory(cellData -> cellData.getValue().debeProperty());
-		this.columnaPagos.setCellValueFactory(cellData -> cellData.getValue().haberProperty());
+		if(documentosAMostrar == DocumentosCuentasXCobrar.MOVIMIENTOS)
+			this.columnaPagos.setCellValueFactory(cellData -> cellData.getValue().haberProperty());
+		else
+			this.columnaPagos.setCellValueFactory(cellData -> cellData.getValue().pagosProperty());
 		this.columnaSaldo.setCellValueFactory(cellData -> cellData.getValue().saldoProperty());
 	}//FIN METODO
 
@@ -122,7 +128,7 @@ public class DialogoEstadoCuentaCliente {
 		if(documentosAMostrar == DocumentosCuentasXCobrar.PENDIENTES)
 			this.listaDetalleCXC = DocumentosCuentasXCobrarDAO.readPendientesPorClienteFK(conexion, this.cliente.getSysPK(), Date.valueOf(this.selectorFechaInicio.getValue()), Date.valueOf(this.selectorFechaFin.getValue()), this.campoTextoBuscar.getText());
 		else if (documentosAMostrar == DocumentosCuentasXCobrar.MOVIMIENTOS)
-			this.listaDetalleCXC = DocumentosCuentasXCobrarDAO.readRecibosPorClienteFK(conexion, this.cliente.getSysPK(), Date.valueOf(this.selectorFechaInicio.getValue()), Date.valueOf(this.selectorFechaFin.getValue()), this.campoTextoBuscar.getText());
+			this.listaDetalleCXC = DocumentosCuentasXCobrarDAO.readMovimientosPorClienteFK(conexion, this.cliente.getSysPK(), Date.valueOf(this.selectorFechaInicio.getValue()), Date.valueOf(this.selectorFechaFin.getValue()), this.campoTextoBuscar.getText());
 		else if  (documentosAMostrar == DocumentosCuentasXCobrar.SALDADOS)
 			this.listaDetalleCXC = DocumentosCuentasXCobrarDAO.readSaldadosPorClienteFK(conexion, this.cliente.getSysPK(), Date.valueOf(this.selectorFechaInicio.getValue()), Date.valueOf(this.selectorFechaFin.getValue()), this.campoTextoBuscar.getText());
 
@@ -141,6 +147,7 @@ public class DialogoEstadoCuentaCliente {
 	@FXML private void manejadorAplicarPagos() {
 		this.documentosCuentasXCobrar = this.tablaDetalleDCXC.getSelectionModel().getSelectedItem();
 		this.mainApp.iniciarDialogoAplicarPagos(this.documentosCuentasXCobrar);
+		actualizarTabla();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonCerrar() {

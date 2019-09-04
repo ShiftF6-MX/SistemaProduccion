@@ -9,13 +9,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.TextFieldTableCell;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.AplicarCuentasXCobrar;
 import mx.shf6.produccion.model.DocumentosCuentasXCobrar;
 import mx.shf6.produccion.model.dao.AplicarCuentasXCobrarDAO;
 import mx.shf6.produccion.model.dao.DocumentosCuentasXCobrarDAO;
+import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
+import mx.shf6.produccion.utilities.TransaccionSQL;
 
 public class DialogoAplicarPagos {
 
@@ -29,7 +32,10 @@ public class DialogoAplicarPagos {
 
 	//VARIABLES
 	Double sumaPagos = 0.0;
-	Boolean aplicarPagos = false;
+	boolean aplicarPagos = false;
+	boolean transaccionAplc = false;
+	boolean transaccionDcxc = false;
+	Double xAplicar = 0.0;
 
 	//COMPONENTES INTERFAZ
 	@FXML private TableView<DocumentosCuentasXCobrar> tablaDetalleRecibos;
@@ -67,11 +73,15 @@ public class DialogoAplicarPagos {
 		this.columnaFecha.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
 		this.columnaImporte.setCellValueFactory(cellData -> cellData.getValue().haberProperty());
 		this.columnaDisponible.setCellValueFactory(cellData -> cellData.getValue().xAplicarProperty());
+		this.columnaImporteAplicar.setCellValueFactory(cellData -> cellData.getValue().importeAplicarProperty());
 		this.columnaImporteAplicar.setCellFactory(TextFieldTableCell.<DocumentosCuentasXCobrar>forTableColumn());
 
 		this.columnaImporteAplicar.setOnEditCommit(data -> {
-		   this.tablaDetalleRecibos.getSelectionModel().getSelectedItem().setImporteAplicar(Double.parseDouble(data.getNewValue()));
-		   sumaPagos = sumaPagos + Double.parseDouble(data.getNewValue());
+			if(data.getNewValue() != null && !data.getNewValue().equals("") && !data.getNewValue().isEmpty()){
+				this.tablaDetalleRecibos.getSelectionModel().getSelectedItem().setImporteAplicar(data.getNewValue());
+			} else {
+				this.tablaDetalleRecibos.getSelectionModel().getSelectedItem().setImporteAplicar("0.0");
+			}//FIN IF ELSE
 		});
 	}//FIN METODO
 
@@ -83,46 +93,86 @@ public class DialogoAplicarPagos {
 	}//FIN METODO
 
 	private void validarAbonos() {
-		if(this.sumaPagos <= this.documentosCuentasXCobrar.getSaldo() ){
-			this.itemsTabla = this.tablaDetalleRecibos.getItems();
-			for(DocumentosCuentasXCobrar documentosCuentasXCobrar : this.itemsTabla){
-				if(documentosCuentasXCobrar.getImporteAplicar() != 0){
-					if(documentosCuentasXCobrar.getXAplicar() >=  documentosCuentasXCobrar.getImporteAplicar()){
-						AplicarCuentasXCobrar aplicarCuentasXCobrar = new AplicarCuentasXCobrar();
-						aplicarCuentasXCobrar.setDcxcFK(documentosCuentasXCobrar.getSysPK());
-						aplicarCuentasXCobrar.setAplicadoA(this.documentosCuentasXCobrar.getSysPK());
-						aplicarCuentasXCobrar.setImporte(documentosCuentasXCobrar.getImporteAplicar());
+		System.out.println("suma de pagos: " + this.sumaPagos);
+		System.out.println("saldo: " + this.documentosCuentasXCobrar.getSaldo());
+		System.out.println("suma <= a saldo: "+ (this.sumaPagos <= this.documentosCuentasXCobrar.getSaldo()));
+		this.sumaPagos = 0.0;
+		this.itemsTabla = this.tablaDetalleRecibos.getItems();
+		for(DocumentosCuentasXCobrar documentosCuentasXCobrar : this.itemsTabla){
 
-						this.listaImportesAplicar.add(aplicarCuentasXCobrar);
-						documentosCuentasXCobrar.setXAplicar(documentosCuentasXCobrar.getXAplicar() -  documentosCuentasXCobrar.getImporteAplicar());
+			if(!documentosCuentasXCobrar.getImporteAplicar().equals("0.0")){
 
-						this.aplicarPagos = true;
-					}
-					else{
+				this.sumaPagos = this.sumaPagos + Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar());
+					if(this.sumaPagos <= this.documentosCuentasXCobrar.getSaldo()){
+
+						if(documentosCuentasXCobrar.getXAplicar() >=  Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar())){
+
+							AplicarCuentasXCobrar aplicarCuentasXCobrar = new AplicarCuentasXCobrar();
+							aplicarCuentasXCobrar.setDcxcFK(documentosCuentasXCobrar.getSysPK());
+							aplicarCuentasXCobrar.setAplicadoA(this.documentosCuentasXCobrar.getSysPK());
+							aplicarCuentasXCobrar.setImporte(Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar()));
+
+							this.listaImportesAplicar.add(aplicarCuentasXCobrar);
+							System.out.println("aplicado");
+							this.aplicarPagos = true;
+						} else {
+							this.aplicarPagos = false;
+							System.out.println("no aplicado");
+							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se puede aplicar el pago del recibo " + documentosCuentasXCobrar.getReferencia());
+							break;
+						}//FIN IF ELSE. VALIDA SI EL IMPORTE PARA APLICAR ES MENOR O IGUAL A DISPONIBLE
+					}else{
 						this.aplicarPagos = false;
-						break;
-					}//FIN IF ELSE
-
-				}//FIN IF
-
-			}//FIN FOR
-		}//FIN IF
+						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se han podido aplicar los pagos. El total de los pagos es mayor al Saldo Actual");
+					}//FIN IF ELSE. VALIDA SI EL SALDO ES MENO O IGUAL A LA SUMA DE LOS PAGOS QUE SE QUIERE APLICAR
+		    }//FIN IF. VALIDA SI LA CANTIDAD DE POR APLICAR ES DIFERENTE DE CERO
+		}//FIN FOR
 	}//FIN METODO
 
 	private void generarTransacciones() {
+		System.out.println("suma de pagos: " + this.sumaPagos);
 		if(this.aplicarPagos){
+
+			TransaccionSQL.setStatusTransaccion(this.mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
 			for(AplicarCuentasXCobrar aplicarCuentasXCobrar : this.listaImportesAplicar){
+				System.out.println("aplicarCuentas: "+aplicarCuentasXCobrar.getImporte());
 				if(AplicarCuentasXCobrarDAO.create(conexion, aplicarCuentasXCobrar)){
-
-				}
+					transaccionAplc = true;
+					System.out.println("craate verdadero");
+				}else {
+					transaccionAplc = false;
+					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+					break;
+				}//FIN IF ELSE
 			}//FIN FOR
+
 			for(DocumentosCuentasXCobrar documentosCuentasXCobrar : this.itemsTabla){
-				if(DocumentosCuentasXCobrarDAO.updateXAplicar(conexion, documentosCuentasXCobrar)){
 
-				}
+				documentosCuentasXCobrar.setXAplicar(documentosCuentasXCobrar.getXAplicar() -  Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar()));
+				System.out.println("XAplicar: "+documentosCuentasXCobrar.getXAplicar());
+				if(DocumentosCuentasXCobrarDAO.updateXAplicar(conexion, documentosCuentasXCobrar)){
+					transaccionDcxc = true;
+					System.out.println("updatexaplicar verdadero");
+				}else {
+					transaccionDcxc = false;
+					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+					break;
+				}//FIN IF ELSE
 			}//FIN FOR
-			this.documentosCuentasXCobrar.setPagos(this.documentosCuentasXCobrar.getPagos() + sumaPagos);
-			DocumentosCuentasXCobrarDAO.updatePagos(conexion, this.documentosCuentasXCobrar);
+
+			if(transaccionAplc && transaccionDcxc){
+				this.documentosCuentasXCobrar.setPagos(this.documentosCuentasXCobrar.getPagos() + sumaPagos);
+				System.out.println("get pagos: "+this.documentosCuentasXCobrar.getPagos());
+				if(DocumentosCuentasXCobrarDAO.updatePagos(conexion, this.documentosCuentasXCobrar)){
+					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
+					Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡Los pagos han sido aplicados!");
+					this.etiquetaSaldo.setText("Saldo "+ (Double.toString(this.documentosCuentasXCobrar.getSaldo() - this.sumaPagos)));
+					this.mainApp.getEscenarioDialogosAlterno().close();
+				}else{
+					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Los pagos no pudieron ser aplicados");
+				}//FIN IF ELSE
+			}//FIN IF
 		}//FIN IF
 	}//FIN METODO
 
@@ -130,7 +180,6 @@ public class DialogoAplicarPagos {
 	@FXML private void manejadorBotonAceptar() {
 		this.validarAbonos();
 		this.generarTransacciones();
-		this.actualizarTabla();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonCerrar() {
