@@ -26,10 +26,10 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </ImageView>
-                  <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER_LEFT">
                      <children>
                         <Label styleClass="labelRobotoMedium16" text="Estado de Cuenta" textFill="WHITE" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="etiquetaNombreCliente" styleClass="labelRobotoMedium14" text="Cliente" textFill="WHITE" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="etiquetaNombreCliente" styleClass="labelRobotoMedium14" text="Cliente" textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" HBox.hgrow="ALWAYS">
@@ -42,7 +42,7 @@
                            <HBox.margin>
                               <Insets right="3.0" />
                            </HBox.margin></DatePicker>
-                        <TextField fx:id="campoTextoBuscar" prefHeight="30.0" prefWidth="200.0" promptText="Buscar" styleClass="campoBuscador">
+                        <TextField fx:id="campoTextoBuscar" prefHeight="30.0" prefWidth="100.0" promptText="Buscar" styleClass="campoBuscador">
                            <font>
                               <Font name="Roboto" size="12.0" />
                            </font>
@@ -108,7 +108,7 @@
          <children>
             <VBox alignment="BOTTOM_CENTER" layoutX="22.0" layoutY="29.0" prefHeight="386.0" prefWidth="603.0" styleClass="tablaDatosDetalle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TabPane fx:id="tabPane" prefHeight="32.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="tabPane" prefHeight="32.0" prefWidth="798.0" styleClass="panelPestana" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Pendientes" />
                       <Tab text="Movimientos" />
