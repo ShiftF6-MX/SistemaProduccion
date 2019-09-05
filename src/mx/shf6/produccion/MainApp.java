@@ -35,6 +35,7 @@ import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleCotizacion;
+import mx.shf6.produccion.model.DetalleHojaViajera;
 import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.DocumentosCuentasXCobrar;
 import mx.shf6.produccion.model.Empleado;
@@ -59,6 +60,7 @@ import mx.shf6.produccion.view.DialogoAgregarComprador;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
 import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
 import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
+import mx.shf6.produccion.view.DialogoAgregarMaterial;
 import mx.shf6.produccion.view.DialogoAgregarMovimientoComponente;
 import mx.shf6.produccion.view.DialogoAgregarPermiso;
 import mx.shf6.produccion.view.DialogoAlmacen;
@@ -81,7 +83,7 @@ import mx.shf6.produccion.view.DialogoEstadoCuentaCliente;
 import mx.shf6.produccion.view.DialogoEstructuraNiveles;
 import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoGrupoUsuario;
-import mx.shf6.produccion.view.DialogoAgregarMaterial;
+import mx.shf6.produccion.view.DialogoActualizarDetalleHojaViajera;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
 import mx.shf6.produccion.view.DialogoPartesPrimarias;
 import mx.shf6.produccion.view.DialogoPermiso;
@@ -199,6 +201,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoRecibo;
 	private AnchorPane dialogoEstadoCuentaCliente;
 	private AnchorPane dialogoDetalleHojaViajera;
+	private AnchorPane dialogoActualizarDetalleHojaViajera;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -1508,10 +1511,28 @@ public class MainApp extends Application {
 
 			this.dialogoDetalleHojaViajera = (AnchorPane) fxmlLoader.load();
 
-			Scene escenaDialogoDetalleHojaViajera = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoDetalleHojaViajera);
-			this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoDetalleHojaViajera);
+			Scene escenaDialogoDetalleHojaViajera = this.iniciarEscenarioDialogosAlterno(this.dialogoDetalleHojaViajera);
+			this.escenarioDialogosAlterno.setScene(escenaDialogoDetalleHojaViajera);
 			DialogoDetalleHojaViajera dialogoDetalleHojaViajera = fxmlLoader.getController();
 			dialogoDetalleHojaViajera.setMainApp(this, hojaViajera);
+
+		    this.escenarioDialogosAlterno.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoActualizarDetalleHojaViajera(DetalleHojaViajera detalleHojaViajera, int cantidadProcesos, int opcion) {
+		try{
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoActualizarDetalleHojaViajera.fxml"));
+
+			this.dialogoActualizarDetalleHojaViajera = (AnchorPane) fxmlLoader.load();
+
+			Scene escenaDialogoActualizarDetalleHojaViajera = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoActualizarDetalleHojaViajera);
+			this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoActualizarDetalleHojaViajera);
+			DialogoActualizarDetalleHojaViajera dialogoActualizarDetalleHojaViajera = fxmlLoader.getController();
+			dialogoActualizarDetalleHojaViajera.setMainApp(this, detalleHojaViajera, cantidadProcesos, opcion);
 
 		    this.escenarioDialogosAlternoSecundario.showAndWait();
 		} catch(IOException | IllegalStateException ex) {

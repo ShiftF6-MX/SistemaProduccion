@@ -13,7 +13,7 @@
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label styleClass="textFieldTitulos" text="Formulario Registro">
+            <Label styleClass="textFieldTitulos" text="Actualizar Registro">
                <padding>
                   <Insets left="10.0" />
                </padding>
@@ -24,25 +24,25 @@
          <children>
             <VBox spacing="2.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Código" />
-                  <TextField fx:id="campoTextoCodigo" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <Label styleClass="labelRobotoMedium12" text="En proceso" />
+                  <TextField fx:id="campoTextoEnProceso" alignment="CENTER_RIGHT" focusTraversable="false" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
             <VBox layoutX="10.0" layoutY="10.0" spacing="2.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Descripción" />
-                  <TextField fx:id="campoTextoDescripcion" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <Label styleClass="labelRobotoMedium12" text="Terminados" />
+                  <TextField fx:id="campoTextoTerminado" alignment="CENTER_RIGHT" focusTraversable="false" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
             <VBox layoutX="10.0" layoutY="64.0" spacing="2.0">
                <children>
-                  <Label styleClass="labelRobotoMedium12" text="Status" />
-                  <ComboBox fx:id="comboBoxStatus" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
+                  <Label fx:id="etiquetaActualizar" styleClass="labelRobotoMedium12" text="Liberar" />
+                  <TextField fx:id="campoTextoActualizar" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="campoBuscador" />
                </children>
             </VBox>
             <VBox layoutX="10.0" layoutY="172.0" spacing="5.0">
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#vmanejadorBotonAceptar" prefHeight="30.0" styleClass="buttonGreen" text="Aceptar">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#manejadorBotonAceptar" prefHeight="30.0" styleClass="buttonGreen" text="Aceptar">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>

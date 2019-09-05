@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import mx.shf6.produccion.MainApp;
@@ -15,6 +16,7 @@ import mx.shf6.produccion.model.HojaViajera;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleHojaViajeraDAO;
 import mx.shf6.produccion.utilities.GenerarDocumento;
+import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class DialogoDetalleHojaViajera {
@@ -24,6 +26,7 @@ public class DialogoDetalleHojaViajera {
 	private Connection conexion;
 	private HojaViajera hojaViajera;
 	private ArrayList<DetalleComponente> listaPartePrimaria;
+	private ArrayList<DetalleHojaViajera> listaDetallesHojaViajera;
 
 	//VARIABLES
 	Double cantidad = 0.0;
@@ -57,7 +60,7 @@ public class DialogoDetalleHojaViajera {
 		this.conexion = this.mainApp.getConnection();
 		this.hojaViajera = hojaViajera;
 		this.listaPartePrimaria = new ArrayList<DetalleComponente>();
-		
+		this.listaDetallesHojaViajera = new ArrayList<DetalleHojaViajera>();
 		actualizarTabla();
 		inicializarComponentes();
 	}//FIN METODO
@@ -78,20 +81,27 @@ public class DialogoDetalleHojaViajera {
 	
 	private void actualizarTabla(){
 		this.tablaDetalleHojaViajera.setItems(null);
-		this.tablaDetalleHojaViajera.setItems(FXCollections.observableArrayList(DetalleHojaViajeraDAO.readHojaViajeraPorOrdenProduccionComponente(this.conexion, this.hojaViajera.getSysPK())));
+		this.listaDetallesHojaViajera = DetalleHojaViajeraDAO.readHojaViajeraPorOrdenProduccionComponente(this.conexion, this.hojaViajera.getSysPK());
+		this.tablaDetalleHojaViajera.setItems(FXCollections.observableArrayList(listaDetallesHojaViajera));
 	}//FIN METODO
 
 	
-	@FXML private void manejadorBotonAceptar() {
-		
+	@FXML private void manejadorBotonLiberar() {
+		if (this.tablaDetalleHojaViajera.getSelectionModel().getSelectedItem() != null) {
+			this.mainApp.iniciarDialogoActualizarDetalleHojaViajera(this.tablaDetalleHojaViajera.getSelectionModel().getSelectedItem(), this.listaDetallesHojaViajera.size(), DialogoActualizarDetalleHojaViajera.LIBERAR);
+		} else
+			Notificacion.dialogoAlerta(AlertType.WARNING, "", "Debes seleccionar un registro de la tabla");
+		this.actualizarTabla();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonCerrar() {
-		this.mainApp.getEscenarioDialogosAlternoSecundario().close();
+		this.mainApp.getEscenarioDialogosAlterno().close();
 	}//FIN METODO
 
 	@FXML private void manejadorBotonImprimir() {
 		GenerarDocumento.generaListaMateriales(conexion, listaPartePrimaria, this.nombreNumeroComponente);
 	}//FIN METODO
+	
+	
 
 }//FIN CLASE

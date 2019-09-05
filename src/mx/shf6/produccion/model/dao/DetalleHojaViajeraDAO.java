@@ -29,9 +29,7 @@ public class DetalleHojaViajeraDAO {
 			Notificacion.dialogoException(ex);
 			return false;
 		}//FIN TRY CATCH
-	}//FIN METODO
-	
-	
+	}//FIN METODO	
 
 	public static ArrayList<DetalleHojaViajera> readHojaViajeraPorOrdenProduccionComponente(Connection connection, Integer hojaViajeraFK) {
 		ArrayList<DetalleHojaViajera> llistaDetallesHojaViajera = new ArrayList<DetalleHojaViajera>();
@@ -56,6 +54,25 @@ public class DetalleHojaViajeraDAO {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY CATCH
 		return llistaDetallesHojaViajera;
+	}//FIN METODO
+	
+	//METODO PARA CREAR UN REGISTRO
+	public static boolean updateDetalleHojaViajera(Connection connection, DetalleHojaViajera detalleHojaViajera) {
+		String consulta = "UPDATE detallecontroloperaciones SET CantidadProceso = ?, CantidadTerminada = ?, FechaHoraInicio = ?, FechaHoraFinal = ? WHERE DetalleProcesoFK = ? AND ControlOperacionesFK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setDouble(1, detalleHojaViajera.getCantidadEnProceso());
+			sentenciaPreparada.setDouble(2, detalleHojaViajera.getCantidadTermiando());
+			sentenciaPreparada.setTimestamp(3, detalleHojaViajera.getFechaHoraInicio());
+			sentenciaPreparada.setTimestamp(4, detalleHojaViajera.getFechaHoraFinal());
+			sentenciaPreparada.setInt(5, detalleHojaViajera.getDetalleProcesoFK());
+			sentenciaPreparada.setInt(6, detalleHojaViajera.getHojaViajeraFK());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY CATCH
 	}//FIN METODO
 	
 }//FIN CLASE
