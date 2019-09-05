@@ -30,6 +30,7 @@ import mx.shf6.produccion.model.dao.CotizacionDAO;
 import mx.shf6.produccion.model.dao.Seguridad;
 import mx.shf6.produccion.utilities.GenerarDocumento;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.TransaccionSQL;
 import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.dao.DetalleCotizacionDAO;
 import mx.shf6.produccion.model.dao.DocumentosCuentasXCobrarDAO;
@@ -221,24 +222,37 @@ public class PantallaCotizaciones {
 		            			cotizacion = getTableView().getItems().get(getIndex());
 		            			if (Notificacion.dialogoPreguntar("Confirmación para aprobación", "¿Desea APROBAR la cotizacion " + cotizacion.getReferencia() + "?")){
 			            			cotizacion.setStatus(Cotizacion.APROBADA);
-			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-//			            			GenerarDocumento.generaCotizacion(mainApp.getConnection(), cotizacion, mainApp.getUsuario());
-			            			actualizarTabla();
 
-			            			DetalleCotizacion detalleCotizacion = new DetalleCotizacion();
-			            			detalleCotizacion = DetalleCotizacionDAO.readCotizacionFK(mainApp.getConnection(), cotizacion.getSysPK());
+			            			TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
+			            			if(CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion)){
+			            				GenerarDocumento.generaCotizacion(mainApp.getConnection(), cotizacion, mainApp.getUsuario());
+			            				actualizarTabla();
+			            				Double saldo = 0.0;
 
-			            			DocumentosCuentasXCobrar documentosCuentasXCobrar = new DocumentosCuentasXCobrar();
-			            			documentosCuentasXCobrar.setDocumento(DocumentosCuentasXCobrar.COTIZACION);
-			            			documentosCuentasXCobrar.setDebe(detalleCotizacion.getPrecio() * detalleCotizacion.getCantidad());
-			            			documentosCuentasXCobrar.setClienteFK(cotizacion.getClienteFK());
-			            			documentosCuentasXCobrar.setCotizacionFK(cotizacion.getSysPK());
-			            			documentosCuentasXCobrar.setReferencia(cotizacion.getReferencia());
-			            			if(DocumentosCuentasXCobrarDAO.create(mainApp.getConnection(), documentosCuentasXCobrar)){
+				            			ArrayList <DetalleCotizacion> listDetalleCotizacion = new ArrayList<DetalleCotizacion>();
+				            			listDetalleCotizacion = DetalleCotizacionDAO.readCotizacionDetalle(mainApp.getConnection(), cotizacion.getSysPK());
+				            			for(DetalleCotizacion detalleCotizacion : listDetalleCotizacion){
+				            				saldo = saldo + (detalleCotizacion.getPrecio()  * detalleCotizacion.getCantidad());
+				            			}//FIN FOR
 
-			            			}
+				            			DocumentosCuentasXCobrar documentosCuentasXCobrar = new DocumentosCuentasXCobrar();
+				            			documentosCuentasXCobrar.setDocumento(DocumentosCuentasXCobrar.COTIZACION);
+				            			documentosCuentasXCobrar.setDebe(saldo);
+				            			documentosCuentasXCobrar.setClienteFK(cotizacion.getClienteFK());
+				            			documentosCuentasXCobrar.setCotizacionFK(cotizacion.getSysPK());
+				            			documentosCuentasXCobrar.setReferencia(cotizacion.getReferencia());
+				            			documentosCuentasXCobrar.setNotas("Cotización");
 
-			            		}//FIN IF
+				            			if(DocumentosCuentasXCobrarDAO.create(mainApp.getConnection(), documentosCuentasXCobrar)){
+				            				TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.COMMIT_TRANSACTION);
+				            				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Cotización Aprobada");
+				            			}else
+				            				TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.ROLLBACK_TRANSACTION);//FIN IF ELSE CREATE DCXC
+			            			}else {
+			            				TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.ROLLBACK_TRANSACTION);
+			            				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo Aprobar la Cotización");
+			            			}//FIN IF UPDATE COTIZACION
+			            		}//FIN IF NOTIFICACION
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
 		                });//FIN LISTENER
@@ -249,9 +263,39 @@ public class PantallaCotizaciones {
 		            			cotizacion = getTableView().getItems().get(getIndex());
 		            			if (Notificacion.dialogoPreguntar("Confirmación para cancelación", "¿Desea CANCELAR la cotizacion " + cotizacion.getReferencia() + "?")) {
 			            			cotizacion.setStatus(Cotizacion.CANCELADA);
-			            			CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion);
-			            			actualizarTabla();
-		            			}//FIN IF
+
+			             			TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
+			            			if(CotizacionDAO.updateCotizacion(mainApp.getConnection(), cotizacion)){
+				            			actualizarTabla();
+
+				            			DocumentosCuentasXCobrar documentosCuentasXCobrarActual = new DocumentosCuentasXCobrar();
+				            			documentosCuentasXCobrarActual = DocumentosCuentasXCobrarDAO.readPorCotizacionFK(mainApp.getConnection(),  cotizacion.getSysPK());
+
+				            			DocumentosCuentasXCobrar documentosCuentasXCobrar = new DocumentosCuentasXCobrar();
+				            			documentosCuentasXCobrar.setReferencia(cotizacion.getReferencia());
+				            			documentosCuentasXCobrar.setDocumento(DocumentosCuentasXCobrar.COTIZACION);
+				            			documentosCuentasXCobrar.setHaber(documentosCuentasXCobrarActual.getDebe());
+				            			documentosCuentasXCobrar.setXAplicar(documentosCuentasXCobrarActual.getPagos());
+				            			documentosCuentasXCobrar.setNotas("Bonificación");
+				            			documentosCuentasXCobrar.setClienteFK(cotizacion.getClienteFK());
+				            			documentosCuentasXCobrar.setCotizacionFK(cotizacion.getSysPK());
+
+				            			documentosCuentasXCobrarActual.setPagos(0.0);
+				            			documentosCuentasXCobrarActual.setBonificaciones(documentosCuentasXCobrarActual.getDebe());
+
+				            			if(DocumentosCuentasXCobrarDAO.create(mainApp.getConnection(), documentosCuentasXCobrar)){
+				            				if(DocumentosCuentasXCobrarDAO.updateBonificaciones(mainApp.getConnection(), documentosCuentasXCobrarActual)){
+				            					TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.COMMIT_TRANSACTION);
+				            					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Cotización Cancelada");
+				            				}else
+				            					TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.ROLLBACK_TRANSACTION);// UPDATE DCXC
+				            			} else
+				            				TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.ROLLBACK_TRANSACTION); //FIN IF CREATE DCXC
+		            				} else {
+		            					TransaccionSQL.setStatusTransaccion(mainApp.getConnection(), TransaccionSQL.ROLLBACK_TRANSACTION);
+		            					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se pudo Cancelar la Cotización");
+		            				}//FIN IF ELSE UPDATE COTIZACION
+		            			}//FIN IF NOTIFICACION
 		            		} else
 		            			Notificacion.dialogoAlerta(AlertType.WARNING, "Error", "No tienes permiso para realizar esta acción.");
 		                });//FIN LISTENER

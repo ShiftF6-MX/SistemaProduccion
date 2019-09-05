@@ -93,15 +93,10 @@ public class DialogoAplicarPagos {
 	}//FIN METODO
 
 	private void validarAbonos() {
-		System.out.println("suma de pagos: " + this.sumaPagos);
-		System.out.println("saldo: " + this.documentosCuentasXCobrar.getSaldo());
-		System.out.println("suma <= a saldo: "+ (this.sumaPagos <= this.documentosCuentasXCobrar.getSaldo()));
 		this.sumaPagos = 0.0;
 		this.itemsTabla = this.tablaDetalleRecibos.getItems();
 		for(DocumentosCuentasXCobrar documentosCuentasXCobrar : this.itemsTabla){
-
 			if(!documentosCuentasXCobrar.getImporteAplicar().equals("0.0")){
-
 				this.sumaPagos = this.sumaPagos + Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar());
 					if(this.sumaPagos <= this.documentosCuentasXCobrar.getSaldo()){
 
@@ -113,66 +108,60 @@ public class DialogoAplicarPagos {
 							aplicarCuentasXCobrar.setImporte(Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar()));
 
 							this.listaImportesAplicar.add(aplicarCuentasXCobrar);
-							System.out.println("aplicado");
 							this.aplicarPagos = true;
 						} else {
 							this.aplicarPagos = false;
-							System.out.println("no aplicado");
 							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se puede aplicar el pago del recibo " + documentosCuentasXCobrar.getReferencia());
 							break;
 						}//FIN IF ELSE. VALIDA SI EL IMPORTE PARA APLICAR ES MENOR O IGUAL A DISPONIBLE
 					}else{
 						this.aplicarPagos = false;
 						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No se han podido aplicar los pagos. El total de los pagos es mayor al Saldo Actual");
-					}//FIN IF ELSE. VALIDA SI EL SALDO ES MENO O IGUAL A LA SUMA DE LOS PAGOS QUE SE QUIERE APLICAR
+					}//FIN IF ELSE. VALIDA SI EL SALDO ES MENOR O IGUAL A LA SUMA DE LOS PAGOS QUE SE QUIERE APLICAR
 		    }//FIN IF. VALIDA SI LA CANTIDAD DE POR APLICAR ES DIFERENTE DE CERO
 		}//FIN FOR
+		if(this.sumaPagos == 0){
+			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No ha ingresado pagos para Aplicar!");
+		}//FIN IF
 	}//FIN METODO
 
 	private void generarTransacciones() {
-		System.out.println("suma de pagos: " + this.sumaPagos);
 		if(this.aplicarPagos){
+				TransaccionSQL.setStatusTransaccion(this.mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
+				for(AplicarCuentasXCobrar aplicarCuentasXCobrar : this.listaImportesAplicar){
+					if(AplicarCuentasXCobrarDAO.create(conexion, aplicarCuentasXCobrar)){
+						transaccionAplc = true;
+					}else {
+						transaccionAplc = false;
+						TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+						break;
+					}//FIN IF ELSE
+				}//FIN FOR
 
-			TransaccionSQL.setStatusTransaccion(this.mainApp.getConnection(), TransaccionSQL.AUTOCOMMIT_OFF);
-			for(AplicarCuentasXCobrar aplicarCuentasXCobrar : this.listaImportesAplicar){
-				System.out.println("aplicarCuentas: "+aplicarCuentasXCobrar.getImporte());
-				if(AplicarCuentasXCobrarDAO.create(conexion, aplicarCuentasXCobrar)){
-					transaccionAplc = true;
-					System.out.println("craate verdadero");
-				}else {
-					transaccionAplc = false;
-					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
-					break;
-				}//FIN IF ELSE
-			}//FIN FOR
+				for(DocumentosCuentasXCobrar documentosCuentasXCobrar : this.itemsTabla){
 
-			for(DocumentosCuentasXCobrar documentosCuentasXCobrar : this.itemsTabla){
+					documentosCuentasXCobrar.setXAplicar(documentosCuentasXCobrar.getXAplicar() -  Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar()));
+					if(DocumentosCuentasXCobrarDAO.updateXAplicar(conexion, documentosCuentasXCobrar)){
+						transaccionDcxc = true;
+					}else {
+						transaccionDcxc = false;
+						TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+						break;
+					}//FIN IF ELSE
+				}//FIN FOR
 
-				documentosCuentasXCobrar.setXAplicar(documentosCuentasXCobrar.getXAplicar() -  Double.parseDouble(documentosCuentasXCobrar.getImporteAplicar()));
-				System.out.println("XAplicar: "+documentosCuentasXCobrar.getXAplicar());
-				if(DocumentosCuentasXCobrarDAO.updateXAplicar(conexion, documentosCuentasXCobrar)){
-					transaccionDcxc = true;
-					System.out.println("updatexaplicar verdadero");
-				}else {
-					transaccionDcxc = false;
-					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
-					break;
-				}//FIN IF ELSE
-			}//FIN FOR
-
-			if(transaccionAplc && transaccionDcxc){
-				this.documentosCuentasXCobrar.setPagos(this.documentosCuentasXCobrar.getPagos() + sumaPagos);
-				System.out.println("get pagos: "+this.documentosCuentasXCobrar.getPagos());
-				if(DocumentosCuentasXCobrarDAO.updatePagos(conexion, this.documentosCuentasXCobrar)){
-					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
-					Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡Los pagos han sido aplicados!");
-					this.etiquetaSaldo.setText("Saldo "+ (Double.toString(this.documentosCuentasXCobrar.getSaldo() - this.sumaPagos)));
-					this.mainApp.getEscenarioDialogosAlterno().close();
-				}else{
-					TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
-					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Los pagos no pudieron ser aplicados");
-				}//FIN IF ELSE
-			}//FIN IF
+				if(transaccionAplc && transaccionDcxc){
+					this.documentosCuentasXCobrar.setPagos(this.documentosCuentasXCobrar.getPagos() + sumaPagos);
+					if(DocumentosCuentasXCobrarDAO.updatePagos(conexion, this.documentosCuentasXCobrar)){
+						TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
+						Notificacion.dialogoAlerta(AlertType.INFORMATION,"", "¡Los pagos han sido aplicados!");
+						this.etiquetaSaldo.setText("Saldo "+ (Double.toString(this.documentosCuentasXCobrar.getSaldo() - this.sumaPagos)));
+						this.mainApp.getEscenarioDialogosAlterno().close();
+					}else{
+						TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.ROLLBACK_TRANSACTION);
+						Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Los pagos no pudieron ser aplicados");
+					}//FIN IF ELSE
+				}//FIN IF
 		}//FIN IF
 	}//FIN METODO
 

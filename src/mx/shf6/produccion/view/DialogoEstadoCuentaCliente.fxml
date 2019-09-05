@@ -129,7 +129,6 @@
                         <PTableColumn fx:id="columnaImporte" minWidth="-1.0" prefWidth="141.0" text="Importe" />
                         <PTableColumn fx:id="columnaPagos" minWidth="-1.0" prefWidth="100.0" text="Pagos" />
                         <PTableColumn fx:id="columnaSaldo" minWidth="-1.0" prefWidth="119.0" text="Saldo" />
-                        <PTableColumn fx:id="columnaAcciones" minWidth="-1.0" prefWidth="119.0" text="Acciones" />
                      </columns>
                      <VBox.margin>
                         <Insets />

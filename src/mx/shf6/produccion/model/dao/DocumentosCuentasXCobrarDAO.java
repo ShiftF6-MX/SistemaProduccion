@@ -103,7 +103,7 @@ public class DocumentosCuentasXCobrarDAO {
 
 	public static ArrayList<DocumentosCuentasXCobrar> readMovimientosPorClienteFK(Connection connection, int clienteFK, Date fechaInicio, Date fechaFin, String like) {
 		ArrayList<DocumentosCuentasXCobrar> arrayListDocumentosCuentasXCobrar = new ArrayList<DocumentosCuentasXCobrar>();
-		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE ClienteFK = " + clienteFK +" AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
+		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE ClienteFK = " + clienteFK +" AND dcxc.Sys_PK NOT IN (SELECT Sys_PK FROM dcxc WHERE Documento = 1 AND Haber > 0) AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -133,7 +133,7 @@ public class DocumentosCuentasXCobrarDAO {
 
 	public static ArrayList<DocumentosCuentasXCobrar> readPendientesPorClienteFK(Connection connection, int clienteFK, Date fechaInicio, Date fechaFin, String like) {
 		ArrayList<DocumentosCuentasXCobrar> arrayListDocumentosCuentasXCobrar = new ArrayList<DocumentosCuentasXCobrar>();
-		String consulta = "SELECT  Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK, (debe - pagos) AS Saldo FROM dcxc  WHERE (debe - pagos) > 0 AND ClienteFK = " + clienteFK +" AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
+		String consulta = "SELECT  Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK, (debe - pagos) AS Saldo FROM dcxc  WHERE Bonificacion = 0 AND (debe - pagos) > 0 AND ClienteFK = " + clienteFK +" AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -163,7 +163,7 @@ public class DocumentosCuentasXCobrarDAO {
 
 	public static ArrayList<DocumentosCuentasXCobrar> readSaldadosPorClienteFK(Connection connection, int clienteFK, Date fechaInicio, Date fechaFin, String like) {
 		ArrayList<DocumentosCuentasXCobrar> arrayListDocumentosCuentasXCobrar = new ArrayList<DocumentosCuentasXCobrar>();
-		String consulta = "SELECT  Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK, (debe - pagos) AS Saldo FROM dcxc  WHERE (debe - pagos) = 0 AND ClienteFK = " + clienteFK +" AND Documento = 1 AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
+		String consulta = "SELECT  Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK, (debe - pagos) AS Saldo FROM dcxc  WHERE (debe - pagos) = 0 AND ClienteFK = " + clienteFK +" AND dcxc.Sys_PK NOT IN (SELECT Sys_PK FROM dcxc WHERE Haber > 0) AND Documento = 1 AND (Fecha BETWEEN '"+ fechaInicio +"' AND '"+ fechaFin +"') AND Referencia LIKE '%"+ like +"%'";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -193,7 +193,7 @@ public class DocumentosCuentasXCobrarDAO {
 
 	public static ArrayList<DocumentosCuentasXCobrar> readRecibosPorAplicarCliente(Connection connection, int clienteFK) {
 		ArrayList<DocumentosCuentasXCobrar> arrayListDocumentosCuentasXCobrar = new ArrayList<DocumentosCuentasXCobrar>();
-		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE ClienteFK = "+ clienteFK +" AND XAplicar > 0";
+		String consulta = "SELECT Sys_PK, Bonificacion, Debe, Documento, Fecha, Haber, Notas, Pagos, Referencia, XAplicar, ClienteFK, ReciboFK, CotizacionFK FROM dcxc WHERE ClienteFK = "+ clienteFK +" AND Documento = 2 AND XAplicar > 0";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(consulta);
@@ -290,6 +290,21 @@ public class DocumentosCuentasXCobrarDAO {
 			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
 			sentenciaPreparada.setDouble(1, documentosCuentasXCobrar.getPagos());
 			sentenciaPreparada.setInt(2, documentosCuentasXCobrar.getSysPK());
+			sentenciaPreparada.execute();
+			return true;
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+			return false;
+		}//FIN TRY/CATCH
+	}//FIN METODO
+
+	public static boolean updateBonificaciones(Connection connection,  DocumentosCuentasXCobrar documentosCuentasXCobrar) {
+		String consulta = "UPDATE dcxc SET Pagos = ?, Bonificacion = ?  WHERE Sys_PK = ?";
+		try {
+			PreparedStatement sentenciaPreparada = connection.prepareStatement(consulta);
+			sentenciaPreparada.setDouble(1, documentosCuentasXCobrar.getPagos());
+			sentenciaPreparada.setDouble(2, documentosCuentasXCobrar.getBonificaciones());
+			sentenciaPreparada.setInt(3, documentosCuentasXCobrar.getSysPK());
 			sentenciaPreparada.execute();
 			return true;
 		} catch (SQLException ex) {
