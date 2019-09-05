@@ -23,24 +23,13 @@
                         <Image url="@images/1x/StartButton.png" />
                      </image>
                   </ImageView>
-                  <VBox alignment="CENTER_LEFT" fillWidth="false" spacing="3.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                      <children>
-                        <TextField fx:id="campoTextoComponente" editable="false" focusTraversable="false" prefWidth="300.0" promptText="Nombre" styleClass="textFieldTitulos" text="Componente">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets left="1.0" />
-                           </padding>
-                        </TextField>
-                        <TextField editable="false" focusTraversable="false" layoutX="10.0" layoutY="16.0" prefWidth="150.0" promptText="Código" styleClass="textFieldSubTitulos" text="Estructura de Niveles">
-                           <padding>
-                              <Insets left="1.0" />
-                           </padding>
-                        </TextField>
+                        <Label fx:id="etiquetaComponente" maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium14" text="Componente" textFill="WHITE" />
+                        <Label maxWidth="1.7976931348623157E308" styleClass="labelRobotoMedium12" text="Estructura de Niveles" textFill="WHITE" />
                      </children>
                   </VBox>
                </children>

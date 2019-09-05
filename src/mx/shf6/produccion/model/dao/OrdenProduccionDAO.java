@@ -55,7 +55,7 @@ public class OrdenProduccionDAO {
 	public static ArrayList<OrdenProduccion> readOrdenProduccion(Connection connection) {
 		ArrayList<OrdenProduccion> arrayListaOrdenProduccion = new ArrayList<OrdenProduccion>();
 		String consulta = "SELECT ordenesproduccion.Sys_PK, ordenesproduccion.Fecha, ordenesproduccion.Lote, ordenesproduccion.Status, \r\n" + 
-				"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Codigo, componentes.Descripcion, detallecotizaciones.Cantidad \r\n" + 
+				"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Sys_PK, proyectos.Codigo, componentes.Descripcion, detallecotizaciones.Cantidad \r\n" + 
 				"FROM ordenesproduccion INNER JOIN detallecotizaciones ON ordenesproduccion.DetalleCotizacionFK = detallecotizaciones.Sys_PK\r\n" + 
 				"INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK\r\n" + 
 				"INNER JOIN componentes ON proyectos.ComponenteFK = componentes.Sys_PK\r\n" + 
@@ -74,9 +74,10 @@ public class OrdenProduccionDAO {
 				orden.setDetalleCotizacionFK(resultados.getInt(5));
 				orden.setCliente(resultados.getString(6));
 				orden.setCotizacion(resultados.getString(7));
-				orden.setProyecto(resultados.getString(8));
-				orden.setComponente(resultados.getString(9));
-				orden.setCantidad(resultados.getDouble(10));
+				orden.setProyectoFK(resultados.getInt(8));
+				orden.setProyecto(resultados.getString(9));
+				orden.setComponente(resultados.getString(10));
+				orden.setCantidad(resultados.getDouble(11));
 				arrayListaOrdenProduccion.add(orden);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -89,13 +90,13 @@ public class OrdenProduccionDAO {
 		public static ArrayList<OrdenProduccion> dateOrdenProduccion(Connection connection, Date fechaInicio, Date fechaFinal) {
 			ArrayList<OrdenProduccion> arrayListaOrdenProduccion = new ArrayList<OrdenProduccion>();
 			String consulta = "SELECT ordenesproduccion.Sys_PK, ordenesproduccion.Fecha, ordenesproduccion.Lote, ordenesproduccion.Status, \r\n" + 
-					"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Codigo, componentes.NumeroParte\r\n" + 
+					"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Sys_PK, proyectos.Codigo, componentes.Descripcion, detallecotizaciones.Cantidad \r\n" + 
 					"FROM ordenesproduccion INNER JOIN detallecotizaciones ON ordenesproduccion.DetalleCotizacionFK = detallecotizaciones.Sys_PK\r\n" + 
 					"INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK\r\n" + 
 					"INNER JOIN componentes ON proyectos.ComponenteFK = componentes.Sys_PK\r\n" + 
 					"INNER JOIN cotizaciones ON detallecotizaciones.CotizacionFK = cotizaciones.Sys_PK\r\n" + 
-					"INNER JOIN clientes ON cotizaciones.ClienteFK = clientes.Sys_PK\r\n"
-					+ " WHERE (ordenesproduccion.Fecha BETWEEN '"+ fechaInicio +"' AND '" + fechaFinal +"') ORDER BY Fecha ASC";
+					"INNER JOIN clientes ON cotizaciones.ClienteFK = clientes.Sys_PK\\r\\n" +
+					" WHERE (ordenesproduccion.Fecha BETWEEN '"+ fechaInicio +"' AND '" + fechaFinal +"') ORDER BY Fecha ASC";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
@@ -108,8 +109,10 @@ public class OrdenProduccionDAO {
 					orden.setDetalleCotizacionFK(resultados.getInt(5));
 					orden.setCliente(resultados.getString(6));
 					orden.setCotizacion(resultados.getString(7));
-					orden.setProyecto(resultados.getString(8));
-					orden.setComponente(resultados.getString(9));
+					orden.setProyectoFK(resultados.getInt(8));
+					orden.setProyecto(resultados.getString(9));
+					orden.setComponente(resultados.getString(10));
+					orden.setCantidad(resultados.getDouble(11));
 					arrayListaOrdenProduccion.add(orden);
 				}//FIN WHILE
 			} catch (SQLException ex) {
@@ -122,7 +125,7 @@ public class OrdenProduccionDAO {
 	public static ArrayList<OrdenProduccion> searchOrdenProduccion(Connection connection, String like) {
 		ArrayList<OrdenProduccion> arrayListaOrdenProduccion = new ArrayList<OrdenProduccion>();
 		String consulta = "SELECT ordenesproduccion.Sys_PK, ordenesproduccion.Fecha, ordenesproduccion.Lote, ordenesproduccion.Status, \r\n" + 
-				"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Codigo, componentes.NumeroParte\r\n" + 
+				"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Sys_PK, proyectos.Codigo, componentes.Descripcion, detallecotizaciones.Cantidad \r\n" + 
 				"FROM ordenesproduccion INNER JOIN detallecotizaciones ON ordenesproduccion.DetalleCotizacionFK = detallecotizaciones.Sys_PK\r\n" + 
 				"INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK\r\n" + 
 				"INNER JOIN componentes ON proyectos.ComponenteFK = componentes.Sys_PK\r\n" + 
@@ -142,8 +145,10 @@ public class OrdenProduccionDAO {
 				orden.setDetalleCotizacionFK(resultados.getInt(5));
 				orden.setCliente(resultados.getString(6));
 				orden.setCotizacion(resultados.getString(7));
-				orden.setProyecto(resultados.getString(8));
-				orden.setComponente(resultados.getString(9));
+				orden.setProyectoFK(resultados.getInt(8));
+				orden.setProyecto(resultados.getString(9));
+				orden.setComponente(resultados.getString(10));
+				orden.setCantidad(resultados.getDouble(11));
 				arrayListaOrdenProduccion.add(orden);
 			}//FIN WHILE
 		} catch (SQLException ex) {
@@ -156,7 +161,7 @@ public class OrdenProduccionDAO {
 	public static ArrayList<OrdenProduccion> statusOrdenProduccion(Connection connection, int status) {
 		ArrayList<OrdenProduccion> arrayListaOrdenProduccion = new ArrayList<OrdenProduccion>();
 		String consulta = "SELECT ordenesproduccion.Sys_PK, ordenesproduccion.Fecha, ordenesproduccion.Lote, ordenesproduccion.Status, \r\n" + 
-				"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Codigo, componentes.NumeroParte\r\n" + 
+				"ordenesproduccion.DetalleCotizacionFK, clientes.Nombre, cotizaciones.Referencia, proyectos.Sys_PK, proyectos.Codigo, componentes.Descripcion, detallecotizaciones.Cantidad \r\n" + 
 				"FROM ordenesproduccion INNER JOIN detallecotizaciones ON ordenesproduccion.DetalleCotizacionFK = detallecotizaciones.Sys_PK\r\n" + 
 				"INNER JOIN proyectos ON detallecotizaciones.ProyectoFK = proyectos.Sys_PK\r\n" + 
 				"INNER JOIN componentes ON proyectos.ComponenteFK = componentes.Sys_PK\r\n" + 
@@ -175,8 +180,10 @@ public class OrdenProduccionDAO {
 				orden.setDetalleCotizacionFK(resultados.getInt(5));
 				orden.setCliente(resultados.getString(6));
 				orden.setCotizacion(resultados.getString(7));
-				orden.setProyecto(resultados.getString(8));
-				orden.setComponente(resultados.getString(9));
+				orden.setProyectoFK(resultados.getInt(8));
+				orden.setProyecto(resultados.getString(9));
+				orden.setComponente(resultados.getString(10));
+				orden.setCantidad(resultados.getDouble(11));
 				arrayListaOrdenProduccion.add(orden);
 			}//FIN WHILE
 		} catch (SQLException ex) {

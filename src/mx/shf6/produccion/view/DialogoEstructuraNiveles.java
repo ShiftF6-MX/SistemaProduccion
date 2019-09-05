@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
@@ -47,7 +47,7 @@ public class DialogoEstructuraNiveles {
 	@FXML private TreeTableColumn <DetalleComponente, Integer> columnaNivel;
 	@FXML private TreeTableColumn <DetalleComponente, Double> columnaCantidad;
 	@FXML private TreeTableColumn <DetalleComponente, String> columnaAcciones;
-	@FXML private TextField campoTextoComponente;
+	@FXML private Label etiquetaComponente;
 
 
 	//INICIA COMPONENTES INTERFAZ USUARIO
@@ -97,7 +97,7 @@ public class DialogoEstructuraNiveles {
 			detalleComponenteRaiz.setNumeroParteComponenteInferior(componenteRaiz.getNumeroParte());
 			detalleComponenteRaiz.setDescripcionComponenteInferior(componenteRaiz.getDescripcion());
 			detalleComponenteRaiz.setNumeroDescripcionComponenteIferior();
-			this.campoTextoComponente.setText(detalleComponenteRaiz.getNumeroDescripcionComponenteIferior());
+			this.etiquetaComponente.setText(detalleComponenteRaiz.getNumeroDescripcionComponenteIferior());
 			root.setValue(detalleComponenteRaiz);
 			ttv.setRoot(root);
 		}//FIN IF

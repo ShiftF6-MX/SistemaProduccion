@@ -25,8 +25,8 @@
                   </ImageView>
                   <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="500.0">
                      <children>
-                        <Label fx:id="campoTextoComponente" prefHeight="25.0" prefWidth="500.0" styleClass="labelRobotoMedium16" text="Parte Primaria" textFill="WHITE" wrapText="true" />
-                        <Label prefHeight="25.0" prefWidth="300.0" styleClass="labelRobotoMedium14" text="Lista de Componentes" textFill="WHITE" />
+                        <Label fx:id="campoTextoComponente" prefHeight="25.0" prefWidth="500.0" styleClass="labelRobotoMedium14" text="Parte Primaria" textFill="WHITE" wrapText="true" />
+                        <Label prefHeight="25.0" prefWidth="300.0" styleClass="labelRobotoMedium12" text="Lista de Componentes" textFill="WHITE" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="5.0" HBox.hgrow="ALWAYS">

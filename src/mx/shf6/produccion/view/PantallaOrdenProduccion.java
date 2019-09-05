@@ -225,7 +225,7 @@ public class PantallaOrdenProduccion {
 	
 	//VER ESTRUCTURA DE NIVELES
 	private void manejadorBotonEstructuraNiveles(OrdenProduccion ordenProduccion) {
-		//this.mainApp.
+		this.mainApp.iniciarDialogoEstructuraNiveles(ProyectoDAO.readProyecto(this.conexion, ordenProduccion.getProyectoFK()));
 	}//FIN METODO
 	
 }//FIN CLASE

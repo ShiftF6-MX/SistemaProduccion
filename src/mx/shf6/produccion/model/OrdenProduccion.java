@@ -16,6 +16,7 @@ public class OrdenProduccion {
 	private ObjectProperty<Integer> detalleCotizacionFK;
 	private StringProperty cliente;
 	private StringProperty cotizacion;
+	private ObjectProperty<Integer> proyectoFK;
 	private StringProperty proyecto;
 	private StringProperty componente;
 	private ObjectProperty<Double> cantidad;
@@ -29,11 +30,11 @@ public class OrdenProduccion {
 	
 	//CONSTRUCTOR VACIO
 	public OrdenProduccion() {
-		this(0, new Date(System.currentTimeMillis()), "",0,0,"","","","", 0.0, new Date(System.currentTimeMillis()));
+		this(0, new Date(System.currentTimeMillis()), "", 0, 0, "", "", 0, "", "", 0.0, new Date(System.currentTimeMillis()));
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, String proyecto, String componente, Double cantidad, Date fechaEntrega) {
+	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, Integer proyectoFK, String proyecto, String componente, Double cantidad, Date fechaEntrega) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.lote = new SimpleStringProperty(lote);
@@ -41,6 +42,7 @@ public class OrdenProduccion {
 		this.detalleCotizacionFK = new SimpleObjectProperty<Integer>(detalleCotizacionFK);
 		this.cliente = new SimpleStringProperty(cliente);
 		this.cotizacion = new SimpleStringProperty(cotizacion);
+		this.proyectoFK = new SimpleObjectProperty<Integer>(proyectoFK);
 		this.proyecto = new SimpleStringProperty(proyecto);
 		this.componente =  new SimpleStringProperty(componente);
 		this.cantidad = new SimpleObjectProperty<Double>(cantidad);
@@ -144,6 +146,18 @@ public class OrdenProduccion {
 		return cotizacion;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A COTIZACION
+	
+	public void setProyectoFK(Integer proyectoFK) {
+		this.proyectoFK.set(proyectoFK);
+	}//FIN METODO
+	
+	public Integer getProyectoFK() {
+		return this.proyectoFK.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Integer> proyectoFKProperty() {
+		return this.proyectoFK;
+	}//FIN METODO
 	
 	//METODOS DE ACCESO A PROYECTO
 	public void setProyecto(String proyecto) {

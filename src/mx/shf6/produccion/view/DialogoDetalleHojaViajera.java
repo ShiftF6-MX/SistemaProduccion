@@ -68,7 +68,7 @@ public class DialogoDetalleHojaViajera {
 		this.columnaEnProceso.setCellValueFactory(cellData -> cellData.getValue().cantidadEnProcesoProperty());
 		this.ColumnaTerminado.setCellValueFactory(cellData -> cellData.getValue().cantidadTerminadoProperty());
 		this.columnaFHInicio.setCellValueFactory(cellData -> cellData.getValue().fechaHoraInicioProperty());
-		this.columnaFHInicio.setCellValueFactory(cellData -> cellData.getValue().fechaHoraFinalProperty());
+		this.columnaFHFinal.setCellValueFactory(cellData -> cellData.getValue().fechaHoraFinalProperty());
 	}//FIN METODO
 	
 	private void inicializarComponentes() {
