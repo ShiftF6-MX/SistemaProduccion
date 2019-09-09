@@ -187,6 +187,22 @@ public class DetalleProcesoDAO {
 		}//FIN TRY CATCH
 		return ultimaOperacion;
 	}//FIN METODO
+	
+	public static DetalleProceso tiemposProceso(Connection connection,int proceso) {
+		DetalleProceso detalleProceso = new DetalleProceso();
+		String consulta = "SELECT SUM(TiempoPreparacion), SUM(TiempoOperacion) FROM detalleprocesos WHERE ProcesoFK = " + proceso;
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet resulset = statement.executeQuery(consulta);
+			while (resulset.next()) {
+				detalleProceso.setTiempoPreparacion(resulset.getDouble(1));
+				detalleProceso.setTiempoOperacion(resulset.getDouble(2));
+			}//FIN WHILE
+		} catch (SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY CATCH
+		return detalleProceso;
+	}//FIN METODO
 		
 	public static DetalleProceso primeraOperacion(Connection connection, int proceso) {
 		DetalleProceso detalleProceso = new DetalleProceso();
