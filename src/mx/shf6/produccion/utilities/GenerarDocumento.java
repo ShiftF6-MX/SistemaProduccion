@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mx.shf6.produccion.model.Cliente;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
@@ -75,12 +76,11 @@ public class GenerarDocumento {
 			jasperView.setVisible(true);
 			jasperView.setTitle("Cotizacion: " + cotizacion.getReferencia());
 		} catch (JRException jre) {
-			//Notificacion.dialogoException(jre);
-			System.out.println(jre);
+			Notificacion.dialogoException(jre);
 		}//TRY/CATH
 	}//END METHOD
 
-	
+
 	public static void generarHojaProceso(Connection conexion, int sysPK) {
 		JasperReport jasperReport;
 		try {
@@ -88,7 +88,7 @@ public class GenerarDocumento {
 			procesito = ProcesoDAO.readProcesoHoja(conexion, sysPK);
 			if (procesito.getTipoComponente().equals("E") || procesito.getTipoComponente().equals("A")) {
 				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/hojaProcesoRev.jasper");
-			} else { 
+			} else {
 				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/hojaProceso2.jasper");
 			}
 			tablaDetalleProceso = DetalleProcesoDAO.toList(DetalleProcesoDAO.readDetalleProcesoFK(conexion, sysPK));
@@ -102,14 +102,14 @@ public class GenerarDocumento {
 			parameters.put("pNombre", procesito.getNombreComponente());
 			parameters.put("pCliente", procesito.getNombreCliente());
 			parameters.put("pFecha", procesito.getFecha().toString());
-			if (procesito.getCantidad() == 0) 
+			if (procesito.getCantidad() == 0)
 				parameters.put("pCantidad", " ");
 			else
 				parameters.put("pcantidad", procesito.getCantidad().toString());
-				
+
 			if (procesito.getOrdenamiento() == 0)
 				parameters.put("pOrdenamiento", " ");
-			else 
+			else
 				parameters.put("pOrdenamiento", procesito.getOrdenamiento().toString());
 			parameters.put("pNivel", procesito.getNivel().toString());
 			parameters.put("pDestino", procesito.getNombreTrabajo());
@@ -126,7 +126,7 @@ public class GenerarDocumento {
 			 SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
 			 String fechaActual = dt1.format(fecha);
 			 parameters.put("pFechaActual", fechaActual);
-			
+
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
@@ -134,7 +134,7 @@ public class GenerarDocumento {
 			Notificacion.dialogoException(e);
 		}//FIN TRY CATCH
 	}//FIN METODO
-	
+
 	public static void generaValeMovimientoInventario(Connection connection, ArrayList <DetalleCardex> listaDetalleCardex, int tipoMovimiento) {
 		String titulo = "";
 		String referencia = "";
@@ -159,7 +159,6 @@ public class GenerarDocumento {
 			jasperView.setVisible(true);
 		} catch (JRException jre) {
 			Notificacion.dialogoException(jre);
-			System.out.println(jre);
 		}//TRY/CATH
 	}//END METHOD
 
@@ -173,7 +172,32 @@ public class GenerarDocumento {
 			jasperView.setVisible(true);
 		} catch (JRException jre) {
 			Notificacion.dialogoException(jre);
-			System.out.println(jre);
 		}//TRY/CATH
 	}//END METHOD
+
+	public static void generaHojaViajera(Connection connection, Cliente cliente, Componente componente, ArrayList<DetalleProceso> listaProcesos) {
+		try {
+			if(listaProcesos.size()>0 && listaProcesos.size()<10){
+				for(int i= listaProcesos.size() + 1; i<=10; i++){
+					DetalleProceso detalleProceso = new DetalleProceso();
+					detalleProceso.setOperacion(i);
+					listaProcesos.add(detalleProceso);
+				}//FIN FOR
+			}//FIN IF
+
+			JRBeanCollectionDataSource itemsTabla = new JRBeanCollectionDataSource(listaProcesos);
+			Map<String,Object> parameters = new HashMap<String,Object>();
+			parameters.put("Cliente", cliente.getNombre());
+			parameters.put("NoDiseño", componente.getNumeroParte());
+			parameters.put("Descripcion", componente.getDescripcion());
+			parameters.put("ListaProcesos", itemsTabla);
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/HojaViajera.jasper");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,  new JREmptyDataSource());
+			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
+			jasperView.setVisible(true);
+		} catch (JRException jre) {
+			Notificacion.dialogoException(jre);
+		}//TRY/CATH
+	}//END METHOD
+
 }//FIN CLASE
