@@ -366,7 +366,7 @@ public class ComponenteDAO {
 			String consulta = "SELECT Sys_PK, NumeroParte, Descripcion, Largo, UnidadLargo, Ancho, UnidadAncho, Alto, UnidadAlto, Grado, \r\n" + 
 					"Espesor, UnidadEspesor, DiametroExterno, UnidadDExt, DiametroInterno, UnidadDInt, Alto2, UnidadAlto2, AnchoTotal, UnidadAnchoTotal, \r\n" + 
 					"CodigoCatalogo, TipoComponente, Costo, CostoDirecto, CostoIndirecto, MaterialFK, TipoMiscelaneoFK, TipoMateriaPrimaFK, AcabadoFK, TratamientoFK,\r\n" + 
-					" Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos, Revision FROM componentes WHERE TipoComponente = '" + tipoComponenteChar + "' AND NumeroParte LIKE '%" + numeroParte + "%'";
+					" Notas, Status, Consecutivo, ClienteFK, EsInterno, Hilos, Revision FROM componentes WHERE TipoComponente = '" + tipoComponenteChar + "' AND Descripcion LIKE '%" + numeroParte + "%'";
 			try {
 				Statement sentencia = connection.createStatement();
 				ResultSet resultados = sentencia.executeQuery(consulta);
