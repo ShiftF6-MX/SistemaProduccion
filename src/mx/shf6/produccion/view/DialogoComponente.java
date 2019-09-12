@@ -562,13 +562,13 @@ public class DialogoComponente {
 			this.comboBoxCliente.getSelectionModel().select(componente.getCliente(this.mainApp.getConnection()).getNombre());
 			this.comboBoxCliente.setDisable(true);
 			this.comboBoxTipoMateriaPrima.getSelectionModel().select(componente.getTipoMateriaPrima(this.mainApp.getConnection()).getDescripcion());
-			this.comboBoxTipoMateriaPrima.setDisable(true);
+			this.comboBoxTipoMateriaPrima.setDisable(false);
 			this.comboBoxTipoMiscelaneo.getSelectionModel().select(componente.getTipoMiscelaneo(this.mainApp.getConnection()).getDescripcion());
-			this.comboBoxTipoMiscelaneo.setDisable(true);
+			this.comboBoxTipoMiscelaneo.setDisable(false);
 			this.comboBoxAcabado.getSelectionModel().select(componente.getAcabado(this.mainApp.getConnection()).getDescripcion());
-			this.comboBoxAcabado.setDisable(true);
+			this.comboBoxAcabado.setDisable(false);
 			this.comboBoxTratamiento.getSelectionModel().select(componente.getTratamiento(this.mainApp.getConnection()).getDescripcion());
-			this.comboBoxTratamiento.setDisable(true);
+			this.comboBoxTratamiento.setDisable(false);
 			this.campoTextoGradoMaterial.setText(this.componente.getGradoMaterial());
 			this.campoTextoGradoMaterial.setDisable(false);
 			this.campoTextoEspesor.setText(String.valueOf(this.componente.getDimensiones().getEspesor()));
