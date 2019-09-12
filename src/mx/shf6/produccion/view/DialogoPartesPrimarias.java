@@ -316,8 +316,8 @@ public class DialogoPartesPrimarias {
 				return false;
 			}//FIN IF/ELSE
 		} else {
-			this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera);
 			printHojaViajera(hojaViajera, listaDetallesProceso);
+			this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera);
 			return true;
 		}
 	}//FIN METODO
