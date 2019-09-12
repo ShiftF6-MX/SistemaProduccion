@@ -272,6 +272,7 @@ public class DialogoPartesPrimarias {
 	private boolean accionBotonHojaViajera(DetalleComponente componenteHojaViajera) {
 		System.out.println("Sys_PK: " + componenteHojaViajera.getComponenteSuperiorFK() + " NP: " + componenteHojaViajera.getNumeroParteComponenteSuperior());
 		HojaViajera hojaViajera = HojaViajeraDAO.readHojaViajeraPorOrdenProduccionComponente(this.conexion, this.ordenProduccion.getSysPK(), ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK());
+		ArrayList<DetalleProceso> listaDetallesProceso = DetalleProcesoDAO.readDetalleProcesoFK(this.conexion, ProcesoDAO.readProcesoComponenteFK(this.conexion, ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK()));
 		if (hojaViajera.getSysPK() == 0) {
 			hojaViajera.setCantidad(componenteHojaViajera.getCantidad());
 			hojaViajera.setCodigoParoFK(1);
@@ -282,7 +283,7 @@ public class DialogoPartesPrimarias {
 			TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.AUTOCOMMIT_OFF);
 			if (HojaViajeraDAO.createControlOperaciones(this.conexion, hojaViajera)) {
 				hojaViajera = HojaViajeraDAO.readHojaViajeraPorOrdenProduccionComponente(this.conexion, this.ordenProduccion.getSysPK(), ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK());
-				ArrayList<DetalleProceso> listaDetallesProceso = DetalleProcesoDAO.readDetalleProcesoFK(this.conexion, ProcesoDAO.readProcesoComponenteFK(this.conexion, ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK()));
+				listaDetallesProceso = DetalleProcesoDAO.readDetalleProcesoFK(this.conexion, ProcesoDAO.readProcesoComponenteFK(this.conexion, ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK()));
 				for (DetalleProceso detalleProceso : listaDetallesProceso) {
 					DetalleHojaViajera detalleHojaViajera = new DetalleHojaViajera();
 					detalleHojaViajera.setDetalleProcesoOperacion(detalleProceso.getOperacion());
@@ -316,6 +317,7 @@ public class DialogoPartesPrimarias {
 			}//FIN IF/ELSE
 		} else {
 			this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera);
+			printHojaViajera(hojaViajera, listaDetallesProceso);
 			return true;
 		}
 	}//FIN METODO
