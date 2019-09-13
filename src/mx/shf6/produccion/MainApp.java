@@ -2,6 +2,7 @@ package mx.shf6.produccion;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -241,7 +242,7 @@ public class MainApp extends Application {
 	private void configurarBaseDatos() {
 		LeerArchivo.leerArchivo();
 		this.conexionBD = new ConnectionDB(LeerArchivo.nameDB, LeerArchivo.hostDB, LeerArchivo.userDB, LeerArchivo.passwordDB);
-		//this.conexionBD = new ConnectionDB("produccion_mfg2","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
+		//this.conexionBD = new ConnectionDB("produccion_mfg","104.254.247.249", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		//this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.100", "ManufacturasG", "WaAYq3PN6qREb+!w");
 		//this.conexionBD = new ConnectionDB("produccion_mfg","192.168.0.216", "conn01", "Simons83Mx");
 		this.conexion = conexionBD.conectarMySQL();
@@ -1504,7 +1505,7 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	public void iniciarDialogoDetalleHojaViajera(HojaViajera hojaViajera) {
+	public void iniciarDialogoDetalleHojaViajera(HojaViajera hojaViajera, ArrayList<DetalleProceso> listaDetalleProcesos) {
 		try{
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleHojaViajera.fxml"));
@@ -1514,7 +1515,7 @@ public class MainApp extends Application {
 			Scene escenaDialogoDetalleHojaViajera = this.iniciarEscenarioDialogosAlterno(this.dialogoDetalleHojaViajera);
 			this.escenarioDialogosAlterno.setScene(escenaDialogoDetalleHojaViajera);
 			DialogoDetalleHojaViajera dialogoDetalleHojaViajera = fxmlLoader.getController();
-			dialogoDetalleHojaViajera.setMainApp(this, hojaViajera);
+			dialogoDetalleHojaViajera.setMainApp(this, hojaViajera, listaDetalleProcesos);
 
 		    this.escenarioDialogosAlterno.showAndWait();
 		} catch(IOException | IllegalStateException ex) {

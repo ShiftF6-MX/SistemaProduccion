@@ -3,16 +3,19 @@ package mx.shf6.produccion.view;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import mx.shf6.produccion.MainApp;
-import mx.shf6.produccion.model.DetalleComponente;
+import mx.shf6.produccion.model.Cliente;
+import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.DetalleHojaViajera;
+import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.HojaViajera;
+import mx.shf6.produccion.model.TipoComponente;
+import mx.shf6.produccion.model.dao.ClienteDAO;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleHojaViajeraDAO;
 import mx.shf6.produccion.utilities.GenerarDocumento;
@@ -25,8 +28,8 @@ public class DialogoDetalleHojaViajera {
 	private MainApp mainApp;
 	private Connection conexion;
 	private HojaViajera hojaViajera;
-	private ArrayList<DetalleComponente> listaPartePrimaria;
 	private ArrayList<DetalleHojaViajera> listaDetallesHojaViajera;
+	private ArrayList<DetalleProceso> listaDetalleProceso;
 
 	//VARIABLES
 	Double cantidad = 0.0;
@@ -55,12 +58,12 @@ public class DialogoDetalleHojaViajera {
 
 
 	//ACCESO CLASE PRINCIPAL
-	public void setMainApp(MainApp mainApp, HojaViajera hojaViajera) {
+	public void setMainApp(MainApp mainApp, HojaViajera hojaViajera, ArrayList<DetalleProceso> listaDetalleProceso) {
 		this.mainApp = mainApp;
 		this.conexion = this.mainApp.getConnection();
 		this.hojaViajera = hojaViajera;
-		this.listaPartePrimaria = new ArrayList<DetalleComponente>();
 		this.listaDetallesHojaViajera = new ArrayList<DetalleHojaViajera>();
+		this.listaDetalleProceso = listaDetalleProceso;
 		actualizarTabla();
 		inicializarComponentes();
 	}//FIN METODO
@@ -99,7 +102,12 @@ public class DialogoDetalleHojaViajera {
 	}//FIN METODO
 
 	@FXML private void manejadorBotonImprimir() {
-		GenerarDocumento.generaListaMateriales(conexion, listaPartePrimaria, this.nombreNumeroComponente);
+		Componente componente = ComponenteDAO.readComponente(this.conexion, hojaViajera.getComponenteFK());
+		Cliente cliente = ClienteDAO.readCliente(this.mainApp.getConnection(), componente.getclienteFK());
+		if (componente.getTipoComponente() != TipoComponente.COMPRADO)
+			GenerarDocumento.generaHojaViajera(this.mainApp.getConnection(), cliente, componente, listaDetalleProceso);
+		else 
+			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Los componentes miscelaneos no tienen hoja viajera.");
 	}//FIN METODO
 	
 	

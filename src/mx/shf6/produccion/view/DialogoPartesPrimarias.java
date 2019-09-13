@@ -270,9 +270,11 @@ public class DialogoPartesPrimarias {
 	}//FIN METODO
 
 	private boolean accionBotonHojaViajera(DetalleComponente componenteHojaViajera) {
-		System.out.println("Sys_PK: " + componenteHojaViajera.getComponenteSuperiorFK() + " NP: " + componenteHojaViajera.getNumeroParteComponenteSuperior());
+		
 		HojaViajera hojaViajera = HojaViajeraDAO.readHojaViajeraPorOrdenProduccionComponente(this.conexion, this.ordenProduccion.getSysPK(), ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK());
 		ArrayList<DetalleProceso> listaDetallesProceso = DetalleProcesoDAO.readDetalleProcesoFK(this.conexion, ProcesoDAO.readProcesoComponenteFK(this.conexion, ComponenteDAO.readComponenteNumeroParte(this.conexion, componenteHojaViajera.getNumeroParteComponenteSuperior()).getSysPK()));
+		Componente componente = ComponenteDAO.readComponente(this.conexion, hojaViajera.getComponenteFK());
+		
 		if (hojaViajera.getSysPK() == 0) {
 			hojaViajera.setCantidad(componenteHojaViajera.getCantidad());
 			hojaViajera.setCodigoParoFK(1);
@@ -308,7 +310,9 @@ public class DialogoPartesPrimarias {
 				TransaccionSQL.setStatusTransaccion(this.conexion, TransaccionSQL.COMMIT_TRANSACTION);
 				Notificacion.dialogoAlerta(AlertType.CONFIRMATION, "", "La hoja viajera se genero de forma correcta");
 				printHojaViajera(hojaViajera, listaDetallesProceso);
-				this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera);
+				
+				if (componente.getTipoComponente() != TipoComponente.COMPRADO)
+					this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera, listaDetallesProceso);
 				return true;
 			} else {
 				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "La hoja viajera no se pudo generar");
@@ -317,7 +321,8 @@ public class DialogoPartesPrimarias {
 			}//FIN IF/ELSE
 		} else {
 			printHojaViajera(hojaViajera, listaDetallesProceso);
-			this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera);
+			if (componente.getTipoComponente() != TipoComponente.COMPRADO)
+				this.mainApp.iniciarDialogoDetalleHojaViajera(hojaViajera, listaDetallesProceso);
 			return true;
 		}
 	}//FIN METODO
@@ -327,7 +332,10 @@ public class DialogoPartesPrimarias {
 		Componente componente = ComponenteDAO.readComponente(this.conexion, hojaViajera.getComponenteFK());
 		ArrayList<DetalleProceso> listaProcesos = listaDetallesProceso;
 
-		GenerarDocumento.generaHojaViajera(this.conexion, cliente, componente, listaProcesos);
+		if (componente.getTipoComponente() != TipoComponente.COMPRADO)
+			GenerarDocumento.generaHojaViajera(this.mainApp.getConnection(), cliente, componente, listaProcesos);
+		else 
+			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Los componentes miscelaneos no tienen hoja viajera.");
 		//CÓDIGO PARA IMPRIMIR EL JASPER
 
 	}//FIN METODO

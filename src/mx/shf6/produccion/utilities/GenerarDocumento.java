@@ -17,6 +17,7 @@ import mx.shf6.produccion.model.DetalleCotizacion;
 import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.Empleado;
 import mx.shf6.produccion.model.Proceso;
+import mx.shf6.produccion.model.TipoComponente;
 import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleComponenteDAO;
@@ -176,6 +177,7 @@ public class GenerarDocumento {
 	}//END METHOD
 
 	public static void generaHojaViajera(Connection connection, Cliente cliente, Componente componente, ArrayList<DetalleProceso> listaProcesos) {
+		JasperReport jasperReport;
 		try {
 			if(listaProcesos.size()>0 && listaProcesos.size()<10){
 				for(int i= listaProcesos.size() + 1; i<=10; i++){
@@ -191,7 +193,10 @@ public class GenerarDocumento {
 			parameters.put("NoDiseño", componente.getNumeroParte());
 			parameters.put("Descripcion", componente.getDescripcion());
 			parameters.put("ListaProcesos", itemsTabla);
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/HojaViajera.jasper");
+			if (componente.getTipoComponente() == TipoComponente.ENSAMBLE || componente.getTipoComponente() == TipoComponente.SUB_ENSAMBLE)
+				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/HojaViajeraEnsamble.jasper");
+			else
+				jasperReport = (JasperReport) JRLoader.loadObjectFromFile("resources/HojaViajera.jasper");
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,  new JREmptyDataSource());
 			JasperViewer jasperView = new JasperViewer(jasperPrint, false);
 			jasperView.setVisible(true);
