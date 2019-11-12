@@ -74,4 +74,8 @@ public class PantallaMenu {
 	@FXML private void manejadorMenuOrdenProduccion() {
 		this.mainApp.iniciarPantallaOrdenProduccion();
 	}//FIN METODO
+	
+	@FXML private void manejadorMenuOrdenCompra() {
+		this.mainApp.iniciarPantallaOrdenCompra();
+	}//FIN METODO
 }//FIN CLASE

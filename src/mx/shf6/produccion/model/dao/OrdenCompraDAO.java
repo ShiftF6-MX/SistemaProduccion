@@ -32,7 +32,7 @@ public class OrdenCompraDAO {
 	
 	public static final ArrayList<OrdenCompra> read(Connection connection) {
 		ArrayList<OrdenCompra> arrayListOrdenCompra = new ArrayList<OrdenCompra>();
-		String query = "SELECT * FROM infoordencompra";
+		String query = "SELECT * FROM infoordencompras";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(query);

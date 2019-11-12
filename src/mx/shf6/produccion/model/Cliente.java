@@ -12,16 +12,16 @@ import mx.shf6.produccion.model.dao.DomicilioDAO;
 public class Cliente {
 
 	//PROPIEDADES
-	public ObjectProperty<Integer> sysPK;
-	public StringProperty codigo;
-	public StringProperty nombre;
-	public ObjectProperty<Integer> status;
-	public ObjectProperty<Date> fechaRegistro;
-	public StringProperty registroContribuyente;
-	public StringProperty telefono;
-	public StringProperty correo;
-	public StringProperty rutaCarpeta;
-	public ObjectProperty<Integer> domicilioFK;
+	private ObjectProperty<Integer> sysPK;
+	private StringProperty codigo;
+	private StringProperty nombre;
+	private ObjectProperty<Integer> status;
+	private ObjectProperty<Date> fechaRegistro;
+	private StringProperty registroContribuyente;
+	private StringProperty telefono;
+	private StringProperty correo;
+	private StringProperty rutaCarpeta;
+	private ObjectProperty<Integer> domicilioFK;
 	
 	//CONSTANTES PARA "STATUS"
 	public static final int BLOQUEADO = 0;

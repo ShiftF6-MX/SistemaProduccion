@@ -112,6 +112,7 @@ import mx.shf6.produccion.view.PantallaGrupoTrabajo;
 import mx.shf6.produccion.view.PantallaInicio;
 import mx.shf6.produccion.view.DialogoMaterial;
 import mx.shf6.produccion.view.PantallaMenu;
+import mx.shf6.produccion.view.PantallaOrdenCompra;
 import mx.shf6.produccion.view.PantallaProceso;
 import mx.shf6.produccion.view.PantallaPuesto;
 import mx.shf6.produccion.view.PantallaSesion;
@@ -154,6 +155,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaAlmacen;
 	private AnchorPane pantallaUsuario;
 	private AnchorPane pantallaDashboard;
+	private AnchorPane pantallaOrdenCompra;
 
 	//DIALOGOS DEL SISTEMA
 	private AnchorPane dialogoClientes;
@@ -701,6 +703,20 @@ public class MainApp extends Application {
 			PantallaDashboard pantallaDashboard = fxmlLoader.getController();
 			pantallaDashboard.setMainApp(this);
 			pantallaDashboard.start();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarPantallaOrdenCompra() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaOrdenCompra.fxml"));
+			this.pantallaOrdenCompra = (AnchorPane) fxmlLoader.load();
+			this.pantallaBase.setCenter(this.pantallaOrdenCompra);
+			
+			PantallaOrdenCompra pantallaOrdenCompra = fxmlLoader.getController();
+			pantallaOrdenCompra.setMainApp(this);
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH

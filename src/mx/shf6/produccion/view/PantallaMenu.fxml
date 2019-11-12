@@ -141,7 +141,7 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="200.0" onMouseClicked="#manejadorMenuDashboard" spacing="5.0">
+            <HBox alignment="CENTER_LEFT" disable="true" layoutX="35.0" layoutY="200.0" onMouseClicked="#manejadorMenuDashboard" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -149,6 +149,22 @@
                      </image>
                   </ImageView>
                   <Label styleClass="labelRobotoBold14" text="Dashboard" textFill="#d1d0d2" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="250.0" onMouseClicked="#manejadorMenuOrdenCompra" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/PuestosIcono.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Orden compra" textFill="#d1d0d2" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
