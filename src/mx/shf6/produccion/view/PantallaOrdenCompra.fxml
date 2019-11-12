@@ -70,18 +70,15 @@
                   </ImageView>
                </children>
             </HBox>
-            <VBox alignment="BOTTOM_CENTER" styleClass="tablaDatosDetalle" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
+            <VBox AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0">
                <children>
-                  <TableView fx:id="tableViewOrdenCompra" editable="true" maxHeight="1.7976931348623157E308" styleClass="tablaDatosGestor" VBox.vgrow="ALWAYS">
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
+                  <TableView fx:id="tableViewOrdenCompra" maxHeight="1.7976931348623157E308" styleClass="tablaDatosDetalle" VBox.vgrow="ALWAYS">
                      <columns>
                         <PTableColumn fx:id="tableColumnFolio" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="Folio" />
-                        <PTableColumn fx:id="tableColumnFechaPedido" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="Fecha Pedido" />
+                        <PTableColumn fx:id="tableColumnFechaPedido" minWidth="-1.0" percentageWidth="0.1" prefWidth="-1.0" text="Fecha Pedido" />
                         <PTableColumn fx:id="tableColumnCliente" minWidth="-1.0" percentageWidth="0.3" prefWidth="-1.0" text="Cliente" />
                         <PTableColumn fx:id="tableColumnPMP" minWidth="-1.0" percentageWidth="0.05" prefWidth="-1.0" text="PMP" />
-                        <PTableColumn fx:id="tableColumnComentarios" minWidth="-1.0" percentageWidth="0.35" prefWidth="-1.0" text="Comentarios" />
+                        <PTableColumn fx:id="tableColumnComentarios" minWidth="-1.0" percentageWidth="0.3" prefWidth="-1.0" text="Comentarios" />
                         <PTableColumn fx:id="tableColumnAcciones" minWidth="-1.0" percentageWidth="0.2" prefWidth="-1.0" text="Acciones" />
                      </columns>
                   </TableView>

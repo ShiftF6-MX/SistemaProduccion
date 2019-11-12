@@ -208,5 +208,9 @@ public class Cliente {
 		return DomicilioDAO.readDomicilio(connection, this.getDomicilioFK());
 	}//FIN METODO
 	//FIN METODOS "DOMICILIO"
-	
+
+	@Override
+	public String toString() {
+		return this.getNombre();
+	}//FIN METODO
 }//FIN METODO

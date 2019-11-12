@@ -30,6 +30,7 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.OrdenCompra;
 import mx.shf6.produccion.model.dao.OrdenCompraDAO;
+import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class PantallaOrdenCompra {
@@ -170,15 +171,19 @@ public class PantallaOrdenCompra {
 	
 	//MANEJADORES
 	private void manejadorBotonMostrar(OrdenCompra ordenCompra) {
-		
+		this.mainApp.iniciarDialogoOrdenCompra(ordenCompra, DialogoOrdenCompra.VER);
 	}//FIN METODO
 	
 	private void manejadorBotonEditar(OrdenCompra ordenCompra) {
-		
+		this.mainApp.iniciarDialogoOrdenCompra(ordenCompra, DialogoOrdenCompra.EDITAR);
+		updateTablaOrdenCompra();
 	}//FIN METODO
 	
 	private void manejadorBotonEliminar(OrdenCompra ordenCompra) {
-		
+		if (Notificacion.dialogoPreguntar("", "Estas a punto de eliminar el registro, ¿Deseas continuar?")) {
+			OrdenCompraDAO.delete(connection, ordenCompra);
+			updateTablaOrdenCompra();
+		}//FIN IF
 	}//FIN METODO
 	
 	private void manejadorBotonAgregarDetalle(OrdenCompra ordenCompra) {
@@ -194,6 +199,7 @@ public class PantallaOrdenCompra {
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCrear() {
-		
+		this.mainApp.iniciarDialogoOrdenCompra(new OrdenCompra(), DialogoOrdenCompra.CREAR);
+		updateTablaOrdenCompra();
 	}//FIN METODO
 }//FIN CLASE

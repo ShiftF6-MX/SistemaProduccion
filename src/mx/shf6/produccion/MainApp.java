@@ -44,6 +44,7 @@ import mx.shf6.produccion.model.GrupoTrabajo;
 import mx.shf6.produccion.model.GrupoUsuario;
 import mx.shf6.produccion.model.HojaViajera;
 import mx.shf6.produccion.model.Material;
+import mx.shf6.produccion.model.OrdenCompra;
 import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.Proceso;
 import mx.shf6.produccion.model.Proyecto;
@@ -86,6 +87,7 @@ import mx.shf6.produccion.view.DialogoGrupoTrabajo;
 import mx.shf6.produccion.view.DialogoGrupoUsuario;
 import mx.shf6.produccion.view.DialogoActualizarDetalleHojaViajera;
 import mx.shf6.produccion.view.DialogoMovimientoInventario;
+import mx.shf6.produccion.view.DialogoOrdenCompra;
 import mx.shf6.produccion.view.DialogoPartesPrimarias;
 import mx.shf6.produccion.view.DialogoPermiso;
 import mx.shf6.produccion.view.DialogoProceso;
@@ -205,6 +207,7 @@ public class MainApp extends Application {
 	private AnchorPane dialogoEstadoCuentaCliente;
 	private AnchorPane dialogoDetalleHojaViajera;
 	private AnchorPane dialogoActualizarDetalleHojaViajera;
+	private AnchorPane dialogoOrdenCompra;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -1552,6 +1555,24 @@ public class MainApp extends Application {
 			dialogoActualizarDetalleHojaViajera.setMainApp(this, detalleHojaViajera, cantidadProcesos, opcion);
 
 		    this.escenarioDialogosAlternoSecundario.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoOrdenCompra(OrdenCompra ordenCompra, int opcion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoOrdenCompra.fxml"));
+			
+			this.dialogoOrdenCompra = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoOrdenCompra = this.iniciarEscenarioDialogos(this.dialogoOrdenCompra);
+			this.escenarioDialogos.setScene(escenaDialogoOrdenCompra);
+			DialogoOrdenCompra dialogoOrdenCompra = fxmlLoader.getController();
+			dialogoOrdenCompra.setMainApp(this, ordenCompra, opcion);
+			
+			this.escenarioDialogos.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
