@@ -401,4 +401,9 @@ public class Componente {
 	public StringProperty revisionProperty() {
 		return this.revision;
 	}//FIN METODO
+
+	@Override
+	public String toString() {
+		return this.getDescripcion();
+	}//FIN METODO
 }//FIN CLASE

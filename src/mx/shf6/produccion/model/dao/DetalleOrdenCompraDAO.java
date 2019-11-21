@@ -39,7 +39,7 @@ public class DetalleOrdenCompraDAO {
 	
 	public static final ArrayList<DetalleOrdenCompra> read(Connection connection) {
 		ArrayList<DetalleOrdenCompra> arrayListDetalleOrdenCompra = new ArrayList<DetalleOrdenCompra>();
-		String query = "SELECT * FROM infordetalleordencompra";
+		String query = "SELECT * FROM infodetalleordencompras";
 		try {
 			Statement sentencia = connection.createStatement();
 			ResultSet resultados = sentencia.executeQuery(query);
@@ -107,12 +107,13 @@ public class DetalleOrdenCompraDAO {
 				componente.setNotas(resultados.getString("DetalleOrdenComprasComponentesNotas"));
 				componente.setStatus(resultados.getInt("DetalleOrdenComprasComponentesStatus"));
 				componente.setConsecutivo(resultados.getInt("DetalleOrdenComprasComponentesConsecutivo"));
-				componente.setClienteFK(resultados.getInt("DetalleOrdenComprasOrdenCompraClienteSysPK"));
+				componente.setClienteFK(resultados.getInt("OrdenCompraClienteSysPK"));
 				componente.setEsInterno(resultados.getInt("DetalleOrdenComprasComponentesEsInterno"));
 				componente.setHilos(resultados.getString("DetalleOrdenComprasComponentesHilos"));
 				componente.setRevision(resultados.getString("DetalleOrdenComprasComponentesRevision"));
 				componente.setDimensiones(dimensiones);
 				detalleOrdenCompra.setComponenteFK(componente);
+				arrayListDetalleOrdenCompra.add(detalleOrdenCompra);
 			}//FIN WHILE
 		} catch(SQLException ex) {
 			Notificacion.dialogoException(ex);

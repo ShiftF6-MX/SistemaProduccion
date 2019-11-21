@@ -36,7 +36,9 @@ import mx.shf6.produccion.model.Cotizacion;
 import mx.shf6.produccion.model.DetalleCardex;
 import mx.shf6.produccion.model.DetalleComponente;
 import mx.shf6.produccion.model.DetalleCotizacion;
+import mx.shf6.produccion.model.DetalleEntregaOrdenCompra;
 import mx.shf6.produccion.model.DetalleHojaViajera;
+import mx.shf6.produccion.model.DetalleOrdenCompra;
 import mx.shf6.produccion.model.DetalleProceso;
 import mx.shf6.produccion.model.DocumentosCuentasXCobrar;
 import mx.shf6.produccion.model.Empleado;
@@ -60,6 +62,8 @@ import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.view.DialogoAgregarAcabado;
 import mx.shf6.produccion.view.DialogoAgregarComprador;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
+import mx.shf6.produccion.view.DialogoAgregarDetalleEntregaOrdenCompra;
+import mx.shf6.produccion.view.DialogoAgregarDetalleOrdenCompra;
 import mx.shf6.produccion.view.DialogoAgregarDetalleProceso;
 import mx.shf6.produccion.view.DialogoAgregarGrupoUsuario;
 import mx.shf6.produccion.view.DialogoAgregarMaterial;
@@ -77,7 +81,9 @@ import mx.shf6.produccion.view.DialogoCotizacion;
 import mx.shf6.produccion.view.DialogoCotizacionCliente;
 import mx.shf6.produccion.view.DialogoDetalleComponente;
 import mx.shf6.produccion.view.DialogoDetalleCotizacion;
+import mx.shf6.produccion.view.DialogoDetalleEntregaOrdenCompra;
 import mx.shf6.produccion.view.DialogoDetalleHojaViajera;
+import mx.shf6.produccion.view.DialogoDetalleOrdenCompra;
 import mx.shf6.produccion.view.DialogoDetalleProceso;
 import mx.shf6.produccion.view.DialogoEmpleado;
 import mx.shf6.produccion.view.DialogoEsquemaSeguridad;
@@ -208,6 +214,10 @@ public class MainApp extends Application {
 	private AnchorPane dialogoDetalleHojaViajera;
 	private AnchorPane dialogoActualizarDetalleHojaViajera;
 	private AnchorPane dialogoOrdenCompra;
+	private AnchorPane dialogoDetalleOrdenCompra;
+	private AnchorPane dialogoAgregarDetalleOrdenCompra;
+	private AnchorPane dialogoDetalleEntregaOrdenCompra;
+	private AnchorPane dialogoAgregarDetalleEntregaOrdenCompra;
 
 	//CONSTANTES
 	public static final String RAIZ_SERVIDOR = "\\\\192.168.0.100\\SistemaProduccion\\Ficheros\\";
@@ -1573,6 +1583,78 @@ public class MainApp extends Application {
 			dialogoOrdenCompra.setMainApp(this, ordenCompra, opcion);
 			
 			this.escenarioDialogos.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoDetalleOrdenCompra(OrdenCompra ordenCompra) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleOrdenCompra.fxml"));
+			
+			this.dialogoDetalleOrdenCompra = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoDetalleOrdenCompra = this.iniciarEscenarioDialogos(this.dialogoDetalleOrdenCompra);
+			this.escenarioDialogos.setScene(escenaDialogoDetalleOrdenCompra);
+			DialogoDetalleOrdenCompra dialogoDetalleOrdenCompra = fxmlLoader.getController();
+			dialogoDetalleOrdenCompra.setMainApp(this, ordenCompra);
+			
+			this.escenarioDialogos.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoAgregarDetalleOrdenCompra(DetalleOrdenCompra detalleOrdenCompra, OrdenCompra ordenCompra, int opcion) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarDetalleOrdenCompra.fxml"));
+			
+			this.dialogoAgregarDetalleOrdenCompra = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoAgregarDetalleOrdenCompra = this.iniciarEscenarioDialogosAlterno(this.dialogoAgregarDetalleOrdenCompra);
+			this.escenarioDialogosAlterno.setScene(escenaDialogoAgregarDetalleOrdenCompra);
+			DialogoAgregarDetalleOrdenCompra dialogoAgregarDetalleOrdenCompra = fxmlLoader.getController();
+			dialogoAgregarDetalleOrdenCompra.setMainApp(this, detalleOrdenCompra, ordenCompra, opcion);
+			
+			this.escenarioDialogosAlterno.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoDetalleEntregaOrdenCompra(DetalleOrdenCompra detalleOrdenCompra) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoDetalleEntregaOrdenCompra.fxml"));
+			
+			this.dialogoDetalleEntregaOrdenCompra = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoDetalleEntregaOrdenCompra = this.iniciarEscenarioDialogosAlterno(this.dialogoDetalleEntregaOrdenCompra);
+			this.escenarioDialogosAlterno.setScene(escenaDialogoDetalleEntregaOrdenCompra);
+			DialogoDetalleEntregaOrdenCompra dialogoDetalleEntregaOrdenCompra = fxmlLoader.getController();
+			dialogoDetalleEntregaOrdenCompra.setMainApp(this, detalleOrdenCompra);
+			
+			this.escenarioDialogosAlterno.showAndWait();
+		} catch(IOException | IllegalStateException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+	}//FIN METODO
+	
+	public void iniciarDialogoAgregarDetalleEntregaOrdenCompra(DetalleEntregaOrdenCompra detalleEntregaOrdenCompra) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarDetalleEntregaOrdenCompra.fxml"));
+			
+			this.dialogoAgregarDetalleEntregaOrdenCompra = (AnchorPane) fxmlLoader.load();
+			
+			Scene escenaDialogoAgregarDetalleEntregaOrdenCompra = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoAgregarDetalleEntregaOrdenCompra);
+			this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoAgregarDetalleEntregaOrdenCompra);
+			DialogoAgregarDetalleEntregaOrdenCompra dialogoAgregarDetalleEntregaOrdenCompra = fxmlLoader.getController();
+			dialogoAgregarDetalleEntregaOrdenCompra.setMainApp(this, detalleEntregaOrdenCompra);
+			
+			this.escenarioDialogosAlternoSecundario.showAndWait();
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH

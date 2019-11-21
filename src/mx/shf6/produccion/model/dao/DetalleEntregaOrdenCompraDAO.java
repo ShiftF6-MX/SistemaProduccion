@@ -108,7 +108,7 @@ public class DetalleEntregaOrdenCompraDAO {
 				componente.setNotas(resultados.getString("DetalleOrdenComprasComponentesNotas"));
 				componente.setStatus(resultados.getInt("DetalleOrdenComprasComponentesStatus"));
 				componente.setConsecutivo(resultados.getInt("DetalleOrdenComprasComponentesConsecutivo"));
-				componente.setClienteFK(resultados.getInt("DetalleOrdenComprasOrdenCompraClienteSysPK"));
+				componente.setClienteFK(resultados.getInt("OrdenCompraClienteSysPK"));
 				componente.setEsInterno(resultados.getInt("DetalleOrdenComprasComponentesEsInterno"));
 				componente.setHilos(resultados.getString("DetalleOrdenComprasComponentesHilos"));
 				componente.setRevision(resultados.getString("DetalleOrdenComprasComponentesRevision"));

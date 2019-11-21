@@ -187,7 +187,7 @@ public class PantallaOrdenCompra {
 	}//FIN METODO
 	
 	private void manejadorBotonAgregarDetalle(OrdenCompra ordenCompra) {
-		
+		this.mainApp.iniciarDialogoDetalleOrdenCompra(ordenCompra);
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonActualizar() {
