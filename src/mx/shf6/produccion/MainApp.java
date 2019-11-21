@@ -1642,7 +1642,7 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 	
-	public void iniciarDialogoAgregarDetalleEntregaOrdenCompra(DetalleEntregaOrdenCompra detalleEntregaOrdenCompra) {
+	public void iniciarDialogoAgregarDetalleEntregaOrdenCompra(DetalleEntregaOrdenCompra detalleEntregaOrdenCompra, DetalleOrdenCompra detalleOrdenCompra) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/DialogoAgregarDetalleEntregaOrdenCompra.fxml"));
@@ -1652,7 +1652,7 @@ public class MainApp extends Application {
 			Scene escenaDialogoAgregarDetalleEntregaOrdenCompra = this.iniciarEscenarioDialogosAlternoSecundario(this.dialogoAgregarDetalleEntregaOrdenCompra);
 			this.escenarioDialogosAlternoSecundario.setScene(escenaDialogoAgregarDetalleEntregaOrdenCompra);
 			DialogoAgregarDetalleEntregaOrdenCompra dialogoAgregarDetalleEntregaOrdenCompra = fxmlLoader.getController();
-			dialogoAgregarDetalleEntregaOrdenCompra.setMainApp(this, detalleEntregaOrdenCompra);
+			dialogoAgregarDetalleEntregaOrdenCompra.setMainApp(this, detalleEntregaOrdenCompra, detalleOrdenCompra);
 			
 			this.escenarioDialogosAlternoSecundario.showAndWait();
 		} catch(IOException | IllegalStateException ex) {

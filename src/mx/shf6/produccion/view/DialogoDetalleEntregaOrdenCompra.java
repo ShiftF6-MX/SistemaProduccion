@@ -8,10 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.DetalleEntregaOrdenCompra;
 import mx.shf6.produccion.model.DetalleOrdenCompra;
 import mx.shf6.produccion.model.dao.DetalleEntregaOrdenCompraDAO;
+import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
 public class DialogoDetalleEntregaOrdenCompra {
@@ -63,14 +65,28 @@ public class DialogoDetalleEntregaOrdenCompra {
 		this.textFieldComponente.setText(this.detalleOrdenCompra.getComponenteFK().getDescripcion());
 	}//FIN METODO
 	
+	private void deleteRegistro() {
+		DetalleEntregaOrdenCompra detalleEntregaOrdenCompra = this.tableViewDetalleEntregaOrdenCompra.getSelectionModel().getSelectedItem();
+		if (detalleEntregaOrdenCompra != null) {
+			if (Notificacion.dialogoPreguntar("", "¿Deseas eliminar el registro?")) {
+				if (DetalleEntregaOrdenCompraDAO.delete(connection, detalleEntregaOrdenCompra)) {
+					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Registro eliminado");
+					updateTable();
+				}else
+					Notificacion.dialogoAlerta(AlertType.ERROR, "", "No se pudo eliminar el registro");
+			}//FIN IF
+		}else
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "No has seleccionado un registro");	
+	}//FIN METODO
+	
 	//MANEJADORES
 	@FXML private void manejadorBotonAgregar() {
-		this.mainApp.iniciarDialogoAgregarDetalleEntregaOrdenCompra(new DetalleEntregaOrdenCompra());
+		this.mainApp.iniciarDialogoAgregarDetalleEntregaOrdenCompra(new DetalleEntregaOrdenCompra(), this.detalleOrdenCompra);
 		updateTable();
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonQuitar() {
-		
+		deleteRegistro();
 	}//FIN METODO
 	
 	@FXML private void manejadorBotonCerrar() {
