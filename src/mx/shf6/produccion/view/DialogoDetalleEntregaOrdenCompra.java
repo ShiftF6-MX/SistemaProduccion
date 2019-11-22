@@ -13,6 +13,7 @@ import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.DetalleEntregaOrdenCompra;
 import mx.shf6.produccion.model.DetalleOrdenCompra;
 import mx.shf6.produccion.model.dao.DetalleEntregaOrdenCompraDAO;
+import mx.shf6.produccion.model.dao.DetalleOrdenCompraDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -23,7 +24,9 @@ public class DialogoDetalleEntregaOrdenCompra {
 	private Connection connection;
 	private DetalleOrdenCompra detalleOrdenCompra;
 	private ArrayList<DetalleEntregaOrdenCompra> arrayListDetalleEntregaOrdenCompra;
+	
 	//VARIABLES
+	private int saldo;
 	
 	//CONSTANTES
 	
@@ -44,6 +47,7 @@ public class DialogoDetalleEntregaOrdenCompra {
 		this.connection = this.mainApp.getConnection();
 		this.detalleOrdenCompra = detalleOrdenCompra;
 		this.arrayListDetalleEntregaOrdenCompra = new ArrayList<DetalleEntregaOrdenCompra>();
+		this.saldo = detalleOrdenCompra.getSaldo();
 		updateTable();
 		showDatos();
 	}//FIN METODO
@@ -57,7 +61,7 @@ public class DialogoDetalleEntregaOrdenCompra {
 	private void updateTable() {
 		this.arrayListDetalleEntregaOrdenCompra.clear();
 		this.tableViewDetalleEntregaOrdenCompra.setItems(null);
-		this.arrayListDetalleEntregaOrdenCompra = DetalleEntregaOrdenCompraDAO.read(connection);
+		this.arrayListDetalleEntregaOrdenCompra = DetalleEntregaOrdenCompraDAO.readPorDetalleOrdenCompra(connection, detalleOrdenCompra);
 		this.tableViewDetalleEntregaOrdenCompra.setItems(FXCollections.observableArrayList(this.arrayListDetalleEntregaOrdenCompra));
 	}//FIN METODO
 	
@@ -70,6 +74,9 @@ public class DialogoDetalleEntregaOrdenCompra {
 		if (detalleEntregaOrdenCompra != null) {
 			if (Notificacion.dialogoPreguntar("", "¿Deseas eliminar el registro?")) {
 				if (DetalleEntregaOrdenCompraDAO.delete(connection, detalleEntregaOrdenCompra)) {
+					this.saldo = saldo - detalleEntregaOrdenCompra.getCantidad();
+					this.detalleOrdenCompra.setSaldo(saldo);
+					DetalleOrdenCompraDAO.update(connection, detalleOrdenCompra);
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Registro eliminado");
 					updateTable();
 				}else

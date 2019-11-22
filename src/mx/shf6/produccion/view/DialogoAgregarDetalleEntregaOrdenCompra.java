@@ -11,6 +11,7 @@ import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.DetalleEntregaOrdenCompra;
 import mx.shf6.produccion.model.DetalleOrdenCompra;
 import mx.shf6.produccion.model.dao.DetalleEntregaOrdenCompraDAO;
+import mx.shf6.produccion.model.dao.DetalleOrdenCompraDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
@@ -23,6 +24,7 @@ public class DialogoAgregarDetalleEntregaOrdenCompra {
 	private DetalleOrdenCompra detalleOrdenCompra;
 	
 	//VARIABLES
+	private int saldo;
 	
 	//CONSTANTES
 
@@ -63,15 +65,25 @@ public class DialogoAgregarDetalleEntregaOrdenCompra {
 	}//FIN METODO
 	
 	private boolean saveInformacion() {
+		this.saldo = detalleOrdenCompra.getSaldo();
 		if (checkComponentes()) {
 			this.detalleEntregaOrdenCompra.setFactura(this.textFieldFactura.getText());
 			this.detalleEntregaOrdenCompra.setCantidad(Integer.valueOf(this.textFieldCantidad.getText()));
 			this.detalleEntregaOrdenCompra.setFecha(Date.valueOf(this.datePickerFecha.getValue()));
 			this.detalleEntregaOrdenCompra.setDetalleOrdenCompraFK(this.detalleOrdenCompra);
-			if (DetalleEntregaOrdenCompraDAO.create(connection, detalleEntregaOrdenCompra)) 
-				return true;
-			else
+			this.saldo = this.saldo + this.detalleEntregaOrdenCompra.getCantidad();
+			
+			if (this.saldo <= this.detalleOrdenCompra.getPorEntregar()) {
+				this.detalleOrdenCompra.setSaldo(saldo);
+				if (DetalleEntregaOrdenCompraDAO.create(connection, detalleEntregaOrdenCompra)) {
+					DetalleOrdenCompraDAO.update(connection, detalleOrdenCompra);
+					return true;
+				}else
+					return false;
+			}else {
+				Notificacion.dialogoAlerta(AlertType.ERROR, "", "Todos los componentes se han entregado");
 				return false;
+			}//FIN IF/ELSE	
 		}else 
 			return false;
 	}//FIN METODO
@@ -81,8 +93,7 @@ public class DialogoAgregarDetalleEntregaOrdenCompra {
 		if (saveInformacion()) {
 			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Registro creado correctamente");
 			this.mainApp.getEscenarioDialogosAlternoSecundario().close();
-		}else
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "Revisa que la informacion este correcta");
+		}//FIN IF
 	}//FIN METODO
 
 	@FXML private void manejadorBotonCerrar() {

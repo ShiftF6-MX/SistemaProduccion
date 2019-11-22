@@ -123,6 +123,27 @@ public class DetalleEntregaOrdenCompraDAO {
 		return arrayListDetalleEntregaOrdenCompra;
 	}//FIN METODO
 	
+	public static final ArrayList<DetalleEntregaOrdenCompra> readPorDetalleOrdenCompra(Connection connection, DetalleOrdenCompra detalleOrdenCompra) {
+		ArrayList<DetalleEntregaOrdenCompra> arrayListDetalleEntregaOrdenCompra = new ArrayList<DetalleEntregaOrdenCompra>();
+		String query = "SELECT * FROM infodetalleentregaordencompras WHERE DetalleOrdenComprasSysPK =" + detalleOrdenCompra.getSysPK();
+		try {
+			Statement sentencia = connection.createStatement();
+			ResultSet resultados = sentencia.executeQuery(query);
+			while(resultados.next()) {
+				DetalleEntregaOrdenCompra detalleEntregaOrdenCompra = new DetalleEntregaOrdenCompra();
+				detalleEntregaOrdenCompra.setSysPK(resultados.getInt("DetalleEntregaOrdenComprasSysPK"));
+				detalleEntregaOrdenCompra.setFactura(resultados.getString("DetalleEntregaOrdenComprasFactura"));
+				detalleEntregaOrdenCompra.setCantidad(resultados.getInt("DetalleEntregaOrdenComprasCantidad"));
+				detalleEntregaOrdenCompra.setFecha(resultados.getDate("DetalleEntregaOrdenComprasFecha"));
+				detalleEntregaOrdenCompra.setDetalleOrdenCompraFK(detalleOrdenCompra);
+				arrayListDetalleEntregaOrdenCompra.add(detalleEntregaOrdenCompra);
+			}//FIN WHILE
+		} catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH
+		return arrayListDetalleEntregaOrdenCompra;
+	}//FIN METODO
+	
 	public static final boolean update(Connection connection, DetalleEntregaOrdenCompra detalleEntregaOrdenCompra) {
 		String query = "UPDATE detalleentregaordencompras SET Factura = ?, Cantidad = ?, Fecha = ?, DetalleOrdenCompraFK = ? WHERE Sys_PK = ?";
 		try {

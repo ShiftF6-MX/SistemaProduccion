@@ -17,6 +17,12 @@ public class LeerArchivo {
     public static String passwordDB;
     public static String claveEquipo;
     
+    public static String rMail;
+    public static String sMail;
+    public static String cMail;
+    public static String pMail;
+    
+    
     public static void leerArchivo(){
         try {
         	//PUT CONNECTIONDATA FILE ON C:\MaxicomercioTools\ PATH
@@ -29,6 +35,18 @@ public class LeerArchivo {
             Notificacion.dialogoException(ioe);
         }//END TRY/CATCH
     }//END METHOD
+    
+    public static void leerUsuario() {
+    	try {
+    		LeerArchivo.content = Files.readAllLines(Paths.get("C:\\SistemaProduccion\\config\\UserMail.dat"));
+    		LeerArchivo.rMail = content.get(2);
+    		LeerArchivo.sMail = content.get(4);
+    		LeerArchivo.cMail = content.get(6);
+    		LeerArchivo.pMail = content.get(8);
+    	} catch (IOException | IndexOutOfBoundsException ex) {
+    		Notificacion.dialogoException(ex);
+    	}
+    }//FIN METODO
     
     public static ArrayList<String> leerArchivoUI(int dimension){
         ArrayList<String> listaMenus = new ArrayList<String>();

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import javax.mail.Session;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -59,6 +61,7 @@ import mx.shf6.produccion.model.Usuario;
 import mx.shf6.produccion.utilities.ConnectionDB;
 import mx.shf6.produccion.utilities.LeerArchivo;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.SessionMail;
 import mx.shf6.produccion.view.DialogoAgregarAcabado;
 import mx.shf6.produccion.view.DialogoAgregarComprador;
 import mx.shf6.produccion.view.DialogoAgregarDetalleComponente;
@@ -135,6 +138,8 @@ public class MainApp extends Application {
 	//PROPIEDADES
 	private Connection conexion;
 	private ConnectionDB conexionBD;
+	private SessionMail sessionMail;
+	private Session session;
 	private Usuario usuario;
 	private boolean sesionActiva;
 
@@ -233,6 +238,8 @@ public class MainApp extends Application {
 		this.cargarFuentes();
 		//INICIA CONCEXIÓN BASE DATOS
 		this.configurarBaseDatos();
+		//INICIA SESION DE CORREO
+		this.configurarMail();
 		//INICIA ESCENARIO PRINCIPAL
 		this.configurarEscenarioPrincipal(primaryStage);
 		//INICIA ESCENARIO DIALOGOS
@@ -263,6 +270,12 @@ public class MainApp extends Application {
 		this.conexion = conexionBD.conectarMySQL();
 		this.sesionActiva = false;
 		this.conexionBD.start();
+	}//FIN METODO
+	
+	private void configurarMail() {
+		LeerArchivo.leerUsuario();
+		this.sessionMail = new SessionMail(LeerArchivo.rMail, LeerArchivo.sMail, LeerArchivo.cMail, LeerArchivo.pMail);
+		this.session = this.sessionMail.iniciarSesionMail();
 	}//FIN METODO
 
 	private void configurarEscenarioPrincipal(Stage primaryStage) {
@@ -1666,6 +1679,7 @@ public class MainApp extends Application {
 		boolean opcion = Notificacion.dialogoPreguntar("Sistema de Producción", "Estas a punto de salir del sistema, ¿Realmente deseas cerrar la aplicación?");
 		if (opcion) {
 			this.conexionBD.terminarConexion(this.getConnection());
+			this.sessionMail.terminarConexion(session);
 			System.exit(0);
 		}//FIN IF
 	}//FIN METODO
@@ -1673,6 +1687,11 @@ public class MainApp extends Application {
 	//METODOS DE ACCESO CONEXION
 	public Connection getConnection() {
 		return this.conexion;
+	}//FIN METODO
+	
+	//METODOS DE ACCESO EMAIL
+	public SessionMail getSessionMail() {
+		return this.sessionMail;
 	}//FIN METODO
 
 	//METODOS DE ACCESO USUARIO

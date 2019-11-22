@@ -151,7 +151,7 @@ public class DialogoDetalleOrdenCompra {
 	private void updateTable() {
 		this.arrayListdetalleOrdenCompra.clear();
 		this.tableViewDetalleOrdenCompra.setItems(null);
-		this.arrayListdetalleOrdenCompra = DetalleOrdenCompraDAO.read(connection);
+		this.arrayListdetalleOrdenCompra = DetalleOrdenCompraDAO.readPorOrdenCompra(connection, ordenCompra);
 		this.tableViewDetalleOrdenCompra.setItems(FXCollections.observableArrayList(this.arrayListdetalleOrdenCompra));
 	}//FIN METODO
 	

@@ -30,6 +30,7 @@ import javafx.util.Callback;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.OrdenCompra;
 import mx.shf6.produccion.model.dao.OrdenCompraDAO;
+import mx.shf6.produccion.utilities.Mail;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -83,7 +84,8 @@ public class PantallaOrdenCompra {
 				final Button botonEditar = new Button("Editar");
 				final Button botonEliminar = new Button("Eliminar");
 				final Button botonDetalles = new Button("Detalles");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonDetalles);
+				final Button botonEnviar = new Button("Enviar");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonDetalles, botonEnviar);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -119,6 +121,14 @@ public class PantallaOrdenCompra {
 					botonDetalles.setCursor(Cursor.HAND);
 					botonDetalles.setTooltip(new Tooltip("Detalles orden compra"));
 					
+					botonEnviar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
+					botonEnviar.setPrefSize(16.0, 16.0);
+					botonEnviar.setPadding(Insets.EMPTY);
+					botonEnviar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonEnviar.setStyle("-fx-background-color: transparent");
+					botonEnviar.setCursor(Cursor.HAND);
+					botonEnviar.setTooltip(new Tooltip("Detalles orden compra"));
+					
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
@@ -140,6 +150,10 @@ public class PantallaOrdenCompra {
 						botonDetalles.setOnAction(event -> {
 							manejadorBotonAgregarDetalle(getTableView().getItems().get(getIndex()));
 						});//FIN MANEJADOR
+						
+						botonEnviar.setOnAction(event -> {
+							manejadorEnviarCorreo();
+						});
 						
 						cajaBotones.setSpacing(2);
 						super.setGraphic(cajaBotones);
@@ -185,6 +199,13 @@ public class PantallaOrdenCompra {
 			updateTablaOrdenCompra();
 		}//FIN IF
 	}//FIN METODO
+	
+	private void manejadorEnviarCorreo() {
+		ArrayList<String> d = new ArrayList<String>();
+		d.add( "emmanuel_ostria@hotmail.com");
+		d.add("eostria17@gmail.com");
+		Mail.enviarCorreo(this.mainApp.getSessionMail().iniciarSesionMail(),d, "Prueba de boton", "MUY BUENAS DIAS, TARDES YA");
+	}
 	
 	private void manejadorBotonAgregarDetalle(OrdenCompra ordenCompra) {
 		this.mainApp.iniciarDialogoDetalleOrdenCompra(ordenCompra);
