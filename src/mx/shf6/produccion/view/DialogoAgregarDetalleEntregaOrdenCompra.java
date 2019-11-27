@@ -81,7 +81,7 @@ public class DialogoAgregarDetalleEntregaOrdenCompra {
 				}else
 					return false;
 			}else {
-				Notificacion.dialogoAlerta(AlertType.ERROR, "", "Todos los componentes se han entregado");
+				Notificacion.dialogoAlerta(AlertType.ERROR, "", "No puedes entregar mas componentes de los solicitados por el cliente");
 				return false;
 			}//FIN IF/ELSE	
 		}else 

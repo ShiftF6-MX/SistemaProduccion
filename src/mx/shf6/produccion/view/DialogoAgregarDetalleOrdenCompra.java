@@ -16,6 +16,7 @@ import mx.shf6.produccion.model.OrdenCompra;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleOrdenCompraDAO;
 import mx.shf6.produccion.utilities.Notificacion;
+import mx.shf6.produccion.utilities.RestriccionTextField;
 
 public class DialogoAgregarDetalleOrdenCompra {
 	
@@ -59,6 +60,8 @@ public class DialogoAgregarDetalleOrdenCompra {
 	}//FIN METODO
 	
 	private void initComponentes() {
+		RestriccionTextField.soloNumeros(textFieldItem);
+		RestriccionTextField.soloNumeros(textFieldPorEntregar);
 		this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponente(connection)));
 	}//FIN METODO
 
