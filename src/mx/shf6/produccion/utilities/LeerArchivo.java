@@ -17,10 +17,8 @@ public class LeerArchivo {
     public static String passwordDB;
     public static String claveEquipo;
     
-    public static String rMail;
-    public static String sMail;
-    public static String cMail;
-    public static String pMail;
+    public static String rutaOutlook;
+    public static String correos;
     
     
     public static void leerArchivo(){
@@ -39,10 +37,8 @@ public class LeerArchivo {
     public static void leerUsuario() {
     	try {
     		LeerArchivo.content = Files.readAllLines(Paths.get("C:\\SistemaProduccion\\config\\UserMail.dat"));
-    		LeerArchivo.rMail = content.get(2);
-    		LeerArchivo.sMail = content.get(4);
-    		LeerArchivo.cMail = content.get(6);
-    		LeerArchivo.pMail = content.get(8);
+    		LeerArchivo.rutaOutlook = content.get(2);
+    		LeerArchivo.correos = content.get(4);
     	} catch (IOException | IndexOutOfBoundsException ex) {
     		Notificacion.dialogoException(ex);
     	}

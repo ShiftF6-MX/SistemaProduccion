@@ -221,4 +221,16 @@ public class DetalleOrdenCompraDAO {
 			return false;
 		}//FIN TRY/CATCH
 	}//FIN METODO
+	
+	public static final ResultSet readNombreColumnas (Connection connection, int ordenCompra){
+		ResultSet resultados = null;
+		String query = "SELECT OrdenCompraFolio, detalleOrdenComprasItem, DetalleOrdenComprasComponentesNumeroParte, DetalleOrdenComprasComponentesDescripcion, DetalleOrdenComprasFechaCliente, DetalleOrdenComprasPorEntregar, DetalleOrdenComprasComponentesTipoComponente, DetalleOrdenComprasProcesoPintura, OrdenCompraPMP  FROM infodetalleordencompras WHERE OrdenCompraSysPK = " + ordenCompra;
+		try {
+			Statement sentencia =  connection.createStatement();
+			resultados = sentencia.executeQuery(query);
+		}catch(SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY-CATCH
+		return resultados;
+	}//FIN METODO
 }//FIN CLASE

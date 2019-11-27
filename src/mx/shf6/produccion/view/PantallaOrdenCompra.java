@@ -1,8 +1,13 @@
 package mx.shf6.produccion.view;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.function.Predicate;
 
 
@@ -22,15 +27,25 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.OrdenCompra;
+import mx.shf6.produccion.model.dao.DetalleOrdenCompraDAO;
 import mx.shf6.produccion.model.dao.OrdenCompraDAO;
-import mx.shf6.produccion.utilities.Mail;
+import mx.shf6.produccion.utilities.LeerArchivo;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -40,8 +55,10 @@ public class PantallaOrdenCompra {
 	private MainApp mainApp;
 	private Connection connection;
 	private ArrayList<OrdenCompra> arrayListOrdenCompra;
+	private File file;
 	
 	//VARIABLES
+	private String RUTA = "resources/";
 	
 	//CONSTANTES
 	
@@ -121,13 +138,13 @@ public class PantallaOrdenCompra {
 					botonDetalles.setCursor(Cursor.HAND);
 					botonDetalles.setTooltip(new Tooltip("Detalles orden compra"));
 					
-					botonEnviar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
+					botonEnviar.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/mailSmall.png"))));
 					botonEnviar.setPrefSize(16.0, 16.0);
 					botonEnviar.setPadding(Insets.EMPTY);
 					botonEnviar.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 					botonEnviar.setStyle("-fx-background-color: transparent");
 					botonEnviar.setCursor(Cursor.HAND);
-					botonEnviar.setTooltip(new Tooltip("Detalles orden compra"));
+					botonEnviar.setTooltip(new Tooltip("Enviar orden compra"));
 					
 					super.updateItem(item, empty);
 					if (empty) {
@@ -152,8 +169,8 @@ public class PantallaOrdenCompra {
 						});//FIN MANEJADOR
 						
 						botonEnviar.setOnAction(event -> {
-							manejadorEnviarCorreo();
-						});
+							manejadorEnviarCorreo(getTableView().getItems().get(getIndex()));
+						});//FIN MANEJADOR
 						
 						cajaBotones.setSpacing(2);
 						super.setGraphic(cajaBotones);
@@ -183,6 +200,93 @@ public class PantallaOrdenCompra {
 		filteredOrdenCompra.predicateProperty().bind(Bindings.createObjectBinding(() -> filtroBusqueda.get(), filtroBusqueda));
 	}//FIN METODO
 	
+	private void exportToExcel(OrdenCompra ordenCompra) throws SQLException {
+		ResultSet resultados = DetalleOrdenCompraDAO.readNombreColumnas(connection, ordenCompra.getSysPK());
+		this.file = new File (this.RUTA + ordenCompra.getFolio() +".xls");
+		int row = 0;
+		//FORMATO FUENTE DEL CONTENIDO
+		WritableFont fuente = new WritableFont( WritableFont.ARIAL, 8, WritableFont.NO_BOLD );
+		WritableCellFormat formatoCelda = new WritableCellFormat(fuente);
+		
+		WritableFont fTitulo = new WritableFont( WritableFont.ARIAL, 9, WritableFont.BOLD );
+		WritableCellFormat formatoCelda2 = new WritableCellFormat(fTitulo);
+		
+		//INTERFAZ PARA LA HOJA DE CALCULO
+		WritableSheet hojaExcel =  null;
+		WritableWorkbook libro = null;
+		
+		//CONFIGURACION PARA GENERAR LA HOJA DE CALCULO
+		WorkbookSettings configuracion = new WorkbookSettings();
+		configuracion.setLocale(new Locale("es", "MX"));
+		
+		try {
+			libro = Workbook.createWorkbook(file, configuracion);
+			//HOJA CON NOMBRE DE LA TABLA
+			libro.createSheet("Consulta", 0);
+			hojaExcel = libro.getSheet(0);
+			
+			ArrayList<String> arrayListColumnas = new ArrayList<String>();
+			arrayListColumnas.add("Folio");
+			arrayListColumnas.add("PTDA");
+			arrayListColumnas.add("Diseño");
+			arrayListColumnas.add("Descripción");
+			arrayListColumnas.add("FechaEntrega");
+			arrayListColumnas.add("Cantidad");
+			arrayListColumnas.add("Tipo");
+			arrayListColumnas.add("Proceso");
+			arrayListColumnas.add("PMP");		
+				
+			try {
+				//NOMBRE DE LAS FILAS
+				for (int i = 1; i <= resultados.getMetaData().getColumnCount(); i++) {
+					Label registro2 = new Label (i, 0, arrayListColumnas.get(i-1), formatoCelda2);
+					try {
+						hojaExcel.addCell(registro2);
+					}catch (WriteException ex) {
+						Notificacion.dialogoException(ex);
+					}//FIN TRY-CATCH
+				}//FIN FOR	
+			
+				while (resultados.next()) {
+					for (int i = 1; i <= resultados.getMetaData().getColumnCount(); i++) {
+						Label registro = new Label (i, row + 1, resultados.getString(i), formatoCelda);
+						try {
+							hojaExcel.addCell(registro);
+						}catch (WriteException ex) {
+						Notificacion.dialogoException(ex);
+						}//FIN TRY-CATCH
+					}//FIN FOR
+					row ++;
+				}//FIN WHILE
+				resultados.close();
+			}catch (SQLException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY/CATCH
+		
+			//GUARDANDO EN LA RUTA
+			try {
+				libro.write();
+				libro.close();
+				//Desktop.getDesktop().open(file);
+			}catch (WriteException ex) {
+				Notificacion.dialogoException(ex);
+			}//FIN TRY-CATCH
+		
+		}catch (IOException ex) {
+			Notificacion.dialogoAlerta(AlertType.WARNING, "", "EL archivo se encuentra actualmente abierto, ciérralo para poder exportar");
+		}//FIN TRY-CATCH
+	}//FIN METODO
+	
+	private void sendOrdenCompra(OrdenCompra ordenCompra) {
+		try {
+			this.exportToExcel(ordenCompra);
+			LeerArchivo.leerUsuario();
+			new ProcessBuilder(LeerArchivo.rutaOutlook,"/c","ipm.note", "/m", LeerArchivo.correos, "/a", this.RUTA + ordenCompra.getFolio() + ".xls").start();
+		} catch (IOException | SQLException ex) {
+			Notificacion.dialogoException(ex);
+		}//FIN TRY/CATCH*/
+	}//FIN METODO
+	
 	//MANEJADORES
 	private void manejadorBotonMostrar(OrdenCompra ordenCompra) {
 		this.mainApp.iniciarDialogoOrdenCompra(ordenCompra, DialogoOrdenCompra.VER);
@@ -200,12 +304,9 @@ public class PantallaOrdenCompra {
 		}//FIN IF
 	}//FIN METODO
 	
-	private void manejadorEnviarCorreo() {
-		ArrayList<String> d = new ArrayList<String>();
-		d.add( "emmanuel_ostria@hotmail.com");
-		d.add("eostria17@gmail.com");
-		Mail.enviarCorreo(this.mainApp.getSessionMail().iniciarSesionMail(),d, "Prueba de boton", "MUY BUENAS DIAS, TARDES YA");
-	}
+	private void manejadorEnviarCorreo(OrdenCompra ordenCompra) {
+		this.sendOrdenCompra(ordenCompra);
+	}//FIN METODO
 	
 	private void manejadorBotonAgregarDetalle(OrdenCompra ordenCompra) {
 		this.mainApp.iniciarDialogoDetalleOrdenCompra(ordenCompra);

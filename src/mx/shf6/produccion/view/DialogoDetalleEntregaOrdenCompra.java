@@ -74,7 +74,7 @@ public class DialogoDetalleEntregaOrdenCompra {
 		if (detalleEntregaOrdenCompra != null) {
 			if (Notificacion.dialogoPreguntar("", "¿Deseas eliminar el registro?")) {
 				if (DetalleEntregaOrdenCompraDAO.delete(connection, detalleEntregaOrdenCompra)) {
-					this.saldo = saldo - detalleEntregaOrdenCompra.getCantidad();
+					this.saldo = saldo + detalleEntregaOrdenCompra.getCantidad();
 					this.detalleOrdenCompra.setSaldo(saldo);
 					DetalleOrdenCompraDAO.update(connection, detalleOrdenCompra);
 					Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Registro eliminado");

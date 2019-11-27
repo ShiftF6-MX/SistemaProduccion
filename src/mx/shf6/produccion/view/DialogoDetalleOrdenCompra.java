@@ -108,13 +108,13 @@ public class DialogoDetalleOrdenCompra {
 					botonEliminar.setCursor(Cursor.HAND);
 					botonEliminar.setTooltip(new Tooltip("Eliminar registro"));
 					
-					botonEntrega.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/DetalleIcono.png"))));
+					botonEntrega.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/EstructuraNivelesIcono.png"))));
 					botonEntrega.setPrefSize(16.0, 16.0);
 					botonEntrega.setPadding(Insets.EMPTY);
 					botonEntrega.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 					botonEntrega.setStyle("-fx-background-color: transparent");
 					botonEntrega.setCursor(Cursor.HAND);
-					botonEntrega.setTooltip(new Tooltip("Detalles orden compra"));
+					botonEntrega.setTooltip(new Tooltip("Fechas de entrega"));
 					
 					super.updateItem(item, empty);
 					if (empty) {

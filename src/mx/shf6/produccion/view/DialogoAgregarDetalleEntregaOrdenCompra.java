@@ -71,9 +71,9 @@ public class DialogoAgregarDetalleEntregaOrdenCompra {
 			this.detalleEntregaOrdenCompra.setCantidad(Integer.valueOf(this.textFieldCantidad.getText()));
 			this.detalleEntregaOrdenCompra.setFecha(Date.valueOf(this.datePickerFecha.getValue()));
 			this.detalleEntregaOrdenCompra.setDetalleOrdenCompraFK(this.detalleOrdenCompra);
-			this.saldo = this.saldo + this.detalleEntregaOrdenCompra.getCantidad();
+			this.saldo = this.saldo - this.detalleEntregaOrdenCompra.getCantidad();
 			
-			if (this.saldo <= this.detalleOrdenCompra.getPorEntregar()) {
+			if (this.saldo >= 0) {
 				this.detalleOrdenCompra.setSaldo(saldo);
 				if (DetalleEntregaOrdenCompraDAO.create(connection, detalleEntregaOrdenCompra)) {
 					DetalleOrdenCompraDAO.update(connection, detalleOrdenCompra);

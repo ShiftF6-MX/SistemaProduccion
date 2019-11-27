@@ -132,6 +132,7 @@ public class DialogoAgregarDetalleOrdenCompra {
 		this.detalleOrdenCompra.setComponenteFK(this.comboBoxComponente.getSelectionModel().getSelectedItem());
 		this.detalleOrdenCompra.setOrdenCompraFK(this.ordenCompra);
 		if (this.opcion == CREAR) {
+			this.detalleOrdenCompra.setSaldo(Integer.valueOf(this.textFieldPorEntregar.getText()));
 			if (DetalleOrdenCompraDAO.create(connection, detalleOrdenCompra))
 				return true;
 			else
