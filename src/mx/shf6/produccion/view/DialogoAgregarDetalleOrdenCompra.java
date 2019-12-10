@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.CheckBox;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.Componente;
 import mx.shf6.produccion.model.DetalleOrdenCompra;
@@ -42,6 +43,7 @@ public class DialogoAgregarDetalleOrdenCompra {
 	@FXML private DatePicker datePickerFechaCliente;
 	@FXML private DatePicker datePickerEntregaFinal;
 	@FXML private ComboBox<Componente> comboBoxComponente;
+	@FXML private CheckBox checkBoxMostrarTodos;
 	
 	//METODOS
 	@FXML private void initialize() {
@@ -62,7 +64,14 @@ public class DialogoAgregarDetalleOrdenCompra {
 	private void initComponentes() {
 		RestriccionTextField.soloNumeros(textFieldItem);
 		RestriccionTextField.soloNumeros(textFieldPorEntregar);
-		this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponente(connection)));
+		this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponenteTipoComponente(connection, "A")));
+		
+		this.checkBoxMostrarTodos.selectedProperty().addListener((ov, oldValue, newValue) -> {
+			if (checkBoxMostrarTodos.isSelected()) 
+				this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponente(connection)));
+			else
+				this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponenteTipoComponente(connection, "A")));
+		});
 	}//FIN METODO
 
 	private void showInterfaz() {

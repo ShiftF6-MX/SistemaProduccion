@@ -404,6 +404,6 @@ public class Componente {
 
 	@Override
 	public String toString() {
-		return this.getDescripcion();
+		return this.getNumeroParte();
 	}//FIN METODO
 }//FIN CLASE

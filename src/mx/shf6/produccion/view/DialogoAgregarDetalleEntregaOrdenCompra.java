@@ -51,10 +51,7 @@ public class DialogoAgregarDetalleEntregaOrdenCompra {
 	}//FIN METODO
 	
 	private boolean checkComponentes() {
-		if (this.textFieldFactura.getText().isEmpty()) {
-			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Factura\" no puede estar vacio");
-			return false;
-		} else if (this.textFieldCantidad.getText().isEmpty()) {
+		if (this.textFieldCantidad.getText().isEmpty()) {
 			Notificacion.dialogoAlerta(AlertType.ERROR, "", "El campo \"Cantidad \" no puede estar vacio");
 			return false;
 		} else if (this.datePickerFecha.getValue() == null) {

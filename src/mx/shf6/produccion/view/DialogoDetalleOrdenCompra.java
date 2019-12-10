@@ -37,9 +37,8 @@ public class DialogoDetalleOrdenCompra {
 	
 	//COMPONENTES DE LA INTERFAZ
 	@FXML private TableView<DetalleOrdenCompra> tableViewDetalleOrdenCompra;
-	@FXML private PTableColumn<DetalleOrdenCompra, String> tableColumnComponente;
-	@FXML private PTableColumn<DetalleOrdenCompra, String> tableColumnItem;
-	@FXML private PTableColumn<DetalleOrdenCompra, Date> tableColumnFechaCliente;
+	@FXML private PTableColumn<DetalleOrdenCompra, String> tableColumnDiseno;
+	@FXML private PTableColumn<DetalleOrdenCompra, String> tableColumnDescripcion;
 	@FXML private PTableColumn<DetalleOrdenCompra, Date> tableColumnEntregaFinal;
 	@FXML private PTableColumn<DetalleOrdenCompra, Integer> tableColumnPorEntregar;
 	@FXML private PTableColumn<DetalleOrdenCompra, Integer> tableColumnSaldo;
@@ -63,9 +62,8 @@ public class DialogoDetalleOrdenCompra {
 	}//FIN METODO
 	
 	private void initTabla() {
-		this.tableColumnComponente.setCellValueFactory(cellData -> cellData.getValue().getComponenteFK().descripcionProperty());
-		this.tableColumnItem.setCellValueFactory(cellData -> cellData.getValue().itemProperty());
-		this.tableColumnFechaCliente.setCellValueFactory(cellData -> cellData.getValue().fechaClienteProperty());
+		this.tableColumnDiseno.setCellValueFactory(cellData -> cellData.getValue().getComponenteFK().numeroParteProperty());
+		this.tableColumnDescripcion.setCellValueFactory(cellData -> cellData.getValue().getComponenteFK().descripcionProperty());
 		this.tableColumnEntregaFinal.setCellValueFactory(cellData -> cellData.getValue().entregaFinalProperty());
 		this.tableColumnPorEntregar.setCellValueFactory(cellData -> cellData.getValue().porEntregarProperty());
 		this.tableColumnSaldo.setCellValueFactory(cellData -> cellData.getValue().saldoProperty());
