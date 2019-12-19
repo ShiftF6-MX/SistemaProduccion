@@ -27,6 +27,7 @@ public class DialogoEstructuraNiveles {
 	//PROPIEDADES
 	private MainApp mainApp;
 	private Connection conexion;
+	@SuppressWarnings("unused")
 	private Proyecto proyecto;
 	private Componente componenteRaiz;
 	private DetalleComponente detalleComponenteRaiz;

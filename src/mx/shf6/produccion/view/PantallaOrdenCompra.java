@@ -281,7 +281,9 @@ public class PantallaOrdenCompra {
 		try {
 			this.exportToExcel(ordenCompra);
 			LeerArchivo.leerUsuario();
-			new ProcessBuilder(LeerArchivo.rutaOutlook,"/c","ipm.note", "/m", LeerArchivo.correos, "/a", this.RUTA + ordenCompra.getFolio() + ".xls").start();
+			ProcessBuilder outlook = new ProcessBuilder();
+			outlook.command(LeerArchivo.rutaOutlook,"/c","ipm.note", "/m", LeerArchivo.correos, "/a", this.RUTA + ordenCompra.getFolio() + ".xls");
+			outlook.start();
 		} catch (IOException | SQLException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH*/

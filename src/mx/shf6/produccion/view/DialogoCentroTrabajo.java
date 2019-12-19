@@ -24,6 +24,7 @@ public class DialogoCentroTrabajo {
 	private MainApp mainApp;
 	private CentroTrabajo centroTrabajo;
 	private Connection conexion;
+	@SuppressWarnings("unused")
 	private GrupoTrabajo grupoTrabajo;
 	private ObservableList<String> observableGrupoTrabajo;
 	private ArrayList<GrupoTrabajo> listaGrupoTrabajo;

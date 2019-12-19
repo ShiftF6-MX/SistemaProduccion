@@ -46,8 +46,8 @@ public class PantallaOrdenProduccion {
 	@FXML private PTableColumn<OrdenProduccion, Date> columnaFecha;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaLote;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaCliente;
-	@FXML private PTableColumn<OrdenProduccion, String> columnaCotizacion;
-	@FXML private PTableColumn<OrdenProduccion, String> columnaProyecto;
+	@FXML private PTableColumn<OrdenProduccion, String> columnaOrdenCompra;
+	@FXML private PTableColumn<OrdenProduccion, String> columnaNumeroParte;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaDescripcion;
 	@FXML private PTableColumn<OrdenProduccion, Double> columnaCantidad;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaStatus;
@@ -113,10 +113,8 @@ public class PantallaOrdenProduccion {
 			int combo = 0;
 			if (comboStatus.getValue() == "Pendiente")
 				combo = 0; 
-			if (comboStatus.getValue() == "En proceso")
-				combo = 1;
 			if (comboStatus.getValue() == "Terminado")
-				combo = 2;
+				combo = 1;
 			this.listaOrdenProduccion = OrdenProduccionDAO.statusOrdenProduccion(this.mainApp.getConnection(), combo);
 			this.tablaOrdenProduccion.setItems(OrdenProduccionDAO.toObservableList(this.listaOrdenProduccion));
 		}//FIN IF ELSE
@@ -127,9 +125,9 @@ public class PantallaOrdenProduccion {
 		this.columnaFecha.setCellValueFactory(cellData -> cellData.getValue().fechaProperty());
 		this.columnaLote.setCellValueFactory(cellData -> cellData.getValue().loteProperty());
 		this.columnaCliente.setCellValueFactory(cellData -> cellData.getValue().clienteProperty());
-		this.columnaCotizacion.setCellValueFactory(cellData -> cellData.getValue().cotizacionProperty());
-		this.columnaProyecto.setCellValueFactory(cellData -> cellData.getValue().proyectoProperty());
-		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().componenteProperty());
+		this.columnaOrdenCompra.setCellValueFactory(cellData -> cellData.getValue().ordenCompraProperty());
+		this.columnaNumeroParte.setCellValueFactory(cellData -> cellData.getValue().numeroParteProperty());
+		this.columnaDescripcion.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
 		this.columnaCantidad.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty());
 		this.columnaStatus.setCellValueFactory(cellData -> cellData.getValue().descripcionStatusProperty());
 		this.iniciarColumnaAcciones();
@@ -150,7 +148,7 @@ public class PantallaOrdenProduccion {
 	}//FIN METODO
 	
 	private void comboStatus() {
-		ObservableList<String> status = FXCollections.observableArrayList("Todos","Pendiente", "En proceso", "Terminado");
+		ObservableList<String> status = FXCollections.observableArrayList("Todos","Pendiente", "Terminado");
 		this.comboStatus.getItems().addAll(status);
 	}//FIN METODO
 	
@@ -162,7 +160,7 @@ public class PantallaOrdenProduccion {
 			final TableCell<OrdenProduccion, String> cell = new TableCell<OrdenProduccion, String>() {
 				final Button botonListaMateriales = new Button("ListaMateriales");
 				final Button botonEstructuraNiveles = new Button("EstructuraNiveles");
-				final HBox acciones = new HBox(botonListaMateriales, botonEstructuraNiveles);
+				final HBox acciones = new HBox(botonListaMateriales);
 				
 				//PARA MOSTRAR LOS DIALOGOS
 				@Override
@@ -200,7 +198,7 @@ public class PantallaOrdenProduccion {
 		        		
 		        		botonEstructuraNiveles.setOnAction(event -> {
 		        			ordenProduccion = getTableView().getItems().get(getIndex());
-		        			manejadorBotonEstructuraNiveles(ordenProduccion);
+		        			
 		        		});
 		        		
 		        		setGraphic(acciones);
@@ -220,12 +218,6 @@ public class PantallaOrdenProduccion {
 	
 	//VER LISTA DE MATERIALES
 	private void manejadorBotonListaMateriales(OrdenProduccion ordenProduccion) {
-		this.mainApp.iniciarDialogoPartesPrimarias(ProyectoDAO.readProyectoPorCodigo(this.conexion, ordenProduccion.getProyecto()), ordenProduccion);
-	}//FIN METODO
-	
-	//VER ESTRUCTURA DE NIVELES
-	private void manejadorBotonEstructuraNiveles(OrdenProduccion ordenProduccion) {
-		this.mainApp.iniciarDialogoEstructuraNiveles(ProyectoDAO.readProyecto(this.conexion, ordenProduccion.getProyectoFK()));
-	}//FIN METODO
-	
+		this.mainApp.iniciarDialogoPartesPrimarias(ProyectoDAO.readProyectoPorCodigo(this.conexion, ordenProduccion.getNumeroParte()), ordenProduccion);
+	}//FIN METODO	
 }//FIN CLASE

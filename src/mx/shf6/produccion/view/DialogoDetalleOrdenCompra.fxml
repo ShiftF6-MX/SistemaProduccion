@@ -55,7 +55,7 @@
                      <columns>
                         <PTableColumn fx:id="tableColumnDiseno" percentageWidth="0.2" prefWidth="75.0" text="Diseño" />
                         <PTableColumn fx:id="tableColumnDescripcion" percentageWidth="0.2" prefWidth="75.0" text="Descripción" />
-                        <PTableColumn fx:id="tableColumnEntregaFinal" percentageWidth="0.15" prefWidth="75.0" text="Entega final" />
+                        <PTableColumn fx:id="tableColumnEntregaFinal" percentageWidth="0.15" prefWidth="75.0" text="Entrega final" />
                         <PTableColumn fx:id="tableColumnPorEntregar" percentageWidth="0.15" prefWidth="75.0" text="Por entregar" />
                         <PTableColumn fx:id="tableColumnSaldo" percentageWidth="0.1" prefWidth="75.0" text="Saldo" />
                         <PTableColumn fx:id="tableColumnAcciones" percentageWidth="0.2" prefWidth="75.0" text="Acciones" />

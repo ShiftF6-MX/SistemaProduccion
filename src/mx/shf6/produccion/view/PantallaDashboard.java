@@ -1,11 +1,11 @@
 package mx.shf6.produccion.view;
 
-import java.sql.Connection;
+/*import java.sql.Connection;
 import java.util.ArrayList;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
+//import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -55,6 +55,7 @@ public class PantallaDashboard extends Thread{
 	private TreeItem<ControlOperacion> root;
 	private OrdenProduccion raiz;
 	private ControlOperacion detalleRaiz;
+	@SuppressWarnings("unused")
 	private Componente componente;
 	private ArrayList<ControlOperacion> listaComponentes;
 	
@@ -271,4 +272,4 @@ public class PantallaDashboard extends Thread{
 		inicializarTabla(nivel);
 	}//FIN METODO
 	//MANEJADORES 
-}//FIN METODO
+}//FIN METODO*/

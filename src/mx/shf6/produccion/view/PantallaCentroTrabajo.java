@@ -31,6 +31,7 @@ public class PantallaCentroTrabajo {
 
 	// PROPIEDADES
 	private MainApp mainApp;
+	@SuppressWarnings("unused")
 	private Connection connection;
 	private CentroTrabajo centroTrabajo;
 	private ArrayList<CentroTrabajo> listaCentroTrabajo;

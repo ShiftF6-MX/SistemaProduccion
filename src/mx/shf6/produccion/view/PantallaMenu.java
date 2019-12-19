@@ -68,7 +68,7 @@ public class PantallaMenu {
 	}//FIN METODO
 	
 	@FXML private void manejadorMenuDashboard() {
-		this.mainApp.iniciarPantallaDashboard();
+		//this.mainApp.iniciarPantallaDashboard();
 	}//FIN METODO	
 	
 	@FXML private void manejadorMenuOrdenProduccion() {

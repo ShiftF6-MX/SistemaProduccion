@@ -1,6 +1,7 @@
 package mx.shf6.produccion.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,6 +27,7 @@ public class DetalleProceso {
 	private StringProperty cantidad;
 	private StringProperty componentes;
 	private StringProperty herramienta;
+	private ObjectProperty<Date> fecha;
 
 	//VARIABLES
 
@@ -33,11 +35,11 @@ public class DetalleProceso {
 
 	//CONSTRUCTOR VACIO
 	public DetalleProceso() {
-		this(0, 0, "", 0.0, 0.0, 0, "", 0, "",0, "", "", "", "");
+		this(0, 0, "", 0.0, 0.0, 0, "", 0, "",0, "", "", "", "", new Date(System.currentTimeMillis()));
 	}//FIN CONSTRUCTOR
 
 	//CONSTRUCTOR CON PARAMETROS
-	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, String cantidad, String componente, String herramienta) {
+	public DetalleProceso(Integer sysPK, Integer operacion, String descripcion, Double tiempoPreparacion, Double tiempoOperacion, Integer centroTrabajoFK, String nombreCentroTrabajo, Integer grupoTrabajoFK, String nombreGrupoTrabajo, Integer procesoFK, String nombreProceso, String cantidad, String componente, String herramienta, Date fecha) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.operacion = new SimpleObjectProperty<Integer>(operacion);
 		this.descripcion = new SimpleStringProperty(descripcion);
@@ -52,6 +54,7 @@ public class DetalleProceso {
 		this.cantidad = new SimpleStringProperty(cantidad);
 		this.componentes = new SimpleStringProperty(componente);
 		this.herramienta = new SimpleStringProperty(herramienta);
+		this.fecha = new SimpleObjectProperty<Date>(fecha);
 	}//FIN CONSTRUCTOR
 
 	//METODOS PARA ACCESO A "SYSPK"
@@ -252,4 +255,15 @@ public class DetalleProceso {
 	}//FIN METODO
 	//FIN METODOS DE ACCESO HERRAMIENTA
 
+	public void setFecha(Date fecha) {
+		this.fecha.set(fecha);
+	}//FIN METODO
+	
+	public Date getFecha() {
+		return this.fecha.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Date> fechaProperty() {
+		return this.fecha;
+	}//FIN METODO
 }//FIN CLASE

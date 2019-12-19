@@ -53,7 +53,8 @@ public class Notificacion {
         alert.showAndWait();
     }//END METHOD
     
-    public static void dialogoDetalleMensaje(String mensaje) {
+    @SuppressWarnings("unused")
+	public static void dialogoDetalleMensaje(String mensaje) {
     	Toolkit.getDefaultToolkit().beep();
         Alert alert = new Alert(AlertType.ERROR);
         alert.initStyle(StageStyle.UTILITY);

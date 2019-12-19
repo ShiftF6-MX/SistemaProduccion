@@ -50,6 +50,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.geometry.Pos;
 
+@SuppressWarnings("unused")
 public class PantallaDetalleCotizacion {
 
 	public static final int CREAR = 1;
@@ -74,6 +75,7 @@ public class PantallaDetalleCotizacion {
 	private ArrayList<DetalleComponente> listaPartePrimaria;
 	private ArrayList<DetalleComponente> listaSubEnsambles;
 	private ArrayList<DetalleComponente> listaEnsambles;
+	@SuppressWarnings("unused")
 	private HashSet<DetalleComponente> hs;
 	
 	
@@ -87,7 +89,6 @@ public class PantallaDetalleCotizacion {
 	@FXML private PTableColumn<DetalleCotizacion, Double> columaPrecioUnitario;
 	@FXML private PTableColumn<DetalleCotizacion, Date> columnaFechaEstimada;
 	@FXML private PTableColumn<DetalleCotizacion, String> columnaObservaciones;
-	@FXML private PTableColumn<DetalleCotizacion, String> columnaAcciones;
 	@FXML private MenuItem menuItemAgregarProyecto;
 	@FXML private MenuItem menuItemQuitarProyecto;
 	@FXML private MenuItem menuItemVerProyecto;
@@ -116,136 +117,6 @@ public class PantallaDetalleCotizacion {
 		this.columaPrecioUnitario.setCellValueFactory(cellData -> cellData.getValue().costoProperty());
 		this.columnaFechaEstimada.setCellValueFactory(cellData -> cellData.getValue().fechaEntregaProperty());
 		this.columnaObservaciones.setCellValueFactory(cellData -> cellData.getValue().observacionesProperty());
-		
-		this.columnaAcciones.setCellValueFactory(new PropertyValueFactory<>("DUM"));
-		Callback<TableColumn<DetalleCotizacion, String>, TableCell<DetalleCotizacion, String>> cellFactory = param -> {
-			
-			final TableCell<DetalleCotizacion, String> cell = new TableCell<DetalleCotizacion, String>() {
-				final Button botonIniciarOrdenProduccion = new Button("I");
-				final HBox acciones = new HBox(botonIniciarOrdenProduccion);
-				
-				//PARA MOSTRAR LOS DIALOGOS DE INSTITUCION
-				@Override
-				public void updateItem(String item, boolean empty) {
-					botonIniciarOrdenProduccion.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AprobarIcono.png"))));
-					botonIniciarOrdenProduccion.setPrefSize(16.0, 16.0);
-					botonIniciarOrdenProduccion.setPadding(Insets.EMPTY);
-					botonIniciarOrdenProduccion.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-					botonIniciarOrdenProduccion.setStyle("-fx-background-color: transparent");
-					botonIniciarOrdenProduccion.setCursor(Cursor.HAND);
-					botonIniciarOrdenProduccion.setTooltip(new Tooltip("Generar Orden de trabajo"));
-					if (cotizacion.getStatus() != Cotizacion.APROBADA)
-						botonIniciarOrdenProduccion.setDisable(true);
-					else
-						botonIniciarOrdenProduccion.setDisable(false);					
-					
-					acciones.setSpacing(2);
-					acciones.setPrefWidth(80.0);
-					acciones.setAlignment(Pos.CENTER_LEFT);
-					super.updateItem(item, empty);
-					
-					if (empty) {
-						setGraphic(null);
-						setText(null);
-					} else {
-						botonIniciarOrdenProduccion.setOnAction(event -> {
-							detalleCotizacion = getTableView().getItems().get(getIndex());
-							
-							OrdenProduccion ordenProduccion = new OrdenProduccion();
-							ordenProduccion = OrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), detalleCotizacion.getSysPK());
-							Proyecto proyecto = ProyectoDAO.readProyecto(mainApp.getConnection(), detalleCotizacion.getProyectoFK());
-    						
-							if (ordenProduccion.getSysPK() == 0) {
-								if (Notificacion.dialogoPreguntar("Confirmación para generar una orden de trabajo", "¿Desea generar una orden de trabajo?")){
-		            				OrdenProduccion orden = new OrdenProduccion();
-		            				orden.setLote(generarLote());
-		            				orden.setDetalleCotizacionFK(detalleCotizacion.getSysPK());
-		            				
-			            			if (OrdenProduccionDAO.createOrdenProduccion(mainApp.getConnection(), orden)) {
-			            				for (int i = 0; i < detalleCotizacion.getCantidad(); i++) {
-			            					int syspk = OrdenProduccionDAO.ultimoSysPK(mainApp.getConnection());
-			            					DetalleOrdenProduccion detalleOrden = new DetalleOrdenProduccion();
-			            					detalleOrden.setNumeroSerie(generarNumeroSerie());
-			            					detalleOrden.setOrdenProduccionFK(syspk);
-			            					if (DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden)) {
-			         
-//			            						listaPartePrimaria = new ArrayList<DetalleComponente>();
-//			            						listaSubEnsambles = new ArrayList<DetalleComponente>();
-//			            						listaEnsambles = new ArrayList<DetalleComponente>();
-//			            						componenteRaiz = new Componente();
-//			            						hs = new HashSet<DetalleComponente>();
-//			            						
-//			            						obtenerPartesPrimarias(proyecto.getComponenteFK());
-//			            						hs.addAll(listaSubEnsambles);
-//			            						listaSubEnsambles.clear();
-//			            						listaSubEnsambles.addAll(hs);
-//			            						hs.clear();
-//			            						hs.addAll(listaEnsambles);
-//			            						listaSubEnsambles.addAll(hs);
-//			            						listaPartePrimaria.addAll(listaSubEnsambles);
-			            						
-//			            						for (DetalleComponente comp : listaPartePrimaria) {
-//			            							
-//			            							ControlOperacion controlOperacion = new ControlOperacion();
-//			            							DetalleProceso detalleProceso = new DetalleProceso();
-//			            							Componente cont = ComponenteDAO.readComponenteNumeroParte(mainApp.getConnection(), comp.getNumeroParteComponenteSuperior());
-//			            							int proceso = ProcesoDAO.readProcesoComponenteFK(mainApp.getConnection(), cont.getSysPK());
-//			            							detalleProceso = DetalleProcesoDAO.primeraOperacion(mainApp.getConnection(), proceso);
-//			            							DetalleOrdenProduccion detalleOrdenProduccion = DetalleOrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), syspk);
-//			            							DetalleComponente detalleCom = DetalleComponenteDAO.readDetalleComponenteInferiorFKObject(mainApp.getConnection(), comp.getComponenteSuperiorFK());
-//			            							
-//			            					        java.sql.Timestamp hor = new java.sql.Timestamp(System.currentTimeMillis());
-//			            					        
-//			            					        int cant = detalleCom.getCantidad().intValue();
-//			            					       
-//			            					        if (!comp.getTipoComponenteSuperior().equals("Comprado") && !comp.getTipoComponenteSuperior().equals("Materia prima")) {
-//			            					        	if (cant == 0)
-//				            					        	controlOperacion.setCantidad(1);
-//				            					        else
-//				            					        	controlOperacion.setCantidad(cant);
-//					            						controlOperacion.setHoraFechaInicio(hor);
-//					            						controlOperacion.setHoraFechaFinal(null);
-//					            						controlOperacion.setFechaEstimada(detalleCotizacion.getFechaEntrega());
-//					            						if (detalleProceso.getCentroTrabajoFK() != 0)
-//					            							controlOperacion.setCentroTrabajoFK(detalleProceso.getCentroTrabajoFK());
-//					            						else 
-//					            							controlOperacion.setCentroTrabajoFK(0);
-//					            						controlOperacion.setCodigoParo(1);
-//					            						controlOperacion.setComponenteFK(cont.getSysPK());
-//					            						controlOperacion.setDetalleProcesoFK(detalleProceso.getSysPK());
-//					            						controlOperacion.setDetalleOrdenProduccionFK(detalleOrdenProduccion.getSysPK());
-//					            						
-//					            						if (ControlOperacionesDAO.createControlOperaciones(mainApp.getConnection(), controlOperacion))
-//					            							Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se genero exitosamente la orden de producción");	
-//			            					        }
-//			            						}//FIN FOR	            							
-			            					}//FIN IF
-			            				}//FIN FOR		            				
-			            			}//FIN IF
-								}//FIN IF
-							} else {
-								Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "En este registro ya se generó su orden de producción");		
-							}//FIN IF ELSE
-						});//FIN LISTENER
-						setGraphic(acciones);
-						setText(null);
-					}//FIN IF ELSE
-				}//FIN METODO
-			};//FIN METODO
-			return cell;
-		};//FIN METODO
-		columnaAcciones.setCellFactory(cellFactory);
-	}//FIN METODO
-	
-	public String generarLote() {
-		int syspk = (OrdenProduccionDAO.ultimoSysPK(this.mainApp.getConnection()) + 1);
-		Month mes = LocalDate.now().getMonth();
-        String nombre = mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
-        char[] l = nombre.toUpperCase().toCharArray();
-        String m = String.valueOf(l[0])+String.valueOf(l[1])+String.valueOf(l[2]);
-        String fechaSys = String.valueOf(LocalDate.now().getDayOfMonth()) + m + String.valueOf(LocalDate.now().getYear() + String.valueOf(syspk));
-        
-        return fechaSys;
 	}//FIN METODO
 		
 	public void obtenerPartesPrimarias(int componenteFK){
@@ -304,13 +175,7 @@ public class PantallaDetalleCotizacion {
 		}//FIN IF
 	}//FIN METODO
 	
-	public String generarNumeroSerie() {
-		String result = new SecureRandom().ints(0,36)
-	            .mapToObj(i -> Integer.toString(i, 36))
-	            .map(String::toUpperCase).distinct().limit(8).collect(Collectors.joining());
-		
-		return result;
-	}//FIN METODO
+	
 	
 	public boolean revisarExistencia(int componenteSuperior) {
 		this.listaDetalleComponente = DetalleComponenteDAO.readDetalleComponenteSuperiorFK(this.mainApp.getConnection(), componenteSuperior);

@@ -1,8 +1,14 @@
 package mx.shf6.produccion.view;
 
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -16,14 +22,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import mx.shf6.produccion.MainApp;
 import mx.shf6.produccion.model.DetalleOrdenCompra;
+import mx.shf6.produccion.model.DetalleOrdenProduccion;
 import mx.shf6.produccion.model.OrdenCompra;
+import mx.shf6.produccion.model.OrdenProduccion;
 import mx.shf6.produccion.model.dao.DetalleOrdenCompraDAO;
+import mx.shf6.produccion.model.dao.DetalleOrdenProduccionDAO;
+import mx.shf6.produccion.model.dao.OrdenProduccionDAO;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.PTableColumn;
 
@@ -78,7 +89,8 @@ public class DialogoDetalleOrdenCompra {
 				final Button botonEditar = new Button("E");
 				final Button botonEliminar = new Button("B");
 				final Button botonEntrega = new Button("P");
-				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonEntrega);
+				final Button botonIniciarOrdenProduccion = new Button("I");
+				final HBox cajaBotones = new HBox(botonVer, botonEditar, botonEliminar, botonEntrega, botonIniciarOrdenProduccion);
 				
 				@Override
 				public void updateItem(String item, boolean empty) {
@@ -114,6 +126,14 @@ public class DialogoDetalleOrdenCompra {
 					botonEntrega.setCursor(Cursor.HAND);
 					botonEntrega.setTooltip(new Tooltip("Fechas de entrega"));
 					
+					botonIniciarOrdenProduccion.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("view/images/1x/AprobarIcono.png"))));
+					botonIniciarOrdenProduccion.setPrefSize(16.0, 16.0);
+					botonIniciarOrdenProduccion.setPadding(Insets.EMPTY);
+					botonIniciarOrdenProduccion.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					botonIniciarOrdenProduccion.setStyle("-fx-background-color: transparent");
+					botonIniciarOrdenProduccion.setCursor(Cursor.HAND);
+					botonIniciarOrdenProduccion.setTooltip(new Tooltip("Generar Orden de trabajo"));
+					
 					super.updateItem(item, empty);
 					if (empty) {
 						super.setGraphic(null);
@@ -134,6 +154,10 @@ public class DialogoDetalleOrdenCompra {
 						botonEntrega.setOnAction(event -> {
 							manejadorBotonEntrega(getTableView().getItems().get(getIndex()));
 						});
+						
+						botonIniciarOrdenProduccion.setOnAction(event -> {
+							manejadorBotonIniciarProduccion(getTableView().getItems().get(getIndex()));
+						});//FIN LISTENER
 						
 						cajaBotones.setSpacing(2);
 						super.setGraphic(cajaBotones);
@@ -156,6 +180,25 @@ public class DialogoDetalleOrdenCompra {
 	private void updateDatos() {
 		this.textFieldCliente.setText(this.ordenCompra.getClienteFK().getNombre());
 		this.textFieldFolio.setText("No. Folio: " + this.ordenCompra.getFolio());
+	}//FIN METODO
+	
+	public String generarNumeroSerie() {
+		String result = new SecureRandom().ints(0,36)
+	            .mapToObj(i -> Integer.toString(i, 36))
+	            .map(String::toUpperCase).distinct().limit(8).collect(Collectors.joining());
+		
+		return result;
+	}//FIN METODO
+	
+	public String generarLote() {
+		int syspk = (OrdenProduccionDAO.ultimoSysPK(this.mainApp.getConnection()) + 1);
+		Month mes = LocalDate.now().getMonth();
+        String nombre = mes.getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+        char[] l = nombre.toUpperCase().toCharArray();
+        String m = String.valueOf(l[0])+String.valueOf(l[1])+String.valueOf(l[2]);
+        String fechaSys = String.valueOf(LocalDate.now().getDayOfMonth()) + m + String.valueOf(LocalDate.now().getYear() + String.valueOf(syspk));
+        
+        return fechaSys;
 	}//FIN METODO
 	
 	//MANEJADORES
@@ -187,4 +230,30 @@ public class DialogoDetalleOrdenCompra {
 		this.mainApp.iniciarDialogoAgregarDetalleOrdenCompra(detalleOrdenCompra, ordenCompra, DialogoAgregarDetalleOrdenCompra.EDITAR);
 		this.updateTable();
 	}//FIN METODO
+	
+	private void manejadorBotonIniciarProduccion(DetalleOrdenCompra detalleOrdenCompra) {
+		OrdenProduccion ordenProduccion = new OrdenProduccion();
+		ordenProduccion = OrdenProduccionDAO.searchOrdenProduccion(mainApp.getConnection(), detalleOrdenCompra.getSysPK());
+		
+		if (ordenProduccion.getSysPK() == 0) {
+			if (Notificacion.dialogoPreguntar("Confirmación para generar una orden de trabajo", "¿Desea generar una orden de trabajo?")){
+				OrdenProduccion orden = new OrdenProduccion();
+				orden.setLote(generarLote());
+				orden.setDetalleOrdenCompraFK(detalleOrdenCompra.getSysPK());
+				
+    			if (OrdenProduccionDAO.createOrdenProduccion(mainApp.getConnection(), orden)) {
+    				for (int i = 0; i < detalleOrdenCompra.getPorEntregar(); i++) {
+    					int syspk = OrdenProduccionDAO.ultimoSysPK(mainApp.getConnection());
+    					DetalleOrdenProduccion detalleOrden = new DetalleOrdenProduccion();
+    					detalleOrden.setNumeroSerie(generarNumeroSerie());
+    					detalleOrden.setOrdenProduccionFK(syspk);
+    					DetalleOrdenProduccionDAO.createDetalleOrdenProduccion(mainApp.getConnection(), detalleOrden);
+    				}//FIN FOR		            				
+    				Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "Se generó su orden de producción correctamente");
+    			}//FIN IF
+			}//FIN IF
+		} else {
+			Notificacion.dialogoAlerta(AlertType.ERROR, "", "En este registro ya se generó su orden de producción");		
+		}//FIN IF ELSE
+	}
 }//FIN CLASE

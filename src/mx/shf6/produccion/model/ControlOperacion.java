@@ -16,12 +16,16 @@ public class ControlOperacion {
 	private ObjectProperty<Date> fechaEstimada;
 	private ObjectProperty<Timestamp> horaFechaFinal;
 	private ObjectProperty<Integer> centroTrabajoFK;
+	@SuppressWarnings("unused")
 	private StringProperty nombreCentroTrabajo;
 	private ObjectProperty<Integer> codigoParoFK;
+	@SuppressWarnings("unused")
 	private StringProperty descripcionParo;
 	private ObjectProperty<Integer> componenteFK;
+	@SuppressWarnings("unused")
 	private StringProperty numeroParte;
 	private ObjectProperty<Integer> detalleProcesoFK;
+	@SuppressWarnings("unused")
 	private StringProperty descripcionDetalleProceso;
 	private ObjectProperty<Integer> detalleOrdenProduccionFK;
 	private StringProperty numeroSerie;

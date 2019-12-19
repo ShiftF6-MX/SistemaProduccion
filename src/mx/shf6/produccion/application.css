@@ -409,7 +409,7 @@
     -fx-category-gap: 10;
 }
 
-.chart-bar.default-color0 {
+/* .chart-bar.default-color0 {
     -fx-bar-fill: #151940;
 }
 
@@ -419,4 +419,4 @@
 
 .chart-bar.default-color2 {
     -fx-bar-fill: green;
-}
+}*/

@@ -113,7 +113,7 @@ import mx.shf6.produccion.view.PantallaCentroTrabajo;
 import mx.shf6.produccion.view.PantallaClientes;
 import mx.shf6.produccion.view.PantallaComponente;
 import mx.shf6.produccion.view.PantallaCotizaciones;
-import mx.shf6.produccion.view.PantallaDashboard;
+//import mx.shf6.produccion.view.PantallaDashboard;
 import mx.shf6.produccion.view.PantallaDetalleCotizacion;
 import mx.shf6.produccion.view.PantallaEmpleado;
 import mx.shf6.produccion.view.PantallaExistencia;
@@ -163,7 +163,7 @@ public class MainApp extends Application {
 	private AnchorPane pantallaExistencia;
 	private AnchorPane pantallaAlmacen;
 	private AnchorPane pantallaUsuario;
-	private AnchorPane pantallaDashboard;
+	//private AnchorPane pantallaDashboard;
 	private AnchorPane pantallaOrdenCompra;
 
 	//DIALOGOS DEL SISTEMA
@@ -707,7 +707,7 @@ public class MainApp extends Application {
 		}//FIN TRY/CATCH
 	}//FIN METODO
 
-	public void iniciarPantallaDashboard() {
+	/*public void iniciarPantallaDashboard() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(MainApp.class.getResource("view/PantallaDashboard.fxml"));
@@ -720,7 +720,7 @@ public class MainApp extends Application {
 		} catch(IOException | IllegalStateException ex) {
 			Notificacion.dialogoException(ex);
 		}//FIN TRY/CATCH
-	}//FIN METODO
+	}//FIN METODO*/
 	
 	public void iniciarPantallaOrdenCompra() {
 		try {

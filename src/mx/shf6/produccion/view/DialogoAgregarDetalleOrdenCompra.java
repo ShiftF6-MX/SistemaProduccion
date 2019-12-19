@@ -2,6 +2,7 @@ package mx.shf6.produccion.view;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import mx.shf6.produccion.model.DetalleOrdenCompra;
 import mx.shf6.produccion.model.OrdenCompra;
 import mx.shf6.produccion.model.dao.ComponenteDAO;
 import mx.shf6.produccion.model.dao.DetalleOrdenCompraDAO;
+import mx.shf6.produccion.utilities.AutoCompleteComboBoxListener;
 import mx.shf6.produccion.utilities.Notificacion;
 import mx.shf6.produccion.utilities.RestriccionTextField;
 
@@ -26,6 +28,8 @@ public class DialogoAgregarDetalleOrdenCompra {
 	private Connection connection;
 	private OrdenCompra ordenCompra;
 	private DetalleOrdenCompra detalleOrdenCompra;
+	private ArrayList<String> arrayListNumeroParte;
+	private ArrayList<String> arrayListTodos;
 	
 	//VARIABLES
 	private int opcion;
@@ -42,13 +46,15 @@ public class DialogoAgregarDetalleOrdenCompra {
 	@FXML private TextField textFieldProcesoPintura;
 	@FXML private DatePicker datePickerFechaCliente;
 	@FXML private DatePicker datePickerEntregaFinal;
-	@FXML private ComboBox<Componente> comboBoxComponente;
+	@FXML private ComboBox<String> comboBoxComponente;
 	@FXML private CheckBox checkBoxMostrarTodos;
 	
 	//METODOS
 	@FXML private void initialize() {
 		this.detalleOrdenCompra = new DetalleOrdenCompra();
 		this.ordenCompra = new OrdenCompra();
+		this.arrayListNumeroParte = new ArrayList<String>();
+		this.arrayListTodos = new ArrayList<String>();
 	}//FIN METODO
 
 	public void setMainApp(MainApp mainApp, DetalleOrdenCompra detalleOrdenCompra, OrdenCompra ordenCompra, int opcion) {
@@ -64,14 +70,22 @@ public class DialogoAgregarDetalleOrdenCompra {
 	private void initComponentes() {
 		RestriccionTextField.soloNumeros(textFieldItem);
 		RestriccionTextField.soloNumeros(textFieldPorEntregar);
-		this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponenteTipoComponente(connection, "A")));
+		
+		for(Componente componente :ComponenteDAO.readComponenteTipoComponente(connection, "A"))
+			this.arrayListNumeroParte.add(componente.getNumeroParte());
+		for (Componente componente : ComponenteDAO.readComponente(connection))
+			this.arrayListTodos.add(componente.getNumeroParte());
+		this.comboBoxComponente.setItems(FXCollections.observableArrayList(this.arrayListNumeroParte));
+		new AutoCompleteComboBoxListener(this.comboBoxComponente);
 		
 		this.checkBoxMostrarTodos.selectedProperty().addListener((ov, oldValue, newValue) -> {
 			if (checkBoxMostrarTodos.isSelected()) 
-				this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponente(connection)));
+				this.comboBoxComponente.setItems(FXCollections.observableArrayList(arrayListTodos));
 			else
-				this.comboBoxComponente.setItems(FXCollections.observableArrayList(ComponenteDAO.readComponenteTipoComponente(connection, "A")));
-		});
+				this.comboBoxComponente.setItems(FXCollections.observableArrayList(arrayListNumeroParte));
+		});//FIN LISTENER
+		
+	
 	}//FIN METODO
 
 	private void showInterfaz() {
@@ -91,8 +105,9 @@ public class DialogoAgregarDetalleOrdenCompra {
 			else
 				this.datePickerEntregaFinal.setValue(this.detalleOrdenCompra.getEntregaFinal().toLocalDate());
 			this.datePickerEntregaFinal.setDisable(false);
-			this.comboBoxComponente.getSelectionModel().select(this.detalleOrdenCompra.getComponenteFK());
+			this.comboBoxComponente.getSelectionModel().select(this.detalleOrdenCompra.getComponenteFK().getNumeroParte());
 			this.comboBoxComponente.setDisable(false);
+			this.checkBoxMostrarTodos.setDisable(false);
 		} else if (this.opcion == MOSTRAR) {
 			this.textFieldPlanoOrdenamiento.setText(this.detalleOrdenCompra.getPlanoOrdenamiento());
 			this.textFieldPlanoOrdenamiento.setDisable(true);
@@ -109,8 +124,9 @@ public class DialogoAgregarDetalleOrdenCompra {
 			else
 				this.datePickerEntregaFinal.setValue(this.detalleOrdenCompra.getEntregaFinal().toLocalDate());
 			this.datePickerEntregaFinal.setDisable(true);
-			this.comboBoxComponente.getSelectionModel().select(this.detalleOrdenCompra.getComponenteFK());
+			this.comboBoxComponente.getSelectionModel().select(this.detalleOrdenCompra.getComponenteFK().getNumeroParte());
 			this.comboBoxComponente.setDisable(true);
+			this.checkBoxMostrarTodos.setDisable(true);
 		}//FIN IF/ELSE
 	}//FIN METODO
 	
@@ -141,7 +157,7 @@ public class DialogoAgregarDetalleOrdenCompra {
 			this.detalleOrdenCompra.setEntregaFinal(Date.valueOf(this.datePickerEntregaFinal.getValue()));
 		this.detalleOrdenCompra.setPorEntregar(Integer.valueOf(this.textFieldPorEntregar.getText()));
 		this.detalleOrdenCompra.setProcesoPintura(this.textFieldProcesoPintura.getText());
-		this.detalleOrdenCompra.setComponenteFK(this.comboBoxComponente.getSelectionModel().getSelectedItem());
+		this.detalleOrdenCompra.setComponenteFK(ComponenteDAO.readComponenteNumeroParte(connection, this.comboBoxComponente.getSelectionModel().getSelectedItem()));
 		this.detalleOrdenCompra.setOrdenCompraFK(this.ordenCompra);
 		if (this.opcion == CREAR) {
 			this.detalleOrdenCompra.setSaldo(Integer.valueOf(this.textFieldPorEntregar.getText()));

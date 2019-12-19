@@ -13,12 +13,12 @@ public class OrdenProduccion {
 	private ObjectProperty<Date> fecha;
 	private StringProperty lote;
 	private ObjectProperty<Integer> status;
-	private ObjectProperty<Integer> detalleCotizacionFK;
+	private ObjectProperty<Integer> detalleOrdenCompraFK;
 	private StringProperty cliente;
-	private StringProperty cotizacion;
-	private ObjectProperty<Integer> proyectoFK;
-	private StringProperty proyecto;
-	private StringProperty componente;
+	private StringProperty ordenCompra;
+	private ObjectProperty<Integer> componenteFK;
+	private StringProperty cNumeroParte;
+	private StringProperty cDescripcion;
 	private ObjectProperty<Double> cantidad;
 	private ObjectProperty<Date> fechaEntrega;
 	
@@ -34,17 +34,17 @@ public class OrdenProduccion {
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR LLENO
-	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleCotizacionFK, String cliente, String cotizacion, Integer proyectoFK, String proyecto, String componente, Double cantidad, Date fechaEntrega) {
+	public OrdenProduccion(Integer sysPK, Date fecha, String lote, Integer status, Integer detalleOrdenCompraFK, String cliente, String ordenCompra, Integer componenteFK, String cNumeroParte, String cDescripcion, Double cantidad, Date fechaEntrega) {
 		this.sysPK = new SimpleObjectProperty<Integer>(sysPK);
 		this.fecha = new SimpleObjectProperty<Date>(fecha);
 		this.lote = new SimpleStringProperty(lote);
 		this.status = new SimpleObjectProperty<Integer>(status);
-		this.detalleCotizacionFK = new SimpleObjectProperty<Integer>(detalleCotizacionFK);
+		this.detalleOrdenCompraFK = new SimpleObjectProperty<Integer>(detalleOrdenCompraFK);
 		this.cliente = new SimpleStringProperty(cliente);
-		this.cotizacion = new SimpleStringProperty(cotizacion);
-		this.proyectoFK = new SimpleObjectProperty<Integer>(proyectoFK);
-		this.proyecto = new SimpleStringProperty(proyecto);
-		this.componente =  new SimpleStringProperty(componente);
+		this.ordenCompra = new SimpleStringProperty(ordenCompra);
+		this.componenteFK = new SimpleObjectProperty<Integer>(componenteFK);
+		this.cNumeroParte = new SimpleStringProperty(cNumeroParte);
+		this.cDescripcion =  new SimpleStringProperty(cDescripcion);
 		this.cantidad = new SimpleObjectProperty<Double>(cantidad);
 		this.fechaEntrega = new SimpleObjectProperty<Date>(fechaEntrega);
 	}//FIN CONSTRUCTOR
@@ -106,16 +106,16 @@ public class OrdenProduccion {
 	//FIN METODOS DE ACCESO A STATUS
 
 	//METODOS DE ACCESO A DETALLECOTIZACIONFK
-	public void setDetalleCotizacionFK(Integer detalleCotizacionFK) {
-		this.detalleCotizacionFK.set(detalleCotizacionFK);
+	public void setDetalleOrdenCompraFK(Integer detalleOrdenCompraFK) {
+		this.detalleOrdenCompraFK.set(detalleOrdenCompraFK);
 	}//FIN METODO
 	
 	public Integer getDetalleCotizacionFK() {
-		return detalleCotizacionFK.get();
+		return detalleOrdenCompraFK.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> detalleCotizacionFKProperty() {
-		return detalleCotizacionFK;
+	public ObjectProperty<Integer> detalleOrdenCompraFKProperty() {
+		return detalleOrdenCompraFK;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A DETALLECOTIZACIONFK
 	
@@ -133,57 +133,57 @@ public class OrdenProduccion {
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A CLIENTE
 	
-	//METODOS DE ACCESO A COTIZACION
-	public void setCotizacion(String cotizacion) {
-		this.cotizacion.set(cotizacion);
+	//METODOS DE ACCESO A ORDEN COMPRA
+	public void setOrdenCompra(String ordenCompra) {
+		this.ordenCompra.set(ordenCompra);
 	}//FIN METODO
 	
-	public String getCotizacion() {
-		return cotizacion.get();
+	public String getOrdenCompra() {
+		return ordenCompra.get();
 	}//FIN METODO
 	
-	public StringProperty cotizacionProperty() {
-		return cotizacion;
+	public StringProperty ordenCompraProperty() {
+		return ordenCompra;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A COTIZACION
 	
-	public void setProyectoFK(Integer proyectoFK) {
-		this.proyectoFK.set(proyectoFK);
+	public void setComponenteFK(Integer componenteFK) {
+		this.componenteFK.set(componenteFK);
 	}//FIN METODO
 	
-	public Integer getProyectoFK() {
-		return this.proyectoFK.get();
+	public Integer getComponenteFK() {
+		return this.componenteFK.get();
 	}//FIN METODO
 	
-	public ObjectProperty<Integer> proyectoFKProperty() {
-		return this.proyectoFK;
+	public ObjectProperty<Integer> componenteFKProperty() {
+		return this.componenteFK;
 	}//FIN METODO
 	
 	//METODOS DE ACCESO A PROYECTO
-	public void setProyecto(String proyecto) {
-		this.proyecto.set(proyecto);
+	public void setNumeroParte(String cNumeroParte) {
+		this.cNumeroParte.set(cNumeroParte);
 	}//FIN METODO
 	
-	public String getProyecto() {
-		return this.proyecto.get();
+	public String getNumeroParte() {
+		return this.cNumeroParte.get();
 	}//FIN METODO
 	
-	public StringProperty proyectoProperty() {
-		return proyecto;
+	public StringProperty numeroParteProperty() {
+		return cNumeroParte;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A PROYECTO
 	
 	//METODOS DE ACCESO A COMPONENTE
-	public void setComponente(String componente) {
-		this.componente.set(componente);
+	public void setDescripcion(String cDescripcion) {
+		this.cDescripcion.set(cDescripcion);
 	}//FIN METODO
 	
-	public String getComponente() {
-		return this.componente.get();
+	public String getcDescripcion() {
+		return this.cDescripcion.get();
 	}//FIN METODO
 	
-	public StringProperty componenteProperty() {
-		return componente;
+	public StringProperty descripcionProperty() {
+		return cDescripcion;
 	}//FIN METODO
 	//FIN METODOS DE ACCESO A COMPONENTE
 	
