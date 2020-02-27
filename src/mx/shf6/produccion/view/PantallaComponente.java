@@ -81,13 +81,11 @@ public class PantallaComponente {
 	
 	private void inicializaComponentes() {
 		this.campoTextoBusqueda.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode().equals(KeyCode.ENTER))
 					buscarRegistroTabla();
-			}//FIN METODO
-			
+			}//FIN METODO	
 		});//FIN SENTENCIA		
 	}//FIN METODO
 	

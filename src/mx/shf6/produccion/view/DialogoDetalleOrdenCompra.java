@@ -8,9 +8,15 @@ import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.TableView;
@@ -56,6 +62,7 @@ public class DialogoDetalleOrdenCompra {
 	@FXML private PTableColumn<DetalleOrdenCompra, String> tableColumnAcciones;
 	@FXML private TextField textFieldFolio;
 	@FXML private TextField textFieldCliente;
+	@FXML private TextField textFieldBuscar;
 	
 	//METODOS
 	@FXML private void initialize() {
@@ -174,7 +181,16 @@ public class DialogoDetalleOrdenCompra {
 		this.arrayListdetalleOrdenCompra.clear();
 		this.tableViewDetalleOrdenCompra.setItems(null);
 		this.arrayListdetalleOrdenCompra = DetalleOrdenCompraDAO.readPorOrdenCompra(connection, ordenCompra);
-		this.tableViewDetalleOrdenCompra.setItems(FXCollections.observableArrayList(this.arrayListdetalleOrdenCompra));
+		
+		ObjectProperty<Predicate<DetalleOrdenCompra>> filtroBusqueda = new SimpleObjectProperty<>();
+		filtroBusqueda.bind(Bindings.createObjectBinding(() -> dVenta -> textFieldBuscar.getText().isEmpty() ||
+				dVenta.getComponenteFK().getNumeroParte().toLowerCase().contains(textFieldBuscar.getText().toLowerCase()) ||
+					dVenta.getComponenteFK().getDescripcion().toLowerCase().contains(textFieldBuscar.getText().toLowerCase()),
+						textFieldBuscar.textProperty()));
+		
+		FilteredList<DetalleOrdenCompra> filteredList = new FilteredList<DetalleOrdenCompra>(FXCollections.observableArrayList(this.arrayListdetalleOrdenCompra));
+		this.tableViewDetalleOrdenCompra.setItems(filteredList);
+		filteredList.predicateProperty().bind(Bindings.createObjectBinding(() -> filtroBusqueda.get(), filtroBusqueda));
 	}//FIN METODO
 	
 	private void updateDatos() {
@@ -185,8 +201,7 @@ public class DialogoDetalleOrdenCompra {
 	public String generarNumeroSerie() {
 		String result = new SecureRandom().ints(0,36)
 	            .mapToObj(i -> Integer.toString(i, 36))
-	            .map(String::toUpperCase).distinct().limit(8).collect(Collectors.joining());
-		
+	            .map(String::toUpperCase).distinct().limit(8).collect(Collectors.joining());	
 		return result;
 	}//FIN METODO
 	

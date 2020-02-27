@@ -9,11 +9,11 @@
 <?import mx.shf6.produccion.utilities.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoDetalleOrdenCompra">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" styleClass="dashBoardCard" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.shf6.produccion.view.DialogoDetalleOrdenCompra">
    <children>
       <VBox prefHeight="90.0" styleClass="dashBoardCardGray" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="50.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="50.0" spacing="10.0">
                <children>
                   <ImageView fitHeight="49.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -40,6 +40,26 @@
                         <Insets />
                      </HBox.margin>
                   </VBox>
+                  <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="textFieldBuscar" prefHeight="30.0" promptText="Buscar" styleClass="campoBuscador" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" maxHeight="30.0" maxWidth="30.0" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
+                           <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <image>
+                                    <Image url="@images/1x/BuscarIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </HBox>
                </children>
                <VBox.margin>
                   <Insets left="15.0" right="15.0" top="15.0" />

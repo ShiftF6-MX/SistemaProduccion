@@ -45,30 +45,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuComponente" spacing="5.0">
-               <children>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/1x/ComponentsIcon.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Componentes" textFill="#d1d0d2" />
-               </children>
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuEmpleado" spacing="5.0">
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="250.0" onMouseClicked="#manejadorMenuOrdenCompra" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/1x/PuestosIcono.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Empleados" textFill="#d1d0d2" />
+                  <Label styleClass="labelRobotoBold14" text="Orden compra" textFill="#d1d0d2" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -93,6 +77,22 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </HBox>
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuComponente" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/ComponentsIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Componentes" textFill="#d1d0d2" />
+               </children>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuProceso" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -101,22 +101,6 @@
                      </image>
                   </ImageView>
                   <Label styleClass="labelRobotoBold14" text="Procesos" textFill="#d1d0d2" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="150.0" onMouseClicked="#manejadorMenuExistencia" spacing="5.0">
-               <children>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/1x/PuestosIcono.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Existencias" textFill="#d1d0d2" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -141,14 +125,14 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" disable="true" layoutX="35.0" layoutY="200.0" onMouseClicked="#manejadorMenuDashboard" spacing="5.0">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuEmpleado" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/1x/PuestosIcono.png" />
                      </image>
                   </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Dashboard" textFill="#d1d0d2" />
+                  <Label styleClass="labelRobotoBold14" text="Empleados" textFill="#d1d0d2" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -157,27 +141,6 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="250.0" onMouseClicked="#manejadorMenuOrdenCompra" spacing="5.0">
-               <children>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/1x/PuestosIcono.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="labelRobotoBold14" text="Orden compra" textFill="#d1d0d2" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <VBox.margin>
-                  <Insets left="10.0" />
-               </VBox.margin>
-            </HBox>
-            <Label styleClass="labelRobotoBold14" text="CATÁLOGOS" textFill="#d1d0d2">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
             <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuPuesto" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -194,6 +157,27 @@
                   <Insets left="10.0" />
                </VBox.margin>
             </HBox>
+            <HBox alignment="CENTER_LEFT" disable="true" layoutX="35.0" layoutY="200.0" onMouseClicked="#manejadorMenuDashboard" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/PuestosIcono.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Dashboard" textFill="#d1d0d2" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Label styleClass="labelRobotoBold14" text="CATÁLOGOS" textFill="#d1d0d2">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
             <HBox alignment="CENTER_LEFT" onMouseClicked="#manejadorMenuGrupoTrabajo" spacing="5.0">
                <children>
                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -234,6 +218,22 @@
                      </image>
                   </ImageView>
                   <Label styleClass="labelRobotoBold14" text="Almacenes" textFill="#d1d0d2" />
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="150.0" onMouseClicked="#manejadorMenuExistencia" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/1x/PuestosIcono.png" />
+                     </image>
+                  </ImageView>
+                  <Label styleClass="labelRobotoBold14" text="Existencias" textFill="#d1d0d2" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />

@@ -8,8 +8,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Predicate;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -82,7 +88,7 @@ public class DialogoPartesPrimarias {
 	@FXML private PTableColumn<DetalleComponente, String> columnaDescripcionMateriaPrima;
 	@FXML private PTableColumn<DetalleComponente, String> columnaNumeroMateriaPrima;
 	@FXML private PTableColumn<DetalleComponente, String> columnaAcciones;
-
+	@FXML private TextField textFieldBuscar;
 	@FXML private Label campoTextoComponente;
 
 
@@ -104,8 +110,13 @@ public class DialogoPartesPrimarias {
 		this.hs = new HashSet<DetalleComponente>();
 
 		obtenerListaMateriales();
-		actualizarTabla();
-
+		
+		if (this.listaPartePrimaria.size() != 0)
+			actualizarTabla();
+		else {
+			this.mainApp.getEscenarioDialogos().close();
+			Notificacion.dialogoAlerta(AlertType.INFORMATION, "", "No hay lista de componentes");
+		}//FIN IF/ELSE
 	}//FIN METODO
 
 	private void inicializarTabla(){
@@ -192,7 +203,15 @@ public class DialogoPartesPrimarias {
 
 	private void actualizarTabla(){
 		this.tablaPartesPrimarias.setItems(null);
-		this.tablaPartesPrimarias.setItems(FXCollections.observableArrayList(this.listaPartePrimaria));
+		ObjectProperty<Predicate<DetalleComponente>> filtroBusqueda = new SimpleObjectProperty<>();
+		filtroBusqueda.bind(Bindings.createObjectBinding(() -> dComponente -> textFieldBuscar.getText().isEmpty() ||
+				dComponente.getNumeroParteComponenteSuperior().toLowerCase().contains(textFieldBuscar.getText().toLowerCase()) ||
+					dComponente.getDescripcionComponenteSuperior().toLowerCase().contains(textFieldBuscar.getText().toLowerCase()), 
+					textFieldBuscar.textProperty()));
+		
+		FilteredList<DetalleComponente> filteredList = new FilteredList<DetalleComponente>(FXCollections.observableArrayList(this.listaPartePrimaria));
+		this.tablaPartesPrimarias.setItems(filteredList);
+		filteredList.predicateProperty().bind(Bindings.createObjectBinding(() -> filtroBusqueda.get(), filtroBusqueda));
 	}//FIN METODO
 
 	private void obtenerPartesPrimarias(int componenteFK){
@@ -204,7 +223,7 @@ public class DialogoPartesPrimarias {
 				this.campoTextoComponente.setText(this.nombreNumeroComponente + " x " + this.ordenProduccion.getCantidad());
 			else
 				this.campoTextoComponente.setText(this.nombreNumeroComponente);
-		}
+		}//FIN IF
 
 		if (componenteRaiz.getTipoComponente().equals(TipoComponente.SUB_ENSAMBLE)){
 			detalleComponenteSubEnsamble = new DetalleComponente();

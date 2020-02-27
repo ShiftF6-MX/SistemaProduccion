@@ -31,6 +31,7 @@
                   </VBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="5.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <TextField fx:id="textFieldBuscar" prefHeight="30.0" promptText="Buscar" styleClass="campoBuscador" />
                         <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#manejadorBotonImprimir" pickOnBounds="true" preserveRatio="true">
                            <cursor>
                               <Cursor fx:constant="HAND" />

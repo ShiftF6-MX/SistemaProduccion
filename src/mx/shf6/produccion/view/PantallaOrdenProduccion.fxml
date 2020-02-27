@@ -41,18 +41,6 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="320.0">
-                     <children>
-                        <DatePicker fx:id="fechaInicial" prefWidth="150.0" styleClass="campoBuscador">
-                           <HBox.margin>
-                              <Insets right="5.0" />
-                           </HBox.margin></DatePicker>
-                        <DatePicker fx:id="fechaFinal" prefWidth="150.0" styleClass="campoBuscador" />
-                     </children>
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </HBox>
                   <TextField fx:id="campoTextoBusqueda" prefHeight="30.0" prefWidth="200.0" promptText="Buscar" styleClass="campoBuscador" />
                   <HBox alignment="CENTER" maxHeight="30.0" maxWidth="30.0" onMouseClicked="#buscarOrdenProduccion" prefHeight="30.0" prefWidth="30.0" styleClass="campoBuscador">
                      <children>

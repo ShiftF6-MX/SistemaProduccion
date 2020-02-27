@@ -7,7 +7,6 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,8 +52,6 @@ public class PantallaOrdenProduccion {
 	@FXML private PTableColumn<OrdenProduccion, String> columnaStatus;
 	@FXML private PTableColumn<OrdenProduccion, String> columnaAcciones;
 	@FXML private ComboBox<String> comboStatus;
-	@FXML private DatePicker fechaInicial;
-	@FXML private DatePicker fechaFinal;
 	
 	//METODO COMPONENTES INTERFAZ
 	@FXML private void initialize() {
@@ -80,28 +77,10 @@ public class PantallaOrdenProduccion {
 				}//FIN IF
 			}//FIN METODO
 		});//FIN SENTENCIA
-		
-		this.fechaInicial.setValue(new Date(System.currentTimeMillis()).toLocalDate());
-		this.fechaFinal.setValue(new Date(System.currentTimeMillis()).toLocalDate());
-		
-		this.fechaInicial.valueProperty().addListener((ov, oldValue, newValue) -> {
-			buscarFecha();
-		});//FIN LISTENER
-		
-		this.fechaFinal.valueProperty().addListener((ov, oldValue, newValue) -> {
-			buscarFecha();
-		});//FIN LISTENER
-		
+	
 		this.comboStatus.valueProperty().addListener((ov, oldValue, newValue) -> {
 			buscarCombo();
 		});//FIN LISTENER
-	}//FIN METODO
-	
-	private void buscarFecha() {
-		this.tablaOrdenProduccion.setItems(null);
-		this.listaOrdenProduccion.clear();
-		this.listaOrdenProduccion = OrdenProduccionDAO.dateOrdenProduccion(this.mainApp.getConnection(), Date.valueOf(this.fechaInicial.getValue()), Date.valueOf(this.fechaFinal.getValue()));
-		this.tablaOrdenProduccion.setItems(OrdenProduccionDAO.toObservableList(this.listaOrdenProduccion));
 	}//FIN METODO
 	
 	private void buscarCombo() {
